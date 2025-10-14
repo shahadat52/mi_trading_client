@@ -1,43 +1,36 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-
-// A reusable input component for cleaner code
-interface FormInputProps {
-    label: string;
-    type: string;
-    name: string;
-    register: any;
-    error?: { message?: string };
-}
-
-const FormInput: React.FC<FormInputProps> = ({ label, type, name, register, error }) => (
-    <div className="mb-4">
-        <label htmlFor={name} className="block text-sm font-semibold mb-1 uppercase text-gray-400">
-            {label}
-        </label>
-        <input
-            id={name}
-            type={type}
-            placeholder={label === 'EMAIL' ? 'Email address' : `Your full ${label.toLowerCase()}`}
-            {...register(name, { required: `${label} is required` })}
-            className={`w-full p-2 border-b-2 bg-transparent text-white 
-                  focus:outline-none placeholder-gray-500 transition duration-300
-                  ${error ? 'border-red-500' : 'border-gray-600 focus:border-teal-500'}`}
-        />
-        {error && <p className="text-red-500 text-xs mt-1">{error.message}</p>}
-    </div>
-);
+import { FormInput } from './FormInput';
+import { useRegisterMutation } from '../../redux/features/auth/authApi';
+import { NavLink, useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
+import Loading from '../../components/Loading';
 
 const RegistrationForm: React.FC = () => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
-
+    const [registerUser] = useRegisterMutation(undefined);
+    const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
     // Watch password field to validate confirm password
     const password = watch("password", "");
 
-    const onSubmit = (data: any) => {
-        console.log("Registration Data:", data);
-        alert('Registration successful! Check console for data.');
+
+    const onSubmit = async (data: any) => {
+        setLoading(true)
+        const toastId = toast.loading('Logging in', { autoClose: 2000 })
+        console.log(data);
+        const result = await registerUser(data);
+        console.log(result)
+        if ((result as any)?.data?.success) {
+            setLoading(false)
+            toast.update(toastId, { render: `${(result as any)?.data?.message}`, type: "success", isLoading: false, autoClose: 2000 })
+            navigate('/login')
+        } else {
+            setLoading(false)
+            toast.update(toastId, { render: `${(result as any)?.data?.message}`, type: "success", isLoading: false, autoClose: 2000 })
+            alert((result as any)?.data?.message);
+        }
     };
 
     return (
@@ -55,11 +48,11 @@ const RegistrationForm: React.FC = () => {
             />
 
             <FormInput
-                label="USERNAME"
+                label="PHONE"
                 type="text"
-                name="username"
+                name="phone"
                 register={register}
-                error={errors.username}
+                error={errors.phone}
             />
 
             <FormInput
@@ -98,19 +91,6 @@ const RegistrationForm: React.FC = () => {
                 {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{String(errors.confirmPassword.message)}</p>}
             </div>
 
-            {/* --- Checkbox and Links --- */}
-            <div className="flex items-start mb-8 text-xs">
-                <input
-                    id="terms"
-                    type="checkbox"
-                    {...register("terms", { required: "You must accept the terms" })}
-                    className="mr-2 mt-1 h-4 w-4 text-teal-500 bg-gray-700 border-gray-600 rounded focus:ring-teal-500"
-                />
-                <label htmlFor="terms" className="text-gray-400">
-                    I agree to the <a href="#" className="text-teal-400 hover:text-teal-300">Terms of Service</a> and <a href="#" className="text-teal-400 hover:text-teal-300">Privacy Policy</a>
-                </label>
-                {errors.terms && <p className="text-red-500 text-xs mt-1">{String(errors.terms.message)}</p>}
-            </div>
 
             {/* --- Submit Button --- */}
             <button
@@ -119,8 +99,13 @@ const RegistrationForm: React.FC = () => {
                    font-bold text-lg text-white transition duration-300 shadow-lg 
                    shadow-teal-500/50"
             >
-                CREATE ACCOUNT
+                {
+                    loading ? <Loading /> : 'Create Account'
+                }
             </button>
+            <p className='py-4'>Have you account?
+                <NavLink to={`/login`} className='text-blue-600 font-bold text-[15px] '> Sign In</NavLink>
+            </p>
         </form>
     );
 }

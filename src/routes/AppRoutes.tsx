@@ -10,11 +10,13 @@ import IncomePage from "../pages/income/IncomePage";
 import ExpensesPage from "../pages/expenses/ExpansesPage";
 import RegisterPage from "../pages/auth/RegisterPage";
 import LoginPage from "../pages/auth/LoginPage";
+import OtpVerification from "../pages/OtpVerifyPage";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <App />,
+        element: <PrivateRoute><App /></PrivateRoute>,
         children: [
             {
                 path: '/home',
@@ -51,6 +53,10 @@ export const router = createBrowserRouter([
             }
 
         ],
+    },
+    {
+        path: "send-otp/:id",
+        element: <OtpVerification />
     },
     {
         path: "register",
