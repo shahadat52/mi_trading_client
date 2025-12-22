@@ -1,37 +1,25 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import {
-    MdMenu
-} from "react-icons/md";
-import { Outlet, } from "react-router-dom";
-import { useAppDispatch } from "../redux/hook";
-import { logOut } from "../redux/features/auth/authSlice";
+import { MdMenu } from "react-icons/md";
+import { Outlet } from "react-router-dom";
 import MainLayoutSidebar from "./MainLayoutSidebar";
-
+import MobileNavbar from "../components/MobileNavbar";
 
 const MainLayout = () => {
-    const [isOpen, setIsOpen] = useState(false); // Mobile menu
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar open state
 
-    const dispatch = useAppDispatch();
-
-
-
-    const handleLogOut = () => {
-        dispatch(logOut());
-    };
 
     return (
         <div className="flex h-screen bg-primary text-gray-800 dark:bg-gray-900 dark:text-gray-100">
+            {/* Sidebar */}
+            <MainLayoutSidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
+
             {/* Overlay for Mobile */}
-            {isOpen && (
+            {isSidebarOpen && (
                 <div
-                    className="fixed inset-0 bg-black/40 z-20 sm:hidden"
-                    onClick={() => setIsOpen(false)}
+                    onClick={() => setIsSidebarOpen(false)}
+                    className="fixed inset-0 bg-black opacity-30 z-20 sm:hidden"
                 />
             )}
-
-            {/* Sidebar */}
-            <MainLayoutSidebar />
 
             {/* Main Content */}
             <div className="flex-1 flex flex-col">
@@ -40,7 +28,7 @@ const MainLayout = () => {
                     <div className="flex items-center gap-3">
                         <button
                             className="sm:hidden p-2 hover:bg-white/10 rounded-md"
-                            onClick={() => setIsOpen(!isOpen)}
+                            onClick={() => setIsSidebarOpen(true)} // 🔥 Open sidebar
                         >
                             <MdMenu size={24} />
                         </button>
@@ -48,17 +36,13 @@ const MainLayout = () => {
                             M/S M.I Trading ERP
                         </h1>
                     </div>
-                    <div
-                        onClick={handleLogOut}
-                        className="text-sm text-gray-300 cursor-pointer"
-                    >
-                        <p className="p-2 bg-red-50 rounded text-blue-950 font-bold">Log Out</p>
-                    </div>
+
                 </header>
 
                 {/* Page Content */}
-                <main className="flex-1 overflow-y-auto bg-[#c2dbea] dark:bg-gray-900 p-6 transition-colors">
+                <main className="flex-1 overflow-y-auto bg-[#e5efd5] dark:bg-gray-900  transition-colors">
                     <Outlet />
+                    <MobileNavbar />
                 </main>
             </div>
         </div>

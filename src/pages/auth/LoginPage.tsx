@@ -20,7 +20,7 @@ const LoginPage = () => {
                     transition={{ delay: 0.2, duration: 0.6 }}
                     className="text-2xl font-semibold text-center text-gray-100 mb-6"
                 >
-                    Welcome Back 👋
+                    MI TRADING ERP 👋
                 </motion.h2>
 
                 <motion.h2

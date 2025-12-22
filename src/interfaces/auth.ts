@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type TAuth = {
     auth: {
         auth: {
@@ -25,5 +26,7 @@ export type TUser = {
     email: string
     name: string;
     phone: string
-    role: string
+    role: string;
+    exp: any;
+    ixp: any
 }

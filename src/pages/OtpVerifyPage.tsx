@@ -54,13 +54,15 @@ const OtpVerification: React.FC = () => {
         if (res?.data?.success) {
             const token = res?.data?.data?.accessToken;
             const user = jwtDecode(token);
-            console.log(token)
-            dispatch(setUser({ user, token }));
-            navigate("/");
-        } if (res?.error) {
-            alert(`${(res?.error?.data?.message)}`)
-        }
-    };
+            if (token) {
+                dispatch(setUser({ user, token }));
+                navigate("/");
+            }
+            if (res?.error) {
+                alert(`${(res?.error?.data?.message)}`)
+            }
+        };
+    }
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 px-4">

@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import Loading from '../../components/Loading';
 
 const RegistrationForm: React.FC = () => {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit, watch, reset, formState: { errors } } = useForm();
     const [registerUser] = useRegisterMutation(undefined);
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
@@ -17,19 +17,28 @@ const RegistrationForm: React.FC = () => {
 
 
     const onSubmit = async (data: any) => {
-        setLoading(true)
-        const toastId = toast.loading('Logging in', { autoClose: 2000 })
-        console.log(data);
-        const result = await registerUser(data);
-        console.log(result)
-        if ((result as any)?.data?.success) {
-            setLoading(false)
-            toast.update(toastId, { render: `${(result as any)?.data?.message}`, type: "success", isLoading: false, autoClose: 2000 })
-            navigate('/login')
-        } else {
-            setLoading(false)
-            toast.update(toastId, { render: `${(result as any)?.data?.message}`, type: "success", isLoading: false, autoClose: 2000 })
-            alert((result as any)?.data?.message);
+        setLoading(true);
+        const toastId = toast.loading("Processing...", { autoClose: 2000 });
+
+        try {
+            const result = await registerUser(data)
+
+            if (result?.data?.success) {
+                toast.update(toastId, { render: result?.data?.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
+                navigate('/login')
+                reset();
+                setLoading(false);
+
+            } else {
+                toast.update(toastId, { render: `${(result as any)?.error?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
+                setLoading(false);
+            }
+        } catch (err: any) {
+            toast.update(toastId, { render: err?.error?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
+            setLoading(false);
+        } finally {
+            // reset()
+            setLoading(false);
         }
     };
 

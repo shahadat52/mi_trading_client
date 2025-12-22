@@ -1,9 +1,33 @@
+import { useState } from "react";
+import { AddProductModal } from "../../components/modal/AddProductModal";
+import { AddSupplierModal } from "../../components/modal/AddSupplierModal";
+import PurchaseEntryForm from "./PurchaseEntryForm";
 
 const PurchasePage = () => {
+    const [addProductModalCont, setAddProductModalCont] = useState(false);
+    const [addSupplierModalCont, setAddSupplierModalCont] = useState(false);
     return (
         <div>
-            <h1 className="text-2xl font-bold">Purchase Management</h1>
-            <p className="mt-4">Manage your purchase orders, suppliers, and inventory.</p>
+            <div className="flex justify-end mb-4 gap-2">
+                <button
+                    onClick={() => setAddProductModalCont(true)}
+                    className="inline-flex h-10 px-4 items-center justify-center rounded-md bg-neutral-950 font-medium text-neutral-50 transition active:scale-110 ">
+                    Add Product
+                </button>
+                <button
+                    onClick={() => setAddSupplierModalCont(true)}
+                    className="inline-flex h-10 px-4 items-center justify-center rounded-md bg-neutral-950 font-medium text-neutral-50 transition active:scale-110 ">
+                    Add Supplier
+                </button>
+            </div>
+
+            {/* Purchase Entry Form */}
+            <PurchaseEntryForm />
+
+            {addSupplierModalCont && <AddSupplierModal setAddSupplierModalCont={setAddSupplierModalCont} />}
+            {/* Add Product Modal */}
+            {addProductModalCont && <AddProductModal setAddProductModalCont={setAddProductModalCont} />}
+
         </div>
     );
 };

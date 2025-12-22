@@ -11,11 +11,11 @@ export const baseApi = createApi({
 
             // If we have a token set in state, let's assume that we should be passing it.
             if (token) {
-                headers.set('Authorization', `Bearer ${token}`);
+                headers.set('authorization', `${token}`)
             }
             return headers;
         }
     }),
-    tagTypes: ['User', 'Product', 'Order'],
+    tagTypes: ['User', 'Purchase', 'Product', 'CommissionSales', 'Customer', 'Supplier', 'Sales', 'Deliveries', 'Stock', 'Income', 'Expenses', 'Account', 'Transaction'],
     endpoints: () => ({}),
 });     

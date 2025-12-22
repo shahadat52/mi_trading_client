@@ -1,19 +1,33 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from 'react';
-import { menuItems } from './constant/MenuItems';
-import { NavLink, useLocation } from 'react-router';
-import { MdCancel, MdExpandLess, MdExpandMore, MdOutlineChevronLeft, MdOutlineChevronRight } from 'react-icons/md';
-import { useAppSelector } from '../redux/hook';
-
+import { useState } from "react";
+import { NavLink, useLocation } from "react-router";
+import {
+    MdCancel,
+    MdExpandLess,
+    MdExpandMore,
+    MdOutlineChevronLeft,
+    MdOutlineChevronRight,
+} from "react-icons/md";
+import { useAppSelector } from "../redux/hook";
+import { getMenuItems } from "./constant/MenuItems";
 
 const drawerWidth = "260px";
 const collapsedWidth = "70px";
-const MainLayoutSidebar = () => {
-    const [isOpen, setIsOpen] = useState(false); // Mobile menu
+
+type SidebarProps = {
+    isOpen: boolean;
+    setIsOpen: (open: boolean) => void;
+};
+
+const MainLayoutSidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
+
+
     const location = useLocation();
     const user = useAppSelector((state: any) => state?.auth?.auth?.user);
     const [collapsedMenus, setCollapsedMenus] = useState<Set<string>>(new Set());
     const [isCollapsed, setIsCollapsed] = useState(false); // Sidebar collapse
+
+    const menuItems = getMenuItems(user?.role)
     const isActiveParent = (subItems: { path: string }[]) =>
         subItems.some((sub) => location.pathname.startsWith(sub.path));
 
@@ -23,17 +37,22 @@ const MainLayoutSidebar = () => {
         else newSet.add(menu);
         setCollapsedMenus(newSet);
     };
+
     return (
         <aside
             className={`fixed z-30 top-0 left-0 h-full bg-[#0b1f3a] dark:bg-gray-800 text-white 
-                           shadow-2xl transform transition-all duration-300 ease-in-out
-                           ${isOpen ? "translate-x-0" : "-translate-x-full"}
-                           sm:translate-x-0 sm:static sm:shadow-none`}
+                 shadow-2xl transform transition-all duration-300 ease-in-out
+                 ${isOpen ? "translate-x-0" : "-translate-x-full"}
+                 sm:translate-x-0 sm:static sm:shadow-none`}
             style={{ width: isCollapsed ? collapsedWidth : drawerWidth }}
         >
             {/* Sidebar Header */}
             <div className="flex items-center justify-between px-4 h-16 shadow-md shadow-gray-500">
-                {!isCollapsed && <h2 className="text-lg font-semibold tracking-wide">{user?.name}</h2>}
+                {!isCollapsed && (
+                    <h2 className="text-lg font-semibold tracking-wide">
+                        {user?.name}
+                    </h2>
+                )}
 
                 <div className="flex items-center gap-2">
                     {/* Collapse Button */}
@@ -51,7 +70,7 @@ const MainLayoutSidebar = () => {
                     {/* Mobile close button */}
                     <button
                         className="sm:hidden p-2 rounded-md hover:bg-white/10 transition"
-                        onClick={() => setIsOpen(false)}
+                        onClick={() => setIsOpen(false)} // 🔥 Close sidebar
                     >
                         <MdCancel size={24} />
                     </button>
@@ -69,7 +88,7 @@ const MainLayoutSidebar = () => {
                             <button
                                 onClick={() => toggleCollapseMenu(menu.name)}
                                 className={`flex items-center justify-between w-full px-3 py-2 text-[15px] font-medium rounded-md transition-all duration-200
-                                               ${activeParent
+                           ${activeParent
                                         ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300"
                                         : "text-gray-200 hover:bg-white/10 hover:text-white"
                                     }`}
@@ -78,7 +97,12 @@ const MainLayoutSidebar = () => {
                                     {menu.icon}
                                     {!isCollapsed && menu.name}
                                 </span>
-                                {!isCollapsed && (menuCollapsed ? <MdExpandLess size={18} /> : <MdExpandMore size={18} />)}
+                                {!isCollapsed &&
+                                    (menuCollapsed ? (
+                                        <MdExpandLess size={18} />
+                                    ) : (
+                                        <MdExpandMore size={18} />
+                                    ))}
                             </button>
 
                             {/* Submenu */}
@@ -89,12 +113,12 @@ const MainLayoutSidebar = () => {
                                             key={sub.name}
                                             to={sub.path}
                                             className={({ isActive }) =>
-                                                `block px-2 py-1.5 text-sm rounded-md font-normal transition-all
-                                                           ${isActive
+                                                `block px-2 py-1.5 text-sm rounded-md font-normal transition-all ${isActive
                                                     ? "bg-blue-600 text-white"
                                                     : "text-gray-300 hover:bg-white/10 hover:text-white"
                                                 }`
                                             }
+                                            onClick={() => setIsOpen(false)} // close sidebar on mobile navigation
                                         >
                                             {sub.name}
                                         </NavLink>

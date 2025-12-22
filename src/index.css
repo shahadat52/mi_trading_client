@@ -2,3 +2,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri&family=Manrope:wght@200..800&display=swap');
 @import "tailwindcss";
 @plugin "daisyui";
+
+.input {
+    @apply w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+
+.body{   
+  font-family: "Hind Siliguri", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}

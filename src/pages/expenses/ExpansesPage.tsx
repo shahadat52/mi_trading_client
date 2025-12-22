@@ -1,8 +1,27 @@
+import { useState } from "react";
+import Modal from "../../components/Modal";
+import ExpenseEntry from "./ExpenseEntry";
+import ExpensesTable from "./ExpensesTable";
+
 const Expanses = () => {
+    const [isOpen, setIsOpen] = useState(false);
     return (
         <div>
-            <h1 className="text-2xl font-bold">Expense Management</h1>
-            <p className="mt-4">Manage your expenses, track spending, and view reports.</p>
+            <div className="p-6">
+                <button
+                    onClick={() => setIsOpen(true)}
+                    className="bg-blue-600 text-white px-4 py-2 rounded"
+                >
+                    ➕ ব্যয় এন্ট্রি করুন
+                </button>
+
+                <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+                    <ExpenseEntry onClose={() => setIsOpen(false)} />
+                </Modal>
+            </div>
+
+            <ExpensesTable />
+
         </div>
     );
 };

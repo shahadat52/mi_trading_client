@@ -6,14 +6,14 @@ import { store } from "./redux/store"
 function App() {
 
   return (
-    <>
+    <div className="font-bangla">
 
       <Provider store={store}>
         <MainLayout />
       </Provider>
 
 
-    </>
+    </div>
   )
 }
 
