@@ -1,59 +1,116 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
-import { useGetAllTransactionQuery } from '../../redux/features/transaction/transactionApi';
 import { useParams } from 'react-router';
 import TableSkeleton from '../../components/table/TableSkeleton';
 import ErrorBoundary from '../../components/ErrorBoundary';
+import { useForm, type FieldValues } from 'react-hook-form';
+import SelectField from '../../components/form/SelectField';
+import { customerTxnType } from '../../utils/transactionType';
+import { toast } from 'react-toastify';
+import { useCustomerTxnEntryMutation, useGetAllTxnByCustomerQuery } from '../../redux/features/customer/customerApi';
+import InputField from '../../components/form/InputFields';
+import Modal from '../../components/Modal';
+import EditCustomerTxn from './EditCustomerTxn';
+import FileUploadField from '../../components/form/FileUploadField';
 
 const CustomerTxnPage = () => {
     const { id } = useParams();
+    const [isOpen, setIsOpen] = useState(false)
+    const [selectedTxn, setSelectedTxn] = useState('')
+    const [loading, setLoading] = useState(false)
+    const { control, handleSubmit, reset } = useForm()
+    const { data, isLoading, isError, } = useGetAllTxnByCustomerQuery({ id });
+    const [customerTxnEntry] = useCustomerTxnEntryMutation()
 
-    const [search, setSearch] = useState("");
-    const [dateFrom, setDateFrom] = useState("");
-    const [dateTo, setDateTo] = useState("");
 
-    const {
-        data,
-        isLoading,
-        isError,
-    } = useGetAllTransactionQuery({
-        search,
-        dateFrom,
-        dateTo,
-        id,
-    });
+    const onSubmit = async (data: FieldValues) => {
+        const toastId = toast.loading("Processing...");
+        const transactionTime = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Dhaka' });
+        data.date = transactionTime
+        data.customer = id
+        try {
+            setLoading(true);
+
+            const result = await customerTxnEntry(data);
+            if (result?.data?.success) {
+                toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
+
+                reset();
+
+            } else {
+                toast.update(toastId, { render: `${(result as any)?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
+            }
+        } catch (err: any) {
+            toast.update(toastId, { render: err?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleSelectedTxn = (id: string) => {
+        setSelectedTxn(id)
+        setIsOpen(true)
+
+    }
     const transactions = data?.data
-    console.log(transactions)
+    const totalDebit = transactions?.filter((txn: any) => (txn.type === 'debit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0)
+    const totalCredit = transactions?.filter((txn: any) => (txn.type === 'credit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0)
     return (
-        <div>
-            {/* Filters */}
-            <div className="flex flex-col lg:flex-row gap-4 mb-4">
-                <input
-                    type="text"
-                    placeholder="Search by destination, via, description..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className="border rounded px-3 py-2 w-full text-sm"
-                />
+        <div className=''>
 
-                <div className="flex flex-col sm:flex-row gap-2 w-full lg:w-auto">
-                    <input
-                        type="date"
-                        value={dateFrom}
-                        onChange={(e) => setDateFrom(e.target.value)}
-                        className="border rounded px-3 py-2 w-full text-sm"
+            {/*Transaction entry section */}
+            <div className="sticky flex flex-col lg:flex-row gap-2 mb-2 p-1 ">
+                <form onSubmit={handleSubmit(onSubmit)} className="">
+
+                    <div className='flex items-center gap-2'>
+                        <SelectField
+                            name="type"
+                            label="no"
+                            placeholder='লেনদেনের ধরণ'
+                            options={customerTxnType}
+                            control={control}
+                            rules={{ required: "লেনদেনের ধরন নাই" }}
+                        />
+
+                        <div className='mt-[14px]'>
+                            <InputField
+
+                                name="amount"
+                                label=""
+                                placeholder='কত টাকা *'
+                                type='number'
+                                control={control}
+                                rules={{ required: "টাকার পরিমান নাই" }}
+                            />
+                        </div>
+
+
+                    </div>
+                    <InputField
+                        name="description"
+                        label=""
+                        placeholder='বিবরণ'
+                        type='text'
+                        control={control}
                     />
-                    <input
-                        type="date"
-                        value={dateTo}
-                        onChange={(e) => setDateTo(e.target.value)}
-                        className="border rounded px-3 py-2 w-full text-sm"
-                    />
-                </div>
+
+                    <FileUploadField control={control} name='img' label='ছবি' />
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="btn btn-primary w-full mt-2"
+                    >
+                        {loading ? (
+                            <span className="loading loading-dots loading-lg"></span>
+                        ) : (
+                            "লেনদেন করুন"
+                        )}
+                    </button>
+                </form>
             </div>
 
             {/* Table Section */}
-            <div className="bg-white rounded-xl shadow overflow-hidden">
+            <div className="relative  bg-white rounded-xl shadow overflow-hidden mb-40">
                 {/* Loading State */}
                 {isLoading && <TableSkeleton row={8} />}
 
@@ -71,15 +128,14 @@ const CustomerTxnPage = () => {
 
                 {/* Data Table */}
                 {!isLoading && !isError && transactions?.length > 0 && (
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-sm">
-                            <thead className="bg-gray-100 text-gray-700">
+                    <div className="overflow-x-auto h-[520px] ">
+                        <table className="w-full text-xs">
+                            <thead className="sticky top-0 bg-gray-100 text-gray-700">
                                 <tr>
                                     <th className="px-4 py-2 text-left">Date</th>
                                     <th className="px-4 py-2 text-left">Description</th>
                                     <th className="px-4 py-2 text-right">Debit</th>
                                     <th className="px-4 py-2 text-right">Credit</th>
-                                    <th className="px-4 py-2 text-right">Balance</th>
                                 </tr>
                             </thead>
 
@@ -88,6 +144,7 @@ const CustomerTxnPage = () => {
 
                                     return (
                                         <tr
+                                            onClick={() => handleSelectedTxn(tx._id)}
                                             key={tx._id}
                                             className="border-t hover:bg-gray-50 transition"
                                         >
@@ -98,7 +155,7 @@ const CustomerTxnPage = () => {
 
                                             <td className="px-4 py-2">
                                                 <p className="font-medium">
-                                                    {tx.note || tx.referenceType}
+                                                    {tx.description || tx.referenceType}
                                                 </p>
                                                 <span className="text-xs text-gray-400">
                                                     {tx.referenceType}
@@ -113,9 +170,7 @@ const CustomerTxnPage = () => {
                                                 {tx.type === 'credit' ? `৳ ${tx.amount}` : "-"}
                                             </td>
 
-                                            <td className="px-4 py-2 text-right font-semibold">
-                                                ৳ {tx.runningBalance}
-                                            </td>
+
                                         </tr>
                                     );
                                 })}
@@ -124,7 +179,26 @@ const CustomerTxnPage = () => {
                     </div>
                 )}
             </div>
-        </div>
+
+            {/* ================= Fixed Total ================= */}
+            <div className="fixed bottom-[60px] left-0 w-full  px-3">
+                <div className="mx-auto  bg-[#e5efd5]   py-4 text-sm">
+                    <div className="grid  grid-cols-3 justify-between">
+                        <span className="col-span-2 text-red-600 font-medium">
+                            মোট
+                        </span>
+                        <div className='col-span-1 flex justify-between'>
+                            <span className="font-semibold text-red-600">  ৳ {totalDebit}</span>
+                            <span className="font-semibold text-green-600"> ৳ {totalCredit}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+                <EditCustomerTxn onClose={() => setIsOpen(false)} id={selectedTxn} />
+            </Modal>
+        </div >
     );
 };
 

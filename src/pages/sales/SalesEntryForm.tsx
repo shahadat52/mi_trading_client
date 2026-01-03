@@ -7,6 +7,8 @@ import { MdCancel } from "react-icons/md";
 import ProductSearchSelect from "./ProductSearchSelect";
 import { toast } from "react-toastify";
 import Loading from "../../components/Loading";
+import { useAppSelector } from "../../redux/hook";
+import CustomerSearchableSelectFields from "./CustomerSearchableSelectFields";
 
 const EMPTY_ITEM: TSaleItem = {
     product: "",
@@ -20,10 +22,12 @@ const EMPTY_ITEM: TSaleItem = {
 const SalesEntryForm = () => {
     const [createSale] = useSalesEntryMutation();
     const [isLoading, setLoading] = useState(false);
+    const customer = useAppSelector((state) => state.sales.customer);
+    console.log(customer)
 
     const { register, control, reset, handleSubmit, watch, setValue } = useForm<TSales>({
         defaultValues: {
-            customer: { name: "", phone: "", address: "" },
+            customer: customer,
             broker: "",
             items: [EMPTY_ITEM],
             discount: 0,
@@ -78,11 +82,14 @@ const SalesEntryForm = () => {
     // SUBMIT HANDLER
     // ================================
     const onSubmit: SubmitHandler<TSales> = async (data) => {
+        data.customer = customer;
+        console.log({ data })
         setLoading(true);
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
         data.paidAmount = Number(data.paidAmount);
         try {
             const result = await createSale(data)
+            console.log(result)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
                 reset();
@@ -111,35 +118,41 @@ const SalesEntryForm = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
 
                 {/* CUSTOMER INFO */}
-                <section>
-                    <h2 className="text-lg font-semibold mb-2">Customer Info</h2>
-                    <div className="grid grid-cols-3 gap-4">
-                        <input {...register("customer.name")} placeholder="Customer Name" className="input" />
-                        <input {...register("customer.phone")} placeholder="Phone" className="input" />
-                        <input {...register("customer.address")} placeholder="Address" className="input" />
-                    </div>
-                </section>
+
 
                 {/* INVOICE / PAYMENT */}
                 <section>
-                    <div className="grid grid-cols-3 gap-4">
-                        <input {...register("broker")} placeholder="Broker (Optional)" className="input" />
+                    <div className="grid grid-cols-1 lg:grid-cols-2 sm:grid-cols-1 gap-4">
+                        <section>
+                            <CustomerSearchableSelectFields />
+                        </section>
+                        <div>
+                            <label className="mb-1 block text-sm font-medium text-gray-700">
+                                Broker
+                            </label>
 
-                        <select {...register("paymentMethod")} className="input">
-                            <option value="cash">Cash</option>
-                            <option value="bkash">bKash</option>
-                            <option value="nagad">Nagad</option>
-                            <option value="rocket">Rocket</option>
-                            <option value="card">Card</option>
-                            <option value="bank">Bank</option>
-                        </select>
+                            <input {...register("broker")} placeholder="Broker (Optional)" className="input" />
+                        </div>
+                        <div>
+                            <label className="mb-1 block text-sm font-medium text-gray-700">
+                                Payment Method
+                            </label>
+                            <select {...register("paymentMethod")} className="input">
+                                <option value="cash">Cash</option>
+                                <option value="bkash">bKash</option>
+                                <option value="nagad">Nagad</option>
+                                <option value="rocket">Rocket</option>
+                                <option value="card">Card</option>
+                                <option value="bank">Bank</option>
+                            </select>
+                        </div>
                     </div>
                 </section>
 
                 {/* SALES ITEMS */}
                 <section className="border p-4 rounded-xl bg-gray-50 text-black">
                     {fields?.map((field, index) => (
-                        <div key={field.id} className="grid grid-cols-4 gap-3 items-center mb-3">
+                        <div key={field.id} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3 items-center mb-3">
 
                             {/* PRODUCT */}
                             <div>
@@ -158,7 +171,7 @@ const SalesEntryForm = () => {
 
                             {/* QUANTITY */}
                             <div>
-                                <label>সংখ্যা</label>
+                                <label>পরিমান</label>
                                 <input
                                     type="number"
                                     className="input"
@@ -222,7 +235,7 @@ const SalesEntryForm = () => {
                 </section>
 
                 {/* SUMMARY */}
-                <section className="grid grid-cols-4 gap-4 bg-gray-100 p-4 rounded-xl">
+                <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 bg-gray-100 p-4 rounded-xl">
                     <div>
                         <label htmlFor="">জমা</label>
                         <input {...register("paidAmount")} type="number" placeholder="Paid Amount" className="input" />

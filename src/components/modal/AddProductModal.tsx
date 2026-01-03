@@ -42,7 +42,7 @@ export const AddProductModal = ({ setAddProductModalCont }: any) => {
             setLoading(true);
 
             const result = await addProduct(data);
-
+            console.log(result)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
 
@@ -81,8 +81,8 @@ export const AddProductModal = ({ setAddProductModalCont }: any) => {
                     </button>
                 </div>
 
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-3">
+                <form className="mb-40" onSubmit={handleSubmit(onSubmit)}>
+                    <div className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-3 overflow-y-auto max-h-96   ">
 
                         <InputField
                             name="name"
@@ -136,6 +136,7 @@ export const AddProductModal = ({ setAddProductModalCont }: any) => {
                             control={control}
                             rules={{ required: "Stock Quantity is required" }}
                         />
+
                     </div>
 
                     <button

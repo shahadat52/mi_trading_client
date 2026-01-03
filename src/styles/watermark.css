@@ -1,0 +1,28 @@
+.my-section {
+  position: relative;
+  min-height: 500px;
+  overflow: hidden;
+}
+
+.my-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/mi_logo.png");
+  background-repeat: no-repeat;
+  background-position: 25% center;
+  background-size: contain;
+  opacity: 0.08; /* 40% opacity */
+  pointer-events: none;
+
+}
+
+
+
+@media print {
+  .print-area {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+

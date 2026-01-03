@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { persistor, store } from './redux/store.ts';
 import { ToastContainer } from 'react-toastify';
 import { PersistGate } from 'redux-persist/integration/react';
+import './styles/watermark.css';
 
 
 const rootElement = document.getElementById("root");

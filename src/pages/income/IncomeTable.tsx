@@ -26,7 +26,6 @@ const IncomeTable = () => {
     }
 
     const incomes = data?.data;
-    console.log(incomes)
 
     return (
         <div className="p-4 sm:p-6">
@@ -89,20 +88,20 @@ const IncomeTable = () => {
                             No: <span className="font-normal">{idx + 1}</span>
                         </p>
                         <p className="text-sm font-semibold">
-                            Category: <span className="font-normal">{d.incomeFrom}</span>
+                            আয়ের উৎস: <span className="font-normal">{d.incomeFrom}</span>
                         </p>
                         <p className="text-sm font-semibold">
-                            Expense By: <span className="font-normal">{d?.addedBy?.name}</span>
+                            আয়কারী: <span className="font-normal">{d?.addedBy?.name}</span>
                         </p>
                         <p className="text-sm font-semibold">
-                            Amount: <span className="font-normal">{d.amount}</span>
+                            পরিমাণ: <span className="font-normal">{d.amount}</span>
                         </p>
                         <p className="text-sm font-semibold">
-                            Date: <span className="font-normal">{new Date(d.date).toLocaleDateString()}</span> {"--"}
-                            Time: <span className="font-normal">{new Date(d.date).toLocaleTimeString()}</span>
+                            তারিখ: <span className="font-normal">{new Date(d.date).toLocaleDateString()}</span> {"--"}
+                            সময়: <span className="font-normal">{new Date(d.date).toLocaleTimeString()}</span>
                         </p>
                         <p className="text-sm font-semibold">
-                            Description: <span className="font-normal">{d.description}</span>
+                            বিবরণ: <span className="font-normal">{d.description}</span>
                         </p>
 
                         {/* Add more fields as needed */}

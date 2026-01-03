@@ -6,6 +6,7 @@ import { MdCancel } from "react-icons/md";
 import { useAddSupplierMutation } from "../../redux/features/supplier/supplierApi";
 import { toast } from "react-toastify";
 import '../../styles/modalAnimations.css'
+import SelectField from "../form/SelectField";
 
 export const AddSupplierModal = ({ setAddSupplierModalCont }: any) => {
     const [loading, setLoading] = useState(false);
@@ -79,7 +80,7 @@ export const AddSupplierModal = ({ setAddSupplierModalCont }: any) => {
                         </button>
                     </div>
 
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+                    <form onSubmit={handleSubmit(onSubmit)} className="p-2">
 
                         <InputField
                             name="name"
@@ -87,6 +88,19 @@ export const AddSupplierModal = ({ setAddSupplierModalCont }: any) => {
                             control={control}
                             rules={{ required: "Name is required" }}
                         />
+
+                        <div className="my-2">
+                            <SelectField
+                                name="type"
+                                label="Type *"
+                                control={control}
+                                rules={{ required: "Supplier type is required" }}
+                                options={[
+                                    { value: "regular", label: "Regular" },
+                                    { value: "commission", label: "Commission" }
+                                ]}
+                            />
+                        </div>
 
                         <InputField
                             name="phone"

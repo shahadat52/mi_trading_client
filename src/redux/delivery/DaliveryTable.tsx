@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { useGetDeliveriesQuery } from "../features/delivery/deliveryApi";
 import type { TDelivery } from "../../interfaces/delivery";
@@ -5,11 +6,13 @@ import DeliveryTableBody from "./DeliveyTableBody";
 import { deliveryTableHeads } from "./deliveryTableHeads";
 import TableSkeleton from "../../components/table/TableSkeleton";
 import ErrorBoundary from "../../components/ErrorBoundary";
+import DeliverySlip from "./DeliverySlip";
 
 const DeliveryTable: React.FC = () => {
     const [search, setSearch] = useState("");
     const [startDate, setStartDate] = useState<string>("");
     const [endDate, setEndDate] = useState<string>("");
+    const [selectedDelivery, setSelectedDelivery] = useState<any | null>(null)
 
     const { data, isLoading, isError } = useGetDeliveriesQuery({
         search,
@@ -17,6 +20,8 @@ const DeliveryTable: React.FC = () => {
         endDate,
     });
 
+    const openDeliverySlip = (sale: any) => setSelectedDelivery(sale);
+    const closeDeliverySlip = () => setSelectedDelivery(null)
     if (isLoading) {
         return <TableSkeleton row={10} />;
     }
@@ -71,10 +76,19 @@ const DeliveryTable: React.FC = () => {
                     </thead>
                     <tbody>
                         {deliveries?.map((d: TDelivery) => (
-                            <DeliveryTableBody key={d._id} d={d} />
+                            <DeliveryTableBody
+                                openDeliverySlip={openDeliverySlip}
+                                key={d._id}
+                                d={d}
+                            />
                         ))}
                     </tbody>
                 </table>
+
+
+                {
+                    selectedDelivery && <DeliverySlip sale={selectedDelivery} onClose={closeDeliverySlip} />
+                }
             </div>
 
             {/* Card layout for mobile */}
@@ -100,7 +114,15 @@ const DeliveryTable: React.FC = () => {
                             Date: <span className="font-normal">{new Date(d.deliveryTime).toLocaleDateString()}</span> {"--"}
                             Time: <span className="font-normal">{new Date(d.deliveryTime).toLocaleTimeString()}</span>
                         </p>
+                        <button
+                            onClick={() => openDeliverySlip(d)}
+                            className="bg-blue-600 text-white  px-1 py-1 text-xs mt-1 rounded"
+                        > স্লিপ প্রিন্ট করুণ
+                        </button>
                         {/* Add more fields as needed */}
+                        {
+                            selectedDelivery && <DeliverySlip sale={selectedDelivery} onClose={closeDeliverySlip} />
+                        }
                     </div>
                 ))}
             </div>

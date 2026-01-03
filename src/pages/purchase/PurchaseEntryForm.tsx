@@ -70,7 +70,7 @@ const PurchaseEntryForm = () => {
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-6 rounded-2xl shadow"
+            className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-6 rounded-2xl shadow mb-16"
         >
 
             <SelectField
@@ -100,7 +100,7 @@ const PurchaseEntryForm = () => {
                 name="purchaseDate"
                 label="Purchase Date"
                 control={control}
-                type="date"
+                type="datetime-local"
             />
             <InputField name="lot" label="Lot Number" control={control} rules={{ required: "Required" }} />
             <InputField name="purchasePrice" label="Purchase Price" control={control} type="number" rules={{ required: "Required" }} />

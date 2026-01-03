@@ -24,9 +24,18 @@ const authApi = baseApi.injectEndpoints({
             providesTags: ['Account', 'Transaction']
         }),
 
+        getAllOutstandingTxn: builder.query({
+            query: () => (
+                {
+                    url: '/transaction/outstandingTxn',
+                    method: 'GET',
+                }),
+            providesTags: ['Account', 'Transaction']
+        }),
+
 
 
     }),
 });
 
-export const { useAddAccountMutation, useGetAllAccountQuery } = authApi
+export const { useAddAccountMutation, useGetAllAccountQuery, useGetAllOutstandingTxnQuery } = authApi

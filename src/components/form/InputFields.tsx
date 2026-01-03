@@ -25,7 +25,7 @@ const InputField = ({ name, label, control, type = "text", placeholder, rules, r
                     <>
                         <input
                             {...field}
-                            value={field.value ?? ""}  // <-- to avoid uncontrolled to controlled input warning
+                            value={field.value ?? ""}
                             type={type}
                             readOnly={readOnly}
                             placeholder={placeholder}

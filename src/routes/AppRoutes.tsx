@@ -15,13 +15,17 @@ import ErrorBoundary from "../components/ErrorBoundary";
 import SalesEntryPage from "../pages/sales/SalesEntryPage";
 import PrintableInvoice from "../components/table/PrintableInvoice";
 import SalesOverviewTable from "../pages/sales/SalesOverviewTable";
-import CommissionSalesPage from "../pages/commissionSales/CommissionSalesPage";
 import CommissionSupplierPage from "../pages/commissionSales/CommissionSupplierPage";
 import DeliveryPage from "../redux/delivery/DeliveryPage";
 import ProfilePage from "../pages/profile/ProfilePage";
 import PurchaseOverviewTable from "../pages/purchase/PurchaseOverviewTable";
 import TransactionTable from "../pages/accounts/TransactionTable";
 import CustomerTxnPage from "../pages/home/CustomerTxnPage";
+import FacebookQRCode from "../components/FacebookQRCode";
+import OutstandingTxnPage from "../pages/accounts/OutstandingTxnPage";
+import SupplierWisePurchasePage from "../pages/commissionSales/SupplierWisePurchasePage";
+import SupplierWiseSalesPage from "../pages/commissionSales/SupplierWiseSalesPage";
+import DashboardPage from "../pages/dashboard/DashboardPage";
 
 export const router = createBrowserRouter([
     {
@@ -56,20 +60,28 @@ export const router = createBrowserRouter([
                 element: <StockPage />,
             },
             {
+                path: "test",
+                element: <FacebookQRCode />,
+            },
+            {
                 path: "sales/overview",
                 element: <SalesOverviewTable />,
             },
             {
                 path: "commission-sales",
-                element: <CommissionSalesPage />,
+                element: <CommissionSupplierPage />,
+            },
+            {
+                path: "commission-purchase/:id",
+                element: <SupplierWisePurchasePage />,
+            },
+            {
+                path: "commission-sales/:id",
+                element: <SupplierWiseSalesPage />,
             },
             {
                 path: "deliveries",
                 element: <DeliveryPage />,
-            },
-            {
-                path: "commission-sales/:id",
-                element: <CommissionSupplierPage />,
             },
             {
                 path: "profile",
@@ -104,8 +116,16 @@ export const router = createBrowserRouter([
                 element: <ReportsPage />,
             },
             {
+                path: 'dashboard',
+                element: <DashboardPage />,
+            },
+            {
                 path: "accounts",
                 element: <PrivateRoute><AccountsPage /></PrivateRoute>,
+            },
+            {
+                path: "outstandingTxn",
+                element: <PrivateRoute><OutstandingTxnPage /></PrivateRoute>,
             },
             {
                 path: "transaction/:id",
@@ -125,6 +145,10 @@ export const router = createBrowserRouter([
         path: "login",
         element: <LoginPage />,
     },
+    // {
+    //     path: "testMemo",
+    //     element: <SalesMemo />,
+    // },
     {
         path: "*",
         element: <ErrorBoundary />,

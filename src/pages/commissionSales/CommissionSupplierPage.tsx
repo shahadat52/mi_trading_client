@@ -1,230 +1,317 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useParams } from "react-router";
-import * as XLSX from "xlsx";
-import { useGetCommissionPurchaseByIdQuery } from "../../redux/features/purchase/purchaseApi";
+import { useState } from "react";
+import { NavLink } from "react-router";
+import { useGetAllPurchasesQuery } from "../../redux/features/purchase/purchaseApi";
+import { useDeleteSupplierMutation, useGetAllSuppliersQuery } from "../../redux/features/supplier/supplierApi";
 import TableSkeleton from "../../components/table/TableSkeleton";
 import ErrorBoundary from "../../components/ErrorBoundary";
-import ButtonPdf from "../../components/buttons/ButtonPdf";
-import ButtonExcel from "../../components/buttons/ButtonExcel";
+import Modal from "../../components/Modal";
+import DeleteModal from "../../components/modal/DeleteModal";
+import { AddSupplierModal } from "../../components/modal/AddSupplierModal";
+import { ViewModal } from "./modal/ViewModal";
+import { EditModal } from "./modal/EditModal";
+import CommissionSalesEntry from "./CommissionSalesEntry";
+import CommissionProductEntry from "./CommissionProductEntry";
+import { commissionSalesTableHeads } from "../../utils/commissionSalesTableHead";
+
+const PAGE_LIMIT = 10;
+
+const Button = ({ children, onClick, className = "", ...props }: any) => (
+    <button
+        onClick={onClick}
+        className={`px-3 py-2 rounded text-sm font-medium transition-colors duration-200 ${className}`}
+        {...props}
+    >
+        {children}
+    </button>
+);
 
 const CommissionSupplierPage = () => {
-    const { id } = useParams();
+    // Pagination & Filters
+    const [page, setPage] = useState(1);
+    // const [limit, setLimit] = useState(10);
+    // const [search, setSearch] = useState("");
+    const [sortBy] = useState("createdAt");
+    // const [order, setOrder] = useState<"asc" | "desc">("asc");
+    // const [dateFrom, setDateFrom] = useState("");
+    // const [dateTo, setDateTo] = useState("");
+    // const [category, setCategory] = useState("All");
 
-    const tableHeads = ["Product", "Quantity", "Price", "Total", "Date", "Action"];
+    // Modal States
+    const [isProductModalOpen, setIsProductModalOpen] = useState(false);
+    const [isSalesModalOpen, setIsSalesModalOpen] = useState(false);
+    const [isAddSupplierModalOpen, setIsAddSupplierModalOpen] = useState(false);
 
-    const { data, isLoading, isError } = useGetCommissionPurchaseByIdQuery(id);
-    const commissionPurchases = data?.data;
+    const [viewItem, setViewItem] = useState<any>(null);
+    const [editItem, setEditItem] = useState<any>(null);
+    const [deleteItem, setDeleteItem] = useState<any>(null);
 
-    // ----------- Export Excel -----------
-    const handleExportExcel = () => {
-        if (!commissionPurchases) return;
+    const [deleteSupplier] = useDeleteSupplierMutation();
 
-        const rows = commissionPurchases.map((item: any) => ({
-            Product: item.product.name,
-            Quantity: item.stockQty,
-            Price: item.product.purchasePrice,
-            Total: item.stockQty * item.product.purchasePrice,
-            Date: new Date(item.purchaseDate).toLocaleDateString("en-GB"),
-        }));
+    // API Calls
+    const { data, isLoading, isError } = useGetAllPurchasesQuery({
+        page,
+        sortBy,
+    });
 
-        const worksheet = XLSX.utils.json_to_sheet(rows);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Purchases");
+    const { data: commissionData } = useGetAllSuppliersQuery({ type: "commission" });
+    const suppliers = commissionData?.data || [];
 
-        XLSX.writeFile(workbook, `commission_purchases_${Date.now()}.xlsx`);
+    const total = data?.meta?.total || 0;
+    const totalPages = Math.ceil(total / PAGE_LIMIT);
+
+    const handleDeleteConfirm = async (id: string) => {
+        console.log(id)
+        try {
+            const result = await deleteSupplier(id).unwrap();
+            console.log(result);
+            setDeleteItem(null);
+        } catch (err) {
+            console.error(err);
+            setDeleteItem(null);
+        }
     };
 
-    // ----------- Export PDF (Best UX) -----------
-    const handleExportPDF = () => {
-        const printArea = document.getElementById("printArea");
-        if (!printArea) return;
+    // const handleSearchSubmit = (e: React.FormEvent) => {
+    //     e.preventDefault();
+    //     setPage(1);
+    // };
 
-        const win = window.open("", "_blank");
-        win!.document.write(`
-            <html>
-            <head>
-                <title>Commission Purchase Report</title>
-                <style>
-                    body {
-                        font-family: 'Segoe UI', sans-serif;
-                        padding: 20px;
-                    }
-                    h2 {
-                        text-align: center;
-                        margin-bottom: 20px;
-                    }
-                    table {
-                        width: 100%;
-                        border-collapse: collapse;
-                    }
-                    th, td {
-                        border: 1px solid #333;
-                        padding: 6px;
-                        font-size: 14px;
-                        text-align: left;
-                    }
-                    th {
-                        background: #f0f0f0;
-                    }
-                </style>
-            </head>
-            <body>
-                ${printArea.innerHTML}
-            </body>
-            </html>
-        `);
+    // const clearFilters = () => {
+    //     setSearch("");
+    //     setDateFrom("");
+    //     setDateTo("");
+    //     setPage(1);
+    //     setCategory("All");
+    // };
 
-        win!.document.close();
-        win!.focus();
-        win!.print();
-        win!.close();
-    };
-
-    // ---- Loading ----
-    if (isLoading) {
-        return (
-            <div className="p-5 bg-white shadow rounded-xl border">
-                <h2 className="text-lg font-semibold mb-4">Loading...</h2>
-                <TableSkeleton row={6} />
-            </div>
-        );
-    }
-
-    // ---- Error ----
-    if (isError) {
-        return (
-            <div className="p-5 bg-white shadow rounded-xl border text-center">
-                <ErrorBoundary message="ডেটা লোড করতে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।" />
-            </div>
-        );
-    }
-
-    // ---- Empty ----
-    if (!commissionPurchases || commissionPurchases.length === 0) {
-        return (
-            <div className="p-5 bg-white shadow rounded-xl border text-center py-16">
-                <p className="text-gray-500 text-lg">কোনো পারচেজ ডেটা পাওয়া যায়নি।</p>
-            </div>
-        );
-    }
+    if (isError) return <ErrorBoundary />;
 
     return (
-        <div className="p-5 bg-white shadow rounded-xl border">
-            <h2 className="text-lg font-semibold mb-4">
-                {commissionPurchases?.[0]?.supplier?.name} এর সাপ্লাইঃ
-            </h2>
+        <div className="p-4 space-y-6">
+            {/* Filter & Search */}
+            {/* <form
+                onSubmit={handleSearchSubmit}
+                className="flex flex-col md:flex-row gap-4 justify-between items-center"
+            >
+                <div className="flex flex-wrap gap-2 items-center">
+                    <input
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder="Search customer, invoice, or phone..."
+                        className="border rounded px-3 py-2 text-sm w-80 focus:ring-1 focus:ring-blue-500"
+                    />
+                    <input
+                        type="date"
+                        value={dateFrom}
+                        onChange={(e) => setDateFrom(e.target.value)}
+                        className="border rounded px-3 py-2 text-sm"
+                    />
+                    <input
+                        type="date"
+                        value={dateTo}
+                        onChange={(e) => setDateTo(e.target.value)}
+                        className="border rounded px-3 py-2 text-sm"
+                    />
 
-            {/* Desktop Table */}
-            <div className="hidden sm:block overflow-x-auto">
-                <table className="w-full text-sm border-collapse">
-                    <thead className="bg-gray-100">
-                        <tr>
-                            {tableHeads.map((head, i) => (
-                                <th key={i} className="px-4 py-3 text-left font-medium">
-                                    {head}
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
+                </div>
 
-                    <tbody>
-                        {commissionPurchases.map((item: any) => (
-                            <tr key={item._id} className="border-t hover:bg-gray-50 transition">
-                                <td className="px-4 py-2">{item?.product.name}</td>
-                                <td className="px-4 py-2">{item?.stockQty}</td>
-                                <td className="px-4 py-2">{item?.product.purchasePrice}</td>
-                                <td className="px-4 py-2">
-                                    {item?.stockQty * item?.product.purchasePrice}
-                                </td>
-                                <td className="px-4 py-2">
-                                    {new Date(item?.purchaseDate).toLocaleDateString("en-GB")}
-                                </td>
-                                <td className="px-4 py-2 flex gap-2">
-                                    <ButtonPdf handleExportPDF={handleExportPDF} />
-                                    <ButtonExcel handleExportExcel={handleExportExcel} />
-                                </td>
-                            </tr>
+                <div className="flex justify-between gap-5">
+                    <Button
+                        className="border"
+                        onClick={() => setOrder(order === "asc" ? "desc" : "asc")}
+                    >
+                        {order === "asc" ? "Ascending" : "Descending"}
+                    </Button>
+                    <select
+                        value={limit}
+                        onChange={(e) => {
+                            setLimit(Number(e.target.value));
+                            setPage(1);
+                        }}
+                        className="border rounded px-3 py-2 text-sm"
+                    >
+                        {[5, 10, 25, 50, 100].map((n) => (
+                            <option key={n} value={n}>
+                                {n}
+                            </option>
                         ))}
-                    </tbody>
-                </table>
+                    </select>
+
+                </div>
+                <div>
+                    <Button className="bg-blue-600 text-white" type="submit">
+                        Search
+                    </Button>
+                    <Button className="border text-gray-700" type="button" onClick={clearFilters}>
+                        Clear
+                    </Button>
+                </div>
+            </form> */}
+
+            {/* Action Buttons */}
+            <div className="flex flex-wrap gap-2">
+                <Button className="bg-blue-600 text-white" onClick={() => setIsSalesModalOpen(true)}>
+                    ➕ বিক্রি করুন
+                </Button>
+                <Button className="bg-blue-600 text-white" onClick={() => setIsProductModalOpen(true)}>
+                    ➕ নতুন পন্য
+                </Button>
+                <Button className="bg-blue-600 text-white" onClick={() => setIsAddSupplierModalOpen(true)}>
+                    ➕ নতুন সাপ্লাইয়ার
+                </Button>
             </div>
 
-            {/* Mobile Card View */}
-            <div className="sm:hidden space-y-4">
-                {commissionPurchases.map((item: any) => (
-                    <div key={item._id} className="border rounded-lg p-4 shadow-sm bg-gray-50">
-                        <div className="flex justify-between mb-2">
-                            <span className="text-gray-500">Product</span>
-                            <span className="font-medium">{item.product.name}</span>
-                        </div>
+            {/* Desktop Table */}
+            <div className="hidden md:block overflow-x-auto bg-white rounded-lg shadow">
+                {isLoading ? (
+                    <TableSkeleton row={10} />
+                ) : suppliers.length === 0 ? (
+                    <p className="text-center text-gray-500 py-4">No suppliers found.</p>
+                ) : (
+                    <table className="min-w-full divide-y divide-gray-200">
+                        <thead className="bg-gray-50">
+                            <tr>
+                                {commissionSalesTableHeads?.map((head: any, idx: number) => (
+                                    <th
+                                        key={idx}
+                                        className="px-4 py-2 text-left text-sm font-medium text-gray-700"
+                                    >
+                                        {head.name}
+                                    </th>
+                                ))}
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-200">
+                            {suppliers.map((s: any, idx: number) => (
+                                <tr key={idx} className="hover:bg-gray-50 transition">
+                                    <td className="px-4 py-2 text-sm">
+                                        <NavLink to={`/commission-purchase/${s._id}`} className="flex flex-col">
+                                            <span className="font-medium">{s.name}</span>
+                                            <span className="text-gray-500">{s.phone}</span>
+                                        </NavLink>
+                                    </td>
+                                    <td className="px-4 py-2">
+                                        <NavLink
+                                            to={`/commission-purchase/${s._id}`}
+                                            className="px-2 py-1 bg-blue-600 text-white rounded text-xs"
+                                        >
+                                            সাপ্লাই
+                                        </NavLink>
+                                    </td>
+                                    <td className="px-4 py-2">
+                                        <NavLink
+                                            to={`/commission-sales/${s._id}`}
+                                            className="px-2 py-1 bg-green-600 text-white rounded text-xs"
+                                        >
+                                            সেলস
+                                        </NavLink>
+                                    </td>
+                                    <td className="px-4 py-2 flex gap-1">
+                                        <Button
+                                            className="bg-gray-600 text-white"
+                                            onClick={() => setViewItem(s)}
+                                        >
+                                            View
+                                        </Button>
+                                        <Button
+                                            className="bg-blue-600 text-white"
+                                            onClick={() => setEditItem(s)}
+                                        >
+                                            Edit
+                                        </Button>
+                                        <Button
+                                            className="bg-red-600 text-white"
+                                            onClick={() => setDeleteItem(s)}
+                                        >
+                                            Delete
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
+            </div>
 
-                        <div className="flex justify-between mb-2">
-                            <span className="text-gray-500">Quantity</span>
-                            <span>{item.stockQty}</span>
+            {/* Mobile Cards */}
+            <div className="md:hidden space-y-4">
+                {suppliers?.map((item: any, idx: number) => (
+                    <div key={idx} className="bg-white shadow rounded-lg p-4 space-y-2">
+                        <div className="font-medium text-lg">{item.name} - {item.phone}</div>
+                        <div className="flex gap-2">
+                            <NavLink
+                                to={`/commission-purchase/${item._id}`}
+                                className="px-2 py-1 bg-blue-600 text-white rounded text-xs flex-1 text-center"
+                            >
+                                সাপ্লাই
+                            </NavLink>
+                            <NavLink
+                                to={`/commission-sales/${item._id}`}
+                                className="px-2 py-1 bg-green-600 text-white rounded text-xs flex-1 text-center"
+                            >
+                                সেলস
+                            </NavLink>
                         </div>
-
-                        <div className="flex justify-between mb-2">
-                            <span className="text-gray-500">Price</span>
-                            <span>{item.product.purchasePrice}</span>
-                        </div>
-
-                        <div className="flex justify-between mb-2">
-                            <span className="text-gray-500">Total</span>
-                            <span className="font-semibold">
-                                {item.stockQty * item.product.purchasePrice}
-                            </span>
-                        </div>
-
-                        <div className="flex justify-between">
-                            <span className="text-gray-500">Date</span>
-                            <span>
-                                {new Date(item.purchaseDate).toLocaleDateString("en-GB")}
-                            </span>
-                        </div>
-
-                        <div className="flex justify-between mt-3">
-                            <ButtonPdf handleExportPDF={handleExportPDF} />
-                            <ButtonExcel handleExportExcel={handleExportExcel} />
+                        <div className="flex gap-2 mt-2">
+                            <Button className="bg-gray-600 text-white flex-1" onClick={() => setEditItem(item)}>
+                                Edit
+                            </Button>
+                            <Button className="bg-red-600 text-white flex-1" onClick={() => setDeleteItem(item)}>
+                                Delete
+                            </Button>
                         </div>
                     </div>
                 ))}
             </div>
 
-            {/* Hidden Printable Area */}
-            <div id="printArea" className="hidden">
-                <h2 className="text-xl font-bold mb-4">
-                    {commissionPurchases?.[0]?.supplier?.name} এর কমিশন ক্রয় রিপোর্ট
-                </h2>
-
-                <table className="w-full text-sm border-collapse">
-                    <thead>
-                        <tr className="bg-gray-200">
-                            <th className="border px-2 py-1">প্রোডাক্ট</th>
-                            <th className="border px-2 py-1">পরিমাণ</th>
-                            <th className="border px-2 py-1">মূল্য</th>
-                            <th className="border px-2 py-1">মোট</th>
-                            <th className="border px-2 py-1">তারিখ</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {commissionPurchases?.map((item: any) => (
-                            <tr key={item._id}>
-                                <td className="border px-2 py-1">{item.product.name}</td>
-                                <td className="border px-2 py-1">{item.stockQty}</td>
-                                <td className="border px-2 py-1">{item.product.purchasePrice}</td>
-                                <td className="border px-2 py-1">
-                                    {item.stockQty * item.product.purchasePrice}
-                                </td>
-                                <td className="border px-2 py-1">
-                                    {new Date(item.purchaseDate).toLocaleDateString("en-GB")}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+            {/* Pagination */}
+            <div className="flex flex-col sm:flex-row justify-between items-center mt-4 mb-12 gap-3">
+                <span className="text-sm text-gray-600">
+                    Page {page} of {totalPages || 1}
+                </span>
+                <div className="flex gap-2">
+                    <Button
+                        className="border disabled:opacity-50"
+                        disabled={page === 1}
+                        onClick={() => setPage((p) => p - 1)}
+                    >
+                        Prev
+                    </Button>
+                    <Button
+                        className="border disabled:opacity-50"
+                        disabled={page === totalPages}
+                        onClick={() => setPage((p) => p + 1)}
+                    >
+                        Next
+                    </Button>
+                </div>
             </div>
 
+            {/* Modals */}
+            {viewItem && <ViewModal item={viewItem} onClose={() => setViewItem(null)} />}
+            {editItem && <EditModal item={editItem} onClose={() => setEditItem(null)} />}
+            {deleteItem && (
+                <DeleteModal
+                    open={Boolean(deleteItem)}
+                    item={deleteItem}
+                    onClose={() => setDeleteItem(null)}
+                    onConfirm={() => handleDeleteConfirm(deleteItem._id)}
+                />
+            )}
+            {isProductModalOpen && (
+                <Modal isOpen={isProductModalOpen} onClose={() => setIsProductModalOpen(false)}>
+                    <CommissionProductEntry onClose={() => setIsProductModalOpen(false)} />
+                </Modal>
+            )}
+            {isSalesModalOpen && (
+                <Modal isOpen={isSalesModalOpen} onClose={() => setIsSalesModalOpen(false)}>
+                    <CommissionSalesEntry onClose={() => setIsSalesModalOpen(false)} />
+                </Modal>
+            )}
+            {isAddSupplierModalOpen && (
+                <AddSupplierModal setAddSupplierModalCont={setIsAddSupplierModalOpen} />
+            )}
         </div>
     );
 };

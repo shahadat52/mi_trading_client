@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { useGetAllPurchasesQuery, useDeletePurchaseMutation } from "../../redux/features/purchase/purchaseApi";
-import { ViewModal } from "../../components/modal/ViewModal";
-import { EditModal } from "../../components/modal/EditModal";
+import { ViewModal } from "../commissionSales/modal/ViewModal";
+import { EditModal } from "../commissionSales/modal/EditModal";
 import DeleteModal from "../../components/modal/DeleteModal";
 import TableSkeleton from "../../components/table/TableSkeleton";
 import ErrorBoundary from "../../components/ErrorBoundary";
@@ -46,7 +46,6 @@ const PurchaseOverviewTable = () => {
 
         try {
             const result = await deletePurchase(id)
-            console.log(result)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
                 setDeleteItem(null);

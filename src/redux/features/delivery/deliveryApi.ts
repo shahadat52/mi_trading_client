@@ -6,6 +6,7 @@ const authApi = baseApi.injectEndpoints({
 
         deliveryEntryAndUpdate: builder.mutation({
             query: (deliveryData: any) => (
+                console.log(deliveryData),
                 {
                     url: "/deliveries/create",
                     method: "POST",

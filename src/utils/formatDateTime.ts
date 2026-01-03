@@ -27,6 +27,9 @@ export const DateTime = (dateValue: string | Date | null | undefined) => {
         return "";
     }
 
-    // For input type="date"  →  YYYY-MM-DD
-    return date.toISOString().split("T")[0];
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
 };

@@ -1,9 +1,7 @@
 export const commissionSalesTableHeads = [
 
-    { name: 'Supplier' },
-    { name: 'Total supply' },
-    { name: 'Sales' },
-    { name: 'Amount' },
-    { name: 'Commission' },
+    { name: 'বেপারি' },
+    { name: 'সাপ্লাই' },
+    { name: 'বিক্রি' },
     { name: 'Action' }
 ]

@@ -30,8 +30,7 @@ export const getMenuItems = (role?: string) => {
             name: "Stock Management",
             icon: <MdInventory2 size={20} />,
             subItems: [
-                { name: "Current Stock", path: "/stock" },
-                { name: "Stock History", path: "/stock/history" },
+                { name: "Current Stock", path: "/stock" }
             ],
         },
         {
@@ -67,8 +66,8 @@ export const getMenuItems = (role?: string) => {
                     name: "Accounts Module",
                     icon: <MdAccountBalance size={20} />,
                     subItems: [
-                        { name: "Account Overview", path: "/accounts" },
-                        { name: "Transactions", path: "/accounts/transactions" },
+                        { name: "একাউন্ট বিবরণী", path: "/accounts" },
+                        { name: "অপরিশোধিত লেনদেন", path: "/outstandingTxn" },
                     ],
                 },
                 {

@@ -19,14 +19,8 @@ export type TSaleItem = {
     profit?: number;
 };
 
-export type TCustomer = {
-    name?: string;
-    phone?: string;
-    address?: string;
-}
-
 export type TSales = {
-    customer: TCustomer
+    customer: string
     invoice: string;
     date: Date;
     items: TSaleItem[];

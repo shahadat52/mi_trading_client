@@ -3,13 +3,12 @@ import {
     FaTachometerAlt,
     FaBoxes,
     FaShoppingCart,
-    // FaUsers,
-    // FaMoneyBillWave,
     FaChartBar,
     FaHome,
     FaUser,
 } from "react-icons/fa";
 import type { JSX } from "react";
+import { useAppSelector } from "../redux/hook";
 
 type NavItem = {
     to: string;
@@ -17,17 +16,24 @@ type NavItem = {
     icon: JSX.Element;
 };
 
-const navItems: NavItem[] = [
-    { to: "/", label: "Home", icon: <FaHome className="h-6 w-6" /> },
-    { to: "/", label: "Dashboard", icon: <FaTachometerAlt className="h-6 w-6" /> },
-    { to: "/stock", label: "Inventory", icon: <FaBoxes className="h-6 w-6" /> },
-    { to: "/sales/overview", label: "Sales", icon: <FaShoppingCart className="h-6 w-6" /> },
-    { to: "/reports", label: "Reports", icon: <FaChartBar className="h-6 w-6" /> },
-    { to: "/profile", label: "Profile", icon: <FaUser className="h-6 w-6" /> },
-];
-
 
 const MobileNavbar = () => {
+
+    const role = useAppSelector((state) => state?.auth?.auth?.user?.role);
+    const isAdmin = role === "admin" || role === "superAdmin";
+    const navItems: NavItem[] = [
+        { to: "/", label: "Home", icon: <FaHome className="h-6 w-6" /> },
+        { to: "/stock", label: "Inventory", icon: <FaBoxes className="h-6 w-6" /> },
+        { to: "/sales/overview", label: "Sales", icon: <FaShoppingCart className="h-6 w-6" /> },
+        { to: "/profile", label: "Profile", icon: <FaUser className="h-6 w-6" /> },
+        ...(isAdmin
+            ? [
+                { to: "/reports", label: "Reports", icon: <FaChartBar className="h-6 w-6" /> },
+                { to: "/dashboard", label: "Dashboard", icon: <FaTachometerAlt className="h-6 w-6" /> },
+            ]
+            : [])
+    ];
+
     return (
         <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-md">
             <ul className="flex justify-around items-center h-16">

@@ -1,9 +1,9 @@
 export const units = [
-    { label: "kg", value: "kg" },
-    { label: "pcs", value: "pcs" },
-    { label: "mon", value: "mon" },
-    { label: "bosta", value: "bosta" },
-    { label: "litre", value: "litre" },
-    { label: "piece", value: "piece" },
-    { label: "box", value: "box" }
+    { label: "কেজি", value: "কেজি" },
+    { label: "পিস", value: "পিস" },
+    { label: "মণ", value: "মণ" },
+    { label: "বস্তা", value: "বস্তা" },
+    { label: "লিটার", value: "লিটার" },
+    { label: "বক্স", value: "বক্স" },
+    { label: "টন", value: "টন" }
 ];

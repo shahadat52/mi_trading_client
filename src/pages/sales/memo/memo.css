@@ -1,0 +1,17 @@
+@media print {
+  body {
+    margin-top: 4px;
+    padding: 0;
+  }
+
+  .force-single-page {
+    height: 100vh;
+    overflow: hidden;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  .print-hidden {
+    display: none !important;
+  }
+}

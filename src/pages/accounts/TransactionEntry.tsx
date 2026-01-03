@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import InputField from '../../components/form/InputFields';
 import SelectField from '../../components/form/SelectField';
 import { useTransactionEntryMutation } from '../../redux/features/transaction/transactionApi';
+import { transactionType } from '../../utils/transactionType';
 
 const TransactionEntry = ({ account, onClose, }: { onClose: () => void, account: any }) => {
     const [loading, setLoading] = useState(false)
@@ -15,7 +16,6 @@ const TransactionEntry = ({ account, onClose, }: { onClose: () => void, account:
     });
     const [transactionEntry] = useTransactionEntryMutation()
 
-    const transactionType = [{ label: "আয়", value: 'credit' }, { label: "ব্যয়", value: 'debit' }]
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         setLoading(true);
@@ -86,8 +86,9 @@ const TransactionEntry = ({ account, onClose, }: { onClose: () => void, account:
                     />
                     <InputField
                         control={control}
-                        label="নোট"
+                        label="মন্তব্য"
                         name="note"
+                        rules={{ required: "মন্তব্য নাই" }}
                     />
                     <InputField
                         control={control}

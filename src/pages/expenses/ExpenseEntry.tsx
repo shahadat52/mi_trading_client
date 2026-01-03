@@ -18,7 +18,6 @@ const ExpenseEntry = ({ onClose }: { onClose: () => void }) => {
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
         try {
             const result = await addExpense(data);
-            console.log(result)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
                 reset();

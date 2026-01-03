@@ -15,7 +15,6 @@ const ProfilePage = () => {
     const dispatch = useAppDispatch();
 
     const user = data?.data || null;
-    console.log(user)
     const handleLogOut = () => {
         dispatch(logOut())
     }

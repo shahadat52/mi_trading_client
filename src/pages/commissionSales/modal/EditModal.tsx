@@ -2,12 +2,12 @@
 
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
-import InputField from "../form/InputFields";
-import TextAreaField from "../form/TextAreaField";
-import SelectField from "../form/SelectField";
-import { purchaseTypes } from "../../utils/purchaseTypes";
-import { DateTime } from "../../utils/formatDateTime";
-import { useUpdatePurchaseMutation } from "../../redux/features/purchase/purchaseApi";
+import InputField from "../../../components/form/InputFields";
+import TextAreaField from "../../../components/form/TextAreaField";
+import SelectField from "../../../components/form/SelectField";
+import { purchaseTypes } from "../../../utils/purchaseTypes";
+import { DateTime } from "../../../utils/formatDateTime";
+import { useUpdatePurchaseMutation } from "../../../redux/features/purchase/purchaseApi";
 import { toast } from "react-toastify";
 
 interface EditModalProps {
@@ -50,8 +50,6 @@ export const EditModal = ({ item, onClose }: EditModalProps) => {
 
     const handleUpdate = async (data: any) => {
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
-
-        console.log("Updated Data:", data);
         try {
             const result = await updatePurchase(data)
             if (result?.data?.success) {

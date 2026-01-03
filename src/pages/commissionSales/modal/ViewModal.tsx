@@ -2,7 +2,7 @@
    ViewModal – Professional Version
 ---------------------------------- */
 
-import { formatDateTime } from "../../utils/formatDateTime";
+import { formatDateTime } from "../../../utils/formatDateTime";
 
 type PurchaseItem = {
     supplier?: { name?: string };
@@ -28,7 +28,6 @@ interface ViewModalProps {
 
 export const ViewModal = ({ item, onClose }: ViewModalProps) => {
     if (!item) return null;
-    console.log(item)
     const DetailRow = ({ label, value }: { label: string; value?: string | number }) => {
         if (value === undefined || value === null || value === "") return null;
 

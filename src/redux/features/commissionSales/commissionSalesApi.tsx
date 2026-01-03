@@ -18,8 +18,9 @@ const commissionSalesApi = baseApi.injectEndpoints({
         getCommissionSales: builder.query({
             query: (query) => (
                 {
-                    url: `/commissionSales/all?${new URLSearchParams(query).toString()}`,
+                    url: `/commissionSales/${query}`,
                     method: 'GET',
+
                 }),
             providesTags: ['CommissionSales']
         }),

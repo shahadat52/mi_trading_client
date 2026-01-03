@@ -1,8 +1,8 @@
 export const salesTableHeads = [
     '#',
+    'Invoice',
     'Customer',
     'Phone',
-    'Invoice',
     'Date',
     'Grand Total',
     'Paid',

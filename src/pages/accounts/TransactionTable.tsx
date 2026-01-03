@@ -23,7 +23,6 @@ const TransactionTable = () => {
         id,
     });
     const transactions = data?.data
-    console.log(transactions)
 
     return (
         <div>

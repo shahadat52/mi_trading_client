@@ -1,8 +1,8 @@
 export const incomeTableHeads = [
-    "No",
-    "Income From",
-    "Income By",
-    "Amount",
-    "Date & Time",
-    "Description",
+    "নং",
+    "আয়ের উৎস",
+    "আয়কারী",
+    "পরিমাণ",
+    "তারিখ ও সময়",
+    "বিবরণ",
 ];

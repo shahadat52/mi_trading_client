@@ -1,7 +1,9 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist'
 import authReducer from "./features/auth/authSlice";
+import salesReducer from "./features/sales/salesSlice";
 import commissionSalesReducer from "./features/commissionSales/commissionSalesSlice";
+import commissionProductReducer from "./features/commissionProduct/commissionProductSlice";
 import storage from 'redux-persist/lib/storage'
 
 import { baseApi } from "./api/baseApi";
@@ -24,7 +26,9 @@ export const store = configureStore({
     reducer: {
         [baseApi.reducerPath]: baseApi.reducer,
         auth: persistedReducer,
+        sales: salesReducer,
         commissionSales: commissionSalesReducer,
+        commissionProduct: commissionProductReducer
     },
     devTools: {
         name: 'M.I Trading ERP'

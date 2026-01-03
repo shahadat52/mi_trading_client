@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 const ExpanseTableBody = ({ d, idx }: { d: any, idx: number }) => {
-    console.log({ d })
     return (
         <tr key={d._id} className="hover:bg-gray-50">
             <td className="px-4 py-2 border">{idx + 1}</td>

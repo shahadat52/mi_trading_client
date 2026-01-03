@@ -1,11 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-interface Customer {
-    name: string;
-    phone: string;
-    address: string;
-}
-
 interface Item {
     product: string;
     quantity: number;
@@ -15,7 +9,7 @@ interface Item {
 }
 
 interface CommissionSales {
-    customer: Customer;
+    customer: string;
     supplier: string;
     items: Item[];
     paymentMethod: string;
@@ -26,10 +20,10 @@ interface CommissionSales {
 }
 
 const initialState: CommissionSales = {
-    customer: { name: "", phone: "", address: "" },
+    customer: "",
     supplier: "",
     items: [],
-    paymentMethod: "cash",
+    paymentMethod: "Cash",
     notes: "",
     date: "",
     totalAmount: 0,
@@ -51,8 +45,9 @@ const commissionSalesSlice = createSlice({
     name: "commissionSales",
     initialState,
     reducers: {
-        setCustomer(state, action: PayloadAction<Partial<Customer>>) {
-            state.customer = { ...state.customer, ...action.payload };
+        setCustomer(state, action: PayloadAction<string>) {
+            console.log(action)
+            state.customer = action.payload;
         },
         setSupplier(state, action: PayloadAction<string>) {
             state.supplier = action.payload;

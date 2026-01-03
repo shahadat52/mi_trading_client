@@ -23,9 +23,49 @@ const authApi = baseApi.injectEndpoints({
             providesTags: ['Customer']
         }),
 
+        customerTxnEntry: builder.mutation({
+            query: (txnData) => (
+                {
+                    url: "/customerTxn/entry",
+                    method: "POST",
+                    body: txnData,
+                }
+            ),
+            invalidatesTags: ['CustomerTxn']
+        }),
+
+        getAllCustomerTxn: builder.query({
+            query: (query) => (
+                new URLSearchParams(query).toString(),
+                {
+                    url: `/customerTxn?${new URLSearchParams(query).toString()}`,
+                    method: 'GET',
+                }),
+            providesTags: ['CustomerTxn']
+        }),
+
+        getAllTxnByCustomer: builder.query({
+            query: ({ id }) => (
+                {
+                    url: `/customerTxn/${id}`,
+                    method: 'GET',
+                }),
+            providesTags: ['CustomerTxn']
+        }),
+
+        updateCustomerTxn: builder.mutation({
+            query: (updatedData) => (
+                {
+                    url: `/customerTxn/${updatedData.id}`,
+                    method: 'PATCH',
+                    body: updatedData.data
+                }),
+            invalidatesTags: ['CustomerTxn']
+        }),
+
 
 
     }),
 });
 
-export const { useAddCustomerMutation, useGetAllCustomersQuery } = authApi
+export const { useAddCustomerMutation, useGetAllCustomersQuery, useCustomerTxnEntryMutation, useGetAllCustomerTxnQuery, useGetAllTxnByCustomerQuery, useUpdateCustomerTxnMutation } = authApi

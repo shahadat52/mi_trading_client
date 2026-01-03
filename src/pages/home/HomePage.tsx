@@ -9,13 +9,13 @@ import {
 
 } from "react-icons/fa";
 import { IoPersonAddSharp } from "react-icons/io5";
-import { LuNotebookPen } from "react-icons/lu";
-import { MdOutlinePayment } from "react-icons/md";
+// import { MdOutlinePayment } from "react-icons/md";
 import { BsPersonCircle } from "react-icons/bs";
+import { FcSalesPerformance } from "react-icons/fc";
 import { PiBatteryVerticalLowBold, PiChartLineDownBold } from "react-icons/pi";
 import { GiProfit } from "react-icons/gi";
 import { NavLink } from "react-router-dom";
-import { useGetAllCustomersQuery } from "../../redux/features/customer/customerApi";
+import { useGetAllCustomersQuery, useGetAllCustomerTxnQuery } from "../../redux/features/customer/customerApi";
 import { useState } from "react";
 import Modal from "../../components/Modal";
 import AddCustomer from "./AddCustomer";
@@ -23,7 +23,10 @@ import AddCustomer from "./AddCustomer";
 
 const HomePage = () => {
     const [isOpen, setIsOpen] = useState(false)
-    const { data } = useGetAllCustomersQuery(undefined)
+    const [search, setSearch] = useState('')
+    const { data } = useGetAllCustomersQuery({ search })
+
+    const { data: customerTxn, isLoading } = useGetAllCustomerTxnQuery(undefined);
     const menuItems = [
         { path: "/sales/entry", label: "Sales Entry", icon: <FaShoppingCart /> },
         { path: "/purchase/entry", label: "Purchase Entry", icon: <FaClipboardList /> },
@@ -42,12 +45,17 @@ const HomePage = () => {
         { path: "/deliveries", label: "ডেলিভারি", icon: <FaTruck /> },
         { path: "/stock", label: "স্টক", icon: <PiBatteryVerticalLowBold /> },
         { path: "/income", label: "আয়", icon: <GiProfit /> },
-        { path: "/expanses", label: "ব্যয়", icon: <PiChartLineDownBold /> },
-        { path: "/note", label: " নোট", icon: <LuNotebookPen /> },
-        { path: "/cash", label: "ক্যাশ", icon: <MdOutlinePayment /> },
+        { path: "/expenses", label: "ব্যয়", icon: <PiChartLineDownBold /> },
+        { path: "/commission-sales", label: "কমিশন", icon: <FcSalesPerformance /> },
+        // { path: "/cash", label: "ক্যাশ", icon: <MdOutlinePayment /> },
     ];
+
     const customers = data?.data;
-    console.log(customers)
+    const transactions = customerTxn?.data
+    const totalDebit = transactions?.filter((txn: any) => (txn.type === 'debit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0)
+    const totalCredit = transactions?.filter((txn: any) => (txn.type === 'credit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0);
+    const balance = totalDebit - totalCredit || 0;
+
     return (
         <div className="font-bangla">
             <div className="hidden md:flex min-h-full w-full bg-white items-center justify-center p-5 rounded-2xl">
@@ -118,7 +126,7 @@ const HomePage = () => {
                 </div>
             </div>
 
-            <div className="font-bangla md:hidden lg:hidden grid grid-cols-4 gap-4  py-6 bg-[#f9f4b9]">
+            <div className="sticky font-bangla md:hidden lg:hidden grid grid-cols-4 gap-4  py-6 bg-[#f9f4b9]">
                 {
                     menuItemsForMobile.map((menu: any, idx: number) => (
                         <NavLink key={idx} to={menu.path}>
@@ -133,18 +141,25 @@ const HomePage = () => {
 
             <div className="md:hidden lg:hidden flex gap-4 mx-auto  justify-around my-5">
                 <div className="text-green-600">
-                    <p className="text-[30px] font-semibold">5000</p>
+                    <p className="text-[30px] font-semibold">{isLoading ? 0 : balance} ৳</p>
                     <p>মোট পাবো</p>
                 </div>
                 <div className="bg-black w-[1px]"></div>
                 <div className="text-red-600">
-                    <p className="text-[30px] font-semibold">2000</p>
+                    <p className="text-[30px] font-semibold">{isLoading ? 0 : 0} ৳</p>
                     <p>মোট দেবো</p>
                 </div>
             </div>
-            <div className="lg:hidden md:hidden relative sm:flex  items-center justify-between ">
-                <p className="pl-1 text-xl font-semibold">কাস্টমার <span className="px-4">{customers?.length}</span> জন</p>
-                <div className=" p-6">
+            <div className="relative lg:hidden md:hidden sm:flex  items-center justify-between ">
+                <p className="sticky ml-1 text-xl font-semibold">কাস্টমার <span className="px-4">{customers?.length}</span> জন</p>
+                <input
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    type="text"
+                    placeholder="কাস্টমারের নাম বা মোবাইল"
+                    className=" input input-md max-w-[80%] bg-[#f8faf3] ml-1 rounded-full "
+                />
+                <div className="">
                     <button
                         onClick={() => setIsOpen(true)}
                         className=" text-4xl flex text- px-4 py-2 rounded"
@@ -165,15 +180,15 @@ const HomePage = () => {
                                     <div className="flex items-center">
                                         <div className="flex gap-1 items-center">
                                             <p className="text-[20px] mr-3 text-orange-500">{idx + 1}</p>
-                                            <p className="text-[40px] mr-3 text-orange-500"><BsPersonCircle /></p>
+                                            <p className="text-[30px] mr-3 text-orange-500"><BsPersonCircle /></p>
                                         </div>
                                         <div>
-                                            <p className="text-xl font-semibold">{customer.name}</p>
-                                            <p>কাস্টমার</p>
+                                            <p className="text-[18px] font-semibold">{customer.name}</p>
+
                                         </div>
                                     </div>
                                     <div className="flex gap-2 items-center">
-                                        <p>1500   </p>
+                                        <p>কাস্টমার</p>
                                         <span><FaChevronRight /></span>
                                     </div>
                                 </div>

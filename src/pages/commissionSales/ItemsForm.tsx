@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, updateItem, removeItem } from "../../redux/features/commissionSales/commissionSalesSlice";
 import type { RootState } from "../../redux/store";
-import { useGetCommissionPurchaseByIdQuery } from "../../redux/features/purchase/purchaseApi";
+import { useGetCommissionProductsQuery } from "../../redux/features/commissionProduct/commissionProductApi";
 
 // Debounce Hook
 const useDebounce = <T,>(value: T, delay: number): T => {
@@ -22,13 +22,13 @@ const ItemsForm = () => {
     const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(null);
 
     const debouncedSupplier = useDebounce(commissionSales.supplier, 300);
-    const { data } = useGetCommissionPurchaseByIdQuery(debouncedSupplier);
+    const { data } = useGetCommissionProductsQuery(debouncedSupplier);
     const products = data?.data || [];
-    console.log(products)
     const productOptions = products.map((p: any) => ({
-        name: p.product?.name,
-        _id: p.product?._id,
-        lot: p.lot
+        name: p?.name,
+        _id: p?._id,
+        lot: p?.lot,
+        quantity: p?.quantity
     }));
 
     const calculateItemTotal = useCallback((q: number, price: number) => q * price, []);
@@ -41,7 +41,7 @@ const ItemsForm = () => {
                 {commissionSales.items.map((item, index) => (
                     <div
                         key={index}
-                        className="border-2 grid grid-cols-5 gap-2 items-start bg-gray-50 p-2 rounded"
+                        className="border-2 grid grid-cols-2 gap-2 items-start bg-gray-50 p-2 rounded"
                     >
                         {/* Product searchable select */}
                         <div className="col-span-2 relative">
@@ -50,7 +50,7 @@ const ItemsForm = () => {
                             <input
                                 type="text"
                                 value={
-                                    productOptions?.find((p: any) => p._id === item.product)?.name || ""
+                                    productOptions?.find((p: any) => p.name === item.product)?.name || ""
                                 }
                                 onFocus={() => setOpenDropdownIndex(index)}
                                 onChange={() => setOpenDropdownIndex(index)}
@@ -68,7 +68,7 @@ const ItemsForm = () => {
                                                 dispatch(
                                                     updateItem({
                                                         index,
-                                                        item: { product: p._id }
+                                                        item: { product: p.name }
                                                     })
                                                 );
                                                 setOpenDropdownIndex(null);
@@ -76,11 +76,11 @@ const ItemsForm = () => {
                                         >
                                             <div className="flex justify-between text-xs">
                                                 <span>
-                                                    <span className="font-bold">নাম:</span> {p.name}
+                                                    <span className="font-bold">নাম:</span> {p?.name} <span className="font-bold">স্টক:</span> {p?.quantity}
                                                 </span>
                                                 <span>
                                                     <span className="font-bold">লট:</span>{" "}
-                                                    {p.lot?.split("-")[1]}
+                                                    {p?.lot}
                                                 </span>
                                             </div>
                                         </li>

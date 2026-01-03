@@ -1,18 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { } from "react-redux";
 import {
-    setCustomer,
     setSupplier,
     setPaymentMethod,
     setDate,
-    setNotes
+    setNotes,
+    resetForm
 } from "../../redux/features/commissionSales/commissionSalesSlice";
 import type { RootState } from "../../redux/store";
 import ItemsForm from "./ItemsForm"; // ← Items Form Component
 import { useGetAllSuppliersNameQuery } from "../../redux/features/supplier/supplierApi";
-import { useCommissionSalesEntryMutation } from "../../redux/features/commissionSales/commissionSalesApi";
 import { toast } from "react-toastify";
+import CustomerSearchableSelectFields from "./CustomerSearchableSelectFields";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import { useCommissionSalesEntryMutation } from "../../redux/features/commissionSales/commissionSalesApi";
 
 interface CommissionSalesEntryProps {
     onClose: () => void;
@@ -29,14 +31,15 @@ const useDebounce = <T,>(value: T, delay: number): T => {
 }
 
 const CommissionSalesEntry: React.FC<CommissionSalesEntryProps> = ({ onClose }) => {
-    const commissionSales = useSelector((state: RootState) => state.commissionSales);
-    const dispatch = useDispatch();
+    const commissionSales = useAppSelector((state: RootState) => state.commissionSales);
+    const dispatch = useAppDispatch();
 
     const [search, setSearch] = React.useState("");
     const [openDropdown, setOpenDropdown] = React.useState(false);
     const debouncedSearch = useDebounce(search, 300);
 
-    const paymentMethods = ['Cash', 'bKash', 'Nagad', 'Rocket', 'Card', 'Bank'];
+
+    const paymentMethods = ['Cash', 'Bank', 'Bkash', 'Nagad', 'Rocket', 'Card',];
 
     const { data } = useGetAllSuppliersNameQuery({ search: debouncedSearch, limit: 20 })
     const suppliers = data?.data || [];
@@ -47,14 +50,14 @@ const CommissionSalesEntry: React.FC<CommissionSalesEntryProps> = ({ onClose }) 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
-
+        console.log(commissionSales)
         try {
 
             const result = await createCommissionSales(commissionSales);
             console.log(result)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
-
+                dispatch(resetForm())
                 onClose();
 
             } else {
@@ -68,47 +71,21 @@ const CommissionSalesEntry: React.FC<CommissionSalesEntryProps> = ({ onClose }) 
 
     };
 
+
+
     return (
         <form onSubmit={handleSubmit} className="p-6 bg-white shadow-lg rounded-lg space-y-6">
             {/* Customer Info */}
-            <div className="grid grid-cols-2 gap-4">
-                <div>
-                    <label className="block mb-1 font-medium">Customer Name</label>
-                    <input
-                        type="text"
-                        value={commissionSales.customer.name}
-                        onChange={(e) => dispatch(setCustomer({ name: e.target.value }))}
-                        className="border rounded px-3 py-2 w-full"
-                    />
-                </div>
+            <CustomerSearchableSelectFields />
 
-                <div>
-                    <label className="block mb-1 font-medium">Customer Phone</label>
-                    <input
-                        type="text"
-                        value={commissionSales.customer.phone}
-                        onChange={(e) => dispatch(setCustomer({ phone: e.target.value }))}
-                        className="border rounded px-3 py-2 w-full"
-                    />
-                </div>
 
-                <div className="col-span-2">
-                    <label className="block mb-1 font-medium">Customer Address</label>
-                    <input
-                        type="text"
-                        value={commissionSales.customer.address}
-                        onChange={(e) => dispatch(setCustomer({ address: e.target.value }))}
-                        className="border rounded px-3 py-2 w-full"
-                    />
-                </div>
-            </div>
 
             {/* Supplier & Payment */}
             <div className="grid grid-cols-2 gap-4">
                 {/* Supplier ( custom searchable select) */}
                 <div className="col-span-1 relative">
                     <label className="block font-medium text-gray-700 mb-1">
-                        Supplier
+                        সাপ্লাইয়ার
                     </label>
                     <input
                         type="text"
@@ -123,6 +100,7 @@ const CommissionSalesEntry: React.FC<CommissionSalesEntryProps> = ({ onClose }) 
                         className="input input-bordered  rounded px-3 py-2 w-full"
                         placeholder="Select supplier"
                     />
+
                     {openDropdown && suppliersData.length > 0 && (
                         <ul className="absolute z-10 w-full max-h-40 overflow-auto border bg-white rounded shadow mt-1">
                             {suppliersData.map((p: any) => (
@@ -143,7 +121,7 @@ const CommissionSalesEntry: React.FC<CommissionSalesEntryProps> = ({ onClose }) 
                 </div>
 
                 <div>
-                    <label className="block mb-1 font-medium">Payment Method</label>
+                    <label className="block mb-1 font-medium">পেমেন্ট মেথড</label>
                     <select
                         value={commissionSales.paymentMethod}
                         onChange={(e) => dispatch(setPaymentMethod(e.target.value))}
@@ -162,7 +140,7 @@ const CommissionSalesEntry: React.FC<CommissionSalesEntryProps> = ({ onClose }) 
             <div>
                 <label className="block mb-1 font-medium">Sales Date</label>
                 <input
-                    type="date"
+                    type="datetime-local"
                     value={commissionSales.date}
                     onChange={(e) => dispatch(setDate(e.target.value))}
                     className="border rounded px-3 py-2 w-full"

@@ -35,7 +35,6 @@ const authApi = baseApi.injectEndpoints({
 
         getCommissionPurchaseById: builder.query({
             query: (id) => (
-                console.log(id),
                 {
                     url: `/purchase/${id}`,
                     method: 'GET',
@@ -59,7 +58,6 @@ const authApi = baseApi.injectEndpoints({
 
         updatePurchase: builder.mutation({
             query: (data) => (
-                console.log(data),
                 {
                     url: `/purchase/${data._id}`,
                     method: "PATCH",
