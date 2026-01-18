@@ -7,12 +7,12 @@ const commissionSalesApi = baseApi.injectEndpoints({
         commissionSalesEntry: builder.mutation({
             query: (commissionSalesData: any) => (
                 {
-                    url: "commissionSales/create",
+                    url: "commissionSales/entry",
                     method: "POST",
                     body: commissionSalesData
                 }
             ),
-            invalidatesTags: ['Sales', 'Income', 'CommissionSales']
+            invalidatesTags: ['Sales', 'Income', 'CommissionSales', 'CommissionProduct']
         }),
 
         getCommissionSales: builder.query({
@@ -25,9 +25,19 @@ const commissionSalesApi = baseApi.injectEndpoints({
             providesTags: ['CommissionSales']
         }),
 
+        getCommissionSalesSupplierLotWise: builder.query({
+            query: (query) => (
+                {
+                    url: `/commissionSales/supplierLot/?supplier=${query.supplier}&lot=${query.lot}`,
+                    method: 'GET',
+
+                }),
+            providesTags: ['CommissionSales']
+        }),
+
 
 
     }),
 });
 
-export const { useCommissionSalesEntryMutation, useGetCommissionSalesQuery } = commissionSalesApi
+export const { useCommissionSalesEntryMutation, useGetCommissionSalesQuery, useGetCommissionSalesSupplierLotWiseQuery } = commissionSalesApi

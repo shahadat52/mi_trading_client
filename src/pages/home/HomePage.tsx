@@ -9,7 +9,7 @@ import {
 
 } from "react-icons/fa";
 import { IoPersonAddSharp } from "react-icons/io5";
-// import { MdOutlinePayment } from "react-icons/md";
+import { MdOutlinePayment } from "react-icons/md";
 import { BsPersonCircle } from "react-icons/bs";
 import { FcSalesPerformance } from "react-icons/fc";
 import { PiBatteryVerticalLowBold, PiChartLineDownBold } from "react-icons/pi";
@@ -19,14 +19,15 @@ import { useGetAllCustomersQuery, useGetAllCustomerTxnQuery } from "../../redux/
 import { useState } from "react";
 import Modal from "../../components/Modal";
 import AddCustomer from "./AddCustomer";
+import { useDebounce } from "../../utils/useDebounce";
 
 
 const HomePage = () => {
     const [isOpen, setIsOpen] = useState(false)
     const [search, setSearch] = useState('')
-    const { data } = useGetAllCustomersQuery({ search })
-
-    const { data: customerTxn, isLoading } = useGetAllCustomerTxnQuery(undefined);
+    const debounceSearch = useDebounce(search.trim(), 1000);
+    const { data: customerTxns } = useGetAllCustomerTxnQuery(undefined);
+    const { data, isLoading } = useGetAllCustomersQuery({ search: debounceSearch });
     const menuItems = [
         { path: "/sales/entry", label: "Sales Entry", icon: <FaShoppingCart /> },
         { path: "/purchase/entry", label: "Purchase Entry", icon: <FaClipboardList /> },
@@ -47,17 +48,40 @@ const HomePage = () => {
         { path: "/income", label: "আয়", icon: <GiProfit /> },
         { path: "/expenses", label: "ব্যয়", icon: <PiChartLineDownBold /> },
         { path: "/commission-sales", label: "কমিশন", icon: <FcSalesPerformance /> },
-        // { path: "/cash", label: "ক্যাশ", icon: <MdOutlinePayment /> },
+        { path: "*", label: "ক্যাশ", icon: <MdOutlinePayment /> },
     ];
 
-    const customers = data?.data;
-    const transactions = customerTxn?.data
+    const transactions = customerTxns?.data
     const totalDebit = transactions?.filter((txn: any) => (txn.type === 'debit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0)
     const totalCredit = transactions?.filter((txn: any) => (txn.type === 'credit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0);
     const balance = totalDebit - totalCredit || 0;
 
+    console.log({ totalCredit, totalDebit, balance })
+
+    const customers = data?.data
+    console.log(customers)
+
+    // const totalDebit = customerTxn?.data?.reduce((total: number, customer: any) => {
+    //     const debitSum = customer?.transactions?
+    //         .filter((txn: any) => txn.type === "debit")
+    //         .reduce((sum: number, txn: any) => sum + txn.amount, 0);
+
+    //     return total + debitSum;
+    // }, 0);
+
+    // const totalCredit = customerTxn?.data?.reduce((total: number, customer: any) => {
+    //     const debitSum = customer?.transactions
+    //         .filter((txn: any) => txn.type === "credit")
+    //         .reduce((sum: number, txn: any) => sum + txn.amount, 0);
+
+    //     return total + debitSum;
+    // }, 0);
+
+    // console.log({ totalDebit, totalCredit })
+    // const balance = totalDebit - totalCredit || 0;
+
     return (
-        <div className="font-bangla">
+        <div className="bg-[#eaf2ee]">
             <div className="hidden md:flex min-h-full w-full bg-white items-center justify-center p-5 rounded-2xl">
                 <div className="max-w-5xl w-full">
 
@@ -126,7 +150,7 @@ const HomePage = () => {
                 </div>
             </div>
 
-            <div className="sticky font-bangla md:hidden lg:hidden grid grid-cols-4 gap-4  py-6 bg-[#f9f4b9]">
+            <div className="sticky md:hidden lg:hidden grid grid-cols-4 gap-4  h-60 py-10 bg-[#f2f7f4]">
                 {
                     menuItemsForMobile.map((menu: any, idx: number) => (
                         <NavLink key={idx} to={menu.path}>
@@ -139,39 +163,47 @@ const HomePage = () => {
                 }
             </div>
 
-            <div className="md:hidden lg:hidden flex gap-4 mx-auto  justify-around my-5">
-                <div className="text-green-600">
-                    <p className="text-[30px] font-semibold">{isLoading ? 0 : balance} ৳</p>
-                    <p>মোট পাবো</p>
+            <div className="rounded-2xl border mt-[-30px] border-white/20  bg-white/10 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.25)] p-6 md:hidden lg:hidden flex gap-4 mx-auto  justify-around  rounded-t-4xl h-80  ">
+                <div className="text-red-600">
+
+                    <p className="text-[30px] font-semibold">{isLoading ? 0 : totalCredit} ৳</p>
+                    <p className="text-[25px] font-semibold">মোট পাবো</p>
                 </div>
                 <div className="bg-black w-[1px]"></div>
-                <div className="text-red-600">
-                    <p className="text-[30px] font-semibold">{isLoading ? 0 : 0} ৳</p>
-                    <p>মোট দেবো</p>
+                <div className="text-green-600">
+                    <p className="text-[30px] font-semibold">{isLoading ? 0 : totalDebit} ৳</p>
+                    <p className="text-[25px] font-semibold">মোট দেবো</p>
                 </div>
             </div>
-            <div className="relative lg:hidden md:hidden sm:flex  items-center justify-between ">
-                <p className="sticky ml-1 text-xl font-semibold">কাস্টমার <span className="px-4">{customers?.length}</span> জন</p>
+
+
+            <div className=" rounded-2xl border border-white/20  bg-white/10 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.25)] p-2 relative lg:hidden md:hidden sm:flex  items-center justify-between  rounded-t-4xl  mt-[-180px]  ">
                 <input
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     type="text"
-                    placeholder="কাস্টমারের নাম বা মোবাইল"
-                    className=" input input-md max-w-[80%] bg-[#f8faf3] ml-1 rounded-full "
+                    placeholder="কাস্টমার খুঁজুন..."
+                    className=" input input-md max-w-[80%] bg-white ml-1 rounded-full mt-8  "
                 />
+                {/* <p className="sticky ml-1 px-1 mt-2 text-xl font-semibold">কাস্টমার <span className="px-4">{customers?.length}</span> জন</p> */}
                 <div className="">
-                    <button
-                        onClick={() => setIsOpen(true)}
-                        className=" text-4xl flex text- px-4 py-2 rounded"
-                    >
-                        <p className="  fixed bottom-20 right-5 z-50 bg-red-600 text-white   rounded-full w-auto p-3"> <IoPersonAddSharp /></p>
-                    </button>
 
-                    <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-                        <AddCustomer onClose={() => setIsOpen(false)} />
-                    </Modal>
+                    <div className="flex items-center justify-end w-full">
+                        <button
+                            onClick={() => setIsOpen(true)}
+                            className="  text-4xl flex  px-4 rounded"
+                        >
+                            <p className="   bg-red-600 text-white   rounded-full w-auto p-3"> <IoPersonAddSharp /></p>
+                        </button>
+                    </div>
+
+
+                </div>
+                <div>
+                    <p>Customers: {customers?.length}</p>
                 </div>
                 <div className="flex flex-col gap-4 mb-18">
+
                     {
                         customers?.map((customer: any, idx: number) => (
                             <NavLink to={`/customerTxn/${customer._id}`} key={customer._id} className="p-2 shadow m-1 rounded">
@@ -198,6 +230,10 @@ const HomePage = () => {
                 </div>
 
             </div>
+            <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+                <AddCustomer onClose={() => setIsOpen(false)} />
+            </Modal>
+
         </div>
     );
 };

@@ -3,6 +3,7 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 interface Item {
     product: string;
     quantity: number;
+    lot: number;
     salesPrice: number;
     commissionRatePercent: number;
     total: number;
@@ -46,7 +47,6 @@ const commissionSalesSlice = createSlice({
     initialState,
     reducers: {
         setCustomer(state, action: PayloadAction<string>) {
-            console.log(action)
             state.customer = action.payload;
         },
         setSupplier(state, action: PayloadAction<string>) {

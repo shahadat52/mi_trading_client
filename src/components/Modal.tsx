@@ -9,19 +9,19 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
     return (
         <div
-            className={`px-2 mt-4   fixed inset-0 flex items-center justify-center z-50
+            className={`px-2 pt-4 h-auto   fixed inset-0 flex items-start justify-center z-50
         transition-opacity duration-300
         ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
         >
             {/* Overlay */}
             <div
-                className="mt-2 absolute inset-0 bg-black opacity-40 transition-opacity duration-300"
+                className=" absolute inset-0 bg-black opacity-40 transition-opacity duration-300"
                 onClick={onClose}
             ></div>
 
             {/* Modal Box */}
             <div
-                className={`bg-white rounded-lg shadow-lg w-full max-w-[800px] relative
+                className={`bg-white max-h-screen my-auto rounded-lg shadow-lg w-full max-w-[800px] relative
           transform transition-all duration-300
           ${isOpen ? "scale-100 translate-y-0 opacity-100" : "scale-95 translate-y-4 opacity-0"}
           max-h-screen overflow-y-auto`}
@@ -32,7 +32,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
                 >
                     ✕
                 </button>
-                {children}
+                <div className="p-2">
+                    {children}
+                </div>
             </div>
         </div>
     );

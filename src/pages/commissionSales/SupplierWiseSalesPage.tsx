@@ -8,12 +8,14 @@ import ErrorBoundary from "../../components/ErrorBoundary";
 import ButtonPdf from "../../components/buttons/ButtonPdf";
 import ButtonExcel from "../../components/buttons/ButtonExcel";
 import { useGetCommissionSalesQuery } from "../../redux/features/commissionSales/commissionSalesApi";
+import Profile from "../../components/profile/Profile";
 
 /* ===================== Types ===================== */
 interface SaleItem {
     product: { name: string } | string;
     quantity: number;
     salesPrice: number;
+    lot: string
     total: number;
     commissionRatePercent: number;
 }
@@ -31,7 +33,6 @@ const SupplierWiseSalesPage = () => {
     const { data, isLoading, isError } = useGetCommissionSalesQuery(id);
 
     const sales: Sale[] = data?.data ?? [];
-
     /* ===================== Calculations ===================== */
     const { totalAmount, totalCommission } = useMemo(() => {
         return sales.reduce(
@@ -122,34 +123,47 @@ const SupplierWiseSalesPage = () => {
 
     if (!sales.length) {
         return (
-            <div className="p-10 text-center text-gray-500 bg-white rounded-xl shadow border">
-                কোনো কমিশন সেলস ডেটা পাওয়া যায়নি।
+            <div className="p-10 text-center text-black bg-white rounded-xl shadow border">
+                কোনো কমিশন সেলস ডেটা পাওয়া যায়নি।
             </div>
         );
     }
 
     /* ===================== UI ===================== */
     return (
-        <div className="p-4 sm:p-5 bg-white shadow rounded-xl border">
+        <div className="p-2 sm:p-5 bg-white shadow  border">
             {/* Header + Summary */}
-            <div className="mb-6">
-                <h2 className="text-xl font-semibold text-gray-800">
-                    {sales[0].supplier.name} — Commission Sales Report
-                </h2>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-                    <SummaryCard label="Total Sales" value={totalAmount} accent="blue" />
-                    <SummaryCard
-                        label="Total Commission"
-                        value={totalCommission}
-                        accent="green"
-                    />
+            <div className="mb-3">
+                <div className="">
+                    <Profile person={sales[0]?.supplier} />
                 </div>
+
+                <div className="grid grid-cols-1  gap-4 mt-4 ">
+                    <div className={`rounded-2xl border  border-white/20  bg-green-50 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.25)] py-3 px-6  flex justify-between gap-4`}>
+                        <div>
+                            <p className="text-sm text-black">মোট বিক্রয়</p>
+                            <p className="text-2xl font-semibold text-black mt-1">{totalAmount}</p>
+                        </div>
+                        <div>
+                            <p className="text-sm text-black">কমিশন</p>
+                            <p className="text-2xl font-semibold text-black mt-1">{totalCommission}</p>
+                        </div>
+                        <div>
+                            <p className="text-sm text-black">পাওনা</p>
+                            <p className="text-2xl font-semibold text-black mt-1">{totalAmount - totalCommission}</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div>
+                <hr className="border-dashed mb-4" />
+
             </div>
 
             {/* Action Bar */}
             <div className="flex flex-wrap justify-between items-center gap-3 mb-4">
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-black">
                     Showing {sales.length} sales records
                 </span>
                 <div className="flex gap-2">
@@ -161,9 +175,9 @@ const SupplierWiseSalesPage = () => {
             {/* Desktop Table */}
             <div className="hidden sm:block overflow-x-auto rounded-lg border">
                 <table className="w-full text-sm">
-                    <thead className="bg-gray-50 text-gray-600 uppercase text-xs">
+                    <thead className="bg-gray-50 text-black uppercase text-xs">
                         <tr>
-                            {["Product", "Quantity", "Sales Price", "Commission %", "Date"].map((head) => (
+                            {["Product&Lot", "Quantity", "Sales Price", "Commission %", "Date"].map((head) => (
                                 <th key={head} className="px-4 py-3 text-left">
                                     {head}
                                 </th>
@@ -178,15 +192,13 @@ const SupplierWiseSalesPage = () => {
                                     key={`${sale._id}-${idx}`}
                                     className="hover:bg-gray-50 transition"
                                 >
-                                    <td className="px-4 py-3 font-medium text-gray-800">
-                                        {typeof item.product === "string"
-                                            ? item.product
-                                            : item.product.name}
+                                    <td className="px-4 py-3 font-medium text-black">
+                                        {(item?.product as string)} <span>{(item?.lot as string)}</span>
                                     </td>
                                     <td className="px-4 py-3 ">{item.quantity}</td>
                                     <td className="px-4 py-3 ">{item.salesPrice}</td>
                                     <td className="px-4 py-3 ">{item.commissionRatePercent}%</td>
-                                    <td className="px-4 py-3  text-gray-600">
+                                    <td className="px-4 py-3  text-black">
                                         {new Date(sale.date).toLocaleDateString("en-GB")}
                                     </td>
 
@@ -206,12 +218,12 @@ const SupplierWiseSalesPage = () => {
                             className="rounded-xl border bg-white p-4 shadow-sm"
                         >
                             <div className="flex justify-between mb-2">
-                                <h4 className="font-semibold text-gray-800">
+                                <h4 className="font-semibold text-black">
                                     {typeof item.product === "string"
                                         ? item.product
                                         : item.product.name}
                                 </h4>
-                                <span className="text-xs text-gray-500">
+                                <span className="text-xs text-black">
                                     {new Date(sale.date).toLocaleDateString("en-GB")}
                                 </span>
                             </div>
@@ -262,25 +274,25 @@ const SupplierWiseSalesPage = () => {
 };
 
 /* ===================== Small Components ===================== */
-const SummaryCard = ({
-    label,
-    value,
-    accent,
-}: {
-    label: string;
-    value: number;
-    accent: "blue" | "green";
-}) => (
-    <div className={`rounded-xl border p-4 bg-${accent}-50 border-${accent}-200`}>
-        <p className="text-sm text-gray-600">{label}</p>
-        <p className="text-2xl font-semibold text-gray-900 mt-1">{value}</p>
-    </div>
-);
+// const SummaryCard = ({
+//     label,
+//     value,
+//     accent,
+// }: {
+//     label: string;
+//     value: number;
+//     accent: "blue" | "green";
+// }) => (
+//     <div className={`rounded-xl border p-4 bg-${accent}-50 border-${accent}-200`}>
+//         <p className="text-sm text-gray-600">{label}</p>
+//         <p className="text-2xl font-semibold text-gray-900 mt-1">{value}</p>
+//     </div>
+// );
 
 const Info = ({ label, value }: { label: string; value: any }) => (
     <div className="flex justify-between gap-1">
-        <span className="text-gray-500 px-2">{label}</span>
-        <span className="font-medium text-gray-800">{value}</span>
+        <span className="text-black px-2">{label}</span>
+        <span className="font-medium text-black">{value}</span>
     </div>
 );
 

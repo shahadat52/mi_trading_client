@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import Loading from "../../components/Loading";
 import { useAppSelector } from "../../redux/hook";
 import CustomerSearchableSelectFields from "./CustomerSearchableSelectFields";
+import { resetForm } from "../../redux/features/sales/salesSlice";
 
 const EMPTY_ITEM: TSaleItem = {
     product: "",
@@ -23,7 +24,6 @@ const SalesEntryForm = () => {
     const [createSale] = useSalesEntryMutation();
     const [isLoading, setLoading] = useState(false);
     const customer = useAppSelector((state) => state.sales.customer);
-    console.log(customer)
 
     const { register, control, reset, handleSubmit, watch, setValue } = useForm<TSales>({
         defaultValues: {
@@ -32,6 +32,7 @@ const SalesEntryForm = () => {
             items: [EMPTY_ITEM],
             discount: 0,
             vat: 0,
+            date: new Date(),
             subtotal: 0,
             grandTotal: 0,
             grandProfit: 0,
@@ -82,16 +83,17 @@ const SalesEntryForm = () => {
     // SUBMIT HANDLER
     // ================================
     const onSubmit: SubmitHandler<TSales> = async (data) => {
+
         data.customer = customer;
-        console.log({ data })
         setLoading(true);
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
         data.paidAmount = Number(data.paidAmount);
         try {
+
             const result = await createSale(data)
-            console.log(result)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
+                resetForm();
                 reset();
                 setLoading(false);
 
@@ -113,7 +115,7 @@ const SalesEntryForm = () => {
     // ================================
     return (
         <div className="p-6 bg-white shadow-lg rounded-xl border border-gray-200">
-            <h1 className="text-2xl font-semibold mb-6">Sales Entry Form</h1>
+            <h1 className="text-2xl font-semibold mb-6">সেলস এন্ট্রি দিন</h1>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
 
@@ -128,16 +130,16 @@ const SalesEntryForm = () => {
                         </section>
                         <div>
                             <label className="mb-1 block text-sm font-medium text-gray-700">
-                                Broker
+                                ব্রোকার
                             </label>
 
                             <input {...register("broker")} placeholder="Broker (Optional)" className="input" />
                         </div>
                         <div>
                             <label className="mb-1 block text-sm font-medium text-gray-700">
-                                Payment Method
+                                পেমেন্ট মেথড
                             </label>
-                            <select {...register("paymentMethod")} className="input">
+                            <select {...register("paymentMethod", { required: true })} className="input">
                                 <option value="cash">Cash</option>
                                 <option value="bkash">bKash</option>
                                 <option value="nagad">Nagad</option>
@@ -146,13 +148,17 @@ const SalesEntryForm = () => {
                                 <option value="bank">Bank</option>
                             </select>
                         </div>
+                        <div>
+                            <label htmlFor="">তারিখ</label>
+                            <input {...register("date", { required: true })} type="datetime-local" className="input" />
+                        </div>
                     </div>
                 </section>
 
                 {/* SALES ITEMS */}
                 <section className="border p-4 rounded-xl bg-gray-50 text-black">
                     {fields?.map((field, index) => (
-                        <div key={field.id} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3 items-center mb-3">
+                        <div key={field.id} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 items-center mb-3">
 
                             {/* PRODUCT */}
                             <div>
@@ -211,7 +217,7 @@ const SalesEntryForm = () => {
                             </div>
 
                             {/* TOTAL & REMOVE */}
-                            <div className="flex items-center text-sm font-semibold mt-5">
+                            <div className="flex items-center text-sm font-semibold mt-1">
                                 {items[index]?.totalPrice || 0} Tk
                                 <button
                                     type="button"
@@ -235,10 +241,10 @@ const SalesEntryForm = () => {
                 </section>
 
                 {/* SUMMARY */}
-                <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 bg-gray-100 p-4 rounded-xl">
+                <section className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2  p-1 rounded-xl">
                     <div>
                         <label htmlFor="">জমা</label>
-                        <input {...register("paidAmount")} type="number" placeholder="Paid Amount" className="input" />
+                        <input {...register("paidAmount", { required: true })} type="number" placeholder="Paid Amount" className="input" />
                     </div>
                     <div>
                         <label htmlFor="">ছাড়</label>
@@ -257,11 +263,13 @@ const SalesEntryForm = () => {
                     </div>
                 </section>
 
-                <button className="w-full bg-green-600 text-white py-3 rounded-lg text-lg hover:bg-green-700">
-                    {
-                        isLoading ? <Loading></Loading> : "Submit Sales Entry"
-                    }
-                </button>
+                <div className="flex justify-center">
+                    <button className="w-1/2 p-2  bg-blue-600 text-white mb-16  rounded-lg text-lg hover:bg-green-700">
+                        {
+                            isLoading ? <Loading></Loading> : "বিক্রি করুন"
+                        }
+                    </button>
+                </div>
             </form>
         </div>
     );

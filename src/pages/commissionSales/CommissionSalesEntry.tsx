@@ -44,19 +44,15 @@ const CommissionSalesEntry: React.FC<CommissionSalesEntryProps> = ({ onClose }) 
     const { data } = useGetAllSuppliersNameQuery({ search: debouncedSearch, limit: 20 })
     const suppliers = data?.data || [];
     const suppliersData = suppliers?.map((p: any) => ({ name: p.name, _id: p._id })) || [];
-
     const [createCommissionSales] = useCommissionSalesEntryMutation();
-
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
-        console.log(commissionSales)
         try {
 
             const result = await createCommissionSales(commissionSales);
-            console.log(result)
             if (result?.data?.success) {
-                toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
+                toast.update(toastId, { render: result?.data?.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
                 dispatch(resetForm())
                 onClose();
 

@@ -17,12 +17,10 @@ const CommissionProductEntry = ({ onClose }: { onClose: () => void }) => {
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         data.supplier = state.supplier
-        console.log(data)
         setLoading(true);
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
         try {
             const result = await addProduct(data);
-            console.log(result)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
                 reset();
@@ -73,12 +71,6 @@ const CommissionProductEntry = ({ onClose }: { onClose: () => void }) => {
                     name="quantity"
                     control={control}
                     rules={{ required: "পন্যের পরিমান নাই" }}
-                />
-                <InputField
-                    label="লট নাম্বার"
-                    name="lot"
-                    control={control}
-                    rules={{ required: "লট নাম্বার নাই" }}
                 />
                 <InputField
                     control={control}

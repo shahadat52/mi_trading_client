@@ -10,6 +10,7 @@ import { useGetAllProductNamesQuery } from "../../redux/features/product/product
 import { purchaseTypes } from "../../utils/purchaseTypes";
 import { useGetAllSuppliersNameQuery } from "../../redux/features/supplier/supplierApi";
 import TextAreaField from "../../components/form/TextAreaField";
+import './purchase.css'
 
 
 // 
@@ -50,7 +51,6 @@ const PurchaseEntryForm = () => {
             setLoading(true);
 
             const result = await addPurchase(data);
-            console.log(result)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
                 reset();
@@ -75,41 +75,39 @@ const PurchaseEntryForm = () => {
 
             <SelectField
                 name="supplier"
-                label="Supplier"
+                label="সাপ্লাইয়ার"
                 control={control}
                 options={suppliers}
-                rules={{ required: "Unit is required" }}
+                rules={{ required: "সাপ্লাইয়ার নেই" }}
             />
 
             <SelectField
                 name="product"
-                label="Product"
+                label="পণ্য"
                 control={control}
                 options={names}
-                rules={{ required: "Unit is required" }}
+                rules={{ required: "পণ্য নেই" }}
             />
             <SelectField
                 name="purchaseType"
-                label="Purchase Type"
+                label="ক্রয়ের ধরন"
                 control={control}
                 options={purchaseTypes}
-                rules={{ required: "Unit is required" }}
+                rules={{ required: "ক্রয়ের ধরন নেই" }}
             />
 
             <InputField
                 name="purchaseDate"
-                label="Purchase Date"
+                label="তারিখ"
                 control={control}
                 type="datetime-local"
             />
-            <InputField name="lot" label="Lot Number" control={control} rules={{ required: "Required" }} />
-            <InputField name="purchasePrice" label="Purchase Price" control={control} type="number" rules={{ required: "Required" }} />
-            <InputField name="commissionPerUnit" label="কমিশনের হার (%) " control={control} rules={{ required: "Required" }} type="number" />
-            <InputField name="quantity" label="Purchase Quantity" control={control} type="number" />
+            <InputField name="purchasePrice" label="দাম" control={control} type="number" rules={{ required: "Required" }} />
+            <InputField name="quantity" label="সংখ্যা" control={control} type="number" />
 
             <TextAreaField
                 name='note'
-                label="Note"
+                label="নোট"
                 control={control}
                 placeholder="Keep note..."
             />
@@ -117,11 +115,11 @@ const PurchaseEntryForm = () => {
             <button
                 type="submit"
                 disabled={loading}
-                className="btn btn-primary col-span-1 md:col-span-2"
+                className="btn btn-black col-span-1 md:col-span-2"
             >
                 {loading ? <div className="flex justify-center items-center ">
                     <span className="loading loading-dots loading-lg"></span>
-                </div> : "Add Product"}
+                </div> : "ক্রয় এন্ট্রি করুন"}
             </button>
         </form>
     );

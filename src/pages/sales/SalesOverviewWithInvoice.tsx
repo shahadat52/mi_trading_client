@@ -6,7 +6,7 @@ import TableSkeleton from '../../components/table/TableSkeleton';
 import ErrorBoundary from '../../components/ErrorBoundary';
 import { salesTableHeads } from './salesTableHeads';
 import SalesTableBody from './SalesTableBody';
-import { SalesDeliveryModal } from './SalesDeliveryModal';
+import { SalesDeliveryEntry } from './SalesDeliveryEntry';
 import SalesCard from './SalesCard';
 import useDebouncedSearch from '../../hooks/useDebouncedSearch';
 import PrintSaleMemoModal from './memo/PrintSaleMemoModal';
@@ -19,7 +19,7 @@ const SalesOverviewWithInvoice: React.FC = () => {
     const [page, setPage] = useState<number>(1);
     const [limit, setLimit] = useState<number>(10);
     const [sortBy, setSortBy] = useState<string>('createdAt');
-    const [order, setOrder] = useState('asc');
+    const [order, setOrder] = useState('desc');
     const [dateFrom, setDateFrom] = useState<string>('');
     const [dateTo, setDateTo] = useState<string>('');
 
@@ -37,7 +37,6 @@ const SalesOverviewWithInvoice: React.FC = () => {
     const sales = data?.data.data || [];
     const total = data?.total || 0;
     const totalPages = Math.max(1, Math.ceil(total / limit));
-    console.log(search)
     const toggleExpand = (id: string) => {
         setExpandedRows((prev) => ({ ...prev, [id]: !prev[id] }));
     };
@@ -69,45 +68,46 @@ const SalesOverviewWithInvoice: React.FC = () => {
                     <input
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        placeholder="Invoice..."
-                        className="border rounded px-3 py-2 text-sm w-64"
+                        placeholder="ইনভয়েস খুঁজুন..."
+                        className="border rounded px-3 py-2 text-sm lg:w-64 w-full"
                     />
+                    <div className="flex gap-3 items-center">
+                        <label className="text-sm">Sort:</label>
+                        <button
+                            type="button"
+                            onClick={() => setOrder(order === 'asc' ? 'desc' : 'asc')}
+                            className="px-3 py-2 border rounded text-sm"
+                        >
+                            {order === 'asc' ? 'Ascending' : 'Descending'}
+                        </button>
 
-                    <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} className="border rounded px-3 py-2 text-sm" />
-                    <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} className="border rounded px-3 py-2 text-sm" />
+                        <label className="text-sm">Sort:</label>
+                        <select value={sortBy} onChange={(e) => { setSortBy(e.target.value) }} className="border rounded px-3 py-2 text-sm">
+                            <option value='createdAt'>Date</option>
+                            <option value='grandTotal'>Grand Total</option>
+                            <option value='customer'>Customer</option>
+                        </select>
+                        <select value={limit} onChange={(e) => { setLimit(Number(e.target.value)); setPage(1); }} className="border rounded px-3 py-2 text-sm">
+                            <option value={5}>5</option>
+                            <option value={10}>10</option>
+                            <option value={25}>25</option>
+                            <option value={50}>50</option>
+                            <option value={100}>100</option>
+                        </select>
+                    </div>
+                    <div className='flex gap-2'>
+                        <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} className="border rounded px-3 py-2 text-[12px] w-[116px] " />
+                        <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} className="border rounded px-3 py-2 text-[12px] w-[116px]" />
 
-
-                    <button type="submit" className="px-3 py-2 bg-blue-600 text-white rounded text-sm">Search</button>
-                    <button type="button" onClick={clearFilters} className="px-3 py-2 border rounded text-sm">Clear</button>
+                        <button type="submit" className="px-3 py-2 bg-blue-600 text-white rounded text-sm">Search</button>
+                        <button type="button" onClick={clearFilters} className="px-3 py-2 border rounded text-sm">Clear</button>
+                    </div>
                 </div>
 
-                <div className="flex gap-2 items-center">
-                    <label className="text-sm">Sort:</label>
-                    <button
-                        type="button"
-                        onClick={() => setOrder(order === 'asc' ? 'desc' : 'asc')}
-                        className="px-3 py-2 border rounded text-sm"
-                    >
-                        {order === 'asc' ? 'Ascending' : 'Descending'}
-                    </button>
 
-                    <label className="text-sm">Sort:</label>
-                    <select value={sortBy} onChange={(e) => { setSortBy(e.target.value) }} className="border rounded px-3 py-2 text-sm">
-                        <option value='createdAt'>Date</option>
-                        <option value='grandTotal'>Grand Total</option>
-                        <option value='customer'>Customer</option>
-                    </select>
-                    <select value={limit} onChange={(e) => { setLimit(Number(e.target.value)); setPage(1); }} className="border rounded px-3 py-2 text-sm">
-                        <option value={5}>5</option>
-                        <option value={10}>10</option>
-                        <option value={25}>25</option>
-                        <option value={50}>50</option>
-                        <option value={100}>100</option>
-                    </select>
-                </div>
             </form>
 
-            {/* Table container */}
+            {/* Desktop view */}
             <div className="overflow-x-auto bg-white rounded-lg shadow-sm hidden md:block">
                 {isLoading ? (
                     <TableSkeleton row={10} />
@@ -147,14 +147,23 @@ const SalesOverviewWithInvoice: React.FC = () => {
 
             {/* Mobile Cards */}
             <div className="grid gap-3 md:hidden">
-                {sales.map((sale: any) => (
-                    <SalesCard
-                        key={sale._id}
-                        sale={sale}
-                        onInvoice={setSelectedSale}
-                        onDelivery={items => setDelivery({ items })}
-                    />
-                ))}
+                {
+                    isLoading ? (<TableSkeleton row={5} />)
+                        : isError ? (
+                            <div className="p-4 text-red-600">{(error as any)?.data?.message || 'Error loading sales'}</div>
+                        ) : sales?.length === 0 ? (
+                            <p className="text-center text-gray-500 py-4">No sales found.</p>
+                        ) : (
+                            sales.map((sale: any) => (
+                                <SalesCard
+                                    key={sale._id}
+                                    sale={sale}
+                                    onInvoice={setSelectedSale}
+                                    setDelivery={setDelivery}
+                                />
+                            ))
+                        )
+                }
             </div>
 
 
@@ -170,7 +179,7 @@ const SalesOverviewWithInvoice: React.FC = () => {
             {/* Invoice modal / print area */}
             {selectedSale && <PrintSaleMemoModal sale={selectedSale} onClose={closeInvoice} />}
 
-            <SalesDeliveryModal item={delivery} deliveryModalClose={deliveryModalClose} />
+            <SalesDeliveryEntry item={delivery} deliveryModalClose={deliveryModalClose} />
 
         </div>
     );

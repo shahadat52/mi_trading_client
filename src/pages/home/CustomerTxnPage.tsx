@@ -1,17 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import TableSkeleton from '../../components/table/TableSkeleton';
 import ErrorBoundary from '../../components/ErrorBoundary';
 import { useForm, type FieldValues } from 'react-hook-form';
 import SelectField from '../../components/form/SelectField';
 import { customerTxnType } from '../../utils/transactionType';
 import { toast } from 'react-toastify';
-import { useCustomerTxnEntryMutation, useGetAllTxnByCustomerQuery } from '../../redux/features/customer/customerApi';
+import { useCustomerTxnEntryMutation, useDeleteCustomerTxnMutation, useGetAllTxnByCustomerQuery } from '../../redux/features/customer/customerApi';
 import InputField from '../../components/form/InputFields';
 import Modal from '../../components/Modal';
 import EditCustomerTxn from './EditCustomerTxn';
 import FileUploadField from '../../components/form/FileUploadField';
+import { MdDelete } from 'react-icons/md';
+import { useAppSelector } from '../../redux/hook';
 
 const CustomerTxnPage = () => {
     const { id } = useParams();
@@ -21,8 +23,10 @@ const CustomerTxnPage = () => {
     const { control, handleSubmit, reset } = useForm()
     const { data, isLoading, isError, } = useGetAllTxnByCustomerQuery({ id });
     const [customerTxnEntry] = useCustomerTxnEntryMutation()
-
-
+    const navigate = useNavigate();
+    const user = useAppSelector((state) => state?.auth?.auth?.user)
+    const txns = data?.data
+    console.log(txns)
     const onSubmit = async (data: FieldValues) => {
         const toastId = toast.loading("Processing...");
         const transactionTime = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Dhaka' });
@@ -32,6 +36,7 @@ const CustomerTxnPage = () => {
             setLoading(true);
 
             const result = await customerTxnEntry(data);
+            console.log(result)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
 
@@ -46,6 +51,36 @@ const CustomerTxnPage = () => {
             setLoading(false);
         }
     };
+
+
+
+    const [deleteCustomer] = useDeleteCustomerTxnMutation()
+    const handleDelete = async (id: string) => {
+        const isConfirm = confirm("ডিলিট করেই দেবেন?")
+        if (!isConfirm) {
+            return
+        }
+        const toastId = toast.loading("Processing...", { autoClose: 2000 });
+        try {
+
+            const result = await deleteCustomer(id)
+            console.log(result)
+            if (result?.data?.success) {
+                toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
+                navigate('/')
+            } else {
+                toast.update(toastId, { render: `${(result as any)?.error?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
+                setLoading(false);
+            }
+        } catch (err: any) {
+            toast.update(toastId, { render: err?.error?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
+
+        } finally {
+            /* empty */
+        }
+
+    }
+
 
     const handleSelectedTxn = (id: string) => {
         setSelectedTxn(id)
@@ -94,7 +129,22 @@ const CustomerTxnPage = () => {
                         control={control}
                     />
 
-                    <FileUploadField control={control} name='img' label='ছবি' />
+                    {/* image and delete */}
+                    <div className='flex justify-between mx-4 items-center'>
+                        <FileUploadField control={control} name='img' label='ছবি' />
+
+                        <div>
+                            {
+                                user?.role === 'admin' ?
+                                    <p
+                                        onClick={() => handleDelete((id as string))}
+                                        className='text-4xl text-red-600'
+                                    >
+                                        <MdDelete />
+                                    </p> : <></>
+                            }
+                        </div>
+                    </div>
                     <button
                         type="submit"
                         disabled={loading}
@@ -182,7 +232,7 @@ const CustomerTxnPage = () => {
 
             {/* ================= Fixed Total ================= */}
             <div className="fixed bottom-[60px] left-0 w-full  px-3">
-                <div className="mx-auto  bg-[#e5efd5]   py-4 text-sm">
+                <div className="mx-auto  bg-[#e5efd5]   py-4 text-sm px-2">
                     <div className="grid  grid-cols-3 justify-between">
                         <span className="col-span-2 text-red-600 font-medium">
                             মোট
@@ -198,6 +248,13 @@ const CustomerTxnPage = () => {
             <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
                 <EditCustomerTxn onClose={() => setIsOpen(false)} id={selectedTxn} />
             </Modal>
+
+            {/* {showModal && (
+                <ConfirmDelete
+                    onConfirm={handleDelete}
+                    onCancel={() => setShowModal(false)}
+                />
+            )} */}
         </div >
     );
 };

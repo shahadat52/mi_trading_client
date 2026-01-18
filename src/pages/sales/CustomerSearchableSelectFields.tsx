@@ -35,7 +35,7 @@ const CustomerSearchableSelectFields = () => {
     return (
         <div className="relative w-full">
             <label className="mb-1 block text-sm font-medium text-gray-700">
-                Customer
+                কাস্টমার
             </label>
 
             <input

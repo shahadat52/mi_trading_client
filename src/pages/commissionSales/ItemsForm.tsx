@@ -68,7 +68,7 @@ const ItemsForm = () => {
                                                 dispatch(
                                                     updateItem({
                                                         index,
-                                                        item: { product: p.name }
+                                                        item: { product: p.name, lot: p.lot }
                                                     })
                                                 );
                                                 setOpenDropdownIndex(null);
@@ -170,6 +170,7 @@ const ItemsForm = () => {
                         addItem({
                             product: "",
                             quantity: 1,
+                            lot: 1,
                             salesPrice: 0,
                             commissionRatePercent: 0,
                             total: 0

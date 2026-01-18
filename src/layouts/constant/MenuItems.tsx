@@ -7,7 +7,10 @@ import {
     MdAccountBalance,
     MdMoneyOff,
 } from "react-icons/md";
+// import partners from '../../../public/partners.png'
+import { CgProfile } from "react-icons/cg";
 import { BiSolidPurchaseTag } from "react-icons/bi";
+import { FaPeopleCarryBox } from "react-icons/fa6";
 
 export const getMenuItems = (role?: string) => {
     const isAdmin = role === "admin" || role === "superAdmin";
@@ -58,12 +61,27 @@ export const getMenuItems = (role?: string) => {
                 { name: "Invoices", path: "/expenses/invoices" },
             ],
         },
+        {
+            name: "Profile",
+            icon: <CgProfile size={20} />,
+            subItems: [
+                { name: "My Profile", path: "/profile" },
+            ],
+        },
 
         // ✅ Admin / Super Admin only
         ...(isAdmin
             ? [
+
                 {
-                    name: "Accounts Module",
+                    name: "Customer & Supplier",
+                    icon: <FaPeopleCarryBox size={20} />,
+                    subItems: [
+                        { name: "দেখুন", path: "/partners" }
+                    ],
+                },
+                {
+                    name: "Banks Module",
                     icon: <MdAccountBalance size={20} />,
                     subItems: [
                         { name: "একাউন্ট বিবরণী", path: "/accounts" },
@@ -81,7 +99,12 @@ export const getMenuItems = (role?: string) => {
                 {
                     name: "Dashboard",
                     icon: <MdDashboard size={20} />,
-                    subItems: [{ name: "Report", path: "/reports" }],
+                    subItems: [
+                        { name: "Report", path: "dashboard" },
+                        { name: "Pending Approvals", path: "dashboard/approvals" },
+                        { name: "User management", path: "dashboard/users" },
+                        { name: "User Register", path: "register" }
+                    ],
                 },
             ]
             : []),

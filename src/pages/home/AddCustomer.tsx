@@ -4,18 +4,23 @@ import { useForm, type FieldValues } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { useAddCustomerMutation } from '../../redux/features/customer/customerApi';
 import { useState } from 'react';
+import SelectField from '../../components/form/SelectField';
 
 const AddCustomer = ({ onClose }: { onClose: () => void }) => {
     const [loading, setLoading] = useState(false)
-    const { control, handleSubmit, reset } = useForm();
+    const { control, handleSubmit, reset, watch } = useForm();
     const [AddCustomer] = useAddCustomerMutation()
+
+    const previousDue = watch('previousDue');
     const onSubmit = async (data: FieldValues) => {
         const toastId = toast.loading("Processing...");
+        data.date = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Dhaka' }))
 
         try {
             setLoading(true);
 
             const result = await AddCustomer(data);
+            console.log(result)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
 
@@ -31,8 +36,8 @@ const AddCustomer = ({ onClose }: { onClose: () => void }) => {
         }
     };
     return (
-        <div className='p-4'>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+        <div className='h-auto'>
+            <form onSubmit={handleSubmit(onSubmit)} className="">
 
                 <InputField
                     name="name"
@@ -63,10 +68,24 @@ const AddCustomer = ({ onClose }: { onClose: () => void }) => {
                     control={control}
                 />
 
+                {/* previousDue থাকলে type দেখাবে */}
+                {previousDue && Number(previousDue) > 0 && (
+                    <SelectField
+                        label="পাওনার ধরন"
+                        name="type"
+                        options={[
+                            { label: 'পাবো', value: 'credit' },
+                            { label: 'দিবো', value: 'debit' }
+                        ]}
+                        control={control}
+                        rules={{ required: "পাওনার ধরন সিলেক্ট করুন" }}
+                    />
+                )}
+
                 <button
                     type="submit"
                     disabled={loading}
-                    className="btn btn-primary w-full mt-2"
+                    className="btn btn-primary w-full p-2 mb-4"
                 >
                     {loading ? (
                         <span className="loading loading-dots loading-lg"></span>

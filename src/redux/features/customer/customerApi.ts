@@ -11,16 +11,26 @@ const authApi = baseApi.injectEndpoints({
                     body: incomeData,
                 }
             ),
-            invalidatesTags: ['Customer']
+            invalidatesTags: ['Customer', 'CustomerTxn']
         }),
         getAllCustomers: builder.query({
             query: (query) => (
+                console.log(query),
                 new URLSearchParams(query).toString(),
                 {
                     url: `/customer?${new URLSearchParams(query).toString()}`,
                     method: 'GET',
                 }),
             providesTags: ['Customer']
+        }),
+        updateCustomerData: builder.mutation({
+            query: (updatedData) => (
+                {
+                    url: `/customer/${updatedData.id}`,
+                    method: 'PATCH',
+                    body: updatedData.data
+                }),
+            invalidatesTags: ['CustomerTxn', 'Customer']
         }),
 
         customerTxnEntry: builder.mutation({
@@ -31,11 +41,12 @@ const authApi = baseApi.injectEndpoints({
                     body: txnData,
                 }
             ),
-            invalidatesTags: ['CustomerTxn']
+            invalidatesTags: ['CustomerTxn', 'Customer']
         }),
 
         getAllCustomerTxn: builder.query({
             query: (query) => (
+                console.log(query),
                 new URLSearchParams(query).toString(),
                 {
                     url: `/customerTxn?${new URLSearchParams(query).toString()}`,
@@ -60,7 +71,18 @@ const authApi = baseApi.injectEndpoints({
                     method: 'PATCH',
                     body: updatedData.data
                 }),
-            invalidatesTags: ['CustomerTxn']
+            invalidatesTags: ['CustomerTxn', 'Customer']
+        }),
+
+        deleteCustomerTxn: builder.mutation({
+            query: (id) => (
+                console.log(id),
+                {
+                    url: `/customer/${id}`,
+                    method: 'DELETE',
+                    body: id.data
+                }),
+            invalidatesTags: ['CustomerTxn', 'Customer']
         }),
 
 
@@ -68,4 +90,4 @@ const authApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useAddCustomerMutation, useGetAllCustomersQuery, useCustomerTxnEntryMutation, useGetAllCustomerTxnQuery, useGetAllTxnByCustomerQuery, useUpdateCustomerTxnMutation } = authApi
+export const { useAddCustomerMutation, useGetAllCustomersQuery, useUpdateCustomerDataMutation, useCustomerTxnEntryMutation, useGetAllCustomerTxnQuery, useGetAllTxnByCustomerQuery, useUpdateCustomerTxnMutation, useDeleteCustomerTxnMutation } = authApi

@@ -1,7 +1,7 @@
 import { baseApi } from "../../api/baseApi";
 
 
-const authApi = baseApi.injectEndpoints({
+const purchaseApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         purchaseEntry: builder.mutation({
             query: (purchaseData) => (
@@ -45,6 +45,9 @@ const authApi = baseApi.injectEndpoints({
 
 
 
+
+
+
         deletePurchase: builder.mutation({
             query: (id) => (
                 {
@@ -67,7 +70,16 @@ const authApi = baseApi.injectEndpoints({
             ),
             invalidatesTags: ['Purchase']
         }),
+
+        getPurchaseReports: builder.query({
+            query: (query) => (
+                {
+                    url: `/purchase/reports?startDate=${query.startDate}&endDate=${query.endDate}`,
+                    method: 'GET',
+                }),
+            // providesTags: ['Purchase']
+        }),
     }),
 });
 
-export const { usePurchaseEntryMutation, useGetCommissionPurchasesQuery, useGetAllPurchasesQuery, useGetCommissionPurchaseByIdQuery, useDeletePurchaseMutation, useUpdatePurchaseMutation } = authApi
+export const { usePurchaseEntryMutation, useGetCommissionPurchasesQuery, useGetAllPurchasesQuery, useGetCommissionPurchaseByIdQuery, useDeletePurchaseMutation, useUpdatePurchaseMutation, useGetPurchaseReportsQuery } = purchaseApi

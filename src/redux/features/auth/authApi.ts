@@ -48,7 +48,9 @@ const authApi = baseApi.injectEndpoints({
                     url: '/users',
                     method: 'GET',
                 }
-            )
+            ),
+            providesTags: ['User']
+
         }),
 
         /* Get My Data */
@@ -70,9 +72,25 @@ const authApi = baseApi.injectEndpoints({
                     method: 'PATCH',
                     body: userData
                 }
-            )
+            ),
+            invalidatesTags: ['User']
         }),
+
+        updateRole: builder.mutation({
+            query: (data) => (
+                console.log(data),
+                {
+                    url: `/users/role/${data.id}`,
+                    method: 'PATCH',
+                    body: { role: data.role }
+                }
+            ),
+            invalidatesTags: ['User']
+        }),
+
+
+
     }),
 });
 
-export const { useRegisterMutation, useLoginMutation, useOtpVerifyMutation, useGetAllUsersQuery, useGetMyDataQuery, useUpdateUserMutation } = authApi
+export const { useRegisterMutation, useLoginMutation, useOtpVerifyMutation, useGetAllUsersQuery, useGetMyDataQuery, useUpdateUserMutation, useUpdateRoleMutation } = authApi

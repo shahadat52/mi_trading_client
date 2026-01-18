@@ -5,7 +5,6 @@ import { FaEnvelope, FaFacebookF, FaWhatsapp } from 'react-icons/fa';
 
 const MemoLayout: React.FC<{ sale: any | null; onClose: () => void }> = ({ sale, onClose }) => {
     if (!sale) return null;
-    console.log({ sale })
     return (
         <div>
             {

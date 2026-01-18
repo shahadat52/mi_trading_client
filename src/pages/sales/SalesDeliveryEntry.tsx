@@ -11,9 +11,8 @@ type SalesDeliveryModalProps = {
     deliveryModalClose: () => void;
 };
 
-export const SalesDeliveryModal = ({ item, deliveryModalClose }: SalesDeliveryModalProps) => {
+export const SalesDeliveryEntry = ({ item, deliveryModalClose }: SalesDeliveryModalProps) => {
     const [loading, setLoading] = useState(false);
-
     const { register, handleSubmit, reset } = useForm({
         defaultValues: item,
     });
@@ -49,8 +48,8 @@ export const SalesDeliveryModal = ({ item, deliveryModalClose }: SalesDeliveryMo
     if (!item) return null;
 
     return (
-        <div className="fixed inset-0 h-screen py-2 bg-black/50 flex justify-center z-50">
-            <div className="bg-white h-auto p-5 rounded shadow-lg w-96">
+        <div className="fixed inset-0 h-screen py-2 bg-black/50 flex justify-center items-center z-50">
+            <div className="bg-white h-[60%] p-5 rounded-2xl shadow-lg w-96">
                 <h2 className="text-lg font-semibold mb-4">ডেলিভারির তথ্য দাও</h2>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 text-sm">

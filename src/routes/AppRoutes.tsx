@@ -13,9 +13,8 @@ import OtpVerification from "../pages/OtpVerifyPage";
 import PrivateRoute from "./PrivateRoute";
 import ErrorBoundary from "../components/ErrorBoundary";
 import SalesEntryPage from "../pages/sales/SalesEntryPage";
-import PrintableInvoice from "../components/table/PrintableInvoice";
 import SalesOverviewTable from "../pages/sales/SalesOverviewTable";
-import CommissionSupplierPage from "../pages/commissionSales/CommissionSupplierPage";
+import CommissionSuppliersPage from "../pages/commissionSales/CommissionSuppliersPage";
 import DeliveryPage from "../redux/delivery/DeliveryPage";
 import ProfilePage from "../pages/profile/ProfilePage";
 import PurchaseOverviewTable from "../pages/purchase/PurchaseOverviewTable";
@@ -26,6 +25,10 @@ import OutstandingTxnPage from "../pages/accounts/OutstandingTxnPage";
 import SupplierWisePurchasePage from "../pages/commissionSales/SupplierWisePurchasePage";
 import SupplierWiseSalesPage from "../pages/commissionSales/SupplierWiseSalesPage";
 import DashboardPage from "../pages/dashboard/DashboardPage";
+import PendingApprovalsPage from "../pages/dashboard/PendingApprovals/PendingApprovalsPage";
+import CouthaPage from "../pages/commissionSales/Coutha/CouthaPage";
+import UserManagementPage from "../pages/dashboard/userManagement/UserManagementPage";
+import PartnersPage from "../pages/partners/PartnersPage";
 
 export const router = createBrowserRouter([
     {
@@ -69,7 +72,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "commission-sales",
-                element: <CommissionSupplierPage />,
+                element: <CommissionSuppliersPage />,
             },
             {
                 path: "commission-purchase/:id",
@@ -78,6 +81,10 @@ export const router = createBrowserRouter([
             {
                 path: "commission-sales/:id",
                 element: <SupplierWiseSalesPage />,
+            },
+            {
+                path: 'coutha/:id',
+                element: <CouthaPage />
             },
             {
                 path: "deliveries",
@@ -93,17 +100,6 @@ export const router = createBrowserRouter([
                 element: <SalesEntryPage />,
             },
             {
-                path: "sales/print/:id",
-                loader: async ({ params }) => {
-                    const res = await fetch(
-                        `http://localhost:5000/api/v1/sales/${params.id}`
-                    );
-                    const data = await res.json();
-                    return data;
-                },
-                element: <PrintableInvoice />,
-            },
-            {
                 path: "income",
                 element: <PrivateRoute><IncomePage /></PrivateRoute>,
             },
@@ -113,11 +109,19 @@ export const router = createBrowserRouter([
             },
             {
                 path: "reports",
-                element: <ReportsPage />,
+                element: < DashboardPage />,
             },
             {
                 path: 'dashboard',
-                element: <DashboardPage />,
+                element: <ReportsPage />
+            },
+            {
+                path: "/dashboard/approvals",
+                element: <PrivateRoute><PendingApprovalsPage /></PrivateRoute>,
+            },
+            {
+                path: '/partners',
+                element: <PrivateRoute><PartnersPage /></PrivateRoute>
             },
             {
                 path: "accounts",
@@ -130,6 +134,10 @@ export const router = createBrowserRouter([
             {
                 path: "transaction/:id",
                 element: <PrivateRoute><TransactionTable /></PrivateRoute>
+            },
+            {
+                path: "dashboard/users",
+                element: <PrivateRoute><UserManagementPage /></PrivateRoute>
             }
         ],
     },

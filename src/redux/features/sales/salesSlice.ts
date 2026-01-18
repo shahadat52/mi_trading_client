@@ -16,7 +16,6 @@ const salesSlice = createSlice({
     initialState,
     reducers: {
         setCustomer(state, action: PayloadAction<string>) {
-            console.log(action)
             state.customer = action.payload;
         },
         resetForm() {

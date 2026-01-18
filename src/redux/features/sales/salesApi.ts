@@ -25,9 +25,8 @@ const authApi = baseApi.injectEndpoints({
 
         getSalesReport: builder.query({
             query: (query) => ({
-                url: '/sales/report',
+                url: `/sales/reports?startDate=${query.startDate}&endDate=${query.endDate}`,
                 method: 'GET',
-                body: query
             })
 
         }),

@@ -6,7 +6,6 @@ import { formatDateTime } from '../../utils/formatDateTime';
 const OutstandingTxnPage = () => {
     const { data, isLoading, isError } = useGetAllOutstandingTxnQuery(undefined);
     const outstandingTxns = data?.data;
-    console.log(outstandingTxns)
     return (
         <div className="grid lg:grid-cols-3  sm:grid-cols-1 gap-4 font-semibold p-2 mb-18">
             {

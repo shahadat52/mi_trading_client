@@ -26,16 +26,10 @@ const Button = ({ children, onClick, className = "", ...props }: any) => (
     </button>
 );
 
-const CommissionSupplierPage = () => {
+const CommissionSuppliersPage = () => {
     // Pagination & Filters
     const [page, setPage] = useState(1);
-    // const [limit, setLimit] = useState(10);
-    // const [search, setSearch] = useState("");
     const [sortBy] = useState("createdAt");
-    // const [order, setOrder] = useState<"asc" | "desc">("asc");
-    // const [dateFrom, setDateFrom] = useState("");
-    // const [dateTo, setDateTo] = useState("");
-    // const [category, setCategory] = useState("All");
 
     // Modal States
     const [isProductModalOpen, setIsProductModalOpen] = useState(false);
@@ -61,10 +55,8 @@ const CommissionSupplierPage = () => {
     const totalPages = Math.ceil(total / PAGE_LIMIT);
 
     const handleDeleteConfirm = async (id: string) => {
-        console.log(id)
         try {
-            const result = await deleteSupplier(id).unwrap();
-            console.log(result);
+            await deleteSupplier(id).unwrap();
             setDeleteItem(null);
         } catch (err) {
             console.error(err);
@@ -72,82 +64,13 @@ const CommissionSupplierPage = () => {
         }
     };
 
-    // const handleSearchSubmit = (e: React.FormEvent) => {
-    //     e.preventDefault();
-    //     setPage(1);
-    // };
 
-    // const clearFilters = () => {
-    //     setSearch("");
-    //     setDateFrom("");
-    //     setDateTo("");
-    //     setPage(1);
-    //     setCategory("All");
-    // };
 
     if (isError) return <ErrorBoundary />;
 
     return (
         <div className="p-4 space-y-6">
-            {/* Filter & Search */}
-            {/* <form
-                onSubmit={handleSearchSubmit}
-                className="flex flex-col md:flex-row gap-4 justify-between items-center"
-            >
-                <div className="flex flex-wrap gap-2 items-center">
-                    <input
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        placeholder="Search customer, invoice, or phone..."
-                        className="border rounded px-3 py-2 text-sm w-80 focus:ring-1 focus:ring-blue-500"
-                    />
-                    <input
-                        type="date"
-                        value={dateFrom}
-                        onChange={(e) => setDateFrom(e.target.value)}
-                        className="border rounded px-3 py-2 text-sm"
-                    />
-                    <input
-                        type="date"
-                        value={dateTo}
-                        onChange={(e) => setDateTo(e.target.value)}
-                        className="border rounded px-3 py-2 text-sm"
-                    />
 
-                </div>
-
-                <div className="flex justify-between gap-5">
-                    <Button
-                        className="border"
-                        onClick={() => setOrder(order === "asc" ? "desc" : "asc")}
-                    >
-                        {order === "asc" ? "Ascending" : "Descending"}
-                    </Button>
-                    <select
-                        value={limit}
-                        onChange={(e) => {
-                            setLimit(Number(e.target.value));
-                            setPage(1);
-                        }}
-                        className="border rounded px-3 py-2 text-sm"
-                    >
-                        {[5, 10, 25, 50, 100].map((n) => (
-                            <option key={n} value={n}>
-                                {n}
-                            </option>
-                        ))}
-                    </select>
-
-                </div>
-                <div>
-                    <Button className="bg-blue-600 text-white" type="submit">
-                        Search
-                    </Button>
-                    <Button className="border text-gray-700" type="button" onClick={clearFilters}>
-                        Clear
-                    </Button>
-                </div>
-            </form> */}
 
             {/* Action Buttons */}
             <div className="flex flex-wrap gap-2">
@@ -236,9 +159,13 @@ const CommissionSupplierPage = () => {
 
             {/* Mobile Cards */}
             <div className="md:hidden space-y-4">
-                {suppliers?.map((item: any, idx: number) => (
+                {isLoading ? (<TableSkeleton row={1} />) : (suppliers?.length === 0 ? (
+                    <div className="text-center py-8">
+                        <p className="text-gray-500">কোনো সাপ্লাইয়ার ডেটা পাওয়া যায়নি।</p>
+                    </div>
+                ) : suppliers?.map((item: any, idx: number) => (
                     <div key={idx} className="bg-white shadow rounded-lg p-4 space-y-2">
-                        <div className="font-medium text-lg">{item.name} - {item.phone}</div>
+                        <div className="font-medium text-lg text-black">{item.name} - {item.phone}</div>
                         <div className="flex gap-2">
                             <NavLink
                                 to={`/commission-purchase/${item._id}`}
@@ -262,6 +189,7 @@ const CommissionSupplierPage = () => {
                             </Button>
                         </div>
                     </div>
+                )
                 ))}
             </div>
 
@@ -316,4 +244,4 @@ const CommissionSupplierPage = () => {
     );
 };
 
-export default CommissionSupplierPage;
+export default CommissionSuppliersPage;

@@ -163,8 +163,8 @@ const PurchaseOverviewTable = () => {
                                             <td className="px-4 py-2 text-sm">{purchase.product.unit}</td>
                                             <td className="px-4 py-2 text-sm">{purchase.purchasePrice}</td>
                                             <td className="px-4 py-2 text-sm">{purchase.product.salesPrice}</td>
-                                            <td className={`px-4 py-2 text-sm ${purchase.stockQty <= 5 ? "text-red-500 font-semibold" : ""}`}>
-                                                {purchase.stockQty}
+                                            <td className={`px-4 py-2 text-sm ${purchase.quantity <= 5 ? "text-red-500 font-semibold" : ""}`}>
+                                                {purchase.quantity}
                                             </td>
                                             <td className="px-4 py-2 text-sm">
                                                 <span className={`px-2 py-1 text-xs rounded ${purchase.isPaid ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}>

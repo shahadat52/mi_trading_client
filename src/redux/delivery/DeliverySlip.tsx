@@ -2,13 +2,17 @@
 import React from 'react';
 import { formatDateTime } from '../../utils/formatDateTime';
 import { QRCodeSVG } from 'qrcode.react';
+import { FaWhatsapp } from 'react-icons/fa';
+import { IoLocationSharp } from 'react-icons/io5';
 
 const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sale, onClose }) => {
     if (!sale) return null;
+    const products = sale?.sales?.items;
+    console.log(products)
     return (
-        <div className="fixed inset-0 z-50 flex  items-start justify-center overflow-auto  bg-black/40 min-h-screen  p-4 ">
+        <div className="fixed inset-0 z-50 flex  items-start justify-center overflow-auto  bg-black/40 min-h-screen   ">
 
-            <div className=" border max-w-[500px] rounded  overflow-auto print-area w-[490px] bg-white  border-black shadow-lg ">
+            <div className=" border max-w-[400px] rounded  overflow-auto print-area w-[490px] bg-white  border-black shadow-lg ">
 
                 <div className=' shadow shadow-blue-900   '>
                     {/* Header Section */}
@@ -18,10 +22,11 @@ const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sal
                         </div>
                         <div className='col-span-8'>
                             <p className="text-xs italic my-2">বিসমিল্লাহির রাহমানির রাহিম</p>
-                            <h1 className="text-red-400 text-2xl font-bold">মেসার্স এম.আই ট্রেডিং</h1>
+                            <h1 className="text-red-700 text-2xl font-bold">মেসার্স এম.আই ট্রেডিং</h1>
                             <h2 className="text-orange-400  text-xl font-serif italic">M/S. M.I TRADING</h2>
                             <p className="text-sm">জেনারেল মার্চেন্ট এন্ড কমিশন এজেন্ট</p>
-                            <p className="text-[10px] mt-1 mb-4">২০২ নং খাতুনগঞ্জ, কোতোয়ালী, চট্টগ্রাম। ফোন: ০২৩-৩৩৩৫৮৯৯</p>
+                            <p className="text-xs  flex items-center justify-center"> <IoLocationSharp /> ২০২ নং খাতুনগঞ্জ, কোতোয়ালী, চট্টগ্রাম। </p>
+
                         </div>
                         <div className="col-span-2  my-auto py-4 bg-blue-800 text-white text-[12px] font-semibold  rounded-l-full shadow-2xl shadow-black">
                             ডেলিভারী <br /> চালান
@@ -51,28 +56,39 @@ const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sal
                         <table className="w-full border-collapse border-y  ">
                             <thead className=''>
                                 <tr className=" bg-orange-400 grid grid-cols-3 text-white text-xs">
-                                    <th className="col-span-2 border-r border-gray-200 p-1 ">মালের বিবরণ</th>
+                                    <th className="col-span-2  p-1 border-r border-gray-900 ">মালের বিবরণ</th>
                                     <th className="col-span-1 border-r border-gray-200 p-1 ">পরিমাণ</th>
                                 </tr>
                             </thead>
-                            <tbody className=" my-section  h-64 align-top overflow-hidden">
+                            <tbody className=" my-section   h-64 align-top overflow-hidden">
 
 
-
+                                {/* 
                                 {/* Actual table rows */}
-                                <tr className="grid grid-cols-3 text-center border-gray-100">
-                                    <td className="col-span-2 border-r h-full border-gray-300 p-2">
-                                        {sale.description}
-                                    </td>
-                                    <td className="col-span-1 border-r border-gray-300 p-2 ">{sale?.quantity} {sale?.units}</td>
-                                </tr>
+
+
+                                {products?.map((ite: any, idx: number) => (
+                                    <tr key={idx} className="grid grid-cols-3 text-center">
+                                        <td className="col-span-2 border-r h-64  border-gray-900 p-2">
+                                            {ite?.product}
+                                        </td>
+                                        <td className="col-span-1 border-r border-gray-300 p-2 ">{ite?.quantity} {sale?.units}</td>
+                                    </tr>
+                                ))}
                             </tbody>
+
+                            <tfoot>
+                                <tr className=" bg-blue-700 grid grid-cols-3 text-white text-xs">
+                                    <th className="col-span-2  p-1 border-r border-gray-900 text-end ">মোটঃ</th>
+                                    <th className="col-span-1 border-r border-gray-200 p-1 ">10 বস্তা</th>
+                                </tr>
+                            </tfoot>
 
                         </table>
                     </div>
 
                     {/* Footer Section */}
-                    <div className="bg-white p-1  mx-[6px]">
+                    <div className="bg-white p-1  ">
                         <div className="flex justify-center items-center text-[10px] my-1">
 
                             <div className="border border-red-600 p-1 text-red-600 leading-tight">
@@ -86,13 +102,19 @@ const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sal
 
                             {/* Contact Info */}
                             <div className="text-[10px] leading-tight">
-                                <p className="flex items-center gap-1">
-                                    <span>📞</span>
-                                    <span>01842-753607, 01707-753607</span>
-                                </p>
+                                <div className="text-[14px] mt-2  text-center text-white">
+                                    <span className='flex justify-center '> <span className='my-auto text-green-600 text-xl'><FaWhatsapp /></span>
+                                        <span className='text-[12px]'>
+                                            <span className='flex'>
+                                                01842753607,<img src="/bkash_nogod_logo.png" alt="My Logo" className='w-8 h-4 pl-1 my-auto mr-1' /> 01707753607, 01841753607
+                                            </span>
+                                        </span>
+                                    </span>
+
+                                </div>
                                 <p className="flex items-center gap-1 mt-[2px]">
-                                    <span>✉</span>
-                                    <span>mitrading.202ktg@gmail.com</span>
+                                    <span><img src="/communication.png" alt="My Logo" className='w-6 h-5 pl-1 my-auto' /></span>
+                                    <span className='text-sm'>mitrading.202ktg@gmail.com</span>
                                 </p>
                             </div>
 
@@ -105,9 +127,6 @@ const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sal
                                     fgColor="#000000"
                                     level="H"
                                 />
-                                <span className="text-[8px] text-blue-900 mt-[2px] font-semibold">
-                                    Whatsapp
-                                </span>
                             </div>
 
                         </div>

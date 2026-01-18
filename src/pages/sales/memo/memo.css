@@ -15,3 +15,14 @@
     display: none !important;
   }
 }
+
+
+  .vertical-text {
+    writing-mode: vertical-rl;
+    margin: 4px;
+  }
+
+  .vertical-text-up {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }

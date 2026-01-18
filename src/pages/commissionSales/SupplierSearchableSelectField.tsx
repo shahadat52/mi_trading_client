@@ -23,7 +23,6 @@ const SupplierSearchableSelectField = () => {
         { search: debouncedSearch, limit: 20, type: 'commission' },
         { skip: !open }
     );
-    console.log(data)
 
     const suppliers: Product[] = data?.data ?? [];
 

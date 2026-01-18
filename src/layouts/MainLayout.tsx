@@ -33,7 +33,7 @@ const MainLayout = () => {
                             <MdMenu size={24} />
                         </button>
                         <h1 className="text-lg font-semibold tracking-wide">
-                            M/S M.I Trading ERP
+                            M/S.M.I Trading
                         </h1>
                     </div>
 

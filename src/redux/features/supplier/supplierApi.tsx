@@ -32,7 +32,15 @@ const authApi = baseApi.injectEndpoints({
                 }),
             providesTags: ['Supplier']
         }),
-
+        updateSupplierData: builder.mutation({
+            query: (updatedData) => (
+                {
+                    url: `/suppliers/${updatedData.id}`,
+                    method: 'PATCH',
+                    body: updatedData.data
+                }),
+            invalidatesTags: ['Supplier']
+        }),
         deleteSupplier: builder.mutation({
             query: (id) => (
                 {
@@ -46,4 +54,4 @@ const authApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useAddSupplierMutation, useGetAllSuppliersQuery, useGetAllSuppliersNameQuery, useDeleteSupplierMutation } = authApi
+export const { useAddSupplierMutation, useGetAllSuppliersQuery, useGetAllSuppliersNameQuery, useUpdateSupplierDataMutation, useDeleteSupplierMutation } = authApi

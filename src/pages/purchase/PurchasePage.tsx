@@ -8,7 +8,7 @@ const PurchasePage = () => {
     const [addSupplierModalCont, setAddSupplierModalCont] = useState(false);
     return (
         <div>
-            <div className="flex justify-end my-4 gap-2">
+            <div className="flex justify-end my-4 gap-2 mr-2">
                 <button
                     onClick={() => setAddProductModalCont(true)}
                     className="inline-flex h-10 px-4 items-center justify-center rounded-md bg-neutral-950 font-medium text-neutral-50 transition active:scale-110 ">

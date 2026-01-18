@@ -1,4 +1,7 @@
 import { QRCodeSVG } from "qrcode.react";
+import { engNumberToBanglaWords } from "../../../utils/engNumberToBanglaWords";
+import { FaWhatsapp } from "react-icons/fa";
+import { IoLocationSharp } from "react-icons/io5";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const PaidMemo = ({ sale, onClose }: any) => {
@@ -10,34 +13,35 @@ const PaidMemo = ({ sale, onClose }: any) => {
                 <div className=" border max-w-3xl rounded  overflow-auto print-area w-[500px] bg-white  border-gray-300 shadow-lg ">
 
                     {/* Header Section */}
-                    <div className="bg-[#f08c1d] p-4 text-center text-white relative">
-                        <div className="absolute top-4 left-2 p-2 h-20 w-20 flex items-center justify-center font-bold">
-                            <img src="/mi_logo.png" alt="Logo" className='h-16 w-24' />
+                    <div className="bg-[#f08c1d] p-4 text-center text-black relative">
+                        <div className="absolute top-4  left-2 mt-6 h-20 w-20 flex items-center justify-center font-bold">
+                            <img src="/mi_logo.png" alt="Logo" className='h-20  w-[100px]' />
                         </div>
                         <p className="text-xs italic mb-2">বিসমিল্লাহির রাহমানির রাহিম</p>
-                        <h1 className="text-red-600 text-2xl font-bold">মেসার্স এম.আই ট্রেডিং</h1>
-                        <h2 className="text-blue-950  text-xl font-serif italic">M/S. M.I TRADING</h2>
+                        <h1 className="text-red-800 text-2xl font-bold">মেসার্স এম.আই ট্রেডিং</h1>
+                        <h2 className="text-blue-950  text-2xl font-serif italic">M/S. M.I TRADING</h2>
                         <p className="text-sm">জেনারেল মার্চেন্ট এন্ড কমিশন এজেন্ট</p>
-                        <p className="text-xs">হলুদ, মরিচ, ধনিয়া, ডাল, মশলা ও যাবতীয় ভুসি মালের আড়ৎ</p>
-                        <p className="text-[10px] mt-1">২০২ নং খাতুনগঞ্জ, কোতোয়ালী, চট্টগ্রাম। ফোন: ০২৩-৩৩৩৫৮৯৯</p>
-                        <div className="absolute top-2 right-2 bg-blue-800 text-white text-xs px-2 py-1 rounded-full">
-                            ক্যাশ মেমো
+                        <p className="text-xs">হলুদ, মরিচ, ধনিয়া, ডাল, মশলা ও যাবতীয় ভূষা মালের আড়ৎ</p>
+                        <p className="text-xs  flex items-center justify-center"> <IoLocationSharp /> ২০২ নং খাতুনগঞ্জ, কোতোয়ালী, চট্টগ্রাম। </p>
+
+                        <div className="absolute top-10 right-2 bg-blue-800 text-white text-lg px-2 py-1 rounded-full">
+                            ক্যাশ <br /> মেমো
                         </div>
                     </div>
 
                     {/* Info Section */}
                     <div className="p-4 text-sm">
                         <div className="flex justify-between mb-2">
-                            <div>নং: <span className="shadow px-4 py-1">{sale.invoice}</span></div>
-                            <div className="shadow px-4 py-1">
-                                তারিখ:{new Date(sale.date).toLocaleDateString()}
+                            <div>নং: {sale.invoice}</div>
+                            <div>তারিখ: {new Date(sale.date).toLocaleDateString()}
+
 
                             </div>
                         </div>
-                        <div className='my-4' > নাম: <span className="shadow px-4 py-1">{sale.customer.name}</span> </div>
+                        <div className='my-4' > নাম: {sale?.customer?.name}</div>
                         <div className="flex justify-between">
-                            <div >ঠিকানা: <span className="shadow px-4 py-1 ">{sale.customer.address}</span></div>
-                            <div className="w-1/3 text-right">মোবা:  <span className="shadow px-4 py-1 mb-2">{sale.customer.phone}</span></div>
+                            <div >ঠিকানা:{sale?.customer?.address}</div>
+                            <div className="w-1/3">মোবা: {sale?.customer?.phone} </div>
                         </div>
                     </div>
 
@@ -63,50 +67,60 @@ const PaidMemo = ({ sale, onClose }: any) => {
                                         {p.product.name} {" "}  {p.quantity} {p.product.unit}
                                     </td>
                                     <td className="border-r border-gray-300 p-2 ">{p.product.salesPrice}</td>
-                                    <td className="p-2">{p.totalPrice} </td>
+                                    <td className="text-left p-2">{p.totalPrice} </td>
                                 </tr>
                             ))}
                         </tbody>
                         <tfoot>
                             <tr className=" border-t border-gray-400 bg-blue-900 text-white">
-                                <td colSpan={3} className="text-right px-2 py-1 font-bold">মোট</td>
-                                <td className="p-1 pl-3">{sale?.grandTotal}</td>
+                                <td colSpan={2} className="text-center px-2 py-1 font-"><span>কথায়ঃ {engNumberToBanglaWords(sale?.grandTotal)}</span></td>
+                                <td className="p-1 ">  <span>মোটঃ</span></td>
+                                <td className="p-1 ">  <span> {(sale?.grandTotal)} </span></td>
                             </tr>
                         </tfoot>
                     </table>
 
                     {/* Footer Section */}
-                    <div className="">
-                        <div className="flex justify-between items-end text-[10px] mb-8">
-                            <div className="text-center">
-                                <div className="border-t border-dashed border-gray-400 pt-1">ক্রেতার স্বাক্ষর</div>
-                            </div>
-                            <div className="border border-red-600 p-1 text-red-600 leading-tight">
-                                <p>■ বিক্রিত মাল ফেরত নেওয়া হয় না।</p>
-                                <p>■ ডেলিভারী মাল না পাইলে ফোন করুন।</p>
-                            </div>
-                            <div className="text-center">
-                                <div className="border-t border-dashed border-gray-400 pt-1">চৌথাকারীর স্বাক্ষর</div>
-                            </div>
-                        </div>
+                    <div >
 
-                        {/* Bottom Contact Info */}
-                        <div className="bg-blue-950 text-white p-2 flex justify-between items-center rounded-b-lg">
-                            <div className="text-[10px]">
-                                <p>📞 01842-753607, 01707-753607</p>
-                                <p>✉ mitrading.202ktg@gmail.com</p>
+                        <div className="flex justify-between items-center m-1">
+                            <div>
+                                <p className="text-[12px] mt-6 border-t-2">ক্রেতার স্বাক্ষর</p>
                             </div>
-                            <div className="flex flex-col items-center bg-white  p-1 shadow-sm">
-                                <QRCodeSVG
-                                    value="https://www.facebook.com/profile.php?id=100057298125999"
-                                    size={48}
-                                    bgColor="#ffffff"
-                                    fgColor="#000000"
-                                    level="H"
-                                />
-                                <span className="text-[8px] text-blue-900 mt-[2px] font-semibold">
-                                    Facebook
-                                </span>
+                            <div className=" p-1 text-white border-1 border-red-700  ">
+                                <p className="text-cyan-600">■ বিক্রিত মাল ফেরত নেওয়া হয় না।</p>
+                                <p className="text-red-600">■ ডেলিভারী মাল না পাইলে ফোন করুন।</p>
+                            </div>
+
+                            <p className="text-[12px] mt-6 border-t-2">চৌথাকারীর স্বাক্ষর</p>
+
+                        </div>
+                        {/* Bottom Contact Info */}
+                        <div className="bg-blue-950 text-white p-2 flex flex-col   rounded-b-lg">
+
+
+                            <div className="flex justify-between items-center">
+                                <div>
+                                    <span className='flex flex-col '>
+                                        <div className='flex flex-row '>
+                                            <span className='my-auto text-green-600 text-xl'><FaWhatsapp /></span>  01842753607,<img src="/bkash_nogod_logo.png" alt="My Logo" className='w-8 h-4 pl-1 my-auto' /> 01707753607, 01841753607
+                                        </div>
+                                        <p className="flex flex-row gap-2">
+                                            <img src="/communication.png" alt="My Logo" className='w-6 h-[22px] pl-1 my-auto' /> mitrading.202ktg@gmail.com
+                                        </p>
+
+
+                                    </span>
+                                </div>
+                                <div className="flex flex-col items-center bg-white  p-1 shadow-sm">
+                                    <QRCodeSVG
+                                        value="https://www.facebook.com/profile.php?id=100057298125999"
+                                        size={48}
+                                        bgColor="#ffffff"
+                                        fgColor="#000000"
+                                        level="H"
+                                    />
+                                </div>
                             </div>
 
                         </div>

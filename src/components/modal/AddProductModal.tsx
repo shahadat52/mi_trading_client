@@ -42,7 +42,6 @@ export const AddProductModal = ({ setAddProductModalCont }: any) => {
             setLoading(true);
 
             const result = await addProduct(data);
-            console.log(result)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
 
