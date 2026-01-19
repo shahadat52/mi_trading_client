@@ -14,6 +14,7 @@ import { FaPeopleCarryBox } from "react-icons/fa6";
 
 export const getMenuItems = (role?: string) => {
     const isAdmin = role === "admin" || role === "superAdmin";
+    const isSpecial = role === 'specialManager'
 
     const menuItems = [
         {
@@ -68,6 +69,16 @@ export const getMenuItems = (role?: string) => {
                 { name: "My Profile", path: "/profile" },
             ],
         },
+
+        ...(isSpecial ? [
+            {
+                name: "Customer & Supplier",
+                icon: <FaPeopleCarryBox size={20} />,
+                subItems: [
+                    { name: "দেখুন", path: "/partners" }
+                ],
+            },
+        ] : []),
 
         // ✅ Admin / Super Admin only
         ...(isAdmin

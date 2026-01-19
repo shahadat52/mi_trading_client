@@ -2,7 +2,7 @@
 
 import { toast } from 'react-toastify';
 import TableSkeleton from '../../../components/table/TableSkeleton';
-import { useGetAllUsersQuery, useUpdateRoleMutation } from '../../../redux/features/auth/authApi';
+import { useGetAllUsersQuery, useUpdateRoleMutation, useUpdateStatusMutation } from '../../../redux/features/auth/authApi';
 import UserTable, { type TUser } from './UserTable';
 import { usersTableHeads } from './usersTableHeads';
 
@@ -16,6 +16,28 @@ const UserManagementPage = () => {
         try {
 
             const result = await updateRole({ role, id: id })
+            if (result?.data?.success) {
+                toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
+
+
+            } else {
+                toast.update(toastId, { render: `${(result as any)?.error?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
+
+            }
+        } catch (err: any) {
+            toast.update(toastId, { render: err?.error?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
+
+        } finally {
+            // reset()
+        }
+    };
+
+    const [updateStatus] = useUpdateStatusMutation()
+    const handleStatus = async (id: string, status: string) => {
+        const toastId = toast.loading("Processing...", { autoClose: 2000 });
+        try {
+
+            const result = await updateStatus({ status, id: id })
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
 
@@ -81,7 +103,7 @@ const UserManagementPage = () => {
                     users?.map((user: TUser) => (
                         <div
                             key={user?._id}
-                            className="bg-white border border-gray-200 rounded-xl shadow-sm p-5 hover:shadow-md transition"
+                            className={`${user?.status === 'blocked' ? 'text-red-600 border border-red-600' : 'text-gray-800 border border-gray-200'} bg-white border border-gray-200 rounded-xl shadow-sm p-5 hover:shadow-md transition`}
                         >
                             {/* Header */}
                             <div className="flex items-center justify-between mb-4">
@@ -94,12 +116,12 @@ const UserManagementPage = () => {
                                     </div>
 
                                     {/* Name & Meta */}
-                                    <div>
-                                        <h3 className="text-base font-semibold text-gray-800">
+                                    <div className={`text-base font-semibold ${user?.status === 'blocked' ? 'text-red-600' : 'text-gray-800'}`}>
+                                        <h3>
                                             {user?.name}
                                         </h3>
-                                        <p className="text-xs text-gray-500">
-                                            User Information
+                                        <p className="text-xs">
+                                            {user?.status}
                                         </p>
                                     </div>
                                 </div>
@@ -113,15 +135,15 @@ const UserManagementPage = () => {
                             {/* Body */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
                                 <div>
-                                    <p className="text-gray-500">Phone</p>
-                                    <p className="font-medium text-gray-800">
+                                    <p className="">Phone</p>
+                                    <p className="font-medium ">
                                         {user?.phone || '—'}
                                     </p>
                                 </div>
 
                                 <div>
-                                    <p className="text-gray-500">Email</p>
-                                    <p className="font-medium text-gray-800 break-all">
+                                    <p className="">Email</p>
+                                    <p className="font-medium break-all">
                                         {user?.email || '—'}
                                     </p>
                                 </div>
@@ -129,8 +151,8 @@ const UserManagementPage = () => {
 
                             {/* Divider */}
 
-                            {/* Role Update */}
-                            <div className="flex flex-col gap-2">
+                            {/* Role and status Update */}
+                            <div className="flex gap-2">
 
 
                                 <select
@@ -142,7 +164,24 @@ const UserManagementPage = () => {
                                     <option value="admin">Admin</option>
                                     <option value="manager">Manager</option>
                                     <option value="employee">Employee</option>
+                                    <option value="specialManager">Special Manager</option>
+                                    <option value="salesManager">Sales Manager</option>
+                                    <option value="purchaseManager">Purchase Manager</option>
+                                    <option value="deliveryManager">Delivery Manager</option>
+                                    <option value="commissionManager">Commission Manager</option>
+                                    <option value="employee">Employee</option>
                                 </select>
+                                <select
+                                    defaultValue={user?.status}
+                                    className="select select-bordered w-full mt-2"
+                                    onChange={(e) => handleStatus(user?._id, e.target.value)}
+                                >
+                                    <option disabled>Select Status</option>
+                                    <option value="active">Active</option>
+                                    <option value="blocked">Blocked</option>
+                                </select>
+
+
                             </div>
                         </div>
                     ))

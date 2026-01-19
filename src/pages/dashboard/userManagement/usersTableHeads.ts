@@ -3,5 +3,6 @@ export const usersTableHeads = [
     "phone",
     "Email",
     "Role",
-    "Action"
+    "Action",
+    "Status"
 ];

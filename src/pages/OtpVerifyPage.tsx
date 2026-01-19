@@ -59,7 +59,7 @@ const OtpVerification: React.FC = () => {
             if (token) {
                 dispatch(setUser({ user, token }));
                 setLoading(false);
-                navigate("/");
+                navigate("/", { replace: true });
             }
         }
         if (res?.error) {
