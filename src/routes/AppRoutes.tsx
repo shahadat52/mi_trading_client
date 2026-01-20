@@ -29,6 +29,7 @@ import PendingApprovalsPage from "../pages/dashboard/PendingApprovals/PendingApp
 import CouthaPage from "../pages/commissionSales/Coutha/CouthaPage";
 import UserManagementPage from "../pages/dashboard/userManagement/UserManagementPage";
 import PartnersPage from "../pages/partners/PartnersPage";
+import SupplierTxnPage from "../pages/home/SupplierTxnPage";
 
 export const router = createBrowserRouter([
     {
@@ -57,6 +58,10 @@ export const router = createBrowserRouter([
             {
                 path: "customerTxn/:id",
                 element: <PrivateRoute><CustomerTxnPage /></PrivateRoute>
+            },
+            {
+                path: "supplierTxn/:id",
+                element: <PrivateRoute><SupplierTxnPage /></PrivateRoute>
             },
             {
                 path: "stock",

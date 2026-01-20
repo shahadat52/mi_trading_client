@@ -166,7 +166,7 @@ const CommissionSalesEntry: React.FC<CommissionSalesEntryProps> = ({ onClose }) 
             <ItemsForm />
 
             {/* Submit */}
-            <div className="flex justify-end">
+            <div className="flex justify-end mb-20">
                 <button
                     type="submit"
                     className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"

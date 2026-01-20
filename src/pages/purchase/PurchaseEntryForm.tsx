@@ -18,18 +18,7 @@ import './purchase.css'
 // 
 
 const PurchaseEntryForm = () => {
-    const { control, handleSubmit, reset } = useForm<TPurchase>({
-        defaultValues: {
-            supplier: "",
-            product: "",
-            lot: "",
-            purchasePrice: 0,
-            purchaseDate: new Date(),
-            commissionPerUnit: 0,
-            stockQty: 0
-
-        },
-    });
+    const { control, handleSubmit, register, reset } = useForm<TPurchase>();
 
     const [loading, setLoading] = useState(false);
 
@@ -102,8 +91,8 @@ const PurchaseEntryForm = () => {
                 control={control}
                 type="datetime-local"
             />
-            <InputField name="purchasePrice" label="দাম" control={control} type="number" rules={{ required: "Required" }} />
-            <InputField name="quantity" label="সংখ্যা" control={control} type="number" />
+            <input {...register("purchasePrice")} placeholder="ক্রয় মূল্য" type="number" className="input" />
+            <input {...register("quantity")} placeholder="পরিমাণ" type="number" className="input" />
 
             <TextAreaField
                 name='note'

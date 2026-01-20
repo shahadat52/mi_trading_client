@@ -12,7 +12,6 @@ const SuppliersPage = () => {
 
     const { data, isLoading, isError, error } = useGetAllSuppliersQuery(undefined)
     const suppliers = data?.data;
-    console.log(suppliers)
     return (
         <div>
             {

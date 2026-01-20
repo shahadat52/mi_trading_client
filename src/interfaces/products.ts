@@ -43,7 +43,7 @@ export interface TPurchase {
     commissionPerUnit?: number;
     totalCommission?: number;
     dueAmount?: number;
-    stockQty: number;
+    quantity: number;
     lot: string
     purchaseDate?: Date | undefined;
     invoice: string;

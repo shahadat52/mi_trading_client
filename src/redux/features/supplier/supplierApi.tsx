@@ -1,7 +1,7 @@
 import { baseApi } from "../../api/baseApi";
 
 
-const authApi = baseApi.injectEndpoints({
+const supplierApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         addSupplier: builder.mutation({
             query: (supplierData) => (
@@ -51,7 +51,8 @@ const authApi = baseApi.injectEndpoints({
             ),
             invalidatesTags: ['Supplier']
         }),
+
     }),
 });
 
-export const { useAddSupplierMutation, useGetAllSuppliersQuery, useGetAllSuppliersNameQuery, useUpdateSupplierDataMutation, useDeleteSupplierMutation } = authApi
+export const { useAddSupplierMutation, useGetAllSuppliersQuery, useGetAllSuppliersNameQuery, useUpdateSupplierDataMutation, useDeleteSupplierMutation } = supplierApi

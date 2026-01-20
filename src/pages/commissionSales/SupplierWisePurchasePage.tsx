@@ -14,10 +14,8 @@ const SupplierWisePurchasePage = () => {
     const [selectedItem, setSelectedItem] = useState<any>(null);
 
     const tableHeads = ["Product", "Lot", "Quantity", "Date", "Rate", "Action"];
-    console.log({ selectedItem })
     const { data, isLoading, isError } = useGetCommissionProductsQuery(id);
     const commissionProducts = data?.data;
-    console.log({ commissionProducts })
 
     // ---- Loading ----
     if (isLoading) {

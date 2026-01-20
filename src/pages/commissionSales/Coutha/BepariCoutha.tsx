@@ -5,17 +5,19 @@ import { useGetCommissionSalesSupplierLotWiseQuery } from "../../../redux/featur
 import { FaWhatsapp } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import { FaSquareFacebook } from "react-icons/fa6";
+import type { TBepariCoutha } from "./coutha";
 
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type Props = {
-    settlement: any;
+    settlement: TBepariCoutha;
     onClose: () => void;
 };
 
 const BepariCoutha = ({ settlement, onClose }: Props) => {
-    const { data } = useGetCommissionSalesSupplierLotWiseQuery({ supplier: settlement.supplier._id, lot: settlement.lot })
+    const { data } = useGetCommissionSalesSupplierLotWiseQuery({ supplier: settlement?.supplier._id, lot: settlement?.lot })
     const sales = data?.data || []
+    const totalSales = sales?.map((sale: any) => (sale?.items?.total)).reduce((sum: number, item: number) => sum + item, 0);
     return (
         <div
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 overflow-auto "
@@ -94,10 +96,10 @@ const BepariCoutha = ({ settlement, onClose }: Props) => {
                         <div className="col-span-2 border-r-2 border-gray-700 bg-green-100">
                             <p className="print-bg border-1 border-black text-black font-bold text-center">জমা</p>
 
-                            <p className="text-center underline text-sm font-semibold">{sales[0]?.items?.product} </p>
+                            <p className="text-black text-center underline text-sm font-semibold">{sales[0]?.items?.product} </p>
                             {
                                 sales?.map((sale: any, idx: number) =>
-                                (<div key={idx} className="sale-bg flex border-b p-1  gap-2">
+                                (<div key={idx} className="text-black flex border-b p-1  gap-2">
                                     <p className="w-[10%]"></p>
                                     <p>{sale?.items?.quantity} X</p>
                                     <p>{sale?.items?.salesPrice} = </p>
@@ -105,6 +107,7 @@ const BepariCoutha = ({ settlement, onClose }: Props) => {
                                 </div>)
                                 )
                             }
+                            <p className="text-black text-center"> Total = {totalSales}</p>
                         </div>
                         <div className="col-span-1 bg-red-100">
                             <p className="print-bg border-1  border-black text-black font-bold text-center">খরচ</p>

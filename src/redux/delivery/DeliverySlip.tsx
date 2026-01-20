@@ -8,7 +8,6 @@ import { IoLocationSharp } from 'react-icons/io5';
 const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sale, onClose }) => {
     if (!sale) return null;
     const products = sale?.sales?.items;
-    console.log(products)
     return (
         <div className="fixed inset-0 z-50 flex  items-start justify-center overflow-auto  bg-black/40 min-h-screen   ">
 

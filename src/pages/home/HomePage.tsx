@@ -5,29 +5,21 @@ import {
     FaChartLine,
     FaTruck,
     FaMoneyBillWave,
-    FaChevronRight,
-
 } from "react-icons/fa";
-import { IoPersonAddSharp } from "react-icons/io5";
 import { MdOutlinePayment } from "react-icons/md";
-import { BsPersonCircle } from "react-icons/bs";
 import { FcSalesPerformance } from "react-icons/fc";
 import { PiBatteryVerticalLowBold, PiChartLineDownBold } from "react-icons/pi";
 import { GiProfit } from "react-icons/gi";
 import { NavLink } from "react-router-dom";
-import { useGetAllCustomersQuery, useGetAllCustomerTxnQuery } from "../../redux/features/customer/customerApi";
+import { useGetAllCustomerTxnQuery } from "../../redux/features/customer/customerApi";
 import { useState } from "react";
-import Modal from "../../components/Modal";
-import AddCustomer from "./AddCustomer";
-import { useDebounce } from "../../utils/useDebounce";
+import Customers from "./Customers";
+import Suppliers from "./Suppliers";
 
-
+type ApprovalType = "customer" | "supplier";
 const HomePage = () => {
-    const [isOpen, setIsOpen] = useState(false)
-    const [search, setSearch] = useState('')
-    const debounceSearch = useDebounce(search.trim(), 1000);
-    const { data: customerTxns } = useGetAllCustomerTxnQuery(undefined);
-    const { data, isLoading } = useGetAllCustomersQuery({ search: debounceSearch });
+    const [activeTab, setActiveTab] = useState<'customer' | 'supplier'>('customer');
+    const { data, isLoading } = useGetAllCustomerTxnQuery(undefined);
     const menuItems = [
         { path: "/sales/entry", label: "Sales Entry", icon: <FaShoppingCart /> },
         { path: "/purchase/entry", label: "Purchase Entry", icon: <FaClipboardList /> },
@@ -51,34 +43,11 @@ const HomePage = () => {
         { path: "*", label: "ক্যাশ", icon: <MdOutlinePayment /> },
     ];
 
-    const transactions = customerTxns?.data
-    const totalDebit = transactions?.filter((txn: any) => (txn.type === 'debit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0)
-    const totalCredit = transactions?.filter((txn: any) => (txn.type === 'credit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0);
-    const balance = totalDebit - totalCredit || 0;
+    const customerTxns = data?.data
+    const totalDebit = customerTxns?.filter((txn: any) => (txn.type === 'debit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0)
+    const totalCredit = customerTxns?.filter((txn: any) => (txn.type === 'credit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0);
 
-    console.log({ totalCredit, totalDebit, balance })
 
-    const customers = data?.data
-    console.log(customers)
-
-    // const totalDebit = customerTxn?.data?.reduce((total: number, customer: any) => {
-    //     const debitSum = customer?.transactions?
-    //         .filter((txn: any) => txn.type === "debit")
-    //         .reduce((sum: number, txn: any) => sum + txn.amount, 0);
-
-    //     return total + debitSum;
-    // }, 0);
-
-    // const totalCredit = customerTxn?.data?.reduce((total: number, customer: any) => {
-    //     const debitSum = customer?.transactions
-    //         .filter((txn: any) => txn.type === "credit")
-    //         .reduce((sum: number, txn: any) => sum + txn.amount, 0);
-
-    //     return total + debitSum;
-    // }, 0);
-
-    // console.log({ totalDebit, totalCredit })
-    // const balance = totalDebit - totalCredit || 0;
 
     return (
         <div className="bg-[#eaf2ee]">
@@ -163,76 +132,45 @@ const HomePage = () => {
                 }
             </div>
 
-            <div className="rounded-2xl border mt-[-30px] border-white/20  bg-white/10 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.25)] p-6 md:hidden lg:hidden flex gap-4 mx-auto  justify-around  rounded-t-4xl h-80  ">
-                <div className="text-red-600">
-
-                    <p className="text-[30px] font-semibold">{isLoading ? 0 : totalCredit} ৳</p>
-                    <p className="text-[25px] font-semibold">মোট পাবো</p>
-                </div>
-                <div className="bg-black w-[1px]"></div>
-                <div className="text-green-600">
-                    <p className="text-[30px] font-semibold">{isLoading ? 0 : totalDebit} ৳</p>
-                    <p className="text-[25px] font-semibold">মোট দেবো</p>
-                </div>
-            </div>
+            <div className="rounded-2xl border mt-[-30px] border-white/20  bg-white/10 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.25)] p-6 md:hidden lg:hidden   rounded-t-4xl h-80  ">
 
 
-            <div className=" rounded-2xl border border-white/20  bg-white/10 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.25)] p-2 relative lg:hidden md:hidden sm:flex  items-center justify-between  rounded-t-4xl  mt-[-180px]  ">
-                <input
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    type="text"
-                    placeholder="কাস্টমার খুঁজুন..."
-                    className=" input input-md max-w-[80%] bg-white ml-1 rounded-full mt-8  "
-                />
-                {/* <p className="sticky ml-1 px-1 mt-2 text-xl font-semibold">কাস্টমার <span className="px-4">{customers?.length}</span> জন</p> */}
-                <div className="">
+                <div className="flex items-center justify-around mt-4 mb-10">
+                    <div className="text-red-600">
 
-                    <div className="flex items-center justify-end w-full">
-                        <button
-                            onClick={() => setIsOpen(true)}
-                            className="  text-4xl flex  px-4 rounded"
-                        >
-                            <p className="   bg-red-600 text-white   rounded-full w-auto p-3"> <IoPersonAddSharp /></p>
-                        </button>
+                        <p className="text-[30px] font-semibold">{isLoading ? 0 : totalCredit} ৳</p>
+                        <p className="text-[25px] font-semibold">মোট পাবো</p>
                     </div>
-
-
-                </div>
-                <div>
-                    <p>Customers: {customers?.length}</p>
-                </div>
-                <div className="flex flex-col gap-4 mb-18">
-
-                    {
-                        customers?.map((customer: any, idx: number) => (
-                            <NavLink to={`/customerTxn/${customer._id}`} key={customer._id} className="p-2 shadow m-1 rounded">
-                                <div className="flex justify-between items-center">
-
-                                    <div className="flex items-center">
-                                        <div className="flex gap-1 items-center">
-                                            <p className="text-[20px] mr-3 text-orange-500">{idx + 1}</p>
-                                            <p className="text-[30px] mr-3 text-orange-500"><BsPersonCircle /></p>
-                                        </div>
-                                        <div>
-                                            <p className="text-[18px] font-semibold">{customer.name}</p>
-
-                                        </div>
-                                    </div>
-                                    <div className="flex gap-2 items-center">
-                                        <p>কাস্টমার</p>
-                                        <span><FaChevronRight /></span>
-                                    </div>
-                                </div>
-                            </NavLink>
-                        ))
-                    }
+                    <div className="bg-black w-[1px]"></div>
+                    <div className="text-green-600">
+                        <p className="text-[30px] font-semibold">{isLoading ? 0 : totalDebit} ৳</p>
+                        <p className="text-[25px] font-semibold">মোট দেবো</p>
+                    </div>
                 </div>
 
+                <div className="absolute top-1 left-1 flex gap-3 border-b">
+                    {["customer", "supplier"].map((tab) => (
+                        <button
+                            key={tab}
+                            onClick={() => setActiveTab(tab as ApprovalType)}
+                            className={`px-1 py-2 text-sm font-medium border-b-2 transition
+              ${activeTab === tab
+                                    ? "border-blue-600 text-blue-600"
+                                    : "border-transparent text-gray-500 hover:text-gray-700"
+                                }`}
+                        >
+                            {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                        </button>
+                    ))}
+                </div>
             </div>
-            <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-                <AddCustomer onClose={() => setIsOpen(false)} />
-            </Modal>
+
+
+            {
+                activeTab === 'customer' ? <Customers /> : <Suppliers />
+            }
+
+
 
         </div>
     );

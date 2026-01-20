@@ -15,7 +15,6 @@ const authApi = baseApi.injectEndpoints({
         }),
         getAllCustomers: builder.query({
             query: (query) => (
-                console.log(query),
                 new URLSearchParams(query).toString(),
                 {
                     url: `/customer?${new URLSearchParams(query).toString()}`,
@@ -46,7 +45,6 @@ const authApi = baseApi.injectEndpoints({
 
         getAllCustomerTxn: builder.query({
             query: (query) => (
-                console.log(query),
                 new URLSearchParams(query).toString(),
                 {
                     url: `/customerTxn?${new URLSearchParams(query).toString()}`,
@@ -76,7 +74,6 @@ const authApi = baseApi.injectEndpoints({
 
         deleteCustomerTxn: builder.mutation({
             query: (id) => (
-                console.log(id),
                 {
                     url: `/customer/${id}`,
                     method: 'DELETE',

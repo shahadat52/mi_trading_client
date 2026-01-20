@@ -78,7 +78,6 @@ const authApi = baseApi.injectEndpoints({
 
         updateRole: builder.mutation({
             query: (data) => (
-                console.log(data),
                 {
                     url: `/users/role/${data.id}`,
                     method: 'PATCH',

@@ -3,8 +3,8 @@
 import { useParams } from 'react-router';
 import { useGetAllSettlementsOfSupplierQuery } from '../../../redux/features/settlement/settlementApi';
 import { useState } from 'react';
-import BepariCoutha from './BepariCoutha';
 import { GrUpdate } from 'react-icons/gr';
+import BepariCoutha from './BepariCoutha.tsx'
 import Modal from '../../../components/Modal';
 import BepariCouthaUpdateEntry from './BepariCouthaUpdateEntry';
 
@@ -15,7 +15,6 @@ const CouthaPage = () => {
     const { data } = useGetAllSettlementsOfSupplierQuery(id)
     const [selectedSettlement, setSelectedSettlement] = useState(null)
     const settlements = data?.data || [];
-    console.log(settlements)
 
 
 

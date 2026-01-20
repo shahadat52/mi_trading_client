@@ -1,40 +1,41 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
-import TableSkeleton from '../../components/table/TableSkeleton';
-import ErrorBoundary from '../../components/ErrorBoundary';
-import { useForm, type FieldValues } from 'react-hook-form';
-import SelectField from '../../components/form/SelectField';
-import { customerTxnType } from '../../utils/transactionType';
-import { toast } from 'react-toastify';
-import { useCustomerTxnEntryMutation, useDeleteCustomerTxnMutation, useGetAllTxnByCustomerQuery } from '../../redux/features/customer/customerApi';
-import InputField from '../../components/form/InputFields';
-import Modal from '../../components/Modal';
-import EditCustomerTxn from './EditCustomerTxn';
-import FileUploadField from '../../components/form/FileUploadField';
-import { MdDelete } from 'react-icons/md';
-import { useAppSelector } from '../../redux/hook';
+import { useState } from "react";
+import { useForm, type FieldValues } from "react-hook-form";
+import { useNavigate, useParams } from "react-router";
+import { useAppSelector } from "../../redux/hook";
+import { toast } from "react-toastify";
+import SelectField from "../../components/form/SelectField";
+import { customerTxnType } from "../../utils/transactionType";
+import InputField from "../../components/form/InputFields";
+import FileUploadField from "../../components/form/FileUploadField";
+import { MdDelete } from "react-icons/md";
+import TableSkeleton from "../../components/table/TableSkeleton";
+import ErrorBoundary from "../../components/ErrorBoundary";
+import Modal from "../../components/Modal";
+import { useDeleteSupplierTxnMutation, useGetSpecificSupplierTxnQuery, useSupplierTxnEntryMutation } from "../../redux/features/supplierTxn/supplierTxnApi";
+import EditSupplierTxn from "./EditSupplierTxn";
 
-const CustomerTxnPage = () => {
+const SupplierTxnPage = () => {
+
     const { id } = useParams();
     const [isOpen, setIsOpen] = useState(false)
     const [selectedTxn, setSelectedTxn] = useState('')
     const [loading, setLoading] = useState(false)
     const { control, handleSubmit, reset } = useForm()
-    const { data, isLoading, isError, } = useGetAllTxnByCustomerQuery({ id });
-    const [customerTxnEntry] = useCustomerTxnEntryMutation()
+    const [supplierTxnEntry] = useSupplierTxnEntryMutation()
     const navigate = useNavigate();
     const user = useAppSelector((state) => state?.auth?.auth?.user)
+    const { data, isLoading, isError, } = useGetSpecificSupplierTxnQuery({ id });
 
     const onSubmit = async (data: FieldValues) => {
         const toastId = toast.loading("Processing...");
         const transactionTime = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Dhaka' });
         data.date = transactionTime
-        data.customer = id
+        data.supplier = id
         try {
             setLoading(true);
 
-            const result = await customerTxnEntry(data);
+            const result = await supplierTxnEntry(data);
+            console.log(result)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
 
@@ -51,8 +52,7 @@ const CustomerTxnPage = () => {
     };
 
 
-
-    const [deleteCustomer] = useDeleteCustomerTxnMutation()
+    const [deleteSupplierTxn] = useDeleteSupplierTxnMutation()
     const handleDelete = async (id: string) => {
         const isConfirm = confirm("ডিলিট করেই দেবেন?")
         if (!isConfirm) {
@@ -61,7 +61,7 @@ const CustomerTxnPage = () => {
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
         try {
 
-            const result = await deleteCustomer(id)
+            const result = await deleteSupplierTxn(id)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
                 navigate('/')
@@ -87,9 +87,9 @@ const CustomerTxnPage = () => {
     const transactions = data?.data
     const totalDebit = transactions?.filter((txn: any) => (txn.type === 'debit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0)
     const totalCredit = transactions?.filter((txn: any) => (txn.type === 'credit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0)
+    console.log({ transactions })
     return (
-        <div className=''>
-
+        <div>
             {/*Transaction entry section */}
             <div className="sticky flex flex-col lg:flex-row gap-2 mb-2 p-1 ">
                 <form onSubmit={handleSubmit(onSubmit)} className="">
@@ -243,10 +243,10 @@ const CustomerTxnPage = () => {
             </div>
 
             <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-                <EditCustomerTxn onClose={() => setIsOpen(false)} id={selectedTxn} />
+                <EditSupplierTxn onClose={() => setIsOpen(false)} id={selectedTxn} />
             </Modal>
-        </div >
+        </div>
     );
 };
 
-export default CustomerTxnPage;
+export default SupplierTxnPage;

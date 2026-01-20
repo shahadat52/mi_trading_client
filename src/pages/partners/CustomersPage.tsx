@@ -12,7 +12,6 @@ const CustomersPage = () => {
 
     const { data, isLoading, isError, error } = useGetAllCustomersQuery(undefined)
     const customers = data?.data;
-    console.log(customers)
     return (
         <div>
             {
