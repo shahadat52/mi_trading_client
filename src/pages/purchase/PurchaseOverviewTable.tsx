@@ -17,7 +17,7 @@ const PurchaseOverviewTable = () => {
     const [limit, setLimit] = useState<number>(10);
     const [search, setSearch] = useState<string>('');
     const [sortBy, setSortBy] = useState<string>('createdAt');
-    const [order, setOrder] = useState('asc');
+    const [order, setOrder] = useState('desc');
     const [dateFrom, setDateFrom] = useState<string>('');
     const [dateTo, setDateTo] = useState<string>('');
     const [category, setCategory] = useState<string>('All')

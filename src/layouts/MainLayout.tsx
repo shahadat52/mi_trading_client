@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { MdMenu } from "react-icons/md";
-import { Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import MainLayoutSidebar from "./MainLayoutSidebar";
 import MobileNavbar from "../components/MobileNavbar";
+import { FaShoppingCart } from "react-icons/fa";
+import { useAppSelector } from "../redux/hook";
 
 const MainLayout = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar open state
+    const cart = useAppSelector((state) => state.cart)
 
 
     return (
@@ -36,7 +39,7 @@ const MainLayout = () => {
                             M/S.M.I Trading
                         </h1>
                     </div>
-
+                    <NavLink to={'/cart'}><span className="text-blue-300 ">{cart?.items?.length}</span><FaShoppingCart size={30} className=" mb-2" /></NavLink>
                 </header>
 
                 {/* Page Content */}

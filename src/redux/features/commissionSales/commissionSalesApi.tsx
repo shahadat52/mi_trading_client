@@ -28,7 +28,7 @@ const commissionSalesApi = baseApi.injectEndpoints({
         getCommissionSalesSupplierLotWise: builder.query({
             query: (query) => (
                 {
-                    url: `/commissionSales/supplierLot/?supplier=${query.supplier}&lot=${query.lot}`,
+                    url: `/commissionSales/couthaOf/?couthaOf=${query.couthaOf}`,
                     method: 'GET',
 
                 }),

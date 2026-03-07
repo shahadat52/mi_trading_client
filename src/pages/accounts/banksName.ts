@@ -1,22 +1,25 @@
 export const banksName = [
     // রাষ্ট্রায়ত্ত বাণিজ্যিক ব্যাংক
+    { label: 'ইসলামী ব্যাংক বাংলাদেশ', value: 'Islami Bank Bangladesh' },
+    { label: 'আল-আরাফাহ ইসলামী ব্যাংক', value: 'Al-Arafah Islami Bank' },
+    { label: 'ফার্স্ট সিকিউরিটি ইসলামী ব্যাংক', value: 'First Security Islami Bank' },
+    { label: 'আইএফআইসি ব্যাংক', value: 'IFIC Bank' },
+    { label: 'ইউনাইটেড কমার্শিয়াল ব্যাংক (UCB)', value: 'UCB' },
+    { label: 'ডাচ-বাংলা ব্যাংক', value: 'Dutch-Bangla Bank' },
+    { label: 'ব্র্যাক ব্যাংক', value: 'BRAC Bank' },
+    { label: 'বেসিক ব্যাংক', value: 'BASIC Bank' },
     { label: 'সোনালী ব্যাংক', value: 'Sonali Bank' },
     { label: 'জনতা ব্যাংক', value: 'Janata Bank' },
     { label: 'অগ্রণী ব্যাংক', value: 'Agrani Bank' },
     { label: 'রূপালী ব্যাংক', value: 'Rupali Bank' },
-    { label: 'বেসিক ব্যাংক', value: 'BASIC Bank' },
     { label: 'বাংলাদেশ ডেভেলপমেন্ট ব্যাংক', value: 'BDBL' },
 
     // বেসরকারি বাণিজ্যিক ব্যাংক (প্রচলিত)
-    { label: 'ব্র্যাক ব্যাংক', value: 'BRAC Bank' },
-    { label: 'ডাচ-বাংলা ব্যাংক', value: 'Dutch-Bangla Bank' },
     { label: 'দি সিটি ব্যাংক', value: 'The City Bank' },
     { label: 'ইস্টার্ন ব্যাংক', value: 'Eastern Bank' },
     { label: 'মিউচুয়াল ট্রাস্ট ব্যাংক', value: 'Mutual Trust Bank' },
     { label: 'প্রাইম ব্যাংক', value: 'Prime Bank' },
-    { label: 'ইউনাইটেড কমার্শিয়াল ব্যাংক (UCB)', value: 'UCB' },
     { label: 'এবি ব্যাংক', value: 'AB Bank' },
-    { label: 'আইএফআইসি ব্যাংক', value: 'IFIC Bank' },
     { label: 'ব্যাংক এশিয়া', value: 'Bank Asia' },
     { label: 'ঢাকা ব্যাংক', value: 'Dhaka Bank' },
     { label: 'মার্কেন্টাইল ব্যাংক', value: 'Mercantile Bank' },
@@ -29,12 +32,9 @@ export const banksName = [
     { label: 'এনসিসি ব্যাংক', value: 'NCC Bank' },
 
     // ইসলামী শরীয়াহ ভিত্তিক ব্যাংক
-    { label: 'ইসলামী ব্যাংক বাংলাদেশ', value: 'Islami Bank Bangladesh' },
-    { label: 'আল-আরাফাহ ইসলামী ব্যাংক', value: 'Al-Arafah Islami Bank' },
     { label: 'সোশ্যাল ইসলামী ব্যাংক', value: 'Social Islami Bank' },
     { label: 'এক্সিম ব্যাংক', value: 'EXIM Bank' },
     { label: 'শাহ্জালাল ইসলামী ব্যাংক', value: 'Shahjalal Islami Bank' },
-    { label: 'ফার্স্ট সিকিউরিটি ইসলামী ব্যাংক', value: 'First Security Islami Bank' },
     { label: 'ইউনিয়ন ব্যাংক', value: 'Union Bank' },
     { label: 'গ্লোবাল ইসলামী ব্যাংক', value: 'Global Islami Bank' },
 

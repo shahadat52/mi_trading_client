@@ -1,6 +1,6 @@
 import SalesOverviewWithInvoice from "./SalesOverviewWithInvoice";
 
-const SalesOverviewTable = () => {
+const SalesOverviewPage = () => {
     return (
         <div>
             <SalesOverviewWithInvoice />
@@ -8,4 +8,4 @@ const SalesOverviewTable = () => {
     );
 };
 
-export default SalesOverviewTable;
+export default SalesOverviewPage;

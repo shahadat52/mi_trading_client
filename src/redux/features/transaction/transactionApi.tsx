@@ -16,7 +16,7 @@ const authApi = baseApi.injectEndpoints({
         }),
 
         getAllTransaction: builder.query({
-            query: (query) => (
+            query: (query: any) => (
                 {
                     url: `/transaction?${new URLSearchParams(query).toString()}`,
                     method: 'GET',

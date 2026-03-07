@@ -43,6 +43,7 @@ export const getMenuItems = (role?: string) => {
             subItems: [
                 { name: "Sales Entry", path: "/sales/entry" },
                 { name: "Sales Overview", path: "/sales/overview" },
+                { name: "Both Sales", path: "/both/sales" },
                 { name: "Commission Sales", path: "/commission-sales" },
             ],
         },
@@ -95,6 +96,7 @@ export const getMenuItems = (role?: string) => {
                     name: "Banks Module",
                     icon: <MdAccountBalance size={20} />,
                     subItems: [
+                        { name: "লেনদেন বিবরণী", path: "/bankTxns" },
                         { name: "একাউন্ট বিবরণী", path: "/accounts" },
                         { name: "অপরিশোধিত লেনদেন", path: "/outstandingTxn" },
                     ],

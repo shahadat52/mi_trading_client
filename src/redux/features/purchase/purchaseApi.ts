@@ -11,7 +11,7 @@ const purchaseApi = baseApi.injectEndpoints({
                     body: purchaseData
                 }
             ),
-            invalidatesTags: ['Purchase']
+            invalidatesTags: ['Purchase', 'Supplier', 'SupplierTxn']
         }),
         getAllPurchases: builder.query({
             query: (query) => (
@@ -30,7 +30,6 @@ const purchaseApi = baseApi.injectEndpoints({
                     url: `/purchase/commissionPurchases?${new URLSearchParams(query).toString()}`,
                     method: 'GET',
                 }),
-            // providesTags: ['']
         }),
 
         getCommissionPurchaseById: builder.query({

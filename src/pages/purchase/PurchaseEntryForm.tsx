@@ -7,7 +7,6 @@ import InputField from "../../components/form/InputFields";
 import { usePurchaseEntryMutation } from "../../redux/features/purchase/purchaseApi";
 import { toast } from "react-toastify";
 import { useGetAllProductNamesQuery } from "../../redux/features/product/productApi";
-import { purchaseTypes } from "../../utils/purchaseTypes";
 import { useGetAllSuppliersNameQuery } from "../../redux/features/supplier/supplierApi";
 import TextAreaField from "../../components/form/TextAreaField";
 import './purchase.css'
@@ -76,13 +75,6 @@ const PurchaseEntryForm = () => {
                 control={control}
                 options={names}
                 rules={{ required: "পণ্য নেই" }}
-            />
-            <SelectField
-                name="purchaseType"
-                label="ক্রয়ের ধরন"
-                control={control}
-                options={purchaseTypes}
-                rules={{ required: "ক্রয়ের ধরন নেই" }}
             />
 
             <InputField

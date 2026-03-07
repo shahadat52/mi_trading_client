@@ -20,6 +20,8 @@ const DeliveryTable: React.FC = () => {
         endDate,
     });
 
+    console.log(data)
+
     const openDeliverySlip = (sale: any) => setSelectedDelivery(sale);
     const closeDeliverySlip = () => setSelectedDelivery(null)
     if (isLoading) {
@@ -31,6 +33,7 @@ const DeliveryTable: React.FC = () => {
     }
 
     const deliveries = data?.data;
+    console.log(deliveries)
 
     return (
         <div className="p-4 sm:p-6">

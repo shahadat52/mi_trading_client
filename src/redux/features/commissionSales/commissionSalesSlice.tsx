@@ -2,10 +2,10 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 interface Item {
     product: string;
-    quantity: number;
-    lot: number;
-    salesPrice: number;
-    commissionRatePercent: number;
+    quantity: number | "";
+    lot: number | "";
+    salesPrice: number | "";
+    commissionRatePercent: number | "";
     total: number;
 }
 
@@ -13,6 +13,7 @@ interface CommissionSales {
     customer: string;
     supplier: string;
     items: Item[];
+    commissionBase: string;
     paymentMethod: string;
     date: string;
     totalAmount?: number;
@@ -23,10 +24,11 @@ interface CommissionSales {
 const initialState: CommissionSales = {
     customer: "",
     supplier: "",
+    commissionBase: 'price',
     items: [],
     paymentMethod: "Cash",
     notes: "",
-    date: "",
+    date: new Date().toISOString().slice(0, 16),
     totalAmount: 0,
     totalCommission: 0
 };
@@ -34,11 +36,20 @@ const initialState: CommissionSales = {
 const calculateTotals = (state: CommissionSales) => {
     state.totalAmount = state.items.reduce((sum, item) => sum + item.total, 0);
 
-    state.totalCommission = state.items.reduce(
-        (sum, item) =>
-            sum + item.quantity * item.salesPrice * (item.commissionRatePercent / 100),
-        0
-    );
+    if (state.commissionBase === 'price') {
+        state.totalCommission = state.items.reduce(
+            (sum, item) =>
+                sum + Number(item.quantity) * Number(item.salesPrice) * (Number(item.commissionRatePercent) / 100),
+            0
+        );
+    }
+    if (state.commissionBase === 'quantity') {
+        state.totalCommission = state.items.reduce(
+            (sum, item) =>
+                sum + Number(item.quantity) * Number(item.commissionRatePercent),
+            0
+        );
+    }
 };
 
 
@@ -52,6 +63,9 @@ const commissionSalesSlice = createSlice({
         setSupplier(state, action: PayloadAction<string>) {
             state.supplier = action.payload;
         },
+        setCommissionBase(state, action: PayloadAction<string>) {
+            state.commissionBase = action.payload
+        },
         addItem(state, action: PayloadAction<Item>) {
             state.items.push(action.payload);
             calculateTotals(state);
@@ -64,7 +78,7 @@ const commissionSalesSlice = createSlice({
 
             // auto calculate total for that item
             const i = state.items[index];
-            i.total = i.quantity * i.salesPrice;
+            i.total = Number(i.quantity) * Number(i.salesPrice);
 
             calculateTotals(state);
         },
@@ -100,8 +114,7 @@ export const {
     updateItem,
     removeItem,
     setPaymentMethod,
-    // setTotalAmount,
-    // setTotalCommission,
+    setCommissionBase,
     setDate,
     setNotes,
     resetForm,

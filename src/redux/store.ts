@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist'
 import authReducer from "./features/auth/authSlice";
 import salesReducer from "./features/sales/salesSlice";
+import cartReducer from "./features/cart/cartSlice";
 import commissionSalesReducer from "./features/commissionSales/commissionSalesSlice";
 import commissionProductReducer from "./features/commissionProduct/commissionProductSlice";
 import storage from 'redux-persist/lib/storage'
@@ -14,10 +15,7 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-    auth: authReducer,
-    // products: productsReducer,
-    // cart: cartReducer,
-    // address: addressReducer,
+    auth: authReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
@@ -27,6 +25,7 @@ export const store = configureStore({
         [baseApi.reducerPath]: baseApi.reducer,
         auth: persistedReducer,
         sales: salesReducer,
+        cart: cartReducer,
         commissionSales: commissionSalesReducer,
         commissionProduct: commissionProductReducer
     },

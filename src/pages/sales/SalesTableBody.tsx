@@ -14,6 +14,7 @@ interface SalesTableBodyProps {
 }
 
 const SalesTableBody: React.FC<SalesTableBodyProps> = ({ row, page, limit, idx, toggleExpand, expandedRows, openInvoice, setDelivery }) => {
+    console.log(row)
     return (
         <React.Fragment key={row._id}>
             <tr className="border-t hover:bg-gray-50 transition-colors">
@@ -68,10 +69,10 @@ const SalesTableBody: React.FC<SalesTableBodyProps> = ({ row, page, limit, idx, 
                                 <tbody className='bg-gray-100 rounded-2xl'>
                                     {row?.items?.map((p: any, i: any) => (
                                         <tr key={i} className="border-t ">
-                                            <td className="p-2">{typeof p.product === 'string' ? p.product : (p.product as any)?.name || (p.product as any)?._id}</td>
+                                            <td className="p-2">{p.name}</td>
                                             <td className="p-2">{p.quantity}</td>
                                             <td className="p-2">{p.salePrice}</td>
-                                            <td className="p-2 text-right">{p.totalPrice}</td>
+                                            <td className="p-2 text-right">{p.quantity * p.salePrice}</td>
                                         </tr>
                                     ))}
                                 </tbody>

@@ -8,6 +8,7 @@ import { IoLocationSharp } from 'react-icons/io5';
 const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sale, onClose }) => {
     if (!sale) return null;
     const products = sale?.sales?.items;
+    console.log(products)
     return (
         <div className="fixed inset-0 z-50 flex  items-start justify-center overflow-auto  bg-black/40 min-h-screen   ">
 
@@ -21,7 +22,7 @@ const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sal
                         </div>
                         <div className='col-span-8'>
                             <p className="text-xs italic my-2">বিসমিল্লাহির রাহমানির রাহিম</p>
-                            <h1 className="text-red-700 text-2xl font-bold">মেসার্স এম.আই ট্রেডিং</h1>
+                            <h1 className="text-red-700 text-[24px] ml-[13px] font-bold">মেসার্স এম.আই ট্রেডিং</h1>
                             <h2 className="text-orange-400  text-xl font-serif italic">M/S. M.I TRADING</h2>
                             <p className="text-sm">জেনারেল মার্চেন্ট এন্ড কমিশন এজেন্ট</p>
                             <p className="text-xs  flex items-center justify-center"> <IoLocationSharp /> ২০২ নং খাতুনগঞ্জ, কোতোয়ালী, চট্টগ্রাম। </p>
@@ -59,7 +60,7 @@ const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sal
                                     <th className="col-span-1 border-r border-gray-200 p-1 ">পরিমাণ</th>
                                 </tr>
                             </thead>
-                            <tbody className=" my-section   h-64 align-top overflow-hidden">
+                            <tbody className=" my-section align-top overflow-hidden">
 
 
                                 {/* 
@@ -68,18 +69,18 @@ const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sal
 
                                 {products?.map((ite: any, idx: number) => (
                                     <tr key={idx} className="grid grid-cols-3 text-center">
-                                        <td className="col-span-2 border-r h-64  border-gray-900 p-2">
-                                            {ite?.product}
+                                        <td className="col-span-2 border-r  border-gray-900 p-2">
+                                            {ite?.name}
                                         </td>
-                                        <td className="col-span-1 border-r border-gray-300 p-2 ">{ite?.quantity} {sale?.units}</td>
+                                        <td className="col-span-1 border-r border-gray-300 p-2 ">{ite?.quantity} {ite?.unit}</td>
                                     </tr>
                                 ))}
                             </tbody>
 
                             <tfoot>
                                 <tr className=" bg-blue-700 grid grid-cols-3 text-white text-xs">
-                                    <th className="col-span-2  p-1 border-r border-gray-900 text-end ">মোটঃ</th>
-                                    <th className="col-span-1 border-r border-gray-200 p-1 ">10 বস্তা</th>
+                                    <th className="col-span-2  p-1 border-r border-gray-900 text-end "></th>
+                                    <th className="col-span-1 border-r border-gray-200 p-1 "></th>
                                 </tr>
                             </tfoot>
 

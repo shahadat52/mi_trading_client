@@ -92,8 +92,8 @@ const TransactionTable = () => {
                                             className="border-t hover:bg-gray-50 transition"
                                         >
                                             <td className="px-4 py-2">
-                                                {new Date(tx.date).toLocaleDateString()} <br />
-                                                {new Date(tx.date).toLocaleTimeString()}
+                                                {new Date(tx.issueDate).toLocaleDateString()} <br />
+                                                {new Date(tx.issueDate).toLocaleTimeString()}
                                             </td>
 
                                             <td className="px-4 py-2">

@@ -2,11 +2,11 @@
 import { NavLink, useParams } from "react-router";
 import TableSkeleton from "../../components/table/TableSkeleton";
 import ErrorBoundary from "../../components/ErrorBoundary";
-import { useGetCommissionProductsQuery } from "../../redux/features/commissionProduct/commissionProductApi";
 import Profile from "../../components/profile/Profile";
 import Modal from "../../components/Modal";
 import CouthaEntry from "./CouthaEntry";
 import { useState } from "react";
+import { useGetCommissionProductsBySupplierQuery } from "../../redux/features/commissionProduct/commissionProductApi";
 
 const SupplierWisePurchasePage = () => {
     const { id } = useParams();
@@ -14,7 +14,7 @@ const SupplierWisePurchasePage = () => {
     const [selectedItem, setSelectedItem] = useState<any>(null);
 
     const tableHeads = ["Product", "Lot", "Quantity", "Date", "Rate", "Action"];
-    const { data, isLoading, isError } = useGetCommissionProductsQuery(id);
+    const { data, isLoading, isError } = useGetCommissionProductsBySupplierQuery(id);
     const commissionProducts = data?.data;
 
     // ---- Loading ----
@@ -155,7 +155,7 @@ const SupplierWisePurchasePage = () => {
             </div>
 
             <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-                <CouthaEntry lot={selectedItem} supplier={id} onClose={() => setIsOpen(false)} />
+                <CouthaEntry selectedItem={selectedItem} supplier={id} onClose={() => setIsOpen(false)} />
             </Modal>
         </div>
     );

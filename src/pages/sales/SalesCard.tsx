@@ -23,6 +23,7 @@ interface Props {
 }
 
 const SalesCard: React.FC<Props> = ({ sale, onInvoice, setDelivery }) => {
+
     return (
         <div className="rounded-lg border bg-white p-4 shadow-sm space-y-2">
             <div className="flex justify-between">

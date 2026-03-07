@@ -1,24 +1,32 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Loading from '../../components/Loading';
-import { useGetAllOutstandingTxnQuery } from '../../redux/features/account/accountApi';
+import { useGetAllOutstandingTxnQuery, useUpdateTxnStatusMutation } from '../../redux/features/account/accountApi';
 import { formatDateTime } from '../../utils/formatDateTime';
 
 const OutstandingTxnPage = () => {
     const { data, isLoading, isError } = useGetAllOutstandingTxnQuery(undefined);
     const outstandingTxns = data?.data;
+    console.log(outstandingTxns)
+
+    const [updateTxnStatus] = useUpdateTxnStatusMutation()
+    const handleStatus = async (status: string, id: string) => {
+        console.log({ status, id })
+        const res = await updateTxnStatus({ status, id })
+        console.log(res)
+    }
     return (
         <div className="grid lg:grid-cols-3  sm:grid-cols-1 gap-4 font-semibold p-2 mb-18">
             {
                 isLoading ? <Loading /> : isError ? <div className="py-10 text-center text-gray-950 text-sm">
-                    No account found.
-                </div> : outstandingTxns?.map((txn: any) => (
-                    <div className="w-full max-w-sm rounded-md border border-gray-300 bg-white px-3 py-3 shadow-sm">
+                    কোন লেনদেন হয়নি.
+                </div> : outstandingTxns?.map((txn: any, idx: number) => (
+                    <div key={idx} className="w-full max-w-sm rounded-md border border-gray-300 bg-white px-3 py-3 shadow-sm">
 
                         {/* Header */}
                         <div className="flex items-center justify-between border-b pb-1">
                             <div>
                                 <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-900">
-                                    {txn?.account?.bankName}
+                                    {idx + 1}) {txn?.bankName}
                                 </h2>
                                 <p className="text-[10px] text-gray-700">
                                     চেক পোস্টিং: {formatDateTime(txn?.postingDate).split(",").slice(0, 2).join(", ")}
@@ -30,13 +38,22 @@ const OutstandingTxnPage = () => {
                         </div>
 
                         {/* Account Details */}
-                        <div className="mt-2 space-y-0.5 text-xs text-gray-800">
-                            <p>
-                                <span className="font-medium">হিসাবের নাম:</span> {txn?.account?.accountName}
-                            </p>
-                            <p>
-                                <span className="font-medium">হিসাব নং:</span> {txn?.account?.accountNumber}
-                            </p>
+                        <div className='flex justify-between'>
+                            <div className="mt-2 space-y-0.5 text-xs text-gray-800">
+                                <p>
+                                    <span className="font-medium">নাম:</span> {txn?.customer?.name}
+                                </p>
+                                <p>
+                                    <span className="font-medium">হিসাব নং:</span> {txn?.account?.accountNumber}
+                                </p>
+                            </div>
+                            <div className='my-auto'>
+                                <select defaultValue={txn?.status} onChange={(e) => handleStatus(e.target.value, txn._id)} className="select select-ghost">
+                                    <option value='issued'>issued</option>
+                                    <option value='posted'>posted</option>
+                                    <option value='dishonored'>dishonored</option>
+                                </select>
+                            </div>
                         </div>
 
                         {/* Amount & Transaction Type */}

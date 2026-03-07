@@ -10,33 +10,40 @@ import Loading from "../../components/Loading";
 import { useAppSelector } from "../../redux/hook";
 import CustomerSearchableSelectFields from "./CustomerSearchableSelectFields";
 import { resetForm } from "../../redux/features/sales/salesSlice";
+import InputField from "../../components/form/InputFields";
+import SelectField from "../../components/form/SelectField";
+import { transactionType } from "../../utils/transactionType";
+import { banksName } from "../accounts/banksName";
 
 const EMPTY_ITEM: TSaleItem = {
     product: "",
-    quantity: 0,
-    salePrice: 0,
-    totalPrice: 0,
-    purchasePrice: 0,
-    profit: 0,
+    quantity: "",
+    salePrice: "",
+    totalPrice: "",
+    purchasePrice: "",
+    profit: "",
 };
 
 const SalesEntryForm = () => {
     const [createSale] = useSalesEntryMutation();
     const [isLoading, setLoading] = useState(false);
-    const customer = useAppSelector((state) => state.sales.customer);
+    const customer = useAppSelector((state: any) => state.cart.customer);
+    console.log(customer)
 
     const { register, control, reset, handleSubmit, watch, setValue } = useForm<TSales>({
         defaultValues: {
             customer: customer,
             broker: "",
             items: [EMPTY_ITEM],
+            labour: '',
+            customerCommission: '',
             discount: 0,
             vat: 0,
             date: new Date(),
             subtotal: 0,
             grandTotal: 0,
             grandProfit: 0,
-            paidAmount: 0,
+            paidAmount: '',
             dueAmount: 0,
             paymentMethod: "cash",
             salesType: "regular",
@@ -49,22 +56,26 @@ const SalesEntryForm = () => {
     const discount = watch("discount");
     const vat = watch("vat");
     const paidAmount = watch("paidAmount");
+    const labour = watch("labour");
+    const customerCommission = watch("customerCommission")
+    const paymentMethod = watch("paymentMethod")
 
     // ================================
     // CALCULATIONS
     // ================================
     useEffect(() => {
-        const subtotal = items.reduce((sum, v) => sum + (v.totalPrice || 0), 0);
+        const totalProductValue = items.reduce((sum, v) => sum + (v.totalPrice || 0), 0)
+        const subTotalLabour = totalProductValue + Number(labour) + Number(customerCommission)
         const totalProfit = items.reduce((sum, v) => sum + (v.profit || 0), 0);
+        const vatAmount = subTotalLabour * (vat / 100);
+        const grandTotal = subTotalLabour - discount + vatAmount;
+        const due = grandTotal - Number(paidAmount);
 
-        const vatAmount = subtotal * (vat / 100);
-        const grandTotal = subtotal - discount + vatAmount;
-        const due = grandTotal - paidAmount;
-
-        setValue("subtotal", subtotal);
+        setValue("subtotal", subTotalLabour);
         setValue("grandProfit", totalProfit);
         setValue("grandTotal", grandTotal);
         setValue("dueAmount", due);
+        setValue("customerCommission", customerCommission)
     }, [items, discount, vat, paidAmount, setValue]);
 
     // ================================
@@ -79,18 +90,22 @@ const SalesEntryForm = () => {
         setValue(`items.${index}`, item);
     };
 
+
     // ================================
     // SUBMIT HANDLER
     // ================================
-    const onSubmit: SubmitHandler<TSales> = async (data) => {
-
-        data.customer = customer;
+    const onSubmit: SubmitHandler<any> = async (data) => {
+        data.customer = customer._id;
         setLoading(true);
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
         data.paidAmount = Number(data.paidAmount);
+        data.labour = Number(data.labour);
+        data.customerCommission = Number(data.customerCommission)
         try {
+            console.log({ data })
 
             const result = await createSale(data)
+            console.log(result)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
                 resetForm();
@@ -141,16 +156,27 @@ const SalesEntryForm = () => {
                             </label>
                             <select {...register("paymentMethod", { required: true })} className="input">
                                 <option value="cash">Cash</option>
+                                <option value="bank">Bank</option>
                                 <option value="bkash">bKash</option>
                                 <option value="nagad">Nagad</option>
                                 <option value="rocket">Rocket</option>
                                 <option value="card">Card</option>
-                                <option value="bank">Bank</option>
                             </select>
                         </div>
+
+
+
                         <div>
                             <label htmlFor="">তারিখ</label>
                             <input {...register("date", { required: true })} type="datetime-local" className="input" />
+                        </div>
+                        <div>
+                            <label htmlFor="">লেবার</label>
+                            <input {...register("labour", { required: true })} type="number" className="input" />
+                        </div>
+                        <div>
+                            <label htmlFor="">কাস্টমার কমিশন</label>
+                            <input {...register("customerCommission", { required: true })} type="number" className="input" />
                         </div>
                     </div>
                 </section>
@@ -262,6 +288,59 @@ const SalesEntryForm = () => {
                         <p>বাকি: <b>{watch("dueAmount")}</b></p>
                     </div>
                 </section>
+
+                {
+                    paymentMethod === 'bank' &&
+                    <div className="border border-red-700 rounded-2xl p-2 grid gap-4 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1">
+                        <SelectField
+                            label="ব্যাংকের নাম"
+                            name="bankName"
+                            control={control}
+                            options={banksName}
+                            rules={{ required: "ব্যাংকের নাম নাই" }}
+                        />
+                        <SelectField
+                            label="লেনদেনের ধরন"
+                            name="type"
+                            control={control}
+                            options={transactionType}
+                            rules={{ required: "লেনদেনের ধরন নাই" }}
+                        />
+                        <InputField
+                            label="টাকার পরিমান"
+                            name="amount"
+                            type='number'
+                            control={control}
+                            rules={{ required: "টাকার পরিমান নাই" }}
+                        />
+                        <InputField
+                            control={control}
+                            name="ইস্যুর তারিখ"
+                            type='datetime-local'
+                            label="issueDate"
+                            rules={{ required: "ইস্যুর তারিখ নাই" }}
+                        />
+                        <InputField
+                            control={control}
+                            label="পোস্টিং এর তারিখ"
+                            type='datetime-local'
+                            name="postingDate"
+                            rules={{ required: "পোস্টিং এর তারিখ নাই" }}
+                        />
+                        <InputField
+                            control={control}
+                            label="মন্তব্য"
+                            name="txnnote"
+                        />
+                    </div>
+
+                }
+
+                <InputField
+                    control={control}
+                    label="মন্তব্য"
+                    name="description"
+                />
 
                 <div className="flex justify-center">
                     <button className="w-1/2 p-2  bg-blue-600 text-white mb-16  rounded-lg text-lg hover:bg-green-700">

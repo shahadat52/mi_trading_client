@@ -33,9 +33,22 @@ const authApi = baseApi.injectEndpoints({
             providesTags: ['Account', 'Transaction']
         }),
 
+        updateTxnStatus: builder.mutation({
+            query: (data) => (
+                console.log(data),
+
+                {
+                    url: `/transaction/${data.id}`,
+                    method: "PATCH",
+                    body: { status: data.status }
+                }
+            ),
+            invalidatesTags: ['Account', 'Transaction']
+        }),
+
 
 
     }),
 });
 
-export const { useAddAccountMutation, useGetAllAccountQuery, useGetAllOutstandingTxnQuery } = authApi
+export const { useAddAccountMutation, useGetAllAccountQuery, useGetAllOutstandingTxnQuery, useUpdateTxnStatusMutation } = authApi

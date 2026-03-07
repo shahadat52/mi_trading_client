@@ -72,9 +72,9 @@ const TransactionEntry = ({ account, onClose, }: { onClose: () => void, account:
                     />
                     <InputField
                         control={control}
-                        name="ইস্যুর তারিখ"
+                        name="issueDate"
                         type='datetime-local'
-                        label="issueDate"
+                        label="ইস্যুর তারিখ"
                         rules={{ required: "ইস্যুর তারিখ নাই" }}
                     />
                     <InputField
@@ -89,13 +89,6 @@ const TransactionEntry = ({ account, onClose, }: { onClose: () => void, account:
                         label="মন্তব্য"
                         name="note"
                         rules={{ required: "মন্তব্য নাই" }}
-                    />
-                    <InputField
-                        control={control}
-                        label="লেনদেনের তারিখ"
-                        name="date"
-                        type='datetime-local'
-                        rules={{ required: "লেনদেনের তারিখ নাই" }}
                     />
                 </div>
 

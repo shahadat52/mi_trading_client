@@ -4,7 +4,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import Loading from "../../components/Loading";
 import { useDeliveryEntryAndUpdateMutation } from "../../redux/features/delivery/deliveryApi";
-import { units } from "../../utils/units";
+
 
 type SalesDeliveryModalProps = {
     item: any;
@@ -12,6 +12,7 @@ type SalesDeliveryModalProps = {
 };
 
 export const SalesDeliveryEntry = ({ item, deliveryModalClose }: SalesDeliveryModalProps) => {
+    console.log(item)
     const [loading, setLoading] = useState(false);
     const { register, handleSubmit, reset } = useForm({
         defaultValues: item,
@@ -21,12 +22,14 @@ export const SalesDeliveryEntry = ({ item, deliveryModalClose }: SalesDeliveryMo
 
     const onSubmit = async (data: any) => {
         data.sales = item._id;
+        console.log(data)
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
 
         try {
             setLoading(true);
 
             const result = await deliveryEntryAndUpdate(data);
+            console.log(result)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
                 reset();
@@ -68,7 +71,7 @@ export const SalesDeliveryEntry = ({ item, deliveryModalClose }: SalesDeliveryMo
                         type="datetime-local"
                         className="border w-full px-2 py-1 rounded"
                         {...register("deliveryTime")}
-                        placeholder="Category"
+                        placeholder="delivery time"
                     />
                     <input
                         className="border w-full px-2 py-1 rounded"
@@ -76,33 +79,7 @@ export const SalesDeliveryEntry = ({ item, deliveryModalClose }: SalesDeliveryMo
                         placeholder="যে মাধ্যমে ডেলিভারি হবে"
                     />
 
-                    <input
-                        className="border w-full px-2 py-1 rounded"
-                        {...register("description")}
-                        placeholder="বিবরণী"
-                    />
 
-                    <input
-                        type="number"
-                        className="border w-full px-2 py-1 rounded"
-                        {...register("quantity")}
-                        placeholder="পরিমান"
-                    />
-                    <select
-                        className="border w-full px-2 py-1 rounded"
-                        {...register("units", { required: "একক নির্বাচন করুন" })}
-                        defaultValue=""
-                    >
-                        <option value="" disabled>
-                            একক নির্বাচন করুন
-                        </option>
-
-                        {units.map((unit: any) => (
-                            <option key={unit.value} value={unit.value}>
-                                {unit.label}
-                            </option>
-                        ))}
-                    </select>
 
                     <div className="flex justify-end gap-2 mt-4">
                         <button

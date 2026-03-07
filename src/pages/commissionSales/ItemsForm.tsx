@@ -97,7 +97,7 @@ const ItemsForm = () => {
                                 value={item.quantity}
                                 onChange={(e) => {
                                     const q = Number(e.target.value);
-                                    const total = calculateItemTotal(q, item.salesPrice);
+                                    const total = calculateItemTotal(q, Number(item.salesPrice));
                                     dispatch(updateItem({ index, item: { quantity: q, total } }));
                                 }}
                                 className="input input-bordered input-sm w-full"
@@ -112,7 +112,7 @@ const ItemsForm = () => {
                                 value={item.salesPrice}
                                 onChange={(e) => {
                                     const price = Number(e.target.value);
-                                    const total = calculateItemTotal(item.quantity, price);
+                                    const total = calculateItemTotal(Number(item.quantity), price);
                                     dispatch(updateItem({ index, item: { salesPrice: price, total } }));
                                 }}
                                 className="input input-bordered input-sm w-full"
@@ -169,10 +169,10 @@ const ItemsForm = () => {
                     dispatch(
                         addItem({
                             product: "",
-                            quantity: 1,
-                            lot: 1,
-                            salesPrice: 0,
-                            commissionRatePercent: 0,
+                            quantity: "",
+                            lot: "",
+                            salesPrice: "",
+                            commissionRatePercent: "",
                             total: 0
                         })
                     )

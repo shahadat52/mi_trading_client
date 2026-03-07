@@ -8,23 +8,27 @@ import { useGetCommissionSalesSupplierLotWiseQuery } from "../../../redux/featur
 
 const BepariCouthaUpdateEntry = ({ onClose, item }: { onClose: () => void, item: any }) => {
     const { brokary, kuli, truck_rent, transport_rent, tohori, haolat, godi, arot, } = item;
-
+    // const arots = item?.map((sale) => (sale.totalCommission))
     const subTotal = brokary + kuli + truck_rent + transport_rent + tohori + haolat + godi + arot
     const [loading, setLoading] = useState(false)
-    const { register, handleSubmit, reset } = useForm()
-    useEffect(() => {
-        if (item) reset(item);
-    }, [item, reset]);
 
-    const { data } = useGetCommissionSalesSupplierLotWiseQuery({ supplier: item?.supplier?._id, lot: item?.lot })
-    const sales = data?.data || []
-    const totalSales = sales?.map((sale: any) => (sale.items.total)).reduce((sum: number, item: number) => sum + item, 0);
+    console.log({ item })
+    const { data } = useGetCommissionSalesSupplierLotWiseQuery({ couthaOf: item.couthaOf })
+    const sales = data?.data;
+    console.log(sales)
+    const totalCommission = sales?.reduce(
+        (sum: number, item: any) => sum + (item.product.commission || 0),
+        0
+    );
+    const totalSales = sales?.reduce((sum: number, item: any) => sum + (item?.product?.quantity * item.product.salePrice), 0);
+    console.log({ totalCommission, totalSales })
 
     const [updateBepariCoutha] = useUpdateBepariCouthaMutation()
     const onSubmit = async (data: FieldValues) => {
         data.subTotal = subTotal
         data.joma = totalSales - subTotal
         data.grandTotal = totalSales
+        data.arot = totalCommission
         const payload = {
             data,
             id: item._id
@@ -51,6 +55,11 @@ const BepariCouthaUpdateEntry = ({ onClose, item }: { onClose: () => void, item:
             setLoading(false);
         }
     }
+
+    const { register, handleSubmit, reset } = useForm()
+    useEffect(() => {
+        if (item) reset(item);
+    }, [item, reset]);
 
 
 
@@ -85,7 +94,7 @@ const BepariCouthaUpdateEntry = ({ onClose, item }: { onClose: () => void, item:
                     </div>
                     <div>
                         <label>যদি বাদ যায়</label>
-                        <input {...register("description")} className="input" />
+                        <input {...register("description")} className="input" placeholder="যেমনঃ ২ বস্তা নষ্ট" />
                     </div>
                     <div>
                         <label>কুলি</label>

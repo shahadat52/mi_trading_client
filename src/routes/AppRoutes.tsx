@@ -13,7 +13,7 @@ import OtpVerification from "../pages/OtpVerifyPage";
 import PrivateRoute from "./PrivateRoute";
 import ErrorBoundary from "../components/ErrorBoundary";
 import SalesEntryPage from "../pages/sales/SalesEntryPage";
-import SalesOverviewTable from "../pages/sales/SalesOverviewTable";
+import SalesOverviewPage from "../pages/sales/SalesOverviewPage";
 import CommissionSuppliersPage from "../pages/commissionSales/CommissionSuppliersPage";
 import DeliveryPage from "../redux/delivery/DeliveryPage";
 import ProfilePage from "../pages/profile/ProfilePage";
@@ -30,6 +30,10 @@ import CouthaPage from "../pages/commissionSales/Coutha/CouthaPage";
 import UserManagementPage from "../pages/dashboard/userManagement/UserManagementPage";
 import PartnersPage from "../pages/partners/PartnersPage";
 import SupplierTxnPage from "../pages/home/SupplierTxnPage";
+import CartPage from "../pages/cart/CartPage";
+import AllProductsPage from "../pages/products/AllProductsPage";
+import BothSalesPage from "../pages/sales/bothSales/BothSalesPage";
+import BankTxnsPage from "../pages/accounts/txn/BankTxnsPage";
 
 export const router = createBrowserRouter([
     {
@@ -50,6 +54,14 @@ export const router = createBrowserRouter([
             {
                 path: "purchase/entry",
                 element: <PrivateRoute><PurchasePage /></PrivateRoute>,
+            },
+            {
+                path: '/products',
+                element: <PrivateRoute><AllProductsPage /></PrivateRoute>
+            },
+            {
+                path: "/cart",
+                element: <PrivateRoute><CartPage /></PrivateRoute>
             },
             {
                 path: "purchase/overview",
@@ -73,7 +85,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: "sales/overview",
-                element: <SalesOverviewTable />,
+                element: <SalesOverviewPage />,
+            },
+            {
+                path: "both/sales",
+                element: <PrivateRoute><BothSalesPage /></PrivateRoute>
             },
             {
                 path: "commission-sales",
@@ -97,7 +113,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "profile",
-                element: <PrivateRoute><ProfilePage /></PrivateRoute>,
+                element: <ProfilePage />,
 
             },
             {
@@ -127,6 +143,11 @@ export const router = createBrowserRouter([
             {
                 path: '/partners',
                 element: <PrivateRoute><PartnersPage /></PrivateRoute>
+            },
+
+            {
+                path: "bankTxns",
+                element: <PrivateRoute><BankTxnsPage /></PrivateRoute>,
             },
             {
                 path: "accounts",

@@ -16,9 +16,19 @@ const commissionProduct = baseApi.injectEndpoints({
         }),
 
         getCommissionProducts: builder.query({
-            query: (query) => (
+            query: () => (
                 {
-                    url: `/commissionProduct/${query}`,
+                    url: '/commissionProduct',
+                    method: 'GET',
+
+                }),
+            providesTags: ['CommissionProduct']
+        }),
+
+        getCommissionProductsBySupplier: builder.query({
+            query: (id) => (
+                {
+                    url: `/commissionProduct/${id}`,
                     method: 'GET',
 
                 }),
@@ -30,4 +40,4 @@ const commissionProduct = baseApi.injectEndpoints({
     }),
 });
 
-export const { useCommissionProductEntryMutation, useGetCommissionProductsQuery } = commissionProduct    
+export const { useCommissionProductEntryMutation, useGetCommissionProductsQuery, useGetCommissionProductsBySupplierQuery } = commissionProduct    

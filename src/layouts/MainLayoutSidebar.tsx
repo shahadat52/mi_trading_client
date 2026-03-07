@@ -9,7 +9,7 @@ import {
     MdOutlineChevronRight,
 } from "react-icons/md";
 import { useAppSelector } from "../redux/hook";
-import { getMenuItems } from "./constant/MenuItems";
+import { getMenuItems } from "./MenuItems";
 
 const drawerWidth = "260px";
 const collapsedWidth = "70px";

@@ -16,8 +16,6 @@ const CouthaPage = () => {
     const [selectedSettlement, setSelectedSettlement] = useState(null)
     const settlements = data?.data || [];
 
-
-
     return (
         <div>
             <div className='grid grid-cols-1 lg:grid-cols-3 '>

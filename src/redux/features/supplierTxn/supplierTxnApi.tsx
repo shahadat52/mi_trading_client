@@ -11,7 +11,7 @@ const supplierTxnApi = baseApi.injectEndpoints({
                     body: supplierTxnData
                 }
             ),
-            invalidatesTags: ['SupplierTxn']
+            invalidatesTags: ['SupplierTxn', 'Transaction']
         }),
         getAllSupplierTxn: builder.query({
             query: (query) => (

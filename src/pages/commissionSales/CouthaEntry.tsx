@@ -5,7 +5,9 @@ import { toast } from "react-toastify";
 import { useCreateSettlementMutation } from "../../redux/features/settlement/settlementApi";
 import InputField from "../../components/form/InputFields";
 
-const CouthaEntry = ({ onClose, supplier, lot }: { onClose: () => void, supplier: any, lot: any }) => {
+const CouthaEntry = ({ onClose, supplier, selectedItem: lot }: { onClose: () => void, supplier: any, selectedItem: any }) => {
+    console.log({ supplier, lot })
+
     const [loading, setLoading] = useState(false)
     const { handleSubmit, control, reset } = useForm();
     const [createCoutha] = useCreateSettlementMutation()
@@ -23,9 +25,11 @@ const CouthaEntry = ({ onClose, supplier, lot }: { onClose: () => void, supplier
         setLoading(true);
         data.supplier = supplier;
         data.lot = lot
+        data.couthaOf = lot._id
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
         try {
             const result = await createCoutha(data);
+            console.log(result)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
                 reset();

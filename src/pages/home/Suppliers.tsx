@@ -2,6 +2,8 @@
 import { NavLink } from "react-router";
 import TableSkeleton from "../../components/table/TableSkeleton";
 import { useGetAllSuppliersQuery } from "../../redux/features/supplier/supplierApi";
+import { BsPersonCircle } from "react-icons/bs";
+import { FaChevronRight } from "react-icons/fa6";
 
 const Suppliers = () => {
     const { data, isLoading, isError, error } = useGetAllSuppliersQuery(undefined)
@@ -16,7 +18,7 @@ const Suppliers = () => {
                 />
                 <p className="sticky ml-1 px-1 my-2 text-xl font-semibold">সাপ্লায়ার <span className="px-4">{suppliers?.length || 0}</span> জন</p>
 
-                <div className="overflow-y-auto mb-8">
+                <div className="flex flex-col gap-4 mb-4">
                     {
                         isLoading ? (<TableSkeleton row={5} />)
                             : isError ? (
@@ -25,9 +27,23 @@ const Suppliers = () => {
                                 <p className="text-center text-gray-500 py-4">No suppliers found.</p>
                             ) : (
                                 suppliers?.map((supplier: any, idx: number) => (
-                                    <NavLink to={`/supplierTxn/${supplier._id}`} key={supplier._id} className='mb-50' >
-                                        <div className="border-b-1 flex justify-between items-center p-2 " >
-                                            <div className=" font-bold ">{idx + 1}) {" "} {supplier?.name} <span className="px-4">{supplier?.phone}</span></div>
+                                    <NavLink to={`/supplierTxn/${supplier._id}`} key={supplier._id} className='p-2 shadow m-1 rounded' >
+                                        <div className="flex justify-between items-center">
+
+                                            <div className="flex items-center">
+                                                <div className="flex gap-1 items-center">
+                                                    <p className="text-[20px] mr-3 text-orange-500">{idx + 1}</p>
+                                                    <p className="text-[30px] mr-3 text-orange-500"><BsPersonCircle /></p>
+                                                </div>
+                                                <div>
+                                                    <p className="text-[18px] font-semibold">{supplier?.name}</p>
+
+                                                </div>
+                                            </div>
+                                            <div className="flex gap-2 items-center">
+                                                <p>কাস্টমার</p>
+                                                <span><FaChevronRight /></span>
+                                            </div>
                                         </div>
                                     </NavLink>
                                 ))

@@ -6,7 +6,8 @@ import {
     setPaymentMethod,
     setDate,
     setNotes,
-    resetForm
+    resetForm,
+    setCommissionBase
 } from "../../redux/features/commissionSales/commissionSalesSlice";
 import type { RootState } from "../../redux/store";
 import ItemsForm from "./ItemsForm"; // ← Items Form Component
@@ -40,13 +41,17 @@ const CommissionSalesEntry: React.FC<CommissionSalesEntryProps> = ({ onClose }) 
 
 
     const paymentMethods = ['Cash', 'Bank', 'Bkash', 'Nagad', 'Rocket', 'Card',];
+    const commissionBase = ['price', 'quantity'];
 
     const { data } = useGetAllSuppliersNameQuery({ search: debouncedSearch, limit: 20 })
     const suppliers = data?.data || [];
     const suppliersData = suppliers?.map((p: any) => ({ name: p.name, _id: p._id })) || [];
+
+
     const [createCommissionSales] = useCommissionSalesEntryMutation();
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log(commissionSales)
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
         try {
 
@@ -116,6 +121,7 @@ const CommissionSalesEntry: React.FC<CommissionSalesEntryProps> = ({ onClose }) 
                     )}
                 </div>
 
+                {/*Commission base*/}
                 <div>
                     <label className="block mb-1 font-medium">পেমেন্ট মেথড</label>
                     <select
@@ -132,6 +138,21 @@ const CommissionSalesEntry: React.FC<CommissionSalesEntryProps> = ({ onClose }) 
                 </div>
             </div>
 
+            <div>
+                <label className="block mb-1 font-medium">কমিশনের ভিত্তি</label>
+                <select
+                    value={commissionSales.commissionBase}
+                    onChange={(e) => dispatch(setCommissionBase(e.target.value))}
+                    className="select select-bordered w-full"
+                >
+                    {commissionBase.map((method) => (
+                        <option key={method} value={method}>
+                            {method}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
             {/* Date */}
             <div>
                 <label className="block mb-1 font-medium">Sales Date</label>
@@ -140,6 +161,7 @@ const CommissionSalesEntry: React.FC<CommissionSalesEntryProps> = ({ onClose }) 
                     value={commissionSales.date}
                     onChange={(e) => dispatch(setDate(e.target.value))}
                     className="border rounded px-3 py-2 w-full"
+                    required
                 />
             </div>
 

@@ -6,7 +6,7 @@ import {
     FaTruck,
     FaMoneyBillWave,
 } from "react-icons/fa";
-import { MdOutlinePayment } from "react-icons/md";
+import { AiFillProduct } from "react-icons/ai";
 import { FcSalesPerformance } from "react-icons/fc";
 import { PiBatteryVerticalLowBold, PiChartLineDownBold } from "react-icons/pi";
 import { GiProfit } from "react-icons/gi";
@@ -15,6 +15,7 @@ import { useGetAllCustomerTxnQuery } from "../../redux/features/customer/custome
 import { useState } from "react";
 import Customers from "./Customers";
 import Suppliers from "./Suppliers";
+import { FaProductHunt } from "react-icons/fa6";
 
 type ApprovalType = "customer" | "supplier";
 const HomePage = () => {
@@ -23,8 +24,9 @@ const HomePage = () => {
     const menuItems = [
         { path: "/sales/entry", label: "Sales Entry", icon: <FaShoppingCart /> },
         { path: "/purchase/entry", label: "Purchase Entry", icon: <FaClipboardList /> },
+        { path: "/products", label: "Products", icon: <AiFillProduct /> },
         { path: "/commission-sales", label: "Commission Sales", icon: <FaMoneyBillWave /> },
-        { path: "/sales/overview", label: "Sales Overview", icon: <FaChartLine /> },
+        { path: "/both/sales", label: "Sales Overview", icon: <FaChartLine /> },
         { path: "/deliveries", label: "Deliveries", icon: <FaTruck /> },
         { path: "/purchase/overview", label: "Purchase Overview", icon: <FaChartLine /> },
         { path: "/stock", label: "Stock Low", icon: <PiBatteryVerticalLowBold /> },
@@ -33,14 +35,13 @@ const HomePage = () => {
     ];
 
     const menuItemsForMobile = [
-        { path: "/sales/entry", label: "বিক্রয়", icon: <FaShoppingCart /> },
+        { path: "/products", label: "পন্য", icon: <FaProductHunt /> },
         { path: "/purchase/entry", label: "ক্রয়", icon: <FaClipboardList /> },
         { path: "/deliveries", label: "ডেলিভারি", icon: <FaTruck /> },
         { path: "/stock", label: "স্টক", icon: <PiBatteryVerticalLowBold /> },
         { path: "/income", label: "আয়", icon: <GiProfit /> },
         { path: "/expenses", label: "ব্যয়", icon: <PiChartLineDownBold /> },
         { path: "/commission-sales", label: "কমিশন", icon: <FcSalesPerformance /> },
-        { path: "*", label: "ক্যাশ", icon: <MdOutlinePayment /> },
     ];
 
     const customerTxns = data?.data

@@ -15,9 +15,11 @@ type Props = {
 };
 
 const BepariCoutha = ({ settlement, onClose }: Props) => {
-    const { data } = useGetCommissionSalesSupplierLotWiseQuery({ supplier: settlement?.supplier._id, lot: settlement?.lot })
+    console.log(settlement)
+    const { data } = useGetCommissionSalesSupplierLotWiseQuery({ couthaOf: settlement?.couthaOf })
     const sales = data?.data || []
-    const totalSales = sales?.map((sale: any) => (sale?.items?.total)).reduce((sum: number, item: number) => sum + item, 0);
+    const totalSales = sales?.reduce((sum: number, item: any) => sum + (item.product.quantity * item.product.salePrice), 0);
+    console.log(totalSales)
     return (
         <div
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 overflow-auto "
@@ -101,9 +103,9 @@ const BepariCoutha = ({ settlement, onClose }: Props) => {
                                 sales?.map((sale: any, idx: number) =>
                                 (<div key={idx} className="text-black flex border-b p-1  gap-2">
                                     <p className="w-[10%]"></p>
-                                    <p>{sale?.items?.quantity} X</p>
-                                    <p>{sale?.items?.salesPrice} = </p>
-                                    <p>{sale?.items?.total} </p>
+                                    <p>{sale?.product?.quantity} X</p>
+                                    <p>{sale?.product?.salePrice} = </p>
+                                    <p>{(sale?.product?.quantity) * (sale?.product?.salePrice)} </p>
                                 </div>)
                                 )
                             }

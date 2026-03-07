@@ -3,12 +3,12 @@ import {
     FaTachometerAlt,
     FaBoxes,
     FaShoppingCart,
-    FaChartBar,
     FaHome,
     FaUser,
 } from "react-icons/fa";
 import type { JSX } from "react";
 import { useAppSelector } from "../redux/hook";
+import { FaProductHunt } from "react-icons/fa6";
 
 type NavItem = {
     to: string;
@@ -24,11 +24,11 @@ const MobileNavbar = () => {
     const navItems: NavItem[] = [
         { to: "/", label: "Home", icon: <FaHome className="h-6 w-6" /> },
         { to: "/stock", label: "Inventory", icon: <FaBoxes className="h-6 w-6" /> },
-        { to: "/sales/overview", label: "Sales", icon: <FaShoppingCart className="h-6 w-6" /> },
+        { to: "/both/sales", label: "Sales", icon: <FaShoppingCart className="h-6 w-6" /> },
         { to: "/profile", label: "Profile", icon: <FaUser className="h-6 w-6" /> },
         ...(isAdmin
             ? [
-                { to: "/reports", label: "Reports", icon: <FaChartBar className="h-6 w-6" /> },
+                { to: "/products", label: "Products", icon: <FaProductHunt className="h-6 w-6" /> },
                 { to: "/dashboard", label: "Dashboard", icon: <FaTachometerAlt className="h-6 w-6" /> },
             ]
             : [])

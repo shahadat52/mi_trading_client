@@ -2,6 +2,7 @@
 export type TBepariCoutha = {
     supplier: any;
     lot: any;
+    couthaOf: string;
     import: string;
     importDate: Date;
     description: string;
