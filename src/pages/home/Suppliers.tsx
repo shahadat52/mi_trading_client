@@ -41,7 +41,7 @@ const Suppliers = () => {
                                                 </div>
                                             </div>
                                             <div className="flex gap-2 items-center">
-                                                <p>কাস্টমার</p>
+                                                <p>সাপ্লাইয়ার</p>
                                                 <span><FaChevronRight /></span>
                                             </div>
                                         </div>

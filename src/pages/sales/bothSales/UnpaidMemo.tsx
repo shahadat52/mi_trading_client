@@ -114,30 +114,30 @@ const UnpaidMemo = ({ sale, copyLabel, onClose }: any) => {
                             ))}
                         </tbody>
                         <tfoot>
-                            <tr className=" border-t border-gray-400 bg-blue-900 text-white">
+                            <tr className=" border-t border-gray-700 bg-blue-100 text-black">
                                 <td colSpan={2} className="text-center px-2  font-"><span></span></td>
                                 <td className=" text-xs">  <span>সাব টোটালঃ </span></td>
                                 <td className=" ">  <span>{sale?.subtotal} </span></td>
                             </tr>
-                            <tr className=" border-t border-gray-400 bg-blue-900 text-white">
+                            <tr className=" border-t border-gray-700 bg-blue-100 text-black">
                                 <td colSpan={2} className="text-center px-2  font-"><span></span></td>
                                 <td className=" text-xs">  <span>লেবারঃ </span></td>
                                 <td className=" ">  <span>{sale?.labour} </span></td>
                             </tr>
-                            <tr className=" border-t border-gray-400 bg-blue-900 text-white">
-                                <td colSpan={2} className="text-center px-2  font-"><span></span></td>
-                                <td className=" text-xs">  <span>আড়ৎদারী </span></td>
-                                <td className=" ">  <span>{(sale?.grandTotal) - (sale?.subtotal + sale?.others + sale?.labour + sale?.customerCommission)} </span></td>
-                            </tr>
-                            <tr className=" border-t border-gray-400 bg-blue-900 text-white">
+                            <tr className=" border-t border-gray-700 bg-blue-100 text-black">
                                 <td colSpan={2} className="text-center px-2  font-"><span></span></td>
                                 <td className=" text-xs">  <span>কমিশনঃ </span></td>
-                                <td className=" ">  <span>{sale?.customerCommission} </span></td>
+                                <td className=" ">  <span>{sale?.customerCommission + (sale?.grandTotal) - (sale?.subtotal + sale?.others + sale?.labour + sale?.customerCommission)} </span></td>
                             </tr>
-                            <tr className=" border-t border-gray-400 bg-blue-900 text-white">
+                            <tr className=" border-t border-gray-700 bg-blue-100 text-black">
                                 <td colSpan={2} className="text-center px-2  font-"><span></span></td>
                                 <td className=" text-xs">  <span>অন্যান্য </span></td>
                                 <td className=" ">  <span>{sale?.others} </span></td>
+                            </tr>
+                            <tr className=" border-t border-gray-700 bg-blue-100 text-black">
+                                <td colSpan={2} className="text-center px-2  font-"><span></span></td>
+                                <td className=" text-xs">  <span>বাকিঃ </span></td>
+                                <td className=" ">  <span className='bg-red-600 border-red-600 text-white rounded px-1 border-2'>{sale?.grandTotal - sale?.paidAmount} </span></td>
                             </tr>
 
                             <tr className=" border-t border-gray-400 bg-blue-900 text-white">
@@ -171,7 +171,10 @@ const UnpaidMemo = ({ sale, copyLabel, onClose }: any) => {
 
                             </div>
 
-                            <p className="text-[12px] mt-6 border-t-2">চৌথাকারীর স্বাক্ষর</p>
+                            <div>
+                                <p className="text-[12px] ">{sale?.createdBy?.name}</p>
+                                <p className="text-[12px]  border-t-2">চৌথাকারীর স্বাক্ষর </p>
+                            </div>
 
 
                         </div>

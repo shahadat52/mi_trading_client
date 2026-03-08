@@ -98,6 +98,11 @@ const PaidMemo = ({ sale, onClose }: any) => {
                                 <td className=" text-xs">  <span>অন্যান্য </span></td>
                                 <td className=" ">  <span>{sale?.others} </span></td>
                             </tr>
+                            <tr className=" border-t border-gray-400 bg-blue-900 text-white">
+                                <td colSpan={2} className="text-center px-2  font-"><span></span></td>
+                                <td className=" text-xs">  <span>বাকিঃ </span></td>
+                                <td className=" ">  <span>{sale?.grandTotal - sale?.paidAmount} </span></td>
+                            </tr>
 
                             <tr className=" border-t border-gray-400 bg-blue-900 text-white">
                                 <td colSpan={2} className="text-center px-2 py-1 font-"><span>কথায়ঃ {engNumberToBanglaWords(sale?.grandTotal)}</span></td>

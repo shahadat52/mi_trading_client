@@ -67,7 +67,7 @@ const Customers = () => {
                                             </div>
                                         </div>
                                         <div className="flex gap-2 items-center">
-                                            <p>সাপ্লাইয়ার</p>
+                                            <p>কাস্টমার</p>
                                             <span><FaChevronRight /></span>
                                         </div>
                                     </div>

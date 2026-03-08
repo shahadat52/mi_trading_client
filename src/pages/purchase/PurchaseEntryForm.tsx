@@ -39,6 +39,7 @@ const PurchaseEntryForm = () => {
             setLoading(true);
 
             const result = await addPurchase(data);
+            console.log(result)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
                 reset();

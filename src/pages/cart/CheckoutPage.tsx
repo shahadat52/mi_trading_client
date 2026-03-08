@@ -304,7 +304,7 @@ const CheckoutPage = () => {
                         </div>
 
                         <div>
-                            <label htmlFor="">পরিধোদিত মূল্য</label>
+                            <label htmlFor="">পরিশোধিত মূল্য</label>
                             <input
                                 type="number"
                                 className="input"
