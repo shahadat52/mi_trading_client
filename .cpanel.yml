@@ -1,3 +1,7 @@
+```yaml
 deployment:
 tasks:
-- /bin/cp -rf $DEPLOYPATH/dist/* $DEPLOYPATH/
+- export PATH=/bin:/usr/bin:/usr/local/bin
+- npm install
+- npm run build
+- cp -R dist/* /home/mitradin/public_html/
