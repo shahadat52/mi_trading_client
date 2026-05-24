@@ -35,7 +35,6 @@ const authApi = baseApi.injectEndpoints({
 
         updateTxnStatus: builder.mutation({
             query: (data) => (
-                console.log(data),
 
                 {
                     url: `/transaction/${data.id}`,

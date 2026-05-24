@@ -1,34 +1,163 @@
+/* =========================
+   SCREEN STYLE
+========================= */
+
+
+.print-wrapper {
+  font-family: "Hind Siliguri", "Noto Sans Bengali", sans-serif;
+}
+
+.print-area {
+  background: white;
+}
+
+/* Header backgrounds */
+.sales-header {
+  background-color: #ecfdf5;
+  color: #15803d;
+  border-bottom: 1px solid #bbf7d0;
+}
+
+.expense-header {
+  background-color: #fef2f2;
+  color: #b91c1c;
+  border-bottom: 1px solid #fecaca;
+}
+
+.sales-total {
+  background-color: #f0fdf4;
+}
+
+/* Better table look */
+.print-area table th,
+.print-area table td {
+  vertical-align: middle;
+}
+
+/* =========================
+ PRINT STYLE
+========================= */
 @media print {
-  .print-bg {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-    background-color: #2c56b2 !important;
-    color: #fff !important;
+
+  /* Browser কে force করবে color print করতে */
+  * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+      box-shadow: none !important;
   }
 
-  .print-bepari {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-    background-color: #ef0d0d !important;
-    color: #fff !important;
+  html,
+  body {
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
+      height: auto !important;
+      overflow: hidden !important;
+      background: white !important;
   }
 
-  .vertical-text {
-    writing-mode: vertical-rl;
-    margin: 4px;
+  /* সব কিছু hide */
+  body * {
+      visibility: hidden !important;
   }
 
-  .b-bg{
-     -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-     background-color: #e40808 !important;
-    color: #fff !important;
+  /* শুধু print area visible */
+  .print-area,
+  .print-area * {
+      visibility: visible !important;
   }
-  
-  .sale-bg {
--webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-     background-color: #fff !important;
-    color: #000 !important;
+
+  /* print area position fix */
+  .print-area {
+      position: absolute !important;
+      left: 50% !important;
+      top: 0 !important;
+      transform: translateX(-50%) !important;
+      width: 148mm !important;
+      max-width: 148mm !important;
+      min-height: auto !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: none !important;
+      border-radius: 0 !important;
+      background: white !important;
+      overflow: visible !important;
+  }
+
+  /* Wrapper / modal / overlay clean */
+  .print-wrapper {
+      position: static !important;
+      inset: auto !important;
+      display: block !important;
+      background: transparent !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      overflow: visible !important;
+  }
+
+  /* Buttons and non-print actions hide */
+  button,
+  .print\:hidden {
+      display: none !important;
+  }
+
+  /* Page break safety */
+  table,
+  tr,
+  td,
+  th,
+  .sales-total,
+  .expense-header,
+  .sales-header {
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
+  }
+
+  /* Print header colors */
+  .sales-header {
+      background-color: #dcfce7 !important;
+      color: #166534 !important;
+      border-bottom: 1px solid #86efac !important;
+  }
+
+  .expense-header {
+      background-color: #fee2e2 !important;
+      color: #991b1b !important;
+      border-bottom: 1px solid #fca5a5 !important;
+  }
+
+  .sales-total {
+      background-color: #f0fdf4 !important;
+  }
+
+  /* Footer line */
+  .print-area .border-t {
+      border-top-color: #000 !important;
+  }
+
+  /* Table spacing */
+  .print-area table {
+      width: 100% !important;
+      border-collapse: collapse !important;
+  }
+
+  .print-area th,
+  .print-area td {
+      padding-top: 4px !important;
+      padding-bottom: 4px !important;
+  }
+
+  /* Font size tuning for print */
+  .print-area {
+      font-size: 11px !important;
+      line-height: 1.35 !important;
+  }
+
+  /* A4 Page Setup */
+  @page {
+      size: A4 portrait;
+      margin: 8mm;
   }
 }
+

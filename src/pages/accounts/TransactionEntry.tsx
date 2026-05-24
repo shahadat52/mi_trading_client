@@ -4,7 +4,7 @@ import { useForm, type FieldValues, type SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import InputField from '../../components/form/InputFields';
 import SelectField from '../../components/form/SelectField';
-import { useTransactionEntryMutation } from '../../redux/features/transaction/transactionApi';
+import { useTransactionEntryMutation } from '../../redux/features/bankTransaction/bankTransactionApi';
 import { transactionType } from '../../utils/transactionType';
 
 const TransactionEntry = ({ account, onClose, }: { onClose: () => void, account: any }) => {

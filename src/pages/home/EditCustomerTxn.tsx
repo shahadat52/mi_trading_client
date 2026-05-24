@@ -5,18 +5,20 @@ import { toast } from 'react-toastify';
 import InputField from '../../components/form/InputFields';
 import SelectField from '../../components/form/SelectField';
 import { customerTxnType } from '../../utils/transactionType';
-import { useUpdateCustomerTxnMutation } from '../../redux/features/customer/customerApi';
+import { useDeleteCustomerTxnMutation, useUpdateCustomerTxnMutation } from '../../redux/features/customer/customerApi';
 
-const EditCustomerTxn = ({ onClose, id }: { onClose: () => void, id: string }) => {
+const EditCustomerTxn = ({ onClose, txn, transactions }: { onClose: () => void, txn: any, transactions: any }) => {
     const [loading, setLoading] = useState(false)
     const { handleSubmit, control, reset } = useForm();
     const [updateTxn] = useUpdateCustomerTxnMutation()
+    const [deleteTxn] = useDeleteCustomerTxnMutation()
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         setLoading(true);
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
         try {
-            const result = await updateTxn({ data, id });
+            const result = await updateTxn({ data, id: txn._id });
+            ({ data, result })
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
                 reset();
@@ -35,7 +37,34 @@ const EditCustomerTxn = ({ onClose, id }: { onClose: () => void, id: string }) =
             setLoading(false);
         }
 
-    }
+    };
+
+    const handleDelete = async () => {
+        const isConfirm = confirm("আপনি কি নিশ্চিত! ডিলিট করেই দেবেন?")
+        if (!isConfirm || transactions.length < 2) {
+            return
+        }
+        const toastId = toast.loading("Processing...", { autoClose: 2000 });
+        try {
+            const result = await deleteTxn(txn._id);
+            if (result?.data?.success) {
+                toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
+
+            } else {
+                toast.update(toastId, { render: `${(result as any)?.error?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
+                setLoading(false);
+
+            }
+        } catch (err: any) {
+            toast.update(toastId, { render: err?.error?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
+
+
+        } finally {
+            onClose();
+        }
+
+    };
+
     return (
         <div className="m-4 ">
             <form
@@ -47,7 +76,7 @@ const EditCustomerTxn = ({ onClose, id }: { onClose: () => void, id: string }) =
                     <SelectField
                         name="type"
                         label="no"
-                        placeholder='লেনদেনের ধরণ'
+                        placeholder={txn?.type}
                         options={customerTxnType}
                         control={control}
 
@@ -58,7 +87,7 @@ const EditCustomerTxn = ({ onClose, id }: { onClose: () => void, id: string }) =
 
                             name="amount"
                             label=""
-                            placeholder='কত টাকা *'
+                            placeholder={txn?.amount}
                             type='number'
                             control={control}
 
@@ -70,22 +99,27 @@ const EditCustomerTxn = ({ onClose, id }: { onClose: () => void, id: string }) =
                 <InputField
                     name="description"
                     label=""
-                    placeholder='বিবরণ'
+                    placeholder={txn?.description}
                     type='text'
                     control={control}
                 />
 
-                <button
-                    type="submit"
-                    disabled={loading}
-                    className="btn btn-primary w-full mt-2"
-                >
-                    {loading ? (
-                        <span className="loading loading-dots loading-lg"></span>
-                    ) : (
-                        "আপডেট করুন"
-                    )}
-                </button>
+                <div className='flex justify-between items-center gap-3'>
+
+                    <button onClick={handleDelete} type='button' className="btn btn-info  mt-2">ডিলিট করুন </button>
+
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="btn btn-primary  mt-2"
+                    >
+                        {loading ? (
+                            <span className="loading loading-dots loading-lg"></span>
+                        ) : (
+                            "আপডেট করুন"
+                        )}
+                    </button>
+                </div>
             </form>
         </div>
     );

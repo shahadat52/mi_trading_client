@@ -16,9 +16,20 @@ const commissionProduct = baseApi.injectEndpoints({
         }),
 
         getCommissionProducts: builder.query({
-            query: () => (
+            query: ({ searchTerm }) => (
                 {
-                    url: '/commissionProduct',
+                    url: `/commissionProduct/?searchTerm=${searchTerm}`,
+                    method: 'GET',
+
+                }),
+            providesTags: ['CommissionProduct']
+        }),
+
+
+        getCommissionProductsById: builder.query({
+            query: (id) => (
+                {
+                    url: `/commissionProduct/productDetails/${id}`,
                     method: 'GET',
 
                 }),
@@ -26,7 +37,7 @@ const commissionProduct = baseApi.injectEndpoints({
         }),
 
         getCommissionProductsBySupplier: builder.query({
-            query: (id) => (
+            query: (id: any) => (
                 {
                     url: `/commissionProduct/${id}`,
                     method: 'GET',
@@ -35,9 +46,30 @@ const commissionProduct = baseApi.injectEndpoints({
             providesTags: ['CommissionProduct']
         }),
 
+        updateCommissionProd: builder.mutation({
+            query: (commissionProductData: any) => (
+                {
+                    url: `commissionProduct/update/${commissionProductData.id}`,
+                    method: "PATCH",
+                    body: commissionProductData.data
+                }
+            ),
+            invalidatesTags: ['CommissionProduct']
+        }),
+
+        deleteCommissionProd: builder.mutation({
+            query: (id: any) => (
+                {
+                    url: `commissionProduct/${id}`,
+                    method: "DELETE"
+                }
+            ),
+            invalidatesTags: ['CommissionProduct']
+        }),
+
 
 
     }),
 });
 
-export const { useCommissionProductEntryMutation, useGetCommissionProductsQuery, useGetCommissionProductsBySupplierQuery } = commissionProduct    
+export const { useCommissionProductEntryMutation, useGetCommissionProductsByIdQuery, useGetCommissionProductsQuery, useGetCommissionProductsBySupplierQuery, useUpdateCommissionProdMutation, useDeleteCommissionProdMutation } = commissionProduct    

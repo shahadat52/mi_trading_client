@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import useDebouncedSearch from '../../../hooks/useDebouncedSearch';
 import { useGetAllBothSalesQuery } from '../../../redux/features/cart/cartApi';
@@ -5,7 +6,7 @@ import ErrorBoundary from '../../../components/ErrorBoundary';
 import TableSkeleton from '../../../components/table/TableSkeleton';
 import { salesTableHeads } from '../salesTableHeads';
 import SalesTableBody from '../SalesTableBody';
-import SalesCard from '../SalesCard';
+import SalesCard from './SalesCard';
 import { SalesDeliveryEntry } from '../SalesDeliveryEntry';
 import PrintSaleMemoModal from './PrintSaleMemoModal';
 
@@ -55,7 +56,7 @@ const BothSalesPage = () => {
         return <ErrorBoundary />
     }
     return (
-        <div className="p-4 space-y-4">
+        <div className="p-4 max-w-auto space-y-4">
             {/* Filters and search */}
             <form onSubmit={onSearchSubmit} className="flex flex-wrap gap-3 items-center justify-between">
                 <div className="flex gap-2 flex-wrap items-center">

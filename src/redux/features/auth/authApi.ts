@@ -14,6 +14,7 @@ const authApi = baseApi.injectEndpoints({
                         body: userInfo
                     }
                 ),
+                invalidatesTags: ['Users']
             }
         ),
 
@@ -49,7 +50,7 @@ const authApi = baseApi.injectEndpoints({
                     method: 'GET',
                 }
             ),
-            providesTags: ['User']
+            providesTags: ['Users']
 
         }),
 
@@ -73,7 +74,7 @@ const authApi = baseApi.injectEndpoints({
                     body: userData
                 }
             ),
-            invalidatesTags: ['User']
+            invalidatesTags: ['Users']
         }),
 
         updateRole: builder.mutation({
@@ -84,7 +85,7 @@ const authApi = baseApi.injectEndpoints({
                     body: { role: data.role }
                 }
             ),
-            invalidatesTags: ['User']
+            invalidatesTags: ['Users']
         }),
 
         updateStatus: builder.mutation({
@@ -95,7 +96,7 @@ const authApi = baseApi.injectEndpoints({
                     body: { status: data.status }
                 }
             ),
-            invalidatesTags: ['User']
+            invalidatesTags: ['Users']
         }),
 
 

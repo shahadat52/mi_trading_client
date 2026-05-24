@@ -11,7 +11,7 @@ const purchaseApi = baseApi.injectEndpoints({
                     body: purchaseData
                 }
             ),
-            invalidatesTags: ['Purchase', 'Supplier', 'SupplierTxn']
+            invalidatesTags: ['Purchases', 'Supplier', 'SupplierTxn', 'Payable']
         }),
         getAllPurchases: builder.query({
             query: (query) => (
@@ -20,7 +20,7 @@ const purchaseApi = baseApi.injectEndpoints({
                     url: `/purchase?${new URLSearchParams(query).toString()}`,
                     method: 'GET',
                 }),
-            providesTags: ['Purchase']
+            providesTags: ['Purchases']
         }),
 
         getCommissionPurchases: builder.query({
@@ -35,17 +35,20 @@ const purchaseApi = baseApi.injectEndpoints({
         getCommissionPurchaseById: builder.query({
             query: (id) => (
                 {
-                    url: `/purchase/${id}`,
+                    url: `/purchase/commission/${id}`,
                     method: 'GET',
                 }),
-            // providesTags: ['Purchase']
+            providesTags: ['CommissionPurchase']
         }),
 
-
-
-
-
-
+        getRegualarPurchaseById: builder.query({
+            query: (id) => (
+                {
+                    url: `/purchase/regular/${id}`,
+                    method: 'GET',
+                }),
+            providesTags: ['RegularPurchase']
+        }),
 
         deletePurchase: builder.mutation({
             query: (id) => (
@@ -55,19 +58,19 @@ const purchaseApi = baseApi.injectEndpoints({
 
                 }
             ),
-            invalidatesTags: ['Purchase']
+            invalidatesTags: ['Purchases', 'Payable', 'Products']
         }),
 
         updatePurchase: builder.mutation({
-            query: (data) => (
+            query: (payload) => (
                 {
-                    url: `/purchase/${data._id}`,
+                    url: `/purchase/update/${payload.id}`,
                     method: "PATCH",
-                    body: data
+                    body: payload.data
 
                 }
             ),
-            invalidatesTags: ['Purchase']
+            invalidatesTags: ['Purchases', 'Products', 'RegularPurchase', 'Payable']
         }),
 
         getPurchaseReports: builder.query({
@@ -78,7 +81,16 @@ const purchaseApi = baseApi.injectEndpoints({
                 }),
             // providesTags: ['Purchase']
         }),
+
+        getProductWiseSalesReports: builder.query({
+            query: (id) => (
+                {
+                    url: `/bothSales/reports/${id}`,
+                    method: 'GET',
+                }),
+            // providesTags: ['Purchase']
+        }),
     }),
 });
 
-export const { usePurchaseEntryMutation, useGetCommissionPurchasesQuery, useGetAllPurchasesQuery, useGetCommissionPurchaseByIdQuery, useDeletePurchaseMutation, useUpdatePurchaseMutation, useGetPurchaseReportsQuery } = purchaseApi
+export const { usePurchaseEntryMutation, useGetCommissionPurchasesQuery, useGetRegualarPurchaseByIdQuery, useGetAllPurchasesQuery, useGetCommissionPurchaseByIdQuery, useDeletePurchaseMutation, useUpdatePurchaseMutation, useGetPurchaseReportsQuery, useGetProductWiseSalesReportsQuery } = purchaseApi

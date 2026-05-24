@@ -7,16 +7,16 @@ import TextAreaField from "../../../components/form/TextAreaField";
 import SelectField from "../../../components/form/SelectField";
 import { purchaseTypes } from "../../../utils/purchaseTypes";
 import { DateTime } from "../../../utils/formatDateTime";
-import { useUpdatePurchaseMutation } from "../../../redux/features/purchase/purchaseApi";
 import { toast } from "react-toastify";
 
 interface EditModalProps {
     item: any;
     onClose: () => void;
+    editFunction: (data: any) => Promise<any>;
+    // deleteFunction: (data: any) => Promise<any>;
 }
 
-export const EditModal = ({ item, onClose }: EditModalProps) => {
-
+export const EditModal = ({ item, onClose, editFunction }: EditModalProps) => {
 
     const formattedItem = useMemo(() => {
         if (!item) return null;
@@ -37,7 +37,7 @@ export const EditModal = ({ item, onClose }: EditModalProps) => {
         defaultValues: formattedItem || {},
     });
 
-    const [updatePurchase] = useUpdatePurchaseMutation()
+
 
     // ✅ Reset with formattedItem (not original item)
     useEffect(() => {
@@ -51,7 +51,7 @@ export const EditModal = ({ item, onClose }: EditModalProps) => {
     const handleUpdate = async (data: any) => {
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
         try {
-            const result = await updatePurchase(data)
+            const result = await editFunction(data)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
                 onClose();
@@ -67,6 +67,7 @@ export const EditModal = ({ item, onClose }: EditModalProps) => {
         }
 
     };
+
 
     if (!formattedItem) return null;
 
@@ -127,12 +128,29 @@ export const EditModal = ({ item, onClose }: EditModalProps) => {
                     />
 
                     <InputField
-                        name="stockQty"
+                        name="quantity"
                         label="Quantity"
                         type="number"
                         control={control}
                     />
-
+                    <InputField
+                        name="labour"
+                        label="Labour"
+                        type="number"
+                        control={control}
+                    />
+                    <InputField
+                        name="commission"
+                        label="Commission"
+                        type="number"
+                        control={control}
+                    />
+                    <InputField
+                        name="transport"
+                        label="Transport"
+                        type="number"
+                        control={control}
+                    />
                     <InputField
                         name="purchasePrice"
                         label="Purchase Price"
@@ -191,11 +209,7 @@ export const EditModal = ({ item, onClose }: EditModalProps) => {
                     {/* Paid Checkbox */}
                     <div className="md:col-span-2 flex items-center gap-3 mt-2">
                         <label className="font-medium text-sm">Paid:</label>
-                        <input
-                            type="checkbox"
-                            {...register("isPaid")}
-                            className="checkbox checkbox-primary"
-                        />
+                        <input type="checkbox" {...register("isPaid")} className="checkbox checkbox-primary" />
                     </div>
                 </div>
 

@@ -2,12 +2,12 @@ import { QRCodeSVG } from "qrcode.react";
 import { engNumberToBanglaWords } from "../../../utils/engNumberToBanglaWords";
 import { FaWhatsapp } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
+import { DateTime } from "../../../utils/formatDateTime";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const PaidMemo = ({ sale, onClose }: any) => {
-    console.log(sale)
     return (
-        <div className="border max-w-3xl rounded overflow-auto print-area w-[500px] bg-white border-gray-300 shadow-lg">
+        <div className="border max-w-[30%] mx-auto rounded overflow-auto print-area w-[28%] bg-white border-gray-300 shadow-lg">
 
             <div className="fixed inset-0 z-50 flex items-start justify-center overflow-auto bg-black/40 min-h-screen p-4 ">
 
@@ -34,12 +34,13 @@ const PaidMemo = ({ sale, onClose }: any) => {
                     <div className="p-4 text-sm">
                         <div className="flex justify-between mb-2">
                             <div>নং: {sale.invoice}</div>
-                            <div>তারিখ: {new Date(sale.date).toLocaleDateString()}
-
-
+                            <div>তারিখ: {DateTime(sale?.date)}
                             </div>
                         </div>
-                        <div className='my-4' > নাম: {sale?.customer?.name}</div>
+                        <div className='flex justify-between my-4' >
+                            <p>নাম: {sale?.customer?.name}</p>
+                            <p>{sale?.broker === '' ? '' : ` ব্রোকার:${sale?.broker}`}</p>
+                        </div>
                         <div className="flex justify-between">
                             <div >ঠিকানা:{sale?.customer?.address}</div>
                             <div className="w-1/3">মোবা: {sale?.customer?.phone} </div>
@@ -65,7 +66,7 @@ const PaidMemo = ({ sale, onClose }: any) => {
                                 <tr key={idx} className="relative border-b border-gray-100">
                                     <td className="border-r border-gray-300 p-2">{idx + 1}</td>
                                     <td className="border-r border-gray-300 p-2">
-                                        {p?.name} {" "}  {p?.quantity} {p?.unit}
+                                        {p?.name} {" "} {p?.bosta} বস্তা - {p?.quantity} {p?.unit}
                                     </td>
                                     <td className="border-r border-gray-300 p-2 ">{p?.salePrice}</td>
                                     <td className="text-left p-2">{p?.salePrice * p?.quantity}</td>
@@ -83,15 +84,11 @@ const PaidMemo = ({ sale, onClose }: any) => {
                                 <td className=" text-xs">  <span>লেবারঃ </span></td>
                                 <td className=" ">  <span>{sale?.labour} </span></td>
                             </tr>
-                            <tr className=" border-t border-gray-400 bg-blue-900 text-white">
-                                <td colSpan={2} className="text-center px-2  font-"><span></span></td>
-                                <td className=" text-xs">  <span>আড়ৎদারী </span></td>
-                                <td className=" ">  <span>{(sale?.grandTotal) - (sale?.subtotal + sale?.others + sale?.labour + sale?.customerCommission)} </span></td>
-                            </tr>
+
                             <tr className=" border-t border-gray-400 bg-blue-900 text-white">
                                 <td colSpan={2} className="text-center px-2  font-"><span></span></td>
                                 <td className=" text-xs">  <span>কমিশনঃ </span></td>
-                                <td className=" ">  <span>{sale?.customerCommission} </span></td>
+                                <td className=" ">  <span>{(sale?.customerCommission) + (sale?.grandTotal) - (sale?.subtotal + sale?.others + sale?.labour + sale?.customerCommission)} </span></td>
                             </tr>
                             <tr className=" border-t border-gray-400 bg-blue-900 text-white">
                                 <td colSpan={2} className="text-center px-2  font-"><span></span></td>
@@ -124,8 +121,10 @@ const PaidMemo = ({ sale, onClose }: any) => {
                                 <p className="text-red-600">■ ডেলিভারী মাল না পাইলে ফোন করুন।</p>
                             </div>
 
-                            <p className="text-[12px] mt-6 border-t-2">চৌথাকারীর স্বাক্ষর</p>
-
+                            <div>
+                                <p className="text-[12px]">{sale?.createdBy?.name}</p>
+                                <p className="text-[12px]  border-t-2">চৌথাকারীর স্বাক্ষর</p>
+                            </div>
                         </div>
                         {/* Bottom Contact Info */}
                         <div className="bg-blue-950 text-white p-2 flex flex-col   rounded-b-lg">
@@ -156,10 +155,6 @@ const PaidMemo = ({ sale, onClose }: any) => {
                             </div>
 
                         </div>
-
-
-
-
                     </div>
                     <div className="flex justify-between items-center mt-8 pb-6 print:hidden">
                         <div className="flex gap-2">

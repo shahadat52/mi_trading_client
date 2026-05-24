@@ -24,7 +24,7 @@ const PurchasePage = () => {
             {/* Purchase Entry Form */}
             <PurchaseEntryForm />
 
-            {addSupplierModalCont && <AddSupplierModal setAddSupplierModalCont={setAddSupplierModalCont} />}
+            {addSupplierModalCont && <AddSupplierModal setAddSupplierModalCont={setAddSupplierModalCont} type='regular' />}
             {/* Add Product Modal */}
             {addProductModalCont && <AddProductModal setAddProductModalCont={setAddProductModalCont} />}
 

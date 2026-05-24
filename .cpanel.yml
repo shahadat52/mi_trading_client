@@ -1,0 +1,3 @@
+deployment:
+tasks:
+- /bin/cp -rf $DEPLOYPATH/dist/* $DEPLOYPATH/

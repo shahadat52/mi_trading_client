@@ -1,14 +1,11 @@
 import { NavLink } from "react-router-dom";
 import {
-    FaTachometerAlt,
-    FaBoxes,
     FaShoppingCart,
     FaHome,
-    FaUser,
 } from "react-icons/fa";
 import type { JSX } from "react";
 import { useAppSelector } from "../redux/hook";
-import { FaProductHunt } from "react-icons/fa6";
+import { FaProductHunt, FaSalesforce } from "react-icons/fa6";
 
 type NavItem = {
     to: string;
@@ -19,23 +16,16 @@ type NavItem = {
 
 const MobileNavbar = () => {
 
-    const role = useAppSelector((state) => state?.auth?.auth?.user?.role);
-    const isAdmin = role === "admin" || role === "superAdmin";
+    const cart = useAppSelector((state) => state?.cart)
+
     const navItems: NavItem[] = [
         { to: "/", label: "Home", icon: <FaHome className="h-6 w-6" /> },
-        { to: "/stock", label: "Inventory", icon: <FaBoxes className="h-6 w-6" /> },
-        { to: "/both/sales", label: "Sales", icon: <FaShoppingCart className="h-6 w-6" /> },
-        { to: "/profile", label: "Profile", icon: <FaUser className="h-6 w-6" /> },
-        ...(isAdmin
-            ? [
-                { to: "/products", label: "Products", icon: <FaProductHunt className="h-6 w-6" /> },
-                { to: "/dashboard", label: "Dashboard", icon: <FaTachometerAlt className="h-6 w-6" /> },
-            ]
-            : [])
+        { to: "/both/sales", label: "Sales", icon: <FaSalesforce className="h-6 w-6" /> },
+        { to: "/products", label: "Products", icon: <FaProductHunt className="h-6 w-6" /> },
     ];
 
     return (
-        <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-md">
+        <nav className=" fixed bottom-0 left-0 right-0 bg-blue-900 border-t border-gray-200 shadow-md">
             <ul className="flex justify-around items-center h-16">
                 {navItems.map((item) => (
                     <li key={item.to}>
@@ -43,15 +33,36 @@ const MobileNavbar = () => {
                             to={item.to}
                             end
                             className={({ isActive }) =>
-                                `flex flex-col items-center text-sm ${isActive ? "text-blue-600" : "text-gray-500"
+                                `flex flex-col items-center text-sm ${isActive ? "text-orange-500 font-bold" : "text-gray-100"
                                 }`
                             }
                         >
                             {item.icon}
-                            <span className="mt-1">{item.label}</span>
+                            <span className="uppercase mt-1">{item.label}</span>
                         </NavLink>
                     </li>
                 ))}
+
+                <li>
+                    <NavLink
+                        to="/cart"
+                        className={({ isActive }) =>
+                            `relative mt-1 flex flex-col items-center justify-center px-3 py-2 rounded-xl transition-all duration-200 ${isActive
+                                ? "text-orange-500 "
+                                : "text-gray-50 hover:text-orange-400"
+                            }`
+                        }
+                    >
+                        {cart?.items?.length > 0 && (
+                            <span className="absolute -top-1 right-1 min-w-[20px] h-5 px-1 flex items-center justify-center rounded-full bg-orange-500 text-white text-[11px] font-bold shadow-md">
+                                {cart.items.length}
+                            </span>
+                        )}
+
+                        <FaShoppingCart size={28} className="" />
+                        <span className="text-xs font-medium uppercase">Cart</span>
+                    </NavLink>
+                </li>
             </ul>
         </nav>
 

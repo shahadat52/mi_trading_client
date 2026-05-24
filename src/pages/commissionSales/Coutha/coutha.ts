@@ -23,4 +23,5 @@ export type TBepariCoutha = {
     isPaid: boolean;
     paymentMethod: string
     createdAt: Date
+    createdBy: any
 }

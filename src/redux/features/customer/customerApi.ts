@@ -14,14 +14,29 @@ const authApi = baseApi.injectEndpoints({
             invalidatesTags: ['Customer', 'CustomerTxn']
         }),
         getAllCustomers: builder.query({
-            query: (query) => (
-                new URLSearchParams(query).toString(),
+            query: ({ searchTerm, limit }) => {
+                const params = new URLSearchParams();
+                if (searchTerm) params.append('searchTerm', searchTerm);
+                if (limit) params.append('limit', String(limit));
+
+                return {
+                    url: `/customer?${params.toString()}`,
+                    method: 'GET',
+                };
+            },
+            providesTags: ['Customer']
+        }),
+
+        getCustomerById: builder.query({
+            query: (id) => (
                 {
-                    url: `/customer?${new URLSearchParams(query).toString()}`,
+                    url: `/customer/${id}`,
                     method: 'GET',
                 }),
             providesTags: ['Customer']
         }),
+
+
         updateCustomerData: builder.mutation({
             query: (updatedData) => (
                 {
@@ -40,7 +55,7 @@ const authApi = baseApi.injectEndpoints({
                     body: txnData,
                 }
             ),
-            invalidatesTags: ['CustomerTxn', 'Customer']
+            invalidatesTags: ['CustomerTxn', 'Customer', 'Payable']
         }),
 
         getAllCustomerTxn: builder.query({
@@ -69,10 +84,19 @@ const authApi = baseApi.injectEndpoints({
                     method: 'PATCH',
                     body: updatedData.data
                 }),
-            invalidatesTags: ['CustomerTxn', 'Customer']
+            invalidatesTags: ['CustomerTxn', 'Customer', 'Receivable']
         }),
 
         deleteCustomerTxn: builder.mutation({
+            query: (id) => (
+                {
+                    url: `/customerTxn/${id}`,
+                    method: 'DELETE'
+                }),
+            invalidatesTags: ['CustomerTxn', 'Customer', 'Receivable']
+        }),
+
+        deleteCustomer: builder.mutation({
             query: (id) => (
                 {
                     url: `/customer/${id}`,
@@ -87,4 +111,4 @@ const authApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useAddCustomerMutation, useGetAllCustomersQuery, useUpdateCustomerDataMutation, useCustomerTxnEntryMutation, useGetAllCustomerTxnQuery, useGetAllTxnByCustomerQuery, useUpdateCustomerTxnMutation, useDeleteCustomerTxnMutation } = authApi
+export const { useAddCustomerMutation, useGetAllCustomersQuery, useGetCustomerByIdQuery, useUpdateCustomerDataMutation, useCustomerTxnEntryMutation, useGetAllCustomerTxnQuery, useGetAllTxnByCustomerQuery, useUpdateCustomerTxnMutation, useDeleteCustomerTxnMutation, useDeleteCustomerMutation } = authApi

@@ -14,7 +14,6 @@ interface SalesTableBodyProps {
 }
 
 const SalesTableBody: React.FC<SalesTableBodyProps> = ({ row, page, limit, idx, toggleExpand, expandedRows, openInvoice, setDelivery }) => {
-    console.log(row)
     return (
         <React.Fragment key={row._id}>
             <tr className="border-t hover:bg-gray-50 transition-colors">

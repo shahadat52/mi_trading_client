@@ -12,7 +12,7 @@ import Loading from "../components/Loading";
 
 const OtpVerification: React.FC = () => {
     const [loading, setLoading] = useState(false);
-    const [otp, setOtp] = useState<string[]>(Array(6).fill(""));
+    const [otp, setOtp] = useState<string[]>(Array(4).fill(""));
     const [timer, setTimer] = useState(300); // 5 মিনিট = 300 সেকেন্ড
     const [resendActive, setResendActive] = useState(false);
     const path = useParams();

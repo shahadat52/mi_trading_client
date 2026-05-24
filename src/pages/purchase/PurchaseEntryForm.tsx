@@ -1,109 +1,240 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useForm, type SubmitHandler } from "react-hook-form";
-import type { TPurchase } from "../../interfaces/products";
 import { useState } from "react";
-import SelectField from "../../components/form/SelectField";
-import InputField from "../../components/form/InputFields";
 import { usePurchaseEntryMutation } from "../../redux/features/purchase/purchaseApi";
 import { toast } from "react-toastify";
 import { useGetAllProductNamesQuery } from "../../redux/features/product/productApi";
 import { useGetAllSuppliersNameQuery } from "../../redux/features/supplier/supplierApi";
-import TextAreaField from "../../components/form/TextAreaField";
 import './purchase.css'
-
-
-// 
-
-// 
+import { units } from "../../utils/units";
+import SearchableSelectField from "../../components/searchableFields/SearchableSelectField";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import { useDebounce } from "../../utils/useDebounce";
+import type { RootState } from "../../redux/store";
+import { calculatePurchaseTotals, resetPurchase, setBosta, setCommission, setIsCommissionPaid, setIsLabourPaid, setIsOthersPaid, setLabour, setNote, setOthers, setOthersField, setPaidAmount, setProduct, setPurchaseDate, setPurchasePrice, setQuantity, setSupplier, setUnit, type TPurchase } from "../../redux/features/purchase/purchaseSlice";
+import Loading from "../../components/Loading";
+import CalculatorField from "../cart/CalculatorField";
 
 const PurchaseEntryForm = () => {
-    const { control, handleSubmit, register, reset } = useForm<TPurchase>();
+    const dispatch = useAppDispatch()
+    const purchaseData: TPurchase = useAppSelector(state => state.purchase)
+    // Supplier Selection
+    const [supplierSearch, setSupplierSearch] = useState("");
+    const debouncedSupplierSearch = useDebounce(supplierSearch, 400);
+    const { data: supplierData, isFetching: supplierFetching } = useGetAllSuppliersNameQuery({ searchTerm: debouncedSupplierSearch, type: 'regular', limit: 20 });
+    const selectedsupplier: any = useAppSelector((state: RootState) => state.purchase.supplier);
+    const suppliers = supplierData?.data ?? [];
+
+    // Product Selection
+    const [productSearch, setproductSearch] = useState("");
+    const debouncedProductSearch = useDebounce(productSearch, 400);
+    const { data: productData, isFetching: productFetching } = useGetAllProductNamesQuery({ searchTerm: debouncedProductSearch });
+    const selectedProduct: any = useAppSelector((state: RootState) => state.purchase.supplier);
+    const products = productData?.data ?? [];
+
+
+    const [addPurchase] = usePurchaseEntryMutation();
 
     const [loading, setLoading] = useState(false);
 
-    const { data } = useGetAllProductNamesQuery(undefined)
-    const { data: supplierData } = useGetAllSuppliersNameQuery(undefined)
-
-    const [addPurchase] = usePurchaseEntryMutation();
-    const productNames = data?.data
-
-    const names = productNames?.map((item: any) => ({ label: item?.name, value: item?._id }))
-    const supplierNames = supplierData?.data;
-
-    const suppliers = supplierNames?.map((item: any) => ({ label: item?.name, value: item?._id }))
-
-    const onSubmit: SubmitHandler<TPurchase> = async (data) => {
-        const toastId = toast.loading("Processing...", { autoClose: 2000 });
+    const handlePurchase = async () => {
+        const toastId = toast.loading("Processing...");
+        (purchaseData)
+        const { grandTotal, dueAmount, subTotal, ...payload } = purchaseData;
+        if (payload.supplier === '' || payload.product === '' || payload.purchasePrice === 0 || payload.quantity === 0 || payload.bosta === 0) {
+            toast.update(toastId, { render: 'সব গুলো দেওয়া হয় নাই ', type: "warning", isLoading: false, autoClose: 1500, closeOnClick: true });
+            return
+        }
+        setLoading(true)
 
         try {
             setLoading(true);
 
-            const result = await addPurchase(data);
-            console.log(result)
+            const result = await addPurchase(payload)
             if (result?.data?.success) {
+                setLoading(false)
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
-                reset();
-
+                dispatch(resetPurchase())
             } else {
-                toast.update(toastId, { render: `${(result as any)?.error?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
-
+                setLoading(false)
+                toast.update(toastId, { render: `${(result as any)?.error?.data?.errorSource[0].message}`, type: "error", isLoading: false, autoClose: 2000 });
             }
         } catch (err: any) {
-            toast.update(toastId, { render: err?.error?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
-
+            setLoading(false)
+            toast.update(toastId, { render: err?.error?.data?.errorSource[0].message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
         } finally {
             setLoading(false);
         }
-    };
+    }
 
     return (
-        <form
-            onSubmit={handleSubmit(onSubmit)}
+        <div
             className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-6 rounded-2xl shadow mb-16"
         >
-
-            <SelectField
-                name="supplier"
+            <SearchableSelectField
                 label="সাপ্লাইয়ার"
-                control={control}
+                placeholder="সাপ্লাইয়ার খুঁজুন..."
                 options={suppliers}
-                rules={{ required: "সাপ্লাইয়ার নেই" }}
+                value={selectedsupplier}
+                loading={supplierFetching}
+                onSearch={(value) => setSupplierSearch(value)}
+                onSelect={(supplier) => dispatch(
+                    setSupplier(supplier._id)
+                )}
+                displayKeys={{
+                    title: "name",
+                    subtitle: "address",
+                    optional: "phone",
+                }}
             />
 
-            <SelectField
-                name="product"
+            <SearchableSelectField
                 label="পণ্য"
-                control={control}
-                options={names}
-                rules={{ required: "পণ্য নেই" }}
+                placeholder="পণ্য খুঁজুন..."
+                options={products}
+                value={selectedProduct}
+                loading={productFetching}
+                onSearch={(value) => setproductSearch(value)}
+                onSelect={(product) => dispatch(
+                    setProduct({ name: product.name, sku: product.sku })
+                )}
+                displayKeys={{
+                    title: "name",
+                    subtitle: "sku",
+                }}
             />
 
-            <InputField
-                name="purchaseDate"
-                label="তারিখ"
-                control={control}
-                type="datetime-local"
+            <input
+                type="date"
+                className="input"
+                value={purchaseData.purchaseDate ? purchaseData.purchaseDate.split("T")[0] : ""}
+                onChange={(e) =>
+                    dispatch(setPurchaseDate(new Date(e.target.value).toISOString()))
+                }
             />
-            <input {...register("purchasePrice")} placeholder="ক্রয় মূল্য" type="number" className="input" />
-            <input {...register("quantity")} placeholder="পরিমাণ" type="number" className="input" />
 
-            <TextAreaField
-                name='note'
-                label="নোট"
-                control={control}
-                placeholder="Keep note..."
-            />
+            <input type="number" className="input " value={purchaseData.bosta || ""} onChange={(e) => { dispatch(setBosta(Number(e.target.value))) }} placeholder="কত বস্তা" required />
+
+            <div className="w-full">
+                <label className="text-xs font-normal">পরিমান</label>
+                <CalculatorField
+                    initialValue={purchaseData.quantity}
+                    onUpdate={(val) => {
+                        dispatch(setQuantity(val));
+                        dispatch(calculatePurchaseTotals())
+                    }}
+                />
+            </div>
+
+
+            <div>
+                <label >দাম</label>
+                <input type="number" className="input" value={purchaseData.purchasePrice || ""} onChange={(e) => { dispatch(setPurchasePrice(Number(e.target.value))); dispatch(calculatePurchaseTotals()) }} placeholder="ক্রয় মূল্য" required />
+            </div>
+
+            <div className="">
+                <label className="text-xs font-normal">ক্রয় ইউনিট</label>
+                <select
+                    value={purchaseData.unit ?? ""}
+                    onChange={(e) => dispatch(setUnit(e.target.value))}
+                    className="select select-bordered w-full"
+                    required
+                >
+
+                    {units.map((unit) => (
+                        <option key={unit.value} value={unit.value}>
+                            {unit.label}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
+            <div className="flex gap-2 items-end w-full ">
+                <div className="w-full">
+                    <label className="text-xs font-normal">লেবার</label>
+                    <CalculatorField
+                        initialValue={purchaseData.labour}
+                        onUpdate={(val) => {
+                            dispatch(setLabour(val));
+                            dispatch(calculatePurchaseTotals())
+                        }}
+                    />
+                </div>
+                <input type="checkbox" className="checkbox checkbox-primary mb-2" checked={purchaseData.isLabourPaid} onChange={() => { dispatch(setIsLabourPaid(!purchaseData.isLabourPaid)); }} />
+            </div>
+
+            <div className="flex gap-2 items-end w-full ">
+                <div className="w-full">
+                    <label className="text-xs font-normal">কমিশন</label>
+                    <CalculatorField
+                        initialValue={purchaseData.commission}
+                        onUpdate={(val) => {
+                            dispatch(setCommission(val));
+                            dispatch(calculatePurchaseTotals())
+                        }}
+                    />
+                </div>
+                <input type="checkbox" className="checkbox checkbox-primary mb-2" checked={purchaseData.isCommissionPaid} onChange={() => { dispatch(setIsCommissionPaid(!purchaseData.isCommissionPaid)); }} />
+            </div>
+
+            <div className="flex gap-2 items-end w-full ">
+                <div className="flex items-center gap-2">
+                    <input value={purchaseData.othersField || ""} onChange={(e) => { dispatch(setOthersField(e.target.value)) }} placeholder="অন্যান্য খাত" type="text" className="input" required />
+
+
+                    <div>
+                        <CalculatorField
+                            initialValue={purchaseData.others}
+                            onUpdate={(val) => {
+                                dispatch(setOthers(val));
+                                dispatch(calculatePurchaseTotals())
+                            }
+                            }
+                        />
+                    </div>
+
+
+                    <input checked={purchaseData.isOthersPaid} onChange={() => { dispatch(setIsOthersPaid(!purchaseData.isOthersPaid)) }} type="checkbox" className="checkbox checkbox-primary " />
+
+                </div>
+            </div>
+
+            <input type="number" className="input " value={purchaseData.paidAmount || ""} onChange={(e) => { dispatch(setPaidAmount(Number(e.target.value))); dispatch(calculatePurchaseTotals()) }} placeholder="পরিশোধের পরিমান" />
+
+            <input value={purchaseData.note || ""} onChange={(e) => { dispatch(setNote(e.target.value)) }} placeholder="নোট লিখুন" type="text" className="input" required />
+
+            <div className=" grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex justify-between bg-blue-50 rounded-2xl p-5 border border-blue-100">
+                    <div>
+                        <p className="text-sm text-gray-500 mb-1">মোট দাম</p>
+                        <h3 className="text-2xl font-extrabold text-blue-700">
+                            ৳ {purchaseData?.grandTotal}
+                        </h3>
+                    </div>
+
+                    <div>
+                        <p className="text-sm text-gray-500 mb-1">বাকি</p>
+                        <h3 className="text-2xl font-extrabold text-blue-700">
+                            ৳ {purchaseData?.dueAmount}
+                        </h3>
+                    </div>
+
+                </div>
+            </div>
+
 
             <button
-                type="submit"
-                disabled={loading}
-                className="btn btn-black col-span-1 md:col-span-2"
+                className="mt-2"
+                onClick={handlePurchase}
             >
-                {loading ? <div className="flex justify-center items-center ">
-                    <span className="loading loading-dots loading-lg"></span>
-                </div> : "ক্রয় এন্ট্রি করুন"}
+                {
+                    loading ? <Loading /> : <span
+                        className="w-full p-4 mt-6 px-10 bg-accent text-white rounded-lg hover:bg-gray-800 transition"
+                    >
+                        ক্রয় করুন
+                    </span>
+                }
             </button>
-        </form>
+        </div>
     );
 };
 

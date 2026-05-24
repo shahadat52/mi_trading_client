@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 export type TSaleItem = {
     name: string
     product: string;
-    quantity: number;
+    quantity: number | "";
     salePrice: number;
+    bosta: number | string;
     unit: string;
     profit?: number;
     commission?: number;
@@ -23,20 +25,13 @@ export type TCart = {
     date: string;
     labour: number | string;
     customerCommission: number | string;
-    broker: string;
+    broker: { name: '', _id: '' };
+    brokerBill: number;
     items: TSaleItem[]
     others: number | string;
     grandTotal: number | string;
     paidAmount: number | string;
     paymentMethod: string;
-    bankInfo: {
-        bankName?: string;
-        type?: string;
-        amount?: number;
-        issueDate?: string;
-        postingDate?: string;
-        note?: string;
-    },
     comments: string
 };
 
@@ -45,20 +40,13 @@ const initialState: TCart = {
     date: new Date().toISOString(),
     labour: 0,
     customerCommission: 0,
-    broker: "",
+    broker: { name: '', _id: '' },
+    brokerBill: 0,
     items: [],
     others: 0,
     grandTotal: 0,
     paidAmount: 0,
     paymentMethod: "cash",
-    bankInfo: {
-        bankName: '',
-        type: '',
-        amount: 0,
-        issueDate: new Date().toISOString(),
-        postingDate: new Date().toISOString(),
-        note: ''
-    },
     comments: ''
 
 };
@@ -75,8 +63,11 @@ const cartSlice = createSlice({
             state.date = action.payload;
         },
 
-        setBroker(state, action: PayloadAction<string>) {
+        setBrokerName(state, action: PayloadAction<any>) {
             state.broker = action.payload;
+        },
+        setBrokerBill(state, action: PayloadAction<number>) {
+            state.brokerBill = action.payload;
         },
 
 
@@ -101,24 +92,6 @@ const cartSlice = createSlice({
             state.paymentMethod = action.payload;
         },
 
-        setBankName(state, action: PayloadAction<string>) {
-            state.bankInfo.bankName = action.payload;
-        },
-        setBankAmount(state, action: PayloadAction<number>) {
-            state.bankInfo.amount = action.payload;
-        },
-        setBankTxnType(state, action: PayloadAction<string>) {
-            state.bankInfo.type = action.payload;
-        },
-        setIssueDate(state, action: PayloadAction<string>) {
-            state.bankInfo.issueDate = action.payload;
-        },
-        setPostingDate(state, action: PayloadAction<string>) {
-            state.bankInfo.postingDate = action.payload;
-        },
-        setBankNote(state, action: PayloadAction<string>) {
-            state.bankInfo.note = action.payload;
-        },
         setComments(state, action: PayloadAction<string>) {
             state.comments = action.payload;
         },
@@ -126,7 +99,7 @@ const cartSlice = createSlice({
         /* ---------------- CALCULATION ---------------- */
         calculateGrandTotal(state) {
             const itemsTotal = state.items.reduce(
-                (sum, item) => sum + item.quantity * item.salePrice,
+                (sum, item) => sum + Number(item.quantity) * Number(item.salePrice),
                 0
             );
 
@@ -140,8 +113,6 @@ const cartSlice = createSlice({
 
         /* ---------------- ITEMS ---------------- */
         addItem(state, action: PayloadAction<TSaleItem>) {
-
-            console.log(action)
             state.items.push(action.payload);
         },
         updateSalePrice: (
@@ -182,6 +153,19 @@ const cartSlice = createSlice({
             }
         },
 
+        updateBosta: (
+            state,
+            action: PayloadAction<{ productId: string; bosta: number }>
+        ) => {
+            const item = state.items.find(
+                (item) => item.product === action.payload.productId
+            );
+
+            if (item) {
+                item.bosta = action.payload.bosta;
+            }
+        },
+
 
         updateItem(
             state,
@@ -212,22 +196,18 @@ const cartSlice = createSlice({
 export const {
     setCustomer,
     setDate,
-    setBroker,
+    setBrokerName,
+    setBrokerBill,
     setLabour,
     setCustomerCommission,
     setOthers,
     setPaidAmount,
     setPaymentMethod,
-    setBankName,
-    setBankAmount,
-    setBankTxnType,
-    setIssueDate,
-    setPostingDate,
-    setBankNote,
     setComments,
     updateSalePrice,
     updateCommissionRate,
     updateQuantity,
+    updateBosta,
     addItem,
     updateItem,
     removeItem,

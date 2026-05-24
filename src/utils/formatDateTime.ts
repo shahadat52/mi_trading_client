@@ -31,5 +31,13 @@ export const DateTime = (dateValue: string | Date | null | undefined) => {
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
 
-    return `${day}-${month}-${year}`;
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12; // 0 হলে 12 দেখাবে
+
+    const formattedHours = String(hours).padStart(2, "0");
+
+    return `${day}/${month}/${year} - ${formattedHours}:${minutes} ${ampm}`;
 };

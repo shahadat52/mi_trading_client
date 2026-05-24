@@ -5,6 +5,7 @@ import TableSkeleton from '../../../components/table/TableSkeleton';
 import { useGetAllUsersQuery, useUpdateRoleMutation, useUpdateStatusMutation } from '../../../redux/features/auth/authApi';
 import UserTable, { type TUser } from './UserTable';
 import { usersTableHeads } from './usersTableHeads';
+import { USER_ROLE_OPTIONS } from '../../../utils/options';
 
 const UserManagementPage = () => {
     const { data, isLoading, isError, error } = useGetAllUsersQuery(undefined);
@@ -160,16 +161,11 @@ const UserManagementPage = () => {
                                     className="select select-bordered w-full mt-2"
                                     onChange={(e) => handleUpdate(user?._id, e.target.value)}
                                 >
-                                    <option disabled>Select Role</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="manager">Manager</option>
-                                    <option value="employee">Employee</option>
-                                    <option value="specialManager">Special Manager</option>
-                                    <option value="salesManager">Sales Manager</option>
-                                    <option value="purchaseManager">Purchase Manager</option>
-                                    <option value="deliveryManager">Delivery Manager</option>
-                                    <option value="commissionManager">Commission Manager</option>
-                                    <option value="employee">Employee</option>
+                                    {USER_ROLE_OPTIONS?.map((opt) => (
+                                        <option key={opt.value} value={opt.value}>
+                                            {opt.label}
+                                        </option>
+                                    ))}
                                 </select>
                                 <select
                                     defaultValue={user?.status}

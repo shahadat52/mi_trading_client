@@ -5,18 +5,20 @@ import { toast } from 'react-toastify';
 import InputField from '../../components/form/InputFields';
 import { useCommissionProductEntryMutation } from '../../redux/features/commissionProduct/commissionProductApi';
 import SupplierSearchableSelectField from './SupplierSearchableSelectField';
-import { useAppSelector } from '../../redux/hook';
-import SelectField from '../../components/form/SelectField';
-import { units } from '../../utils/units';
+import { useAppDispatch, useAppSelector } from '../../redux/hook';
+import { setQuantity } from '../../redux/features/commissionProduct/commissionProductSlice';
+import CalculatorField from '../cart/CalculatorField';
 
 const CommissionProductEntry = ({ onClose }: { onClose: () => void }) => {
     const state = useAppSelector((state) => state.commissionProduct);
     const [loading, setLoading] = useState(false)
     const { handleSubmit, control, reset } = useForm();
     const [addProduct] = useCommissionProductEntryMutation()
+    const dispatch = useAppDispatch()
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         data.supplier = state.supplier
+        data.quantity = state.quantity
         setLoading(true);
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
         try {
@@ -41,11 +43,11 @@ const CommissionProductEntry = ({ onClose }: { onClose: () => void }) => {
 
     }
     return (
-        <div className="m-4 ">
+        <div className="m-4">
             <h1 className="text-2xl text-center font-bold mb-4 ">নতুন পন্য যুক্ত করূন </h1>
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className=" grid gap-4 lg:grid-cols-1 md:grid-cols-1 sm:grid-cols-1"
+                className=" grid gap-2 lg:grid-cols-1 md:grid-cols-1 sm:grid-cols-1"
             >
 
                 <SupplierSearchableSelectField />
@@ -55,22 +57,21 @@ const CommissionProductEntry = ({ onClose }: { onClose: () => void }) => {
                     control={control}
                     rules={{ required: "পন্য নাম নাই" }}
                 />
-
-                <SelectField
-                    label="পন্যের ইউনিট"
-                    name="unit"
-                    control={control}
-                    rules={{ required: "পন্যের ইউনিট নাই" }}
-                    options={units}
-                />
-
-
+                <section>
+                    <label>পরিমান</label>
+                    <CalculatorField
+                        initialValue={state.quantity}
+                        onUpdate={(val) => {
+                            dispatch(setQuantity(val))
+                        }}
+                    />
+                </section>
                 <InputField
-                    label="পন্যের পরিমান"
+                    label="বস্তা সংখ্যা"
                     type='number'
-                    name="quantity"
+                    name="bosta"
                     control={control}
-                    rules={{ required: "পন্যের পরিমান নাই" }}
+                    rules={{ required: "বস্তার পরিমান নাই" }}
                 />
                 <InputField
                     control={control}

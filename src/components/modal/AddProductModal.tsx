@@ -3,10 +3,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import InputField from "../form/InputFields";
 import { MdCancel } from "react-icons/md";
-import SelectField from "../form/SelectField";
 import { toast } from "react-toastify";
 import { useAddProductMutation } from "../../redux/features/product/productApi";
-import { units } from "../../utils/units";
 
 import "../../styles/modalAnimations.css"; // 🔥 animation CSS
 
@@ -19,10 +17,10 @@ export const AddProductModal = ({ setAddProductModalCont }: any) => {
             name: "",
             sku: "",
             category: "",
-            purchasePrice: "",
-            salesPrice: "",
+            purchasePrice: 0,
+            salesPrice: 0,
             unit: "",
-            stockQty: ""
+            stockQty: 0
         }
     });
 
@@ -96,46 +94,6 @@ export const AddProductModal = ({ setAddProductModalCont }: any) => {
                             control={control}
                             rules={{ required: "SKU is required" }}
                         />
-
-                        <InputField
-                            name="category"
-                            label="Category"
-                            control={control}
-                            rules={{ required: "Category is required" }}
-                        />
-
-                        <InputField
-                            name="purchasePrice"
-                            label="Purchase Price"
-                            type="number"
-                            control={control}
-                            rules={{ required: "Purchase Price is required" }}
-                        />
-
-                        <InputField
-                            name="salesPrice"
-                            label="Sales Price"
-                            type="number"
-                            control={control}
-                            rules={{ required: "Sales Price is required" }}
-                        />
-
-                        <SelectField
-                            name="unit"
-                            label="Unit"
-                            control={control}
-                            options={units}
-                            rules={{ required: "Unit is required" }}
-                        />
-
-                        <InputField
-                            name="stockQty"
-                            label="Stock Quantity"
-                            type="number"
-                            control={control}
-                            rules={{ required: "Stock Quantity is required" }}
-                        />
-
                     </div>
 
                     <button

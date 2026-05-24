@@ -3,23 +3,20 @@ import { useGetMyDataQuery } from "../../redux/features/auth/authApi";
 import Modal from "../../components/Modal";
 import { useState } from "react";
 import EditProfileForm from "./EditProfileForm";
-import ErrorBoundary from "../../components/ErrorBoundary";
-import ProfileSkeleton from "./ProfileSkeleton";
 import { useAppDispatch } from "../../redux/hook";
 import { logOut } from "../../redux/features/auth/authSlice";
 
 
 const ProfilePage = () => {
     const [isOpen, setIsOpen] = useState(false)
-    const { data, isLoading, error } = useGetMyDataQuery(undefined);
+    const { data } = useGetMyDataQuery(undefined);
     const dispatch = useAppDispatch();
 
     const user = data?.data || null;
     const handleLogOut = () => {
         dispatch(logOut())
     }
-    if (isLoading) return <ProfileSkeleton />;
-    if (error) return <ErrorBoundary />;
+
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col items-center p-4 sm:p-6">

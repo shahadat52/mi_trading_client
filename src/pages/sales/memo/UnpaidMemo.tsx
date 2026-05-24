@@ -7,7 +7,7 @@ import { FaSquareFacebook } from "react-icons/fa6";
 
 const UnpaidMemo = ({ sale, copyLabel, onClose }: any) => {
     return (
-        <div className=" border max-w-3xl rounded overflow-auto print-area bg-white border-black shadow-lg print:shadow-none">
+        <div className=" border max-w-[48%] rounded overflow-auto print-area bg-white border-black shadow-lg print:shadow-none">
             <div className="flex items-start justify-center overflow-auto     ">
 
                 <div className=" border max-w-3xl rounded  overflow-auto print-area  bg-white  border-black shadow-lg ">

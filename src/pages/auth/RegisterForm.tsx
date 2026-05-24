@@ -24,7 +24,7 @@ const RegistrationForm: React.FC = () => {
             const result = await registerUser(data)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result?.data?.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
-                navigate('/login')
+                navigate('/hr')
                 reset();
                 setLoading(false);
 

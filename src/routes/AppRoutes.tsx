@@ -5,28 +5,22 @@ import PurchasePage from "../pages/purchase/PurchasePage";
 import StockPage from "../pages/stock/StockPage";
 import ReportsPage from "../pages/reports/ReportsPage";
 import AccountsPage from "../pages/accounts/AccountsPage";
-import IncomePage from "../pages/income/IncomePage";
-import ExpensesPage from "../pages/expenses/ExpansesPage";
 import RegisterPage from "../pages/auth/RegisterPage";
 import LoginPage from "../pages/auth/LoginPage";
 import OtpVerification from "../pages/OtpVerifyPage";
 import PrivateRoute from "./PrivateRoute";
 import ErrorBoundary from "../components/ErrorBoundary";
-import SalesEntryPage from "../pages/sales/SalesEntryPage";
-import SalesOverviewPage from "../pages/sales/SalesOverviewPage";
-import CommissionSuppliersPage from "../pages/commissionSales/CommissionSuppliersPage";
-import DeliveryPage from "../redux/delivery/DeliveryPage";
+import CommissionPage from "../pages/commissionSales/CommissionPage";
+import DeliveryPage from "../pages/delivery/DeliveryPage";
 import ProfilePage from "../pages/profile/ProfilePage";
 import PurchaseOverviewTable from "../pages/purchase/PurchaseOverviewTable";
 import TransactionTable from "../pages/accounts/TransactionTable";
 import CustomerTxnPage from "../pages/home/CustomerTxnPage";
-import FacebookQRCode from "../components/FacebookQRCode";
 import OutstandingTxnPage from "../pages/accounts/OutstandingTxnPage";
-import SupplierWisePurchasePage from "../pages/commissionSales/SupplierWisePurchasePage";
-import SupplierWiseSalesPage from "../pages/commissionSales/SupplierWiseSalesPage";
+import SupplierWisePurchasePage from "../pages/commissionSales/commissionSupplierProducts/SupplierWisePurchasePage";
 import DashboardPage from "../pages/dashboard/DashboardPage";
 import PendingApprovalsPage from "../pages/dashboard/PendingApprovals/PendingApprovalsPage";
-import CouthaPage from "../pages/commissionSales/Coutha/CouthaPage";
+import CouthaPage from "../pages/commissionSales/Coutha/CouthasPage";
 import UserManagementPage from "../pages/dashboard/userManagement/UserManagementPage";
 import PartnersPage from "../pages/partners/PartnersPage";
 import SupplierTxnPage from "../pages/home/SupplierTxnPage";
@@ -34,6 +28,18 @@ import CartPage from "../pages/cart/CartPage";
 import AllProductsPage from "../pages/products/AllProductsPage";
 import BothSalesPage from "../pages/sales/bothSales/BothSalesPage";
 import BankTxnsPage from "../pages/accounts/txn/BankTxnsPage";
+import BrokersPage from "../pages/broker/BrokersPage";
+import BrokerTxn from "../pages/broker/BrokerTxn";
+import ProductDetails from "../pages/products/ProductDetails";
+import CommissionProductDetails from "../pages/products/CommissionProductDetails";
+import MemoPreviewPage from "../pages/home/memoPreview/MemoPreviewPage";
+import CashboxPage from "../pages/cashbox/CashboxPage";
+import PurchaseReport from "../pages/purchase/PurchaseReport";
+import IncomeExpensePage from "../pages/Income_Expense/IncomeExpensePage";
+import BepariCoutha from "../pages/commissionSales/Coutha/BepariCoutha";
+import HRPage from "../pages/hr/HRpage";
+import AttendancesPage from "../pages/hr/attendances/AttendancesPage";
+import EmployeesPages from "../pages/hr/employees/EmployeesPages";
 
 export const router = createBrowserRouter([
     {
@@ -56,8 +62,20 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute><PurchasePage /></PrivateRoute>,
             },
             {
+                path: "purchase/report/:id",
+                element: <PrivateRoute><PurchaseReport /></PrivateRoute>,
+            },
+            {
                 path: '/products',
                 element: <PrivateRoute><AllProductsPage /></PrivateRoute>
+            },
+            {
+                path: '/products/:id',
+                element: <PrivateRoute><ProductDetails /></PrivateRoute>
+            },
+            {
+                path: '/commission/product/:id',
+                element: <PrivateRoute><CommissionProductDetails /></PrivateRoute>
             },
             {
                 path: "/cart",
@@ -80,28 +98,24 @@ export const router = createBrowserRouter([
                 element: <StockPage />,
             },
             {
-                path: "test",
-                element: <FacebookQRCode />,
-            },
-            {
-                path: "sales/overview",
-                element: <SalesOverviewPage />,
-            },
-            {
                 path: "both/sales",
                 element: <PrivateRoute><BothSalesPage /></PrivateRoute>
             },
             {
+                path: "both/sales/:id",
+                element: <PrivateRoute><BothSalesPage /></PrivateRoute>
+            },
+            {
                 path: "commission-sales",
-                element: <CommissionSuppliersPage />,
+                element: <CommissionPage />,
+            },
+            {
+                path: "cashbox",
+                element: <CashboxPage />,
             },
             {
                 path: "commission-purchase/:id",
                 element: <SupplierWisePurchasePage />,
-            },
-            {
-                path: "commission-sales/:id",
-                element: <SupplierWiseSalesPage />,
             },
             {
                 path: 'coutha/:id',
@@ -117,16 +131,12 @@ export const router = createBrowserRouter([
 
             },
             {
-                path: "sales/entry",
-                element: <SalesEntryPage />,
+                path: "invoice/:id",
+                element: <MemoPreviewPage />,
             },
             {
-                path: "income",
-                element: <PrivateRoute><IncomePage /></PrivateRoute>,
-            },
-            {
-                path: "expenses",
-                element: <PrivateRoute><ExpensesPage /></PrivateRoute>,
+                path: "income_expense",
+                element: <PrivateRoute><IncomeExpensePage /></PrivateRoute>,
             },
             {
                 path: "reports",
@@ -164,7 +174,28 @@ export const router = createBrowserRouter([
             {
                 path: "dashboard/users",
                 element: <PrivateRoute><UserManagementPage /></PrivateRoute>
-            }
+            },
+            {
+                path: "dashboard/brokers",
+                element: <PrivateRoute><BrokersPage /></PrivateRoute>
+            },
+            {
+                path: "/brokerTxn/:id",
+                element: <PrivateRoute><BrokerTxn /></PrivateRoute>
+            },
+            {
+                path: "/hr",
+                element: <PrivateRoute><HRPage /></PrivateRoute>
+            },
+            {
+                path: "/hr/:id",
+                element: <PrivateRoute><AttendancesPage /></PrivateRoute>
+            },
+            {
+                path: "/hr/id",
+                element: <PrivateRoute><EmployeesPages /></PrivateRoute>
+            },
+
         ],
     },
     {
@@ -175,6 +206,11 @@ export const router = createBrowserRouter([
         path: "register",
         element: <RegisterPage />,
     },
+    {
+        path: "/print/coutha/:id",
+        element: <BepariCoutha />,
+    },
+
     {
         path: "login",
         element: <LoginPage />,

@@ -20,7 +20,7 @@ const SupplierSearchableSelectField = () => {
     const debouncedSearch = useDebounce(search, 400);
 
     const { data, isFetching } = useGetAllSuppliersQuery(
-        { search: debouncedSearch, limit: 20, type: 'commission' },
+        { searchTerm: debouncedSearch, limit: 20, type: 'commission' },
         { skip: !open }
     );
 

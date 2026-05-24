@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { toast } from "react-toastify";
 import { useUpdateRoleMutation, useUpdateStatusMutation } from "../../../redux/features/auth/authApi";
+import { useNavigate } from "react-router";
 
 export type TUser = { _id: string, name: string, phone: string, email: string, role: string, status: string }
 const UserTable = (user: TUser) => {
-
+    const navigate = useNavigate()
     const [updateRole] = useUpdateRoleMutation()
     const handleUpdate = async (role: string) => {
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
@@ -50,7 +51,7 @@ const UserTable = (user: TUser) => {
     }
     return (
         <tr key={user._id} className={`${user?.status === 'blocked' ? 'text-red-600 border border-red-600' : 'text-gray-800 border border-gray-200'}hover:bg-gray-50 `}>
-            <td className="px-4 py-2 border">{user?.name}</td>
+            <td onClick={() => navigate(`/hr/${user._id}`)} className="px-4 py-2 border">{user?.name}</td>
 
             <td className="px-4 py-2 border">{user?.phone}</td>
             <td className="px-4 py-2 border">{user?.email}</td>

@@ -5,13 +5,13 @@ import { toast } from 'react-toastify';
 import { useAddCustomerMutation } from '../../redux/features/customer/customerApi';
 import { useState } from 'react';
 import SelectField from '../../components/form/SelectField';
+import { CATEGORY_OPTIONS } from '../../utils/options';
 
 const AddCustomer = ({ onClose }: { onClose: () => void }) => {
     const [loading, setLoading] = useState(false)
-    const { control, handleSubmit, reset, watch } = useForm();
+    const { control, handleSubmit, reset } = useForm();
     const [AddCustomer] = useAddCustomerMutation()
 
-    const previousDue = watch('previousDue');
     const onSubmit = async (data: FieldValues) => {
         const toastId = toast.loading("Processing...");
         data.date = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Dhaka' }))
@@ -26,7 +26,7 @@ const AddCustomer = ({ onClose }: { onClose: () => void }) => {
                 reset();
                 onClose();
             } else {
-                toast.update(toastId, { render: `${(result as any)?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
+                toast.update(toastId, { render: `${(result as any)?.error?.message}`, type: "error", isLoading: false, autoClose: 2000 });
             }
         } catch (err: any) {
             toast.update(toastId, { render: err?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
@@ -51,7 +51,13 @@ const AddCustomer = ({ onClose }: { onClose: () => void }) => {
                     control={control}
                     rules={{ required: "মোবাইল নাম্বার নাই" }}
                 />
-
+                <SelectField
+                    name="category"
+                    label="ক্যাটেগরি *"
+                    control={control}
+                    rules={{ required: "ক্যাটেগরি নাই" }}
+                    options={CATEGORY_OPTIONS}
+                />
                 <InputField
                     name="address"
                     label="ঠিকানা"
@@ -60,26 +66,6 @@ const AddCustomer = ({ onClose }: { onClose: () => void }) => {
 
 
 
-                <InputField
-                    label="পূর্বের পাওনা"
-                    name="previousDue"
-                    type="number"
-                    control={control}
-                />
-
-                {/* previousDue থাকলে type দেখাবে */}
-                {previousDue && Number(previousDue) > 0 && (
-                    <SelectField
-                        label="পাওনার ধরন"
-                        name="type"
-                        options={[
-                            { label: 'পাবো', value: 'credit' },
-                            { label: 'দিবো', value: 'debit' }
-                        ]}
-                        control={control}
-                        rules={{ required: "পাওনার ধরন সিলেক্ট করুন" }}
-                    />
-                )}
 
                 <button
                     type="submit"

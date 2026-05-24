@@ -28,6 +28,7 @@ export type TAddProduct = {
     lot: string;
     purchasePrice: number;
     stockQty?: number;
+
     reorderLevel?: number;
     isPaid?: boolean;
     note?: string;
@@ -37,20 +38,29 @@ export type TAddProduct = {
 };
 
 export interface TPurchase {
-    product: string; // Product name
+    product: any;
+    sku: string;
+    unit: "কেজি" | "পিস" | "মণ" | "বস্তা" | "লিটার" | "বক্স" | "টন";
     purchaseType: "normal" | "due" | "commission";
-    supplier: string; // Supplier name
-    commissionPerUnit?: number;
-    totalCommission?: number;
-    dueAmount?: number;
+    supplier: string;
+    labour?: number;
+    isLabourPaid: boolean
+    commission?: number;
+    isCommissionPaid: boolean
+    isOthersPaid: boolean
+    others?: number;
+    othersField: string
     quantity: number;
+    bosta: number;
     lot: string
     purchaseDate?: Date | undefined;
     invoice: string;
     purchasePrice: number;
     reorderLevel: number;
     isPaid: boolean;
+    paidAmount: string
     note: string;
     createdAt?: Date;
     updatedAt?: Date;
+
 };

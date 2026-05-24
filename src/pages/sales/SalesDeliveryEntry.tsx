@@ -12,7 +12,6 @@ type SalesDeliveryModalProps = {
 };
 
 export const SalesDeliveryEntry = ({ item, deliveryModalClose }: SalesDeliveryModalProps) => {
-    console.log(item)
     const [loading, setLoading] = useState(false);
     const { register, handleSubmit, reset } = useForm({
         defaultValues: item,
@@ -22,14 +21,12 @@ export const SalesDeliveryEntry = ({ item, deliveryModalClose }: SalesDeliveryMo
 
     const onSubmit = async (data: any) => {
         data.sales = item._id;
-        console.log(data)
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
 
         try {
             setLoading(true);
 
             const result = await deliveryEntryAndUpdate(data);
-            console.log(result)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
                 reset();
@@ -66,12 +63,6 @@ export const SalesDeliveryEntry = ({ item, deliveryModalClose }: SalesDeliveryMo
                         className="border w-full px-2 py-1 rounded"
                         {...register("phone")}
                         placeholder="ফোন নাম্বার"
-                    />
-                    <input
-                        type="datetime-local"
-                        className="border w-full px-2 py-1 rounded"
-                        {...register("deliveryTime")}
-                        placeholder="delivery time"
                     />
                     <input
                         className="border w-full px-2 py-1 rounded"

@@ -1,31 +1,37 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { useForm, type FieldValues } from "react-hook-form";
-import { useNavigate, useParams } from "react-router";
-import { useAppSelector } from "../../redux/hook";
+import { useParams } from "react-router";
 import { toast } from "react-toastify";
 import SelectField from "../../components/form/SelectField";
 import { customerTxnType } from "../../utils/transactionType";
 import InputField from "../../components/form/InputFields";
 import FileUploadField from "../../components/form/FileUploadField";
-import { MdDelete } from "react-icons/md";
 import TableSkeleton from "../../components/table/TableSkeleton";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import Modal from "../../components/Modal";
-import { useDeleteSupplierTxnMutation, useGetSpecificSupplierTxnQuery, useSupplierTxnEntryMutation } from "../../redux/features/supplierTxn/supplierTxnApi";
+import { useGetSpecificSupplierTxnQuery, useSupplierTxnEntryMutation } from "../../redux/features/supplierTxn/supplierTxnApi";
 import EditSupplierTxn from "./EditSupplierTxn";
 import { paymentMethods } from "../../utils/paymentMethods";
 import { banksName } from "../accounts/banksName";
+import Profile from "../../components/profile/Profile";
+import { customRound } from "../../utils/customRound";
 
 const SupplierTxnPage = () => {
 
     const { id } = useParams();
     const [isOpen, setIsOpen] = useState(false)
+    const [makeTxn, setMakeTxn] = useState(false)
     const [selectedTxn, setSelectedTxn] = useState('')
     const [loading, setLoading] = useState(false)
-    const { control, handleSubmit, reset, watch } = useForm()
+    const { control, handleSubmit, reset, watch } = useForm({
+        defaultValues: {
+            paymentMethod: 'cash'
+        }
+    })
     const [supplierTxnEntry] = useSupplierTxnEntryMutation()
-    const navigate = useNavigate();
-    const user = useAppSelector((state) => state?.auth?.auth?.user)
+    // const navigate = useNavigate();
+    // const user = useAppSelector((state) => state?.auth?.auth?.user)
     const { data, isLoading, isError, } = useGetSpecificSupplierTxnQuery({ id });
 
     const onSubmit = async (data: FieldValues) => {
@@ -40,7 +46,6 @@ const SupplierTxnPage = () => {
             setLoading(true);
 
             const result = await supplierTxnEntry(data);
-            console.log(result)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
 
@@ -57,31 +62,7 @@ const SupplierTxnPage = () => {
     };
 
 
-    const [deleteSupplierTxn] = useDeleteSupplierTxnMutation()
-    const handleDelete = async (id: string) => {
-        const isConfirm = confirm("ডিলিট করেই দেবেন?")
-        if (!isConfirm) {
-            return
-        }
-        const toastId = toast.loading("Processing...", { autoClose: 2000 });
-        try {
 
-            const result = await deleteSupplierTxn(id)
-            if (result?.data?.success) {
-                toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
-                navigate('/')
-            } else {
-                toast.update(toastId, { render: `${(result as any)?.error?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
-                setLoading(false);
-            }
-        } catch (err: any) {
-            toast.update(toastId, { render: err?.error?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
-
-        } finally {
-            /* empty */
-        }
-
-    }
 
 
     const handleSelectedTxn = (id: string) => {
@@ -90,120 +71,120 @@ const SupplierTxnPage = () => {
 
     }
     const transactions = data?.data
-    console.log(transactions)
     const totalDebit = transactions?.filter((txn: any) => (txn.type === 'debit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0)
     const totalCredit = transactions?.filter((txn: any) => (txn.type === 'credit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0)
-
-
+    const supplierData = transactions ? transactions[0]?.supplier[0] : {}
+    const due = customRound(totalCredit - totalDebit || 0)
     const paymentMethod = watch('paymentMethod')
     return (
         <div className="mx-auto">
-            {/*Transaction entry section */}
-            <div className="sticky flex flex-col lg:flex-row gap-2 mb-2 p-1 ">
-                <form onSubmit={handleSubmit(onSubmit)} className="">
+            <div>
+                <Profile person={supplierData} />
+            </div>
+            <div className="flex  items-center gap-4">
+                <button
+                    onClick={() => setMakeTxn(!makeTxn)} className='p-1 m-1 text-white bg-blue-600 rounded-xl'>Make Txn
+                </button>
+                <p>Due: {`${due} টাকা ${due < 0 ? 'পাবো' : 'দিব'} `}</p>
+            </div>
 
-                    <div className='flex items-center gap-2'>
-                        <SelectField
-                            name="type"
-                            label="no"
-                            placeholder='লেনদেনের ধরণ'
-                            options={customerTxnType}
+            {/*Transaction entry section */}
+            {
+                makeTxn && <div className="flex flex-col lg:flex-row gap-2 mb-2 p-1 ">
+                    <form onSubmit={handleSubmit(onSubmit)} className="">
+
+                        <div className='flex items-center gap-2'>
+                            <SelectField
+                                name="type"
+                                label="no"
+                                placeholder='লেনদেনের ধরণ'
+                                options={customerTxnType}
+                                control={control}
+                                rules={{ required: "লেনদেনের ধরন নাই" }}
+                            />
+
+                            <div className='mt-[14px]'>
+                                <InputField
+
+                                    name="amount"
+                                    label=""
+                                    placeholder='কত টাকা *'
+                                    type='number'
+                                    control={control}
+                                    rules={{ required: "টাকার পরিমান নাই" }}
+                                />
+                            </div>
+
+
+                        </div>
+                        <InputField
+                            name="description"
+                            label=""
+                            placeholder='বিবরণ'
+                            type='text'
                             control={control}
-                            rules={{ required: "লেনদেনের ধরন নাই" }}
                         />
 
-                        <div className='mt-[14px]'>
-                            <InputField
+                        <SelectField
+                            name="paymentMethod"
+                            label=""
+                            placeholder="পেমেন্ট মেথড"
+                            control={control}
+                            options={paymentMethods}
+                            rules={{ required: "পেমেন্ট মেথড নাই" }}
+                        />
 
-                                name="amount"
-                                label=""
-                                placeholder='কত টাকা *'
-                                type='number'
-                                control={control}
-                                rules={{ required: "টাকার পরিমান নাই" }}
-                            />
+                        {
+                            paymentMethod === 'bank' &&
+                            <div className=" grid gap-4 rounded-lg lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 p-3 border border-black m-3">
+                                <SelectField
+                                    label=""
+                                    name="bankName"
+                                    placeholder="ব্যাংকের নাম"
+                                    control={control}
+                                    options={banksName}
+                                    rules={{ required: "ব্যাংকের নাম নাই" }}
+                                />
+                                <InputField
+                                    control={control}
+                                    name="issueDate"
+                                    type='datetime-local'
+                                    label="ইস্যুর তারিখ"
+                                    rules={{ required: "ইস্যুর তারিখ নাই" }}
+                                />
+                                <InputField
+                                    control={control}
+                                    label="পোস্টিং এর তারিখ"
+                                    type='datetime-local'
+                                    name="postingDate"
+                                    rules={{ required: "পোস্টিং এর তারিখ নাই" }}
+                                />
+                                <InputField
+                                    control={control}
+                                    label="মন্তব্য"
+                                    name="note"
+                                />
+                            </div>
+                        }
+
+                        {/* image and delete */}
+                        <div className='flex justify-between mx-4 items-center'>
+                            <FileUploadField control={control} name='img' label='ছবি' />
                         </div>
-
-
-                    </div>
-                    <InputField
-                        name="description"
-                        label=""
-                        placeholder='বিবরণ'
-                        type='text'
-                        control={control}
-                    />
-                    <SelectField
-                        name="paymentMethod"
-                        label=""
-                        placeholder="পেমেন্ট মেথড"
-                        control={control}
-                        options={paymentMethods}
-                        rules={{ required: "পেমেন্ট মেথড নাই" }}
-                    />
-
-                    {
-                        paymentMethod === 'bank' &&
-                        <div className=" grid gap-4 rounded-lg lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 p-3 border border-black m-3">
-                            <SelectField
-                                label=""
-                                name="bankName"
-                                placeholder="ব্যাংকের নাম"
-                                control={control}
-                                options={banksName}
-                                rules={{ required: "ব্যাংকের নাম নাই" }}
-                            />
-                            <InputField
-                                control={control}
-                                name="issueDate"
-                                type='datetime-local'
-                                label="ইস্যুর তারিখ"
-                                rules={{ required: "ইস্যুর তারিখ নাই" }}
-                            />
-                            <InputField
-                                control={control}
-                                label="পোস্টিং এর তারিখ"
-                                type='datetime-local'
-                                name="postingDate"
-                                rules={{ required: "পোস্টিং এর তারিখ নাই" }}
-                            />
-                            <InputField
-                                control={control}
-                                label="মন্তব্য"
-                                name="note"
-                            />
-                        </div>
-                    }
-
-                    {/* image and delete */}
-                    <div className='flex justify-between mx-4 mt-2 items-center'>
-                        <FileUploadField control={control} name='img' label='ছবি' />
-
-                        <div>
-                            {
-                                user?.role === 'admin' ?
-                                    <p
-                                        onClick={() => handleDelete((id as string))}
-                                        className='text-4xl text-red-600'
-                                    >
-                                        <MdDelete />
-                                    </p> : <></>
-                            }
-                        </div>
-                    </div>
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="btn btn-primary w-full mt-2"
-                    >
-                        {loading ? (
-                            <span className="loading loading-dots loading-lg"></span>
-                        ) : (
-                            "লেনদেন করুন"
-                        )}
-                    </button>
-                </form>
-            </div>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="btn btn-primary w-full mt-2"
+                        >
+                            {loading ? (
+                                <span className="loading loading-dots loading-lg"></span>
+                            ) : (
+                                "লেনদেন করুন"
+                            )}
+                        </button>
+                    </form>
+                </div>
+            }
 
             {/* Table Section */}
             <div className="relative  bg-white rounded-xl shadow overflow-hidden mb-40">
@@ -232,6 +213,7 @@ const SupplierTxnPage = () => {
                                     <th className="px-4 py-2 text-left">Description</th>
                                     <th className="px-4 py-2 text-right">Debit</th>
                                     <th className="px-4 py-2 text-right">Credit</th>
+                                    <th className="px-4 py-2 text-right">Balance</th>
                                 </tr>
                             </thead>
 
@@ -266,6 +248,10 @@ const SupplierTxnPage = () => {
                                                 {tx.type === 'credit' ? `৳ ${tx.amount}` : "-"}
                                             </td>
 
+                                            <td className="px-4 py-2 text-right ">
+                                                {customRound(tx?.balance)}
+                                            </td>
+
 
                                         </tr>
                                     );
@@ -292,7 +278,7 @@ const SupplierTxnPage = () => {
             </div>
 
             <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-                <EditSupplierTxn onClose={() => setIsOpen(false)} id={selectedTxn} />
+                <EditSupplierTxn onClose={() => setIsOpen(false)} id={selectedTxn} transactions={transactions} />
             </Modal>
         </div>
     );

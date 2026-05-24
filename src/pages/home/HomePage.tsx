@@ -1,80 +1,74 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-    FaShoppingCart,
     FaClipboardList,
     FaChartLine,
     FaTruck,
     FaMoneyBillWave,
 } from "react-icons/fa";
 import { AiFillProduct } from "react-icons/ai";
-import { FcSalesPerformance } from "react-icons/fc";
-import { PiBatteryVerticalLowBold, PiChartLineDownBold } from "react-icons/pi";
+import { PiBatteryVerticalLowBold } from "react-icons/pi";
 import { GiProfit } from "react-icons/gi";
 import { NavLink } from "react-router-dom";
-import { useGetAllCustomerTxnQuery } from "../../redux/features/customer/customerApi";
-import { useState } from "react";
-import Customers from "./Customers";
-import Suppliers from "./Suppliers";
-import { FaProductHunt } from "react-icons/fa6";
+import PartyLedgerPage from "./PartyLedgerPage";
+import comi_icon from "../../assets/icons/comi_icon.png";
+import prod_icon from "../../assets/icons/prod_icon.png";
+import pur_icon from "../../assets/icons/pur_icon.png";
+import cashbox_icon from "../../assets/icons/cashbox_icon1.png";
+import stock_icon from "../../assets/icons/stock_icon.png";
+import deli_icon from "../../assets/icons/deli_icon.png";
+import income_icon from "../../assets/icons/income_icon.png";
+import hr_icon from "../../assets/icons/hr_icon1.png";
 
-type ApprovalType = "customer" | "supplier";
 const HomePage = () => {
-    const [activeTab, setActiveTab] = useState<'customer' | 'supplier'>('customer');
-    const { data, isLoading } = useGetAllCustomerTxnQuery(undefined);
     const menuItems = [
-        { path: "/sales/entry", label: "Sales Entry", icon: <FaShoppingCart /> },
-        { path: "/purchase/entry", label: "Purchase Entry", icon: <FaClipboardList /> },
         { path: "/products", label: "Products", icon: <AiFillProduct /> },
+        { path: "/purchase/entry", label: "Purchase Entry", icon: <FaClipboardList /> },
         { path: "/commission-sales", label: "Commission Sales", icon: <FaMoneyBillWave /> },
         { path: "/both/sales", label: "Sales Overview", icon: <FaChartLine /> },
         { path: "/deliveries", label: "Deliveries", icon: <FaTruck /> },
         { path: "/purchase/overview", label: "Purchase Overview", icon: <FaChartLine /> },
         { path: "/stock", label: "Stock Low", icon: <PiBatteryVerticalLowBold /> },
-        { path: "/income", label: "Income", icon: <GiProfit /> },
-        { path: "/expanses", label: "Expanse", icon: <PiChartLineDownBold /> },
+        { path: "/income_expense", label: "Income_Expanse", icon: <GiProfit /> },
     ];
 
     const menuItemsForMobile = [
-        { path: "/products", label: "পন্য", icon: <FaProductHunt /> },
-        { path: "/purchase/entry", label: "ক্রয়", icon: <FaClipboardList /> },
-        { path: "/deliveries", label: "ডেলিভারি", icon: <FaTruck /> },
-        { path: "/stock", label: "স্টক", icon: <PiBatteryVerticalLowBold /> },
-        { path: "/income", label: "আয়", icon: <GiProfit /> },
-        { path: "/expenses", label: "ব্যয়", icon: <PiChartLineDownBold /> },
-        { path: "/commission-sales", label: "কমিশন", icon: <FcSalesPerformance /> },
+        { path: "/products", label: "পন্য", icon: <img src={prod_icon} alt="product" className="size-12" /> },
+        { path: "/purchase/entry", label: "ক্রয়", icon: <img src={pur_icon} alt="purchase" className="size-10" /> },
+        { path: "/cashbox", label: "ক্যাশবক্স", icon: <img src={cashbox_icon} alt="cashbox" className="size-14" /> },
+        { path: "/commission-sales", label: "কমিশন", icon: <img src={comi_icon} alt="commission" className="size-14" /> },
+        { path: "/deliveries", label: "ডেলিভারি", icon: <img src={deli_icon} alt="delivery" className="size-14" /> },
+        { path: "/stock", label: "স্টক", icon: <img src={stock_icon} alt="stock" className="size-10" /> },
+        { path: "/income_expense", label: "আয়_ব্যয়", icon: <img src={income_icon} alt="income_expense" className="size-10" /> },
+        { path: "/hr", label: "HR", icon: <img src={hr_icon} alt="hr" className="size-12" /> },
     ];
-
-    const customerTxns = data?.data
-    const totalDebit = customerTxns?.filter((txn: any) => (txn.type === 'debit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0)
-    const totalCredit = customerTxns?.filter((txn: any) => (txn.type === 'credit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0);
 
 
 
     return (
-        <div className="bg-[#eaf2ee]">
-            <div className="hidden md:flex min-h-full w-full bg-white items-center justify-center p-5 rounded-2xl">
-                <div className="max-w-5xl w-full">
+        <div className="bg-[#ffffff]">
+            <div className="hidden md:flex  w-full bg-white items-center justify-center p-5 rounded-2xl">
+                <div className=" w-full">
 
                     {/* Title */}
-                    <h1 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-10">
+                    <h1 className="text-3xl md:text-4xl mb-10 font-bold text-gray-900 text-center">
                         এম আই ট্রেডিং (ERP) ড্যাশবোর্ড
                     </h1>
 
                     {/* Grid */}
                     <div className="
-                    grid 
-                    grid-cols-2 
-                    sm:grid-cols-3 
-                    md:grid-cols-3 
-                    gap-4 
-                    md:gap-6
+                   grid 
+                   grid-cols-2 
+                   sm:grid-cols-3 
+                   md:grid-cols-3 
+                   gap-4 
+                   md:gap-6
                 ">
                         {menuItems.map((item, index) => (
                             <NavLink
                                 key={index}
                                 to={item.path}
                                 className="
-                                group flex flex-col items-center justify-center
+                                group flex flex-col items-center justify-between gap-3
                                 p-6 sm:p-7 md:p-8
                                 rounded-xl
                                 bg-white
@@ -120,59 +114,28 @@ const HomePage = () => {
                 </div>
             </div>
 
-            <div className="sticky md:hidden lg:hidden grid grid-cols-4 gap-4  h-60 py-10 bg-[#f2f7f4]">
-                {
-                    menuItemsForMobile.map((menu: any, idx: number) => (
-                        <NavLink key={idx} to={menu.path}>
-                            <div className="flex flex-col items-center ">
-                                <p className="text-[24px] text-orange-500">{menu.icon}</p>
-                                <p className="text-orange-900">{menu.label}</p>
-                            </div>
+
+            <div className="md:hidden lg:hidden grid grid-cols-4 gap-5 py-6 px-4 bg-gray-300 shadow-2xl ">
+                {menuItemsForMobile.map((menu: any, idx: number) => (
+                    <div key={idx} className="tooltip tooltip-top" data-tip={menu.label}>
+                        <NavLink to={menu.path}>
+                            <button
+                                type="button"
+                                className="flex mb-2 h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-r from-indigo-600 via-cyan-600 to-teal-400 shadow-md mx-auto cursor-pointer"
+                            >
+                                <p className="text-[30px] text-red-100">{menu.icon}</p>
+                            </button>
                         </NavLink>
-                    ))
-                }
-            </div>
-
-            <div className="rounded-2xl border mt-[-30px] border-white/20  bg-white/10 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.25)] p-6 md:hidden lg:hidden   rounded-t-4xl h-80  ">
-
-
-                <div className="flex items-center justify-around mt-4 mb-10">
-                    <div className="text-red-600">
-
-                        <p className="text-[30px] font-semibold">{isLoading ? 0 : totalCredit} ৳</p>
-                        <p className="text-[25px] font-semibold">মোট পাবো</p>
                     </div>
-                    <div className="bg-black w-[1px]"></div>
-                    <div className="text-green-600">
-                        <p className="text-[30px] font-semibold">{isLoading ? 0 : totalDebit} ৳</p>
-                        <p className="text-[25px] font-semibold">মোট দেবো</p>
-                    </div>
-                </div>
-
-                <div className="absolute top-1 left-1 flex gap-3 border-b">
-                    {["customer", "supplier"].map((tab) => (
-                        <button
-                            key={tab}
-                            onClick={() => setActiveTab(tab as ApprovalType)}
-                            className={`px-1 py-2 text-sm font-medium border-b-2 transition
-              ${activeTab === tab
-                                    ? "border-blue-600 text-blue-600"
-                                    : "border-transparent text-gray-500 hover:text-gray-700"
-                                }`}
-                        >
-                            {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                        </button>
-                    ))}
-                </div>
+                ))}
             </div>
 
 
-            {
-                activeTab === 'customer' ? <Customers /> : <Suppliers />
-            }
 
+            <div className="mb-14 ">
+                <PartyLedgerPage />
 
-
+            </div>
         </div>
     );
 };

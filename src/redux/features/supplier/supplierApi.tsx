@@ -14,10 +14,20 @@ const supplierApi = baseApi.injectEndpoints({
             invalidatesTags: ['Supplier']
         }),
         getAllSuppliers: builder.query({
-            query: (query) => (
-                new URLSearchParams(query).toString(),
+            query: (query) => {
+                const params = new URLSearchParams(query).toString();
+                return {
+                    url: `/suppliers?${params}`,
+                    method: 'GET',
+                };
+            },
+            providesTags: ['Supplier'],
+        }),
+
+        getSupplierById: builder.query({
+            query: (id) => (
                 {
-                    url: `/suppliers?${new URLSearchParams(query).toString()}`,
+                    url: `/suppliers/${id}`,
                     method: 'GET',
                 }),
             providesTags: ['Supplier']
@@ -55,4 +65,4 @@ const supplierApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useAddSupplierMutation, useGetAllSuppliersQuery, useGetAllSuppliersNameQuery, useUpdateSupplierDataMutation, useDeleteSupplierMutation } = supplierApi
+export const { useAddSupplierMutation, useGetAllSuppliersQuery, useGetSupplierByIdQuery, useGetAllSuppliersNameQuery, useUpdateSupplierDataMutation, useDeleteSupplierMutation } = supplierApi

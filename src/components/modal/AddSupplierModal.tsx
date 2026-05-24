@@ -6,9 +6,8 @@ import { MdCancel } from "react-icons/md";
 import { useAddSupplierMutation } from "../../redux/features/supplier/supplierApi";
 import { toast } from "react-toastify";
 import '../../styles/modalAnimations.css'
-import SelectField from "../form/SelectField";
 
-export const AddSupplierModal = ({ setAddSupplierModalCont }: any) => {
+export const AddSupplierModal = ({ setAddSupplierModalCont, type }: any) => {
     const [loading, setLoading] = useState(false);
     const [closing, setClosing] = useState(false); // 🔥 closing animation state
 
@@ -16,6 +15,7 @@ export const AddSupplierModal = ({ setAddSupplierModalCont }: any) => {
         defaultValues: {
             name: "",
             phone: "",
+            type,
             address: "",
             totalPaidCommission: 0,
             commissionPayable: 0
@@ -38,17 +38,16 @@ export const AddSupplierModal = ({ setAddSupplierModalCont }: any) => {
             setLoading(true);
 
             const result = await addSupplier(data);
-
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
 
                 reset();
                 handleClose();
             } else {
-                toast.update(toastId, { render: `${(result as any)?.error?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
+                toast.update(toastId, { render: `${(result as any)?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
             }
         } catch (err: any) {
-            toast.update(toastId, { render: err?.error?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
+            toast.update(toastId, { render: err?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
         } finally {
             setLoading(false);
         }
@@ -89,18 +88,17 @@ export const AddSupplierModal = ({ setAddSupplierModalCont }: any) => {
                             rules={{ required: "Name is required" }}
                         />
 
-                        <div className="my-2">
+                        {/* <div className="my-2">
                             <SelectField
                                 name="type"
                                 label="Type *"
                                 control={control}
                                 rules={{ required: "Supplier type is required" }}
                                 options={[
-                                    { value: "regular", label: "Regular" },
-                                    { value: "commission", label: "Commission" }
+                                    { value: "regular", label: "Regular" }
                                 ]}
                             />
-                        </div>
+                        </div> */}
 
                         <InputField
                             name="phone"
@@ -118,21 +116,6 @@ export const AddSupplierModal = ({ setAddSupplierModalCont }: any) => {
 
 
 
-                        <InputField
-                            name="commissionPayable"
-                            label="Commission Payable "
-                            type="number"
-                            control={control}
-                            rules={{ required: "This field is required" }}
-                        />
-
-                        <InputField
-                            name="totalPaidCommission"
-                            label="Total Paid Commission"
-                            type="number"
-                            control={control}
-                            rules={{ required: "This field is required" }}
-                        />
 
                         <button
                             type="submit"

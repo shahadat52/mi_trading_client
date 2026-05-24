@@ -1,11 +1,10 @@
 import Loading from "../../../components/Loading";
-import { useGetAllTransactionQuery } from "../../../redux/features/transaction/transactionApi";
+import { useGetAllTransactionQuery } from "../../../redux/features/bankTransaction/bankTransactionApi";
 import { formatDateTime } from "../../../utils/formatDateTime";
 
 const BankTxnsPage = () => {
     const { data, isLoading, isError } = useGetAllTransactionQuery(undefined);
     const outstandingTxns = data?.data;
-    console.log(outstandingTxns)
     return (
         <div className="grid lg:grid-cols-3  sm:grid-cols-1 gap-4 font-semibold p-2 mb-18">
             {

@@ -1,0 +1,1 @@
+export const customRound = (num: number) => num - Math.floor(num) >= 0.5 ? Math.ceil(num) : Math.floor(num);

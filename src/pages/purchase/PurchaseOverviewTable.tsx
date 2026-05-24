@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import { useGetAllPurchasesQuery, useDeletePurchaseMutation } from "../../redux/features/purchase/purchaseApi";
+import { useGetAllPurchasesQuery, useDeletePurchaseMutation, useUpdatePurchaseMutation } from "../../redux/features/purchase/purchaseApi";
 import { ViewModal } from "../commissionSales/modal/ViewModal";
 import { EditModal } from "../commissionSales/modal/EditModal";
 import DeleteModal from "../../components/modal/DeleteModal";
@@ -8,6 +8,7 @@ import TableSkeleton from "../../components/table/TableSkeleton";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import { purchaseTableHeads } from "../../utils/purchaseTableHead";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 
 const PAGE_LIMIT = 5;
@@ -21,6 +22,8 @@ const PurchaseOverviewTable = () => {
     const [dateFrom, setDateFrom] = useState<string>('');
     const [dateTo, setDateTo] = useState<string>('');
     const [category, setCategory] = useState<string>('All')
+    const [updatePurchase] = useUpdatePurchaseMutation()
+    const navigate = useNavigate()
 
 
     // Modal States
@@ -35,6 +38,7 @@ const PurchaseOverviewTable = () => {
         category: category === "All" ? "" : category,
 
     });
+
 
     const purchases = data?.data || [];
     const total = data?.meta?.total || 0;
@@ -77,7 +81,6 @@ const PurchaseOverviewTable = () => {
     if (isError) {
         return <ErrorBoundary />
     }
-
 
     return (
         <div className="p-4 space-y-4">
@@ -132,7 +135,9 @@ const PurchaseOverviewTable = () => {
                     </select>
                 </div>
             </form>
-
+            <div>
+                মোট {purchases?.length} টি ক্রয় হয়েছে।
+            </div>
             {/* Desktop Table */}
             <div className="hidden md:block overflow-x-auto bg-white rounded-lg shadow-sm">
 
@@ -158,10 +163,9 @@ const PurchaseOverviewTable = () => {
                                         <tr key={purchase._id}>
                                             <td className="px-4 py-2 text-sm">{purchase.product?.name}</td>
                                             <td className="px-4 py-2 text-sm">{purchase.supplier?.name}</td>
-                                            <td className="px-4 py-2 text-sm">{purchase.purchaseType}</td>
                                             <td className="px-4 py-2 text-sm">{purchase.lot}</td>
                                             <td className="px-4 py-2 text-sm">{purchase.product.unit}</td>
-                                            <td className="px-4 py-2 text-sm">{purchase.purchasePrice}</td>
+                                            <td className="px-4 py-2 text-sm">{Number(purchase.purchasePrice).toFixed(2)}</td>
                                             <td className="px-4 py-2 text-sm">{purchase.product.salesPrice}</td>
                                             <td className={`px-4 py-2 text-sm ${purchase.quantity <= 5 ? "text-red-500 font-semibold" : ""}`}>
                                                 {purchase.quantity}
@@ -189,18 +193,18 @@ const PurchaseOverviewTable = () => {
                 {purchases.map((purchase: any) => (
                     <div key={purchase._id} className="bg-white shadow rounded-lg p-4 space-y-2">
                         <div className="flex justify-between"><span className="font-semibold">Product:</span><span>{purchase.product?.name}</span></div>
-                        <div className="flex justify-between"><span className="font-semibold">Category:</span><span>{purchase.purchaseType}</span></div>
                         <div className="flex justify-between"><span className="font-semibold">Lot:</span><span>{purchase.lot}</span></div>
                         <div className="flex justify-between"><span className="font-semibold">Unit:</span><span>{purchase.product.unit}</span></div>
-                        <div className="flex justify-between"><span className="font-semibold">Purchase Price:</span><span>{purchase.product.purchasePrice}</span></div>
-                        <div className="flex justify-between"><span className="font-semibold">Sales Price:</span><span>{purchase.product.salesPrice}</span></div>
-                        <div className="flex justify-between"><span className="font-semibold">PurchaseQty:</span><span className={purchase.stockQty <= 5 ? "text-red-500 font-semibold" : ""}>{purchase.stockQty}</span></div>
+                        <div className="flex justify-between"><span className="font-semibold">Purchase Price:</span><span>{purchase.purchasePrice.toFixed(2)}</span></div>
+                        <div className="flex justify-between"><span className="font-semibold">Total:</span><span>{(purchase.purchasePrice.toFixed(2) * purchase.quantity).toFixed(0)}</span></div>
+                        <div className="flex justify-between"><span className="font-semibold">PurchaseQty:</span><span className={purchase.quantity <= 5 ? "text-red-500 font-semibold" : ""}>{purchase.quantity}</span></div>
                         <div className="flex justify-between"><span className="font-semibold">Status:</span>
                             <span className={`px-2 py-1 text-xs rounded ${purchase.isPaid ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}>
                                 {purchase.isPaid ? "Paid" : "Unpaid"}
                             </span>
                         </div>
                         <div className="flex gap-2 mt-2">
+                            <button onClick={() => navigate(`/purchase/report/${purchase?._id}`)} className="px-2 py-1 bg-gray-600 text-white rounded text-xs flex-1">Report</button>
                             <button onClick={() => setViewItem(purchase)} className="px-2 py-1 bg-gray-600 text-white rounded text-xs flex-1">View</button>
                             <button onClick={() => setEditItem(purchase)} className="px-2 py-1 bg-blue-600 text-white rounded text-xs flex-1">Edit</button>
                             <button onClick={() => setDeleteItem(purchase)} className="px-2 py-1 bg-red-600 text-white rounded text-xs flex-1">Delete</button>
@@ -220,7 +224,7 @@ const PurchaseOverviewTable = () => {
 
             {/* Modals */}
             {viewItem && <ViewModal item={viewItem} onClose={() => setViewItem(null)} />}
-            {editItem && <EditModal item={editItem} onClose={() => setEditItem(null)} />}
+            {editItem && <EditModal item={editItem} onClose={() => setEditItem(null)} editFunction={updatePurchase} />}
             {deleteItem && <DeleteModal
                 open={Boolean(deleteItem)}
                 item={deleteItem}

@@ -12,16 +12,32 @@ const authApi = baseApi.injectEndpoints({
                     credentials: 'include',
                 }
             ),
-            invalidatesTags: ['Product']
+            invalidatesTags: ['Products']
         }),
         getAllProducts: builder.query({
-            query: (query) => (
-                new URLSearchParams(query).toString(),
+            query: ({ searchTerm }) => (
                 {
-                    url: `/products?${new URLSearchParams(query).toString()}`,
+                    url: `/products?searchTerm=${searchTerm}`,
                     method: 'GET',
                 }),
-            providesTags: ['Product']
+            providesTags: ['Products']
+        }),
+
+        getProductsStock: builder.query({
+            query: ({ searchTerm }) => (
+                {
+                    url: `/products/stock?searchTerm=${searchTerm}`,
+                    method: 'GET',
+                }),
+            providesTags: ['ProductStock']
+        }),
+        getProductDetails: builder.query({
+            query: (id) => (
+                {
+                    url: `/products/${id}`,
+                    method: 'GET',
+                }),
+            providesTags: ['ProductDetails']
         }),
 
         getAllProductNames: builder.query({
@@ -31,7 +47,18 @@ const authApi = baseApi.injectEndpoints({
                     url: `/products/names?${new URLSearchParams(query).toString()}`,
                     method: 'GET',
                 }),
-            providesTags: ['Product']
+            providesTags: ['Products']
+        }),
+        updateProduct: builder.mutation({
+            query: (payload) => (
+                {
+                    url: `/products/update/${payload?.id}`,
+                    method: "PATCH",
+                    body: payload?.data
+
+                }
+            ),
+            invalidatesTags: ['Products', 'ProductDetails']
         }),
 
         deleteProduct: builder.mutation({
@@ -42,9 +69,9 @@ const authApi = baseApi.injectEndpoints({
 
                 }
             ),
-            invalidatesTags: ['Product']
+            invalidatesTags: ['Products']
         }),
     }),
 });
 
-export const { useAddProductMutation, useGetAllProductsQuery, useGetAllProductNamesQuery, useDeleteProductMutation } = authApi
+export const { useAddProductMutation, useGetAllProductsQuery, useGetProductsStockQuery, useGetProductDetailsQuery, useGetAllProductNamesQuery, useUpdateProductMutation, useDeleteProductMutation } = authApi

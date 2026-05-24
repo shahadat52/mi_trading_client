@@ -3,18 +3,22 @@ import { useForm, type FieldValues } from "react-hook-form";
 import InputField from "../../components/form/InputFields";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { useUpdateSupplierDataMutation } from "../../redux/features/supplier/supplierApi";
+import { useGetSupplierByIdQuery, useUpdateSupplierDataMutation } from "../../redux/features/supplier/supplierApi";
+import SelectField from "../../components/form/SelectField";
+import { SUPPLIER_TYPE_OPTIONS } from "../../utils/options";
 
 const SupplierDataUpdateEntry = ({ onClose, id }: { onClose: () => void, id: string }) => {
     const [loading, setLoading] = useState(false)
     const { control, handleSubmit, reset } = useForm();
-    const [updateSupplierData] = useUpdateSupplierDataMutation()
+    const [updateSupplierData] = useUpdateSupplierDataMutation();
+    const { data } = useGetSupplierByIdQuery(id)
 
     const handleUpdate = async (data: FieldValues) => {
         const payload = {
             data,
             id
-        }
+        };
+
         setLoading(true)
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
         try {
@@ -37,6 +41,8 @@ const SupplierDataUpdateEntry = ({ onClose, id }: { onClose: () => void, id: str
             setLoading(false);
         }
     }
+
+    const supplier = data?.data;
     return (
         <div className="m-4">
             <form
@@ -47,19 +53,27 @@ const SupplierDataUpdateEntry = ({ onClose, id }: { onClose: () => void, id: str
                     control={control}
                     label="নাম"
                     name="name"
-                    placeholder="নতুন নাম লিখুন.." />
+                    placeholder={supplier?.name} />
 
                 <InputField
                     control={control}
                     label="ফোন"
                     name="phone"
-                    placeholder="নতুন নাম্বার লিখুন.." />
+                    placeholder={supplier?.phone} />
 
                 <InputField
                     control={control}
                     label="ঠিকানা"
                     name="address"
-                    placeholder="ঠিকানা লিখুন.." />
+                    placeholder={supplier?.address} />
+
+                <SelectField
+                    name="type"
+                    label="Type *"
+                    control={control}
+                    rules={{ required: "Supplier type is required" }}
+                    options={SUPPLIER_TYPE_OPTIONS}
+                />
 
                 <button
                     type="submit"

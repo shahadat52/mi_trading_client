@@ -6,13 +6,10 @@ import { formatDateTime } from '../../utils/formatDateTime';
 const OutstandingTxnPage = () => {
     const { data, isLoading, isError } = useGetAllOutstandingTxnQuery(undefined);
     const outstandingTxns = data?.data;
-    console.log(outstandingTxns)
 
     const [updateTxnStatus] = useUpdateTxnStatusMutation()
     const handleStatus = async (status: string, id: string) => {
-        console.log({ status, id })
-        const res = await updateTxnStatus({ status, id })
-        console.log(res)
+        await updateTxnStatus({ status, id })
     }
     return (
         <div className="grid lg:grid-cols-3  sm:grid-cols-1 gap-4 font-semibold p-2 mb-18">

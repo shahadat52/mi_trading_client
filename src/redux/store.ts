@@ -3,6 +3,10 @@ import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, 
 import authReducer from "./features/auth/authSlice";
 import salesReducer from "./features/sales/salesSlice";
 import cartReducer from "./features/cart/cartSlice";
+import purchaseReducer from "./features/purchase/purchaseSlice";
+import productReducer from "./features/product/productSlice";
+import couthaReducer from "./features/coutha/couthaSlice";
+import brokerReducer from "./features/broker/brokerSlice";
 import commissionSalesReducer from "./features/commissionSales/commissionSalesSlice";
 import commissionProductReducer from "./features/commissionProduct/commissionProductSlice";
 import storage from 'redux-persist/lib/storage'
@@ -24,10 +28,14 @@ export const store = configureStore({
     reducer: {
         [baseApi.reducerPath]: baseApi.reducer,
         auth: persistedReducer,
-        sales: salesReducer,
+        purchase: purchaseReducer,
+        product: productReducer,
         cart: cartReducer,
+        sales: salesReducer,
         commissionSales: commissionSalesReducer,
-        commissionProduct: commissionProductReducer
+        commissionProduct: commissionProductReducer,
+        coutha: couthaReducer,
+        broker: brokerReducer
     },
     devTools: {
         name: 'M.I Trading ERP'

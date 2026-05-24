@@ -9,9 +9,8 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                bangla: ['Hind Siliguri', 'sans-serif'],
-                english: ['Inter', 'sans-serif'],
-            },
+                bangla: ["Hind Siliguri", "sans-serif"],
+            }
         },
     },
 

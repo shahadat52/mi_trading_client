@@ -12,8 +12,10 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.9.0",
     "@tailwindcss/vite": "^4.1.14",
+    "date-fns": "^4.1.0",
     "framer-motion": "^12.23.22",
     "jwt-decode": "^4.0.0",
+    "mathjs": "^15.1.1",
     "qrcode.react": "^4.2.0",
     "react": "^19.1.1",
     "react-day-picker": "^9.13.0",
@@ -23,6 +25,7 @@
     "react-redux": "^9.2.0",
     "react-router": "^7.9.3",
     "react-router-dom": "^7.9.3",
+    "react-to-print": "^3.3.0",
     "react-toastify": "^11.0.5",
     "react-tooltip": "^5.29.1",
     "redux-persist": "^6.0.0",

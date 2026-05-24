@@ -2,7 +2,8 @@ export const stockTableHeads = [
     '#',
     'Name',
     'SKU',
+    'Bag',
     'Stock',
-    'Unit',
-    'Category',
+    'Price',
+    'Total',
 ]

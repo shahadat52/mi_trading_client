@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useParams } from "react-router";
 import TableSkeleton from "../../components/table/TableSkeleton";
 import ErrorBoundary from "../../components/ErrorBoundary";
-import { useGetAllTransactionQuery } from "../../redux/features/transaction/transactionApi";
+import { useGetAllTransactionQuery } from "../../redux/features/bankTransaction/bankTransactionApi";
 
 const TransactionTable = () => {
     const { id } = useParams();

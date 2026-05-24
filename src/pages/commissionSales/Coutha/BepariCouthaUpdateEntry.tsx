@@ -3,40 +3,42 @@
 import { useEffect, useState } from "react";
 import { useForm, type FieldValues } from "react-hook-form";
 import { toast } from "react-toastify";
-import { useUpdateBepariCouthaMutation } from "../../../redux/features/settlement/settlementApi";
+import { useUpdateBepariCouthaMutation } from "../../../redux/features/coutha/couthaApi";
 import { useGetCommissionSalesSupplierLotWiseQuery } from "../../../redux/features/commissionSales/commissionSalesApi";
+import CalculatorField from "../../cart/CalculatorField";
+import { useAppDispatch, useAppSelector } from "../../../redux/hook";
+import { setArot, setBrokery, setLabour, setTransportRent } from "../../../redux/features/coutha/couthaSlice";
 
 const BepariCouthaUpdateEntry = ({ onClose, item }: { onClose: () => void, item: any }) => {
-    const { brokary, kuli, truck_rent, transport_rent, tohori, haolat, godi, arot, } = item;
-    // const arots = item?.map((sale) => (sale.totalCommission))
-    const subTotal = brokary + kuli + truck_rent + transport_rent + tohori + haolat + godi + arot
+    const dispatch = useAppDispatch()
+    const coutha = useAppSelector((state) => state.coutha);
+
+    const { brokary, kuli, transport_rent, tohori, haolat, godi, arot, } = item;
+    const subTotal = brokary + kuli + transport_rent + tohori + haolat + godi + arot
     const [loading, setLoading] = useState(false)
 
-    console.log({ item })
     const { data } = useGetCommissionSalesSupplierLotWiseQuery({ couthaOf: item.couthaOf })
     const sales = data?.data;
-    console.log(sales)
-    const totalCommission = sales?.reduce(
-        (sum: number, item: any) => sum + (item.product.commission || 0),
-        0
-    );
     const totalSales = sales?.reduce((sum: number, item: any) => sum + (item?.product?.quantity * item.product.salePrice), 0);
-    console.log({ totalCommission, totalSales })
+
 
     const [updateBepariCoutha] = useUpdateBepariCouthaMutation()
     const onSubmit = async (data: FieldValues) => {
         data.subTotal = subTotal
         data.joma = totalSales - subTotal
         data.grandTotal = totalSales
-        data.arot = totalCommission
+        data.arot = coutha.arot,
+            data.brokary = coutha.brokary,
+            data.kuli = coutha.kuli
+
         const payload = {
             data,
-            id: item._id
-        }
+            id: item._id,
+        };
         setLoading(true)
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
         try {
-            const result = await updateBepariCoutha(payload)
+            const result = await updateBepariCoutha(payload);
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
                 reset();
@@ -71,16 +73,26 @@ const BepariCouthaUpdateEntry = ({ onClose, item }: { onClose: () => void, item:
             >
                 <div className="grid grid-cols-2 gap-2">
                     <div>
-                        <label>নং</label>
+                        <label>চৌথা নং</label>
                         <input {...register("invoice")} readOnly className="input" />
                     </div>
                     <div>
                         <label>আড়ত</label>
-                        <input {...register("arot")} type="number" className="input" />
+                        <CalculatorField
+                            initialValue={arot}
+                            onUpdate={(val) =>
+                                dispatch(setArot(Number(val)))
+                            }
+                        />
                     </div>
                     <div>
-                        <label>বোকারি</label>
-                        <input {...register("brokary")} type="number" className="input" />
+                        <label>ব্রোকারি</label>
+                        <CalculatorField
+                            initialValue={brokary}
+                            onUpdate={(val) =>
+                                dispatch(setBrokery(Number(val)))
+                            }
+                        />
                     </div>
 
 
@@ -98,14 +110,19 @@ const BepariCouthaUpdateEntry = ({ onClose, item }: { onClose: () => void, item:
                     </div>
                     <div>
                         <label>কুলি</label>
-                        <input {...register("kuli")} type="number" className="input" />
+                        <CalculatorField
+                            initialValue={kuli}
+                            onUpdate={(val) =>
+                                dispatch(setLabour(Number(val)))
+                            }
+                        />
                     </div>
                     <div>
                         <label>হাওলাত</label>
                         <input {...register("haolat")} type="number" className="input" />
                     </div>
                     <div>
-                        <label>তোহরি</label>
+                        <label>তহরি</label>
                         <input {...register("tohori")} className="input" />
                     </div>
                     <div>
@@ -119,12 +136,13 @@ const BepariCouthaUpdateEntry = ({ onClose, item }: { onClose: () => void, item:
                     </div>
 
                     <div>
-                        <label>ট্রান্সপোর্ট ভাঁড়া</label>
-                        <input {...register("transport_rent")} type="number" className="input" />
-                    </div>
-                    <div>
-                        <label>ট্রাক ভাঁড়া</label>
-                        <input {...register("truck_rent")} type="number" className="input" />
+                        <label>পরিবহন ভাড়া</label>
+                        <CalculatorField
+                            initialValue={transport_rent}
+                            onUpdate={(val) =>
+                                dispatch(setTransportRent(Number(val)))
+                            }
+                        />
                     </div>
                 </div>
 

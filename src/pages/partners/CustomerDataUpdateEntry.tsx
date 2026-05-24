@@ -3,12 +3,15 @@ import { useForm, type FieldValues } from "react-hook-form";
 import InputField from "../../components/form/InputFields";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { useUpdateCustomerDataMutation } from "../../redux/features/customer/customerApi";
+import { useGetCustomerByIdQuery, useUpdateCustomerDataMutation } from "../../redux/features/customer/customerApi";
+import SelectField from "../../components/form/SelectField";
 
 const CustomerDataUpdateEntry = ({ onClose, id }: { onClose: () => void, id: string }) => {
     const [loading, setLoading] = useState(false)
+    const { data } = useGetCustomerByIdQuery(id)
+    const customer = data?.data;
     const { control, handleSubmit, reset } = useForm();
-    const [updateCustomerData] = useUpdateCustomerDataMutation()
+    const [updateCustomerData] = useUpdateCustomerDataMutation();
 
     const handleUpdate = async (data: FieldValues) => {
         const payload = {
@@ -37,6 +40,7 @@ const CustomerDataUpdateEntry = ({ onClose, id }: { onClose: () => void, id: str
             setLoading(false);
         }
     }
+
     return (
         <div>
             <form
@@ -46,19 +50,32 @@ const CustomerDataUpdateEntry = ({ onClose, id }: { onClose: () => void, id: str
                     control={control}
                     label="নাম"
                     name="name"
-                    placeholder="নতুন নাম লিখুন.." />
+                    placeholder={customer?.name} />
 
                 <InputField
                     control={control}
                     label="ফোন"
                     name="phone"
-                    placeholder="নতুন নাম্বার লিখুন.." />
+                    placeholder={customer?.phone} />
 
+                <SelectField
+                    name="category"
+                    label="ক্যাটেগরি *"
+                    control={control}
+                    rules={{ required: "ক্যাটেগরি নাই" }}
+                    placeholder={customer?.category}
+                    options={[
+                        { value: "khatungonj", label: "খাতুনগঞ্জ" },
+                        { value: "caktai", label: "চাক্তাই" },
+                        { value: "outside", label: "বাহির" },
+
+                    ]}
+                />
                 <InputField
                     control={control}
                     label="ঠিকানা"
                     name="address"
-                    placeholder="ঠিকানা লিখুন.." />
+                    placeholder={customer?.address} />
 
                 <button
                     type="submit"

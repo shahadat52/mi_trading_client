@@ -5,9 +5,7 @@ import {
     MdPeople,
     MdAttachMoney,
     MdAccountBalance,
-    MdMoneyOff,
 } from "react-icons/md";
-// import partners from '../../../public/partners.png'
 import { CgProfile } from "react-icons/cg";
 import { BiSolidPurchaseTag } from "react-icons/bi";
 import { FaPeopleCarryBox } from "react-icons/fa6";
@@ -41,26 +39,15 @@ export const getMenuItems = (role?: string) => {
             name: "Sales Management",
             icon: <MdBarChart size={20} />,
             subItems: [
-                { name: "Sales Entry", path: "/sales/entry" },
-                { name: "Sales Overview", path: "/sales/overview" },
-                { name: "Both Sales", path: "/both/sales" },
+                { name: "Sales Overview", path: "/both/sales" },
                 { name: "Commission Sales", path: "/commission-sales" },
             ],
         },
         {
-            name: "Manage Income",
+            name: "Income_Expense",
             icon: <MdAttachMoney size={20} />,
             subItems: [
-                { name: "Income Overview", path: "/income" },
-                { name: "Invoices", path: "/income/invoices" },
-            ],
-        },
-        {
-            name: "Manage Expenses",
-            icon: <MdMoneyOff size={20} />,
-            subItems: [
-                { name: "Expenses Overview", path: "/expenses" },
-                { name: "Invoices", path: "/expenses/invoices" },
+                { name: "Overview", path: "/income_expense" },
             ],
         },
         {
@@ -105,8 +92,7 @@ export const getMenuItems = (role?: string) => {
                     name: "Human Resources",
                     icon: <MdPeople size={20} />,
                     subItems: [
-                        { name: "Employees", path: "/hr/employees" },
-                        { name: "Attendance", path: "/hr/attendance" },
+                        { name: "দেখুন", path: "/hr" }
                     ],
                 },
                 {
@@ -114,6 +100,7 @@ export const getMenuItems = (role?: string) => {
                     icon: <MdDashboard size={20} />,
                     subItems: [
                         { name: "Report", path: "dashboard" },
+                        { name: "Brokers", path: "dashboard/brokers" },
                         { name: "Pending Approvals", path: "dashboard/approvals" },
                         { name: "User management", path: "dashboard/users" },
                         { name: "User Register", path: "register" }

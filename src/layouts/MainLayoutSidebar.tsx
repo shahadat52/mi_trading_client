@@ -40,7 +40,7 @@ const MainLayoutSidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 
     return (
         <aside
-            className={`fixed z-30 top-0 left-0 h-full bg-[#0b1f3a] dark:bg-gray-800 text-white 
+            className={`fixed z-30 top-0 left-0 h-full overflow-y-auto bg-[#0b1f3a] dark:bg-gray-800 text-white 
                  shadow-2xl transform transition-all duration-300 ease-in-out
                  ${isOpen ? "translate-x-0" : "-translate-x-full"}
                  sm:translate-x-0 sm:static sm:shadow-none`}
@@ -49,9 +49,9 @@ const MainLayoutSidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
             {/* Sidebar Header */}
             <div className="flex items-center justify-between px-4 h-16 shadow-md shadow-gray-500">
                 {!isCollapsed && (
-                    <h2 className="text-lg font-semibold tracking-wide">
+                    <NavLink to='/' className="text-lg font-semibold tracking-wide">
                         {user?.name}
-                    </h2>
+                    </NavLink>
                 )}
 
                 <div className="flex items-center gap-2">
@@ -78,7 +78,7 @@ const MainLayoutSidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
             </div>
 
             {/* Navigation */}
-            <nav className="mt-4 px-3 overflow-y-auto h-[calc(100%-4rem)] scrollbar-thin scrollbar-thumb-gray-300">
+            <nav className="mt-4 px-3 overflow-y-auto  scrollbar-thin scrollbar-thumb-gray-300">
                 {menuItems.map((menu) => {
                     const activeParent = isActiveParent(menu.subItems);
                     const menuCollapsed = collapsedMenus.has(menu.name);

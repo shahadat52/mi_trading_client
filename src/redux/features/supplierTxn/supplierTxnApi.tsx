@@ -11,7 +11,19 @@ const supplierTxnApi = baseApi.injectEndpoints({
                     body: supplierTxnData
                 }
             ),
-            invalidatesTags: ['SupplierTxn', 'Transaction']
+            invalidatesTags: ['SupplierTxn', 'Transaction', 'Supplier', 'Receivable']
+        }),
+
+        bepariTxnEntry: builder.mutation({
+            query: (bepariTxnData) => (
+
+                {
+                    url: "/supplierTxn/bepariEntry",
+                    method: "POST",
+                    body: bepariTxnData
+                }
+            ),
+            invalidatesTags: ['SupplierTxn', 'Transaction', 'Supplier', 'Receivable']
         }),
         getAllSupplierTxn: builder.query({
             query: (query) => (
@@ -38,7 +50,7 @@ const supplierTxnApi = baseApi.injectEndpoints({
                     method: 'PATCH',
                     body: updatedData.data
                 }),
-            invalidatesTags: ['SupplierTxn']
+            invalidatesTags: ['SupplierTxn', 'Supplier', 'Payable']
         }),
         deleteSupplierTxn: builder.mutation({
             query: (id) => (
@@ -48,10 +60,10 @@ const supplierTxnApi = baseApi.injectEndpoints({
 
                 }
             ),
-            invalidatesTags: ['SupplierTxn']
+            invalidatesTags: ['SupplierTxn', 'Payable']
         }),
 
     }),
 });
 
-export const { useSupplierTxnEntryMutation, useGetAllSupplierTxnQuery, useGetSpecificSupplierTxnQuery, useUpdateSupplierTxnDataMutation, useDeleteSupplierTxnMutation } = supplierTxnApi
+export const { useSupplierTxnEntryMutation, useBepariTxnEntryMutation, useGetAllSupplierTxnQuery, useGetSpecificSupplierTxnQuery, useUpdateSupplierTxnDataMutation, useDeleteSupplierTxnMutation } = supplierTxnApi
