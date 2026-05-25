@@ -33,7 +33,8 @@ const couthaApi = baseApi.injectEndpoints({
         }),
 
         getFieldWiseData: builder.query({
-            query: (field) => {
+            query: ({ field }) => {
+                console.log(field)
                 const params = new URLSearchParams();
 
                 if (field) {
@@ -41,7 +42,7 @@ const couthaApi = baseApi.injectEndpoints({
                 }
 
                 return {
-                    url: "/settlement/field",
+                    url: `/settlement/field`,
                     method: "GET",
                     params,
                 };

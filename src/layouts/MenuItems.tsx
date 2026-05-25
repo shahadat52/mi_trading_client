@@ -44,12 +44,13 @@ export const getMenuItems = (role?: string) => {
             ],
         },
         {
-            name: "Income_Expense",
-            icon: <MdAttachMoney size={20} />,
+            name: "Brokery",
+            icon: <MdAccountBalance size={20} />,
             subItems: [
-                { name: "Overview", path: "/income_expense" },
+                { name: "দেখুন", path: "dashboard/brokers" },
             ],
         },
+
         {
             name: "Profile",
             icon: <CgProfile size={20} />,
@@ -58,7 +59,15 @@ export const getMenuItems = (role?: string) => {
             ],
         },
 
-        ...(isSpecial ? [
+        ...(isSpecial || isAdmin ? [
+
+            {
+                name: "Income_Expense",
+                icon: <MdAttachMoney size={20} />,
+                subItems: [
+                    { name: "Overview", path: "/income_expense" },
+                ],
+            },
             {
                 name: "Customer & Supplier",
                 icon: <FaPeopleCarryBox size={20} />,
@@ -66,27 +75,19 @@ export const getMenuItems = (role?: string) => {
                     { name: "দেখুন", path: "/partners" }
                 ],
             },
+            {
+                name: "Banks Module",
+                icon: <MdAccountBalance size={20} />,
+                subItems: [
+                    { name: "লেনদেন বিবরণী", path: "/bankTxns" },
+                    { name: "অপরিশোধিত লেনদেন", path: "/outstandingTxn" },
+                ],
+            },
         ] : []),
 
         // ✅ Admin / Super Admin only
         ...(isAdmin
             ? [
-
-                {
-                    name: "Customer & Supplier",
-                    icon: <FaPeopleCarryBox size={20} />,
-                    subItems: [
-                        { name: "দেখুন", path: "/partners" }
-                    ],
-                },
-                {
-                    name: "Banks Module",
-                    icon: <MdAccountBalance size={20} />,
-                    subItems: [
-                        { name: "লেনদেন বিবরণী", path: "/bankTxns" },
-                        { name: "অপরিশোধিত লেনদেন", path: "/outstandingTxn" },
-                    ],
-                },
                 {
                     name: "Human Resources",
                     icon: <MdPeople size={20} />,
@@ -99,7 +100,6 @@ export const getMenuItems = (role?: string) => {
                     icon: <MdDashboard size={20} />,
                     subItems: [
                         { name: "Report", path: "dashboard" },
-                        { name: "Brokers", path: "dashboard/brokers" },
                         { name: "Pending Approvals", path: "dashboard/approvals" },
                         { name: "User management", path: "dashboard/users" },
                         { name: "User Register", path: "register" }

@@ -116,13 +116,6 @@ const BankTxnSummary = () => {
                                 />
                                 <div className=" ">
 
-                                    <InputField
-                                        control={control}
-                                        name="issueDate"
-                                        type='datetime-local'
-                                        label="ইস্যুর তারিখ"
-                                        rules={{ required: "ইস্যুর তারিখ নাই" }}
-                                    />
 
                                     <InputField
                                         control={control}

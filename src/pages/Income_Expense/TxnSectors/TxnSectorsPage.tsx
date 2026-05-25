@@ -11,21 +11,29 @@ const TxnSectorsPage = () => {
     const [sector, setSector] = useState('')
     const [sectorModalController, setSectorModalController] = useState(false)
     const [limit, setLimit] = useState(10)
-    const [field, setField] = useState('')
+    const [field, setField] = useState('godi')
+    console.log(field)
 
     useEffect(() => {
-        if (sector === 'গদি') setField('godi');
-        else setField('');
+        if (sector === 'গদি') {
+            setField('godi');
+        } else if (sector === 'তহরী') {
+            setField('tohori');
+        } else if (sector === 'লেবার') {
+            setField('kuli');
+        } else {
+
+        }
     }, [sector]);
 
-    const { data: fieldWiseData } = useGetFieldWiseDataQuery(field)
+    const { data: fieldWiseData } = useGetFieldWiseDataQuery({ field: field })
     const totalGodi = fieldWiseData?.data
 
     const { data: sectorData } = useGetAllSectorsQuery({});
     const sectors = sectorData?.data;
     const expenseSectors = sectors?.filter((sector: any) => sector.head === 'expense')
     const incomeSectors = sectors?.filter((sector: any) => sector.head === 'income')
-
+    console.log(expenseSectors)
     const { data, isLoading, isError } = useGetAllTxnQuery({ category: sector, limit })
     const transactions = data?.data?.data
 

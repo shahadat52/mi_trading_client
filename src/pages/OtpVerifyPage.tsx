@@ -91,7 +91,7 @@ const OtpVerification: React.FC = () => {
 
                 <h2 className="text-2xl font-bold text-gray-800 mb-2">OTP Verification</h2>
                 <p className="text-gray-500 mb-6 text-sm">
-                    We’ve sent a 6-digit verification code to your email.
+                    We’ve sent a 4-digit verification code to your email.
                 </p>
 
                 <div className="flex justify-center gap-3 mb-6">

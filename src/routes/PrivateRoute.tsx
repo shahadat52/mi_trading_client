@@ -16,7 +16,7 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
     return <Navigate to="/login" replace />;
   }
 
-  return user && (user?.role === 'admin' || user?.role === 'superAdmin' || user?.role === 'employee' || user?.role === 'specialManager' || user?.role === 'commissionManager' || user?.role === 'salesManager' || user?.role === 'purchaseManager' || user?.role === 'deliveryManager')
+  return user && (user?.role === 'admin' || user?.role === 'specialManager' || user?.role === 'manager')
     ? children
     : <Navigate to="/login" replace />;
 };
