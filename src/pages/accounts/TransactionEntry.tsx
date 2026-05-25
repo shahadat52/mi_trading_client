@@ -4,8 +4,8 @@ import { useForm, type FieldValues, type SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import InputField from '../../components/form/InputFields';
 import SelectField from '../../components/form/SelectField';
-import { useTransactionEntryMutation } from '../../redux/features/bankTransaction/bankTransactionApi';
 import { transactionType } from '../../utils/transactionType';
+import { useBankTxnEntryMutation } from '../../redux/features/bankTransaction/bankTransactionApi';
 
 const TransactionEntry = ({ account, onClose, }: { onClose: () => void, account: any }) => {
     const [loading, setLoading] = useState(false)
@@ -14,7 +14,7 @@ const TransactionEntry = ({ account, onClose, }: { onClose: () => void, account:
             account: account?._id
         }
     });
-    const [transactionEntry] = useTransactionEntryMutation()
+    const [transactionEntry] = useBankTxnEntryMutation()
 
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {

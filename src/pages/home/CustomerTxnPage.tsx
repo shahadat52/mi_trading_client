@@ -12,7 +12,6 @@ import InputField from '../../components/form/InputFields';
 import Modal from '../../components/Modal';
 import EditCustomerTxn from './EditCustomerTxn';
 import FileUploadField from '../../components/form/FileUploadField';
-import { banksName } from '../accounts/banksName';
 import { paymentMethods } from '../../utils/paymentMethods';
 import Profile from '../../components/profile/Profile';
 import { customRound } from '../../utils/customRound';
@@ -27,7 +26,7 @@ const CustomerTxnPage = () => {
     const [isOpen, setIsOpen] = useState(false)
     const [selectedTxn, setSelectedTxn] = useState(null)
     const [loading, setLoading] = useState(false)
-    const { control, handleSubmit, reset, watch } = useForm({
+    const { control, handleSubmit, reset } = useForm({
         defaultValues: {
             paymentMethod: 'cash'
         }
@@ -44,10 +43,13 @@ const CustomerTxnPage = () => {
         data.date = transactionTime
         data.party = id
         data.partyModel = 'Customer'
+
+        console.log(data)
         try {
             setLoading(true);
 
             const result = await customerTxnEntry(data);
+            console.log(result)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
 
@@ -81,7 +83,6 @@ const CustomerTxnPage = () => {
     const totalCredit = customRound(transactions?.filter((txn: any) => (txn.type === 'credit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0))
     const due = totalDebit - totalCredit || 0
 
-    const paymentMethod = watch('paymentMethod')
     const customerData = customer?.data
     return (
         <div className=''>
@@ -168,38 +169,6 @@ const CustomerTxnPage = () => {
                             rules={{ required: "পেমেন্ট মেথড নাই" }}
                         />
 
-                        {
-                            paymentMethod === 'bank' &&
-                            <div className=" grid gap-4 rounded-lg lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 p-3 border border-black m-3">
-                                <SelectField
-                                    label=""
-                                    name="bankName"
-                                    placeholder="ব্যাংকের নাম"
-                                    control={control}
-                                    options={banksName}
-                                    rules={{ required: "ব্যাংকের নাম নাই" }}
-                                />
-                                <InputField
-                                    control={control}
-                                    name="issueDate"
-                                    type='datetime-local'
-                                    label="ইস্যুর তারিখ"
-                                    rules={{ required: "ইস্যুর তারিখ নাই" }}
-                                />
-                                <InputField
-                                    control={control}
-                                    label="পোস্টিং এর তারিখ"
-                                    type='datetime-local'
-                                    name="postingDate"
-                                    rules={{ required: "পোস্টিং এর তারিখ নাই" }}
-                                />
-                                <InputField
-                                    control={control}
-                                    label="মন্তব্য"
-                                    name="note"
-                                />
-                            </div>
-                        }
 
                         {/* image and delete */}
                         <div className='flex justify-between mx-4 items-center'>

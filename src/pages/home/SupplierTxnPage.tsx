@@ -13,7 +13,6 @@ import Modal from "../../components/Modal";
 import { useGetSpecificSupplierTxnQuery, useSupplierTxnEntryMutation } from "../../redux/features/supplierTxn/supplierTxnApi";
 import EditSupplierTxn from "./EditSupplierTxn";
 import { paymentMethods } from "../../utils/paymentMethods";
-import { banksName } from "../accounts/banksName";
 import Profile from "../../components/profile/Profile";
 import { customRound } from "../../utils/customRound";
 
@@ -24,7 +23,7 @@ const SupplierTxnPage = () => {
     const [makeTxn, setMakeTxn] = useState(false)
     const [selectedTxn, setSelectedTxn] = useState('')
     const [loading, setLoading] = useState(false)
-    const { control, handleSubmit, reset, watch } = useForm({
+    const { control, handleSubmit, reset } = useForm({
         defaultValues: {
             paymentMethod: 'cash'
         }
@@ -62,9 +61,6 @@ const SupplierTxnPage = () => {
     };
 
 
-
-
-
     const handleSelectedTxn = (id: string) => {
         setSelectedTxn(id)
         setIsOpen(true)
@@ -75,7 +71,6 @@ const SupplierTxnPage = () => {
     const totalCredit = transactions?.filter((txn: any) => (txn.type === 'credit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0)
     const supplierData = transactions ? transactions[0]?.supplier[0] : {}
     const due = customRound(totalCredit - totalDebit || 0)
-    const paymentMethod = watch('paymentMethod')
     return (
         <div className="mx-auto">
             <div>
@@ -134,38 +129,7 @@ const SupplierTxnPage = () => {
                             rules={{ required: "পেমেন্ট মেথড নাই" }}
                         />
 
-                        {
-                            paymentMethod === 'bank' &&
-                            <div className=" grid gap-4 rounded-lg lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 p-3 border border-black m-3">
-                                <SelectField
-                                    label=""
-                                    name="bankName"
-                                    placeholder="ব্যাংকের নাম"
-                                    control={control}
-                                    options={banksName}
-                                    rules={{ required: "ব্যাংকের নাম নাই" }}
-                                />
-                                <InputField
-                                    control={control}
-                                    name="issueDate"
-                                    type='datetime-local'
-                                    label="ইস্যুর তারিখ"
-                                    rules={{ required: "ইস্যুর তারিখ নাই" }}
-                                />
-                                <InputField
-                                    control={control}
-                                    label="পোস্টিং এর তারিখ"
-                                    type='datetime-local'
-                                    name="postingDate"
-                                    rules={{ required: "পোস্টিং এর তারিখ নাই" }}
-                                />
-                                <InputField
-                                    control={control}
-                                    label="মন্তব্য"
-                                    name="note"
-                                />
-                            </div>
-                        }
+
 
                         {/* image and delete */}
                         <div className='flex justify-between mx-4 items-center'>

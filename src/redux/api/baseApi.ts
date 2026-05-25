@@ -16,6 +16,6 @@ export const baseApi = createApi({
             return headers;
         }
     }),
-    tagTypes: ['Users', 'Purchases', 'CommissionPurchase', 'RegularPurchase', 'Products', 'ProductStock', 'ProductDetails', 'CommissionSales', 'CommissionProduct', 'Couthas', 'Coutha', 'Receivable', 'Payable', 'CustomerTxn', 'Customer', 'Supplier', 'SupplierTxn', 'Sales', 'BothSales', 'Deliveries', 'Stock', 'Income', 'Expenses', 'Account', 'Transaction', 'Brokers', 'Broker', 'BrokerTxn', "Sectors", "InExTxn", 'Cashbox', 'CashIn', 'CashOut', 'Attendances', 'Attendance'],
+    tagTypes: ['Users', 'Purchases', 'CommissionPurchase', 'RegularPurchase', 'Products', 'ProductStock', 'ProductDetails', 'CommissionSales', 'CommissionProduct', 'Couthas', 'Coutha', 'Receivable', 'Payable', 'CustomerTxn', 'Customer', 'Supplier', 'SupplierTxn', 'Sales', 'BothSales', 'Deliveries', 'Stock', 'Income', 'Expenses', 'Account', 'Transaction', 'Transactions', 'Brokers', 'Broker', 'BrokerTxn', "Sectors", "InExTxn", 'Cashbox', 'CashIn', 'CashOut', 'Attendances', 'Attendance'],
     endpoints: () => ({}),
 });     

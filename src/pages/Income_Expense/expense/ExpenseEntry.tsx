@@ -5,10 +5,13 @@ import { toast } from "react-toastify";
 import SelectField from "../../../components/form/SelectField";
 import InputField from "../../../components/form/InputFields";
 import { useGetAllSectorsQuery, useTxnEntryMutation } from "../../../redux/features/inExTxn/inExTxnApi";
+import { paymentMethods } from "../../../utils/paymentMethods";
+import { banksName } from "../../accounts/banksName";
 
 const ExpenseEntry = ({ onClose }: { onClose: () => void }) => {
     const [loading, setLoading] = useState(false)
-    const { handleSubmit, control, reset } = useForm();
+    const { handleSubmit, control, reset, watch } = useForm();
+    const paymentMethod = watch('paymentMethod')
 
     const { data: sectorData } = useGetAllSectorsQuery({ head: 'expense' });
     const expenseSources = sectorData?.data || [];
@@ -69,6 +72,49 @@ const ExpenseEntry = ({ onClose }: { onClose: () => void }) => {
                     control={control}
                     rules={{ required: "বিবরণ নাই" }}
                 />
+
+                <SelectField
+                    name="paymentMethod"
+                    label=""
+                    placeholder="পেমেন্ট মেথড"
+                    control={control}
+                    options={paymentMethods}
+                    rules={{ required: "পেমেন্ট মেথড নাই" }}
+                />
+
+                {
+                    paymentMethod === 'bank' &&
+                    <div className=" grid gap-4 rounded-lg grid-cols-1 p-3 border border-black m-3">
+                        <SelectField
+                            label=""
+                            name="bankName"
+                            placeholder="ব্যাংকের নাম"
+                            control={control}
+                            options={banksName}
+                            rules={{ required: "ব্যাংকের নাম নাই" }}
+                        />
+
+                        <InputField
+                            control={control}
+                            name="issueDate"
+                            type='datetime-local'
+                            label="ইস্যুর তারিখ"
+                            rules={{ required: "ইস্যুর তারিখ নাই" }}
+                        />
+                        <InputField
+                            control={control}
+                            label="পোস্টিং এর তারিখ"
+                            type='datetime-local'
+                            name="postingDate"
+                            rules={{ required: "পোস্টিং এর তারিখ নাই" }}
+                        />
+                        <InputField
+                            control={control}
+                            label="মন্তব্য"
+                            name="note"
+                        />
+                    </div>
+                }
                 <button
                     type="submit"
                     disabled={loading}

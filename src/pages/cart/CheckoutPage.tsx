@@ -33,7 +33,6 @@ const CheckoutPage = () => {
     const debouncedBrokerSearch = useDebounce(brokerSearch, 400);
     const { data, isFetching } = useGetAllBrokersQuery({ searchTerm: debouncedBrokerSearch, });
     const brokers: any[] = data?.data ?? [];
-
     const [loading, setLoading] = useState(false)
     const [isOpen, setIsOpen] = useState(false);
     const products = useAppSelector((state: any) => state.cart.items)
@@ -45,6 +44,7 @@ const CheckoutPage = () => {
 
     const grandTotal = totalCommission + cart.grandTotal
 
+
     const [createSales] = useBothSalesEntryMutation()
     const handleSales = async () => {
         setLoading(true)
@@ -53,9 +53,11 @@ const CheckoutPage = () => {
             ...cart,
             subtotal: subTotal,
             grandTotal: grandTotal,
-            customer: cart.customer._id
+            customer: cart.customer._id,
 
         };
+
+        console.log(updatedCart)
 
         try {
             setLoading(true);
@@ -257,7 +259,6 @@ const CheckoutPage = () => {
                                             }}
                                         />
 
-                                        {/* <SearchableSelectField brokerSearch={brokerSearch} /> */}
                                     </div>
                                     <div className="col-span-1 ">
                                         <label className="mb-[2px] block text-sm font-medium text-gray-700">
@@ -293,6 +294,8 @@ const CheckoutPage = () => {
                                             ))}
                                         </select>
                                     </div>
+
+
 
                                 </div>
 

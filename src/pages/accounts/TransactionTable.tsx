@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useParams } from "react-router";
 import TableSkeleton from "../../components/table/TableSkeleton";
 import ErrorBoundary from "../../components/ErrorBoundary";
-import { useGetAllTransactionQuery } from "../../redux/features/bankTransaction/bankTransactionApi";
+import { useGetAllBankTxnQuery } from "../../redux/features/bankTransaction/bankTransactionApi";
 
 const TransactionTable = () => {
     const { id } = useParams();
@@ -16,7 +16,7 @@ const TransactionTable = () => {
         data,
         isLoading,
         isError,
-    } = useGetAllTransactionQuery({
+    } = useGetAllBankTxnQuery({
         search,
         dateFrom,
         dateTo,

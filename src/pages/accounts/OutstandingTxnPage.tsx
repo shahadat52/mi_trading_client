@@ -9,7 +9,8 @@ const OutstandingTxnPage = () => {
 
     const [updateTxnStatus] = useUpdateTxnStatusMutation()
     const handleStatus = async (status: string, id: string) => {
-        await updateTxnStatus({ status, id })
+        const result = await updateTxnStatus({ status, id });
+        console.log(result)
     }
     return (
         <div className="grid lg:grid-cols-3  sm:grid-cols-1 gap-4 font-semibold p-2 mb-18">

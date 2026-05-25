@@ -27,7 +27,6 @@ import SupplierTxnPage from "../pages/home/SupplierTxnPage";
 import CartPage from "../pages/cart/CartPage";
 import AllProductsPage from "../pages/products/AllProductsPage";
 import BothSalesPage from "../pages/sales/bothSales/BothSalesPage";
-import BankTxnsPage from "../pages/accounts/txn/BankTxnsPage";
 import BrokersPage from "../pages/broker/BrokersPage";
 import BrokerTxn from "../pages/broker/BrokerTxn";
 import ProductDetails from "../pages/products/ProductDetails";
@@ -40,6 +39,8 @@ import BepariCoutha from "../pages/commissionSales/Coutha/BepariCoutha";
 import HRPage from "../pages/hr/HRpage";
 import AttendancesPage from "../pages/hr/attendances/AttendancesPage";
 import EmployeesPages from "../pages/hr/employees/EmployeesPages";
+import BankTxnsPage from "../pages/accounts/txn/BankTxnsPage";
+import BankTxnSummary from "../pages/accounts/txn/BankTxnSummary";
 
 export const router = createBrowserRouter([
     {
@@ -158,6 +159,11 @@ export const router = createBrowserRouter([
             {
                 path: "bankTxns",
                 element: <PrivateRoute><BankTxnsPage /></PrivateRoute>,
+            },
+
+            {
+                path: "bank_wise/:id",
+                element: <PrivateRoute><BankTxnSummary /></PrivateRoute>,
             },
             {
                 path: "accounts",

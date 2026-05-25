@@ -124,7 +124,7 @@ const TxnSectorsPage = () => {
 
                                                 <td className="px-4 py-2">
                                                     <p className="font-medium">
-                                                        {txn.category || txn.referenceType}
+                                                        {txn.category || txn.referenceType}({txn?.note})
                                                     </p>
                                                     <span className="text-xs text-gray-400">
                                                         {txn.referenceType}

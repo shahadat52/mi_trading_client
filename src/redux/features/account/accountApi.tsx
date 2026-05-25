@@ -27,7 +27,7 @@ const authApi = baseApi.injectEndpoints({
         getAllOutstandingTxn: builder.query({
             query: () => (
                 {
-                    url: '/transaction/outstandingTxn',
+                    url: '/bankTxn/outstandingTxn',
                     method: 'GET',
                 }),
             providesTags: ['Account', 'Transaction']
@@ -37,7 +37,7 @@ const authApi = baseApi.injectEndpoints({
             query: (data) => (
 
                 {
-                    url: `/transaction/${data.id}`,
+                    url: `/bankTxn/${data.id}`,
                     method: "PATCH",
                     body: { status: data.status }
                 }

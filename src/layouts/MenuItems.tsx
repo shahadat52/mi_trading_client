@@ -84,7 +84,6 @@ export const getMenuItems = (role?: string) => {
                     icon: <MdAccountBalance size={20} />,
                     subItems: [
                         { name: "লেনদেন বিবরণী", path: "/bankTxns" },
-                        { name: "একাউন্ট বিবরণী", path: "/accounts" },
                         { name: "অপরিশোধিত লেনদেন", path: "/outstandingTxn" },
                     ],
                 },
