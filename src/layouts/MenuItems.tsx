@@ -65,9 +65,11 @@ export const getMenuItems = (role?: string) => {
                 name: "Income_Expense",
                 icon: <MdAttachMoney size={20} />,
                 subItems: [
-                    { name: "Overview", path: "/income_expense" },
+                    { name: "আয়_ব্যয়", path: "/income_expense" },
+                    { name: "কুলি_গদি_তহরী", path: "/kuli_godi_tohori" },
                 ],
             },
+
             {
                 name: "Customer & Supplier",
                 icon: <FaPeopleCarryBox size={20} />,
@@ -75,6 +77,7 @@ export const getMenuItems = (role?: string) => {
                     { name: "দেখুন", path: "/partners" }
                 ],
             },
+
             {
                 name: "Banks Module",
                 icon: <MdAccountBalance size={20} />,

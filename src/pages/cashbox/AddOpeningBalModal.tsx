@@ -42,7 +42,6 @@ export const AddOpeningBalModal = ({ setModalController }: any) => {
 
             }
         } catch (err: any) {
-            console.log(err)
             toast.update(toastId, { render: err?.error?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
 
         } finally {

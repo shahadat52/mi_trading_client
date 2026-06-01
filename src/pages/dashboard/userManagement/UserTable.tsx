@@ -65,10 +65,7 @@ const UserTable = (user: TUser) => {
                     <option disabled>Select Role</option>
                     <option value="admin">Admin</option>
                     <option value="specialManager">Special Manager</option>
-                    <option value="salesManager">Sales Manager</option>
-                    <option value="purchaseManager">Purchase Manager</option>
-                    <option value="deliveryManager">Delivery Manager</option>
-                    <option value="commissionManager">Commission Manager</option>
+                    <option value="manager">Manager</option>
                     <option value="employee">Employee</option>
                 </select>
 

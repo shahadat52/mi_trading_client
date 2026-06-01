@@ -1,39 +1,21 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useGetAllSectorsQuery, useGetAllTxnQuery } from "../../../redux/features/inExTxn/inExTxnApi";
 import TableSkeleton from "../../../components/table/TableSkeleton";
 import ErrorBoundary from "../../../components/ErrorBoundary";
 import { format } from "date-fns";
 import { LIMIT_OPTIONS } from "../../../utils/options";
-import { useGetFieldWiseDataQuery } from "../../../redux/features/coutha/couthaApi";
 import AddSectorModal from "./AddSectorModal";
 
 const TxnSectorsPage = () => {
     const [sector, setSector] = useState('')
     const [sectorModalController, setSectorModalController] = useState(false)
     const [limit, setLimit] = useState(10)
-    const [field, setField] = useState('godi')
-    console.log(field)
 
-    useEffect(() => {
-        if (sector === 'গদি') {
-            setField('godi');
-        } else if (sector === 'তহরী') {
-            setField('tohori');
-        } else if (sector === 'লেবার') {
-            setField('kuli');
-        } else {
-
-        }
-    }, [sector]);
-
-    const { data: fieldWiseData } = useGetFieldWiseDataQuery({ field: field })
-    const totalGodi = fieldWiseData?.data
 
     const { data: sectorData } = useGetAllSectorsQuery({});
     const sectors = sectorData?.data;
     const expenseSectors = sectors?.filter((sector: any) => sector.head === 'expense')
     const incomeSectors = sectors?.filter((sector: any) => sector.head === 'income')
-    console.log(expenseSectors)
     const { data, isLoading, isError } = useGetAllTxnQuery({ category: sector, limit })
     const transactions = data?.data?.data
 
@@ -144,13 +126,8 @@ const TxnSectorsPage = () => {
                                                 </td>
 
                                                 <td className="px-4 py-2 text-right text-green-600">
-                                                    {
-                                                        sector === 'গদি'
-                                                            ? totalGodi
-                                                            : (txn.type === 'credit' ? `৳ ${txn.amount}` : '-')
-                                                    }
+                                                    {txn.type === 'credit' ? `৳ ${txn.amount}` : "-"}
                                                 </td>
-
 
                                             </tr>
                                         );
@@ -161,29 +138,7 @@ const TxnSectorsPage = () => {
                     )}
                 </div>
 
-                {/* ================= Fixed Total ================= */}
-                {/*   const totalDebit = transactions?.filter((txn: any) => (txn.type === 'debit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0)
-    const totalCredit =
-        sector === 'গদি'
-            ? (totalGodi ?? 0)
-            : (transactions ?? [])
-                .filter((txn: any) => txn.type === 'credit')
-                .reduce((sum: number, txn: any) => sum + (txn.amount || 0), 0);
 
-
-                 <div className="fixed bottom-[60px] left-0 w-full  px-3">
-                    <div className="mx-auto  bg-[#e5efd5]   py-4 text-sm px-2">
-                        <div className="grid  grid-cols-3 justify-between">
-                            <span className="col-span-2 text-red-600 font-medium">
-                                মোট
-                            </span>
-                            <div className='col-span-1 flex justify-between'>
-                                <span className="font-semibold text-red-600">  ৳ {totalDebit}</span>
-                                <span className="font-semibold text-green-600"> ৳ {totalCredit}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div> */}
             </section>
 
             {

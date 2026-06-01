@@ -38,7 +38,6 @@ const BankTxnSummary = () => {
             bankName: id,
 
         }
-        console.log(txnData)
 
         setLoading(true);
         const toastId = toast.loading("Processing...", { autoClose: 2000 });

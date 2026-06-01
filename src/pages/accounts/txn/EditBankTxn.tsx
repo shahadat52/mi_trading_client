@@ -9,7 +9,6 @@ import { bankTxnType } from '../../../utils/transactionType';
 
 const EditBankTxn = ({ onClose, txn, transactions }: { onClose: () => void, txn: any, transactions: any }) => {
 
-    console.log(transactions)
     const [loading, setLoading] = useState(false)
     const { handleSubmit, control, reset } = useForm();
     const [updateTxn] = useUpdateBankTxnMutation()
@@ -20,7 +19,6 @@ const EditBankTxn = ({ onClose, txn, transactions }: { onClose: () => void, txn:
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
         try {
             const result = await updateTxn({ data, id: txn._id });
-            console.log({ data, result })
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
                 reset();
@@ -42,7 +40,6 @@ const EditBankTxn = ({ onClose, txn, transactions }: { onClose: () => void, txn:
     };
 
     const handleDelete = async () => {
-        console.log(transactions)
         const isConfirm = confirm("আপনি কি নিশ্চিত! ডিলিট করেই দেবেন?")
         if (!isConfirm || transactions?.transactions?.length < 2) {
             return
@@ -50,7 +47,6 @@ const EditBankTxn = ({ onClose, txn, transactions }: { onClose: () => void, txn:
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
         try {
             const result = await deleteTxn(txn._id);
-            console.log(result)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
 

@@ -17,7 +17,6 @@ const inExTxnApi = baseApi.injectEndpoints({
         }),
         getAllSectors: builder.query({
             query: ({ head }) => {
-                console.log('search')
                 const params = new URLSearchParams();
                 if (head) {
                     params.append('head', head);

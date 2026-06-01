@@ -33,12 +33,16 @@ const couthaApi = baseApi.injectEndpoints({
         }),
 
         getFieldWiseData: builder.query({
-            query: ({ field }) => {
-                console.log(field)
+            query: ({ field, startDate, toDate }) => {
                 const params = new URLSearchParams();
 
                 if (field) {
                     params.append("field", field);
+                }
+
+                if (startDate && toDate) {
+                    params.append("startDate", startDate);
+                    params.append("toDate", toDate);
                 }
 
                 return {

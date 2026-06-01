@@ -30,7 +30,6 @@ const LoginForm: React.FC = () => {
         setLoading(true);
         const toastId = toast.loading('Logging in', { autoClose: 2000 })
         const result = await login(data);
-        console.log(result)
         if (result?.data?.success) {
             toast.update(toastId, { render: `${(result as any)?.data?.message}`, type: "success", isLoading: false, autoClose: 2000 })
             const path = new URL(result.data.data.otpSendingUiLink);

@@ -41,6 +41,7 @@ import AttendancesPage from "../pages/hr/attendances/AttendancesPage";
 import EmployeesPages from "../pages/hr/employees/EmployeesPages";
 import BankTxnsPage from "../pages/accounts/txn/BankTxnsPage";
 import BankTxnSummary from "../pages/accounts/txn/BankTxnSummary";
+import KuliGodiTohoriPage from "../pages/Income_Expense/kuli_godi_tohori/KuliGodiTohoriPage";
 
 export const router = createBrowserRouter([
     {
@@ -200,6 +201,10 @@ export const router = createBrowserRouter([
             {
                 path: "/hr/id",
                 element: <PrivateRoute><EmployeesPages /></PrivateRoute>
+            },
+            {
+                path: "/kuli_godi_tohori",
+                element: <PrivateRoute><KuliGodiTohoriPage /></PrivateRoute>
             },
 
         ],

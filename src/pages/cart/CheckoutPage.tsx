@@ -57,7 +57,6 @@ const CheckoutPage = () => {
 
         };
 
-        console.log(updatedCart)
 
         try {
             setLoading(true);

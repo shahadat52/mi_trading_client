@@ -44,12 +44,10 @@ const CustomerTxnPage = () => {
         data.party = id
         data.partyModel = 'Customer'
 
-        console.log(data)
         try {
             setLoading(true);
 
             const result = await customerTxnEntry(data);
-            console.log(result)
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
 

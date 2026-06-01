@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { toast } from 'react-toastify';
 import Loading from '../../components/Loading';
 import { useGetAllOutstandingTxnQuery, useUpdateTxnStatusMutation } from '../../redux/features/account/accountApi';
 import { formatDateTime } from '../../utils/formatDateTime';
@@ -9,8 +10,24 @@ const OutstandingTxnPage = () => {
 
     const [updateTxnStatus] = useUpdateTxnStatusMutation()
     const handleStatus = async (status: string, id: string) => {
-        const result = await updateTxnStatus({ status, id });
-        console.log(result)
+
+        const toastId = toast.loading("Processing...", { autoClose: 2000 });
+
+        try {
+
+            const result = await updateTxnStatus({ status, id });
+            if (result?.data?.success) {
+                toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
+                // 🔥 animated close
+            } else {
+                toast.update(toastId, { render: `${(result as any)?.error?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
+
+            }
+        } catch (err: any) {
+            toast.update(toastId, { render: err?.error?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
+
+        } finally {
+        }
     }
     return (
         <div className="grid lg:grid-cols-3  sm:grid-cols-1 gap-4 font-semibold p-2 mb-18">
