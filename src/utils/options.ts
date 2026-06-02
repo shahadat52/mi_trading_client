@@ -1,3 +1,5 @@
+import type { AttendanceStatus } from "../pages/hr/attendances/StatusModal";
+
 export const LIMIT_OPTIONS = [
   { label: 'Limit', value: 10 },
   { label: '20', value: 20 },
@@ -25,10 +27,13 @@ export const USER_ROLE_OPTIONS = [
   { value: 'manager', label: 'Manager' },
   { value: 'employee', label: 'Employee' },
   { value: 'specialManager', label: 'Special Manager' },
-  { value: 'salesManager', label: 'Sales Manager' },
-  { value: 'purchaseManager', label: 'Purchase Manager' },
-  { value: 'deliveryManager', label: 'Delivery Manager' },
-  { value: 'commissionManager', label: 'Commission Manager' },
+];
+
+export const EMPLOYEE_ROLE_OPTIONS = [
+  { value: '', label: 'Select Role' },
+  { value: 'manager', label: 'Manager' },
+  { value: 'employee', label: 'Employee' },
+  { value: 'specialManager', label: 'Special Manager' },
 ];
 
 
@@ -67,6 +72,48 @@ export const ATTENDANCE_STATUS_OPTIONS = [
     { label: "Paid Leave", value: "paid_leave", color: "hover:bg-blue-50 hover:border-blue-200 hover:text-blue-700" },
   ]
 ];
+
+export const STATUS_OPTIONS: {
+  label: string;
+  value: AttendanceStatus;
+  color: string;
+}[] = [
+    {
+      label: "Present",
+      value: "present",
+      color:
+        "hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-700",
+    },
+    {
+      label: "Absent",
+      value: "absent",
+      color:
+        "hover:bg-rose-50 hover:border-rose-200 hover:text-rose-700",
+    },
+    {
+      label: "Unpaid Leave",
+      value: "unpaid_leave",
+      color:
+        "hover:bg-amber-50 hover:border-amber-200 hover:text-amber-700",
+    },
+    {
+      label: "Paid Leave",
+      value: "paid_leave",
+      color:
+        "hover:bg-blue-50 hover:border-blue-200 hover:text-blue-700",
+    },
+  ];
+
+
+export const employeeTableHeads = [
+  "Name",
+  "phone",
+  "Role",
+  "Action",
+  "Status",
+  "Delete"
+];
+
 
 
 

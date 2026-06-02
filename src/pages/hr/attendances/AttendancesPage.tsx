@@ -1,9 +1,5 @@
 import { useParams } from "react-router";
-import {
-    useGetAttendanceByIdQuery,
-    useUpdateAttendanceStatusMutation,
-} from "../../../redux/features/attendance/attendanceApi";
-
+import { useGetAttendanceByIdQuery } from "../../../redux/features/attendance/attendanceApi";
 import { MONTH_OPTIONS } from "../../../utils/options";
 import { useState } from "react";
 import YearInput from "./YearInput";
@@ -16,7 +12,6 @@ import BasicSalaryUpdateModal from "./BasicSalaryUpdateModal";
 
 const AttendancesPage = () => {
     const { id } = useParams();
-
     const [month, setMonth] = useState(new Date().getMonth() + 1);
     const [year, setYear] = useState(new Date().getFullYear());
 
@@ -29,43 +24,27 @@ const AttendancesPage = () => {
     const { data, isLoading, isError, refetch } =
         useGetAttendanceByIdQuery({ id, year, month });
 
-    const employeeData = data?.data;
+    const employeeData = data?.data || [];
 
     const days = getDaysInMonth(new Date(year, month - 1));
 
     const validStatuses = ["present", "paid_leave"];
 
-    const validAttendanceCount =
-        employeeData?.attendances?.filter((item: any) =>
-            validStatuses.includes(item.status)
-        ).length || 0;
-
+    const validAttendanceCount = employeeData?.attendances?.filter((item: any) => validStatuses.includes(item.status)).length || 0;
+    // const score = employeeData?.attendances?.reduce((item: any, date: any) => ;
+    const score = employeeData?.attendances?.reduce((sum: number, date: any) => sum + date.score, 0)
     const perDayPay =
         Number(employeeData?.basicSalary) / Number(days || 1);
 
     const salary = ceil(perDayPay * validAttendanceCount);
 
-    const [updateStatus] = useUpdateAttendanceStatusMutation();
 
     // 👉 attendance status modal open
     const handleStatus = (date: any) => {
         setActiveDate(date);
     };
 
-    const handleSelect = async (status: string) => {
-        try {
-            await updateStatus({
-                id: activeDate._id,
-                date: activeDate.date,
-                status,
-            }).unwrap();
 
-            setActiveDate(null);
-            refetch();
-        } catch (error) {
-            console.error("Update failed:", error);
-        }
-    };
 
     // 👉 open salary modal
     const openSalaryModal = () => {
@@ -122,6 +101,7 @@ const AttendancesPage = () => {
                             Basic: {employeeData?.basicSalary}
                         </span>
                         <span>Payable Salary: {salary}</span>
+                        <span>Total Score: {score}</span>
                     </p>
                 </div>
 
@@ -156,15 +136,18 @@ const AttendancesPage = () => {
                                     {format(new Date(date?.date), "dd")}
                                 </h3>
 
-                                <div className="mt-2 flex justify-center">
+                                <div className="mt-2 flex justify-center ">
                                     <div
-                                        className={`w-3 h-3 rounded-full ${date.status === "present" ||
+                                        className={`flex justify-center items-center   w-4 h-4 rounded-full ${date.status === "present" ||
                                             date.status === "paid_leave"
                                             ? "bg-green-500"
                                             : "bg-red-500"
                                             }`}
-                                    />
+                                    >
+                                        <p className="text-[14px] font-bold text-white">{date?.score}</p>
+                                    </div>
                                 </div>
+
                             </div>
                         ))
                     )}
@@ -175,8 +158,8 @@ const AttendancesPage = () => {
             {activeDate && (
                 <StatusModal
                     activeDate={activeDate}
-                    handleSelect={handleSelect}
                     setActiveDate={setActiveDate}
+                    refetch={refetch}
                 />
             )}
 

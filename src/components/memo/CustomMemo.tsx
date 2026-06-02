@@ -31,10 +31,7 @@ const OriginalMemo = ({ onClose }: { onClose: () => void }) => {
         setItems([...items, { description: "", qty: 0, rate: 0 }]);
     };
 
-    const totalAmount = items.reduce(
-        (sum, item) => sum + item.qty * item.rate,
-        0
-    )
+    const totalAmount = items.reduce((sum, item) => sum + item.qty * item.rate, 0)
     return (
         <div className="overflow-auto fixed inset-0 z-50 flex justify-center items-start bg-black/40 p-4 print:bg-white print:static">
             <div className="relative w-[520px] bg-white border-4 border-orange-500 shadow-lg print:shadow-none">

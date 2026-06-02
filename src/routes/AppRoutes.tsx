@@ -42,6 +42,7 @@ import EmployeesPages from "../pages/hr/employees/EmployeesPages";
 import BankTxnsPage from "../pages/accounts/txn/BankTxnsPage";
 import BankTxnSummary from "../pages/accounts/txn/BankTxnSummary";
 import KuliGodiTohoriPage from "../pages/Income_Expense/kuli_godi_tohori/KuliGodiTohoriPage";
+import CreateEmployeeEntry from "../pages/hr/employees/CreateEmployeeEntry";
 
 export const router = createBrowserRouter([
     {
@@ -195,7 +196,11 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute><HRPage /></PrivateRoute>
             },
             {
-                path: "/hr/:id",
+                path: "/hr/join",
+                element: <PrivateRoute><CreateEmployeeEntry /></PrivateRoute>
+            },
+            {
+                path: "/attendance/:id",
                 element: <PrivateRoute><AttendancesPage /></PrivateRoute>
             },
             {

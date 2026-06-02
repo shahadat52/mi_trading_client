@@ -18,11 +18,12 @@ const attendanceApi = baseApi.injectEndpoints({
         }),
 
         updateAttendanceStatus: builder.mutation({
-            query: ({ id, status, date }: any) => (
+            query: ({ id, status, date, score }: any) => (
                 {
                     url: `/attendance/${id}`,
                     method: 'PATCH',
                     params: {
+                        score,
                         status,
                         date
                     }
