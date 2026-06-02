@@ -3,15 +3,16 @@ import { baseApi } from "../../api/baseApi";
 
 const purchaseApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        purchaseEntry: builder.mutation({
-            query: (purchaseData) => (
+        purchaseEntry: builder.mutation<any, FormData>({
+            query: (formData) => (
                 {
                     url: "/purchase/entry",
                     method: "POST",
-                    body: purchaseData
+                    body: formData,
                 }
             ),
-            invalidatesTags: ['Purchases', 'Supplier', 'SupplierTxn', 'Payable']
+            invalidatesTags: ["Purchases", "Supplier", "SupplierTxn", "Payable",
+            ],
         }),
         getAllPurchases: builder.query({
             query: (query) => (

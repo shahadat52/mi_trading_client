@@ -16,8 +16,8 @@ import CalculatorField from "../cart/CalculatorField";
 
 const PurchaseEntryForm = () => {
     const dispatch = useAppDispatch()
-    const purchaseData: TPurchase = useAppSelector(state => state.purchase)
-    // Supplier Selection
+    const purchaseData: TPurchase = useAppSelector(state => state.purchase);
+    const [imageFile, setImageFile] = useState<File | null>(null);
     const [supplierSearch, setSupplierSearch] = useState("");
     const debouncedSupplierSearch = useDebounce(supplierSearch, 400);
     const { data: supplierData, isFetching: supplierFetching } = useGetAllSuppliersNameQuery({ searchTerm: debouncedSupplierSearch, type: 'regular', limit: 20 });
@@ -48,8 +48,17 @@ const PurchaseEntryForm = () => {
 
         try {
             setLoading(true);
+            const formData = new FormData();
 
-            const result = await addPurchase(payload)
+            Object.entries(payload).forEach(([key, value]) => {
+                formData.append(key, String(value));
+            });
+
+            if (imageFile) {
+                formData.append("image", imageFile);
+            }
+
+            const result = await addPurchase(formData);
             if (result?.data?.success) {
                 setLoading(false)
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
@@ -201,6 +210,36 @@ const PurchaseEntryForm = () => {
             <input type="number" className="input " value={purchaseData.paidAmount || ""} onChange={(e) => { dispatch(setPaidAmount(Number(e.target.value))); dispatch(calculatePurchaseTotals()) }} placeholder="পরিশোধের পরিমান" />
 
             <input value={purchaseData.note || ""} onChange={(e) => { dispatch(setNote(e.target.value)) }} placeholder="নোট লিখুন" type="text" className="input" required />
+            <div>
+                <label className="block text-sm mb-1">বিল / ছবি</label>
+
+                <input
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    className="file-input file-input-bordered w-full"
+                    onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                            setImageFile(file);
+                        }
+                    }}
+                />
+
+                {imageFile && (
+                    <p className="text-xs text-green-600 mt-1">
+                        {imageFile.name}
+                    </p>
+                )}
+
+                {imageFile && (
+                    <img
+                        src={URL.createObjectURL(imageFile)}
+                        alt="preview"
+                        className="w-32 h-32 object-cover rounded mt-2"
+                    />
+                )}
+            </div>
 
             <div className=" grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex justify-between bg-blue-50 rounded-2xl p-5 border border-blue-100">
