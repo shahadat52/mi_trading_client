@@ -40,7 +40,7 @@ const CreateEmployeeEntry = () => {
 
     return (
         <div
-            className=" flex justify-center items-center"
+            className="flex justify-center items-center mt-10"
         >
             <div
                 className="bg-white p-4 rounded-lg shadow-lg"
@@ -52,7 +52,7 @@ const CreateEmployeeEntry = () => {
                 </div>
 
                 <form className="mb-3" onSubmit={handleSubmit(onSubmit)}>
-                    <div className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-3 overflow-y-auto max-h-96   ">
+                    <div className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-3    ">
 
                         <InputField
                             type="text"

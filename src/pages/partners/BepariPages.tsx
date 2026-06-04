@@ -19,7 +19,7 @@ const BepariPage = () => {
 
     const [deleteSupplier] = useDeleteSupplierMutation()
     const handleDelete = async (id: string) => {
-        const isConfirm = confirm("ডিলিট করেই দেবেন?")
+        const isConfirm = confirm("ডিলিট করেই দিবেন?")
         if (!isConfirm) {
             return
         }

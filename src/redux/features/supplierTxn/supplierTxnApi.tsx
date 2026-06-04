@@ -46,7 +46,7 @@ const supplierTxnApi = baseApi.injectEndpoints({
         updateSupplierTxnData: builder.mutation({
             query: (updatedData) => (
                 {
-                    url: `/supplierTxn/${updatedData.id}`,
+                    url: `/supplierTxn/update/${updatedData.id}`,
                     method: 'PATCH',
                     body: updatedData.data
                 }),
@@ -63,7 +63,27 @@ const supplierTxnApi = baseApi.injectEndpoints({
             invalidatesTags: ['SupplierTxn', 'Payable']
         }),
 
+        getUnapprovedSupplierTxn: builder.query({
+            query: () => (
+                {
+                    url: '/supplierTxn/unapproved',
+                    method: 'GET',
+                }),
+            providesTags: ['UnapprovedSupplierTxn']
+        }),
+
+        makeApproveSupplierTxn: builder.mutation({
+            query: (id) => (
+                {
+                    url: `/supplierTxn/approve/${id}`,
+                    method: "PATCH",
+
+                }
+            ),
+            invalidatesTags: ['UnapprovedSupplierTxn']
+        }),
+
     }),
 });
 
-export const { useSupplierTxnEntryMutation, useBepariTxnEntryMutation, useGetAllSupplierTxnQuery, useGetSpecificSupplierTxnQuery, useUpdateSupplierTxnDataMutation, useDeleteSupplierTxnMutation } = supplierTxnApi
+export const { useSupplierTxnEntryMutation, useBepariTxnEntryMutation, useGetAllSupplierTxnQuery, useGetSpecificSupplierTxnQuery, useUpdateSupplierTxnDataMutation, useDeleteSupplierTxnMutation, useGetUnapprovedSupplierTxnQuery, useMakeApproveSupplierTxnMutation } = supplierTxnApi

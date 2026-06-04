@@ -37,7 +37,7 @@ type Props = {
     loading?: boolean;
 };
 
-const InvoicePage: React.FC<Props> = ({ invoiceData, loading = false }) => {
+const CustomerInvoicePage: React.FC<Props> = ({ invoiceData, loading = false }) => {
     if (loading) {
         return (
             <div className="flex justify-center items-center h-screen">
@@ -72,7 +72,7 @@ const InvoicePage: React.FC<Props> = ({ invoiceData, loading = false }) => {
     } = invoiceData;
 
     const perProductsCommission = items?.reduce((initialValue, item) => initialValue + item?.commission, 0)
-    const totalCommission = Number(perProductsCommission) + Number(customerCommission)
+    const totalCommission = (Number(perProductsCommission) || 0) + (Number(customerCommission) || 0)
 
     return (
         <div className="max-w-4xl mb-10 mx-auto p-6 bg-white shadow-md rounded-md mt-6">
@@ -168,4 +168,4 @@ const InvoicePage: React.FC<Props> = ({ invoiceData, loading = false }) => {
     );
 };
 
-export default InvoicePage;
+export default CustomerInvoicePage;

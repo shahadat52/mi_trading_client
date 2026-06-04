@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { useFireEmployeeMutation, useUpdateEmployeeRoleMutation, useUpdateEmployeeStatusMutation } from "../../redux/features/employee/employeeApi";
 
 import { MdDeleteForever } from "react-icons/md";
+import { EMPLOYEE_ROLE_OPTIONS } from "../../utils/options";
 
 export type TUser = { _id: string, name: string, phone: string, email: string, role: string, status: string }
 const EmployeeTable = (user: TUser) => {
@@ -54,7 +55,7 @@ const EmployeeTable = (user: TUser) => {
 
     const [fireEmployee] = useFireEmployeeMutation()
     const handleDelete = async (user: any) => {
-        const isConfirm = confirm(`আপনি কি নিশ্চিত! ${user.name} কে ডিলিট করেই দেবেন?`)
+        const isConfirm = confirm(`আপনি কি নিশ্চিত! ${user.name} কে ডিলিট করেই দিবেন?`)
         if (!isConfirm) {
             return
         }
@@ -88,10 +89,11 @@ const EmployeeTable = (user: TUser) => {
                     className="select select-natural w-full"
                     onChange={(e) => handleUpdate(e.target.value)}
                 >
-                    <option disabled>Select Role</option>
-                    <option value="specialManager">Special Manager</option>
-                    <option value="manager">Manager</option>
-                    <option value="employee">Employee</option>
+                    {EMPLOYEE_ROLE_OPTIONS?.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                            {opt.label}
+                        </option>
+                    ))}
                 </select>
 
             </td>

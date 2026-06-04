@@ -32,8 +32,10 @@ export const USER_ROLE_OPTIONS = [
 export const EMPLOYEE_ROLE_OPTIONS = [
   { value: '', label: 'Select Role' },
   { value: 'manager', label: 'Manager' },
-  { value: 'employee', label: 'Employee' },
   { value: 'specialManager', label: 'Special Manager' },
+  { value: 'employee', label: 'Employee' },
+  { value: 'careTaker', label: 'Care Taker' },
+  { value: 'driver', label: 'driver' },
 ];
 
 

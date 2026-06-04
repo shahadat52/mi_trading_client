@@ -13,6 +13,7 @@ import type { RootState } from "../../redux/store";
 import { calculatePurchaseTotals, resetPurchase, setBosta, setCommission, setIsCommissionPaid, setIsLabourPaid, setIsOthersPaid, setLabour, setNote, setOthers, setOthersField, setPaidAmount, setProduct, setPurchaseDate, setPurchasePrice, setQuantity, setSupplier, setUnit, type TPurchase } from "../../redux/features/purchase/purchaseSlice";
 import Loading from "../../components/Loading";
 import CalculatorField from "../cart/CalculatorField";
+import { compressImage } from "../../utils/compressImage";
 
 const PurchaseEntryForm = () => {
     const dispatch = useAppDispatch()
@@ -30,12 +31,16 @@ const PurchaseEntryForm = () => {
     const { data: productData, isFetching: productFetching } = useGetAllProductNamesQuery({ searchTerm: debouncedProductSearch });
     const selectedProduct: any = useAppSelector((state: RootState) => state.purchase.supplier);
     const products = productData?.data ?? [];
-
-
-    const [addPurchase] = usePurchaseEntryMutation();
-
     const [loading, setLoading] = useState(false);
 
+
+    const handleComprssImage = async (file: any) => {
+        if (!file) return;
+        const compressedFile = await compressImage(file);
+        setImageFile(compressedFile);
+    }
+
+    const [addPurchase] = usePurchaseEntryMutation();
     const handlePurchase = async () => {
         const toastId = toast.loading("Processing...");
         (purchaseData)
@@ -221,7 +226,7 @@ const PurchaseEntryForm = () => {
                     onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (file) {
-                            setImageFile(file);
+                            handleComprssImage(file);
                         }
                     }}
                 />

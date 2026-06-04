@@ -60,7 +60,7 @@ const HRpage = () => {
 
     const [fireEmployee] = useFireEmployeeMutation()
     const handleDelete = async (user: any) => {
-        const isConfirm = confirm(`আপনি কি নিশ্চিত! ${user.name} কে ডিলিট করেই দেবেন?`)
+        const isConfirm = confirm(`আপনি কি নিশ্চিত! ${user.name} কে ডিলিট করেই দিবেন?`)
         if (!isConfirm) {
             return
         }

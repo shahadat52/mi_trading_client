@@ -80,7 +80,7 @@ const authApi = baseApi.injectEndpoints({
         updateCustomerTxn: builder.mutation({
             query: (updatedData) => (
                 {
-                    url: `/customerTxn/${updatedData.id}`,
+                    url: `/customerTxn/update/${updatedData.id}`,
                     method: 'PATCH',
                     body: updatedData.data
                 }),
@@ -106,9 +106,29 @@ const authApi = baseApi.injectEndpoints({
             invalidatesTags: ['CustomerTxn', 'Customer']
         }),
 
+        getUnapprovedCustomerTxn: builder.query({
+            query: () => (
+                {
+                    url: `/customerTxn/unapproved`,
+                    method: 'GET',
+                }),
+            providesTags: ['UnapprovedCustomerTxn']
+        }),
+
+        makeApproveCustomerTxn: builder.mutation({
+            query: (id) => (
+                {
+                    url: `/customerTxn/approve/${id}`,
+                    method: "PATCH",
+
+                }
+            ),
+            invalidatesTags: ['UnapprovedCustomerTxn']
+        }),
+
 
 
     }),
 });
 
-export const { useAddCustomerMutation, useGetAllCustomersQuery, useGetCustomerByIdQuery, useUpdateCustomerDataMutation, useCustomerTxnEntryMutation, useGetAllCustomerTxnQuery, useGetAllTxnByCustomerQuery, useUpdateCustomerTxnMutation, useDeleteCustomerTxnMutation, useDeleteCustomerMutation } = authApi
+export const { useAddCustomerMutation, useGetAllCustomersQuery, useGetCustomerByIdQuery, useUpdateCustomerDataMutation, useCustomerTxnEntryMutation, useGetAllCustomerTxnQuery, useGetAllTxnByCustomerQuery, useUpdateCustomerTxnMutation, useDeleteCustomerTxnMutation, useDeleteCustomerMutation, useGetUnapprovedCustomerTxnQuery, useMakeApproveCustomerTxnMutation } = authApi

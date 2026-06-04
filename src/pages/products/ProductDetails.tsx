@@ -8,6 +8,7 @@ import { useAppDispatch } from "../../redux/hook";
 import report_icon from "../../assets/icons/report_icon.png"
 import edit_icon from "../../assets/icons/edit_icon.png"
 import { setTotalCost } from "../../redux/features/product/productSlice";
+import ImagePreviewButton from "../../components/ImagePreviewButton";
 
 const ProductDetails = () => {
     const { id } = useParams<{ id: string }>();
@@ -206,6 +207,13 @@ const ProductDetails = () => {
                                         </span>
                                     </button>
                                 </NavLink>
+
+                                <div>
+                                    <ImagePreviewButton
+                                        imageUrl={purchase?.imageurl}
+                                        buttonText="View Image"
+                                    />
+                                </div>
                             </div>
                         </div>
 
@@ -462,6 +470,10 @@ const ProductDetails = () => {
                     </div>
                 </div>
             </div>
+
+            {/* {
+                open && 
+            } */}
         </div >
     );
 };

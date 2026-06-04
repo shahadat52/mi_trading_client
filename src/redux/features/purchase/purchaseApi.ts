@@ -91,7 +91,17 @@ const purchaseApi = baseApi.injectEndpoints({
                 }),
             // providesTags: ['Purchase']
         }),
+
+        getPurchaseDataByInvoice: builder.query({
+            query: (invoice) => (
+                {
+                    url: `/purchase/invoice/${invoice}`,
+                    method: 'GET',
+                }),
+            // providesTags: ['Purchases']
+        }),
+
     }),
 });
 
-export const { usePurchaseEntryMutation, useGetCommissionPurchasesQuery, useGetRegualarPurchaseByIdQuery, useGetAllPurchasesQuery, useGetCommissionPurchaseByIdQuery, useDeletePurchaseMutation, useUpdatePurchaseMutation, useGetPurchaseReportsQuery, useGetProductWiseSalesReportsQuery } = purchaseApi
+export const { usePurchaseEntryMutation, useGetCommissionPurchasesQuery, useGetRegualarPurchaseByIdQuery, useGetAllPurchasesQuery, useGetCommissionPurchaseByIdQuery, useDeletePurchaseMutation, useUpdatePurchaseMutation, useGetPurchaseReportsQuery, useGetProductWiseSalesReportsQuery, useGetPurchaseDataByInvoiceQuery } = purchaseApi

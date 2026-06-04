@@ -40,7 +40,7 @@ const EditCustomerTxn = ({ onClose, txn, transactions }: { onClose: () => void, 
     };
 
     const handleDelete = async () => {
-        const isConfirm = confirm("আপনি কি নিশ্চিত! ডিলিট করেই দেবেন?")
+        const isConfirm = confirm("আপনি কি নিশ্চিত! ডিলিট করেই দিবেন?")
         if (!isConfirm || transactions.length < 2) {
             return
         }

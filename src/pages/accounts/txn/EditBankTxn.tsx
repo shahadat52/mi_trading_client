@@ -40,7 +40,7 @@ const EditBankTxn = ({ onClose, txn, transactions }: { onClose: () => void, txn:
     };
 
     const handleDelete = async () => {
-        const isConfirm = confirm("আপনি কি নিশ্চিত! ডিলিট করেই দেবেন?")
+        const isConfirm = confirm("আপনি কি নিশ্চিত! ডিলিট করেই দিবেন?")
         if (!isConfirm || transactions?.transactions?.length < 2) {
             return
         }
