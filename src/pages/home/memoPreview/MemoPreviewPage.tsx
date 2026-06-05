@@ -19,6 +19,10 @@ const MemoPreviewPage = () => {
             {
                 type === 'MI(P)' && <SupplierInvoicePage invoiceData={purchases} loading={purchaseLoading} />
             }
+
+            {
+                type === 'MI(P)' && <SupplierInvoicePage invoiceData={purchases} loading={purchaseLoading} />
+            }
         </div>
     );
 };

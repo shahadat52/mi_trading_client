@@ -37,8 +37,7 @@ const InvoiceEditModal = ({ onClose, sale }: any) => {
             await updateInvoice({ id, data }).unwrap();
             onClose();
         } catch (error) {
-
-            console.error("UPDATE ERROR:", error);
+            // console.error("UPDATE ERROR:", error);
         }
     };
 

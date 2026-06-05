@@ -4,12 +4,24 @@ import { baseApi } from "../../api/baseApi";
 const commissionProduct = baseApi.injectEndpoints({
     endpoints: (builder) => ({
 
-        CommissionProductEntry: builder.mutation({
-            query: (commissionProductData: any) => (
+
+        purchaseEntry: builder.mutation<any, FormData>({
+            query: (formData) => (
+                {
+                    url: "/purchase/entry",
+                    method: "POST",
+                    body: formData,
+                }
+            ),
+            invalidatesTags: ["Purchases", "Supplier", "SupplierTxn", "Payable",
+            ],
+        }),
+        CommissionProductEntry: builder.mutation<any, FormData>({
+            query: (formData) => (
                 {
                     url: "commissionProduct/create",
                     method: "POST",
-                    body: commissionProductData
+                    body: formData
                 }
             ),
             invalidatesTags: ['CommissionProduct']

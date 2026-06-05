@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router';
 import { useDeleteCommissionProdMutation, useGetCommissionProductsByIdQuery, useUpdateCommissionProdMutation } from '../../redux/features/commissionProduct/commissionProductApi';
 import { MdAutoDelete } from 'react-icons/md';
 import { toast } from 'react-toastify';
+import ImagePreviewButton from '../../components/ImagePreviewButton';
 
 const CommissionProductDetails = () => {
     const { id } = useParams();
@@ -40,19 +41,26 @@ const CommissionProductDetails = () => {
         setIsEditing(false);
     };
 
+
+
     const handleDelete = async (id: string) => {
+        const confirmed = window.confirm("আপনি কি নিশ্চিত! ডিলিট করেই দিবেন?");
+
+        if (!confirmed) return;
+
+        const toastId = toast.loading("Processing...", { autoClose: 2000 });
         try {
-            const confirmed = window.confirm("Are you sure you want to delete this product?");
+            const result = await deleteProduct(id);
+            if (result?.data?.success) {
+                toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
+                navigate('/products')
 
-            if (!confirmed) return;
+            } else {
+                toast.update(toastId, { render: `${(result as any)?.error?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
 
-            await deleteProduct(id).unwrap();
-
-            toast.success("Product deleted successfully");
-
-            navigate("/commission/products");
-        } catch (error) {
-            toast.error("Failed to delete product");
+            }
+        } catch (err: any) {
+            toast.update(toastId, { render: err?.error?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
         } finally {
         }
     };
@@ -69,14 +77,20 @@ const CommissionProductDetails = () => {
 
                     <p className="text-sm text-blue-600 font-mono mt-1">LOT:{product?.supplier?.name}- {product.lot}</p>
 
-                    <button
-                        onClick={() => navigate(`/purchase/report/${id}`)}
-                        className='mt-1'
-                    >
-                        <span className="p-2  text-xs font-normal rounded bg-green-700 uppercase text-white hover:bg-black transition shadow">
-                            Reports
-                        </span>
-                    </button>
+                    <div className='flex gap-2 mt-1'>
+                        <button
+                            onClick={() => navigate(`/purchase/report/${id}`)}
+                            className=' '
+                        >
+                            <span className="p-2 font-normal rounded bg-green-700 uppercase text-white hover:bg-black transition shadow">
+                                Reports
+                            </span>
+                        </button>
+                        <ImagePreviewButton
+                            imageUrl={product?.imageurl}
+                            buttonText="View Image"
+                        />
+                    </div>
 
                 </div>
                 <div className=" flex flex-col items-center gap-1 space-x-3">

@@ -8,21 +8,62 @@ import SupplierSearchableSelectField from './SupplierSearchableSelectField';
 import { useAppDispatch, useAppSelector } from '../../redux/hook';
 import { setQuantity } from '../../redux/features/commissionProduct/commissionProductSlice';
 import CalculatorField from '../cart/CalculatorField';
+import { compressImage } from '../../utils/compressImage';
 
 const CommissionProductEntry = ({ onClose }: { onClose: () => void }) => {
     const state = useAppSelector((state) => state.commissionProduct);
+    const [imageFile, setImageFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false)
     const { handleSubmit, control, reset } = useForm();
     const [addProduct] = useCommissionProductEntryMutation()
     const dispatch = useAppDispatch()
+
+
+
+    const handleComprssImage = async (file: any) => {
+        if (!file) return;
+        const compressedFile = await compressImage(file);
+        setImageFile(compressedFile);
+    }
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         data.supplier = state.supplier
         data.quantity = state.quantity
         setLoading(true);
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
+        // try {
+        //     const result = await addProduct(data);
+        //     if (result?.data?.success) {
+        //         toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
+        //         reset();
+        //         setLoading(false);
+        //         onClose();
+
+        //     } else {
+        //         toast.update(toastId, { render: `${(result as any)?.error?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
+        //         setLoading(false);
+        //     }
+        // } catch (err: any) {
+        //     toast.update(toastId, { render: err?.error?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
+        //     setLoading(false);
+        // } finally {
+        //     // reset()
+        //     setLoading(false);
+        // }
+
         try {
-            const result = await addProduct(data);
+            setLoading(true);
+            const formData = new FormData();
+
+            Object.entries(data).forEach(([key, value]) => {
+                formData.append(key, String(value));
+            });
+
+            if (imageFile) {
+                formData.append("image", imageFile);
+            };
+
+            const result = await addProduct(formData);
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
                 reset();
@@ -37,7 +78,6 @@ const CommissionProductEntry = ({ onClose }: { onClose: () => void }) => {
             toast.update(toastId, { render: err?.error?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
             setLoading(false);
         } finally {
-            // reset()
             setLoading(false);
         }
 
@@ -80,6 +120,37 @@ const CommissionProductEntry = ({ onClose }: { onClose: () => void }) => {
                     label="কমিশন হার"
                     rules={{ required: "কমিশন হার দেওয়া বাধ্যতামূলক" }}
                 />
+
+                <div>
+                    <label className="block text-sm mb-1">বিল / ছবি</label>
+
+                    <input
+                        type="file"
+                        accept="image/*"
+                        capture="environment"
+                        className="file-input file-input-bordered w-full"
+                        onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                                handleComprssImage(file);
+                            }
+                        }}
+                    />
+
+                    {imageFile && (
+                        <p className="text-xs text-green-600 mt-1">
+                            {imageFile.name}
+                        </p>
+                    )}
+
+                    {imageFile && (
+                        <img
+                            src={URL.createObjectURL(imageFile)}
+                            alt="preview"
+                            className="w-10 h-15 object-cover rounded mt-2"
+                        />
+                    )}
+                </div>
 
                 <button
                     type="submit"

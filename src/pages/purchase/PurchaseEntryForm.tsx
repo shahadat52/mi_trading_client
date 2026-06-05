@@ -241,7 +241,7 @@ const PurchaseEntryForm = () => {
                     <img
                         src={URL.createObjectURL(imageFile)}
                         alt="preview"
-                        className="w-32 h-32 object-cover rounded mt-2"
+                        className="w-10 h-15 object-cover rounded mt-2"
                     />
                 )}
             </div>

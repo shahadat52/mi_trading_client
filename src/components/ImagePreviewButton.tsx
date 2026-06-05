@@ -15,7 +15,7 @@ const ImagePreviewButton = ({
         <>
             <button
                 onClick={() => setShowImage(true)}
-                className="px-4 py-2 bg-green-600 text-white rounded"
+                className="px-2 py-1 bg-green-600 text-white rounded"
             >
                 {buttonText}
             </button>

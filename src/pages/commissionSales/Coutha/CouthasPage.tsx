@@ -23,7 +23,6 @@ const CouthaPage = () => {
         refetch
     } = useGetAllCouthasOfSupplierQuery(id);
 
-    const [addBepariTxn, { isLoading: txnLoading }] = useBepariTxnEntryMutation();
     const [deleteCoutha, { isLoading: deleteLoading }] = useDeleteBepariCouthaMutation();
 
     const [isOpen, setIsOpen] = useState(false);
@@ -32,6 +31,7 @@ const CouthaPage = () => {
     const settlements = data?.data || [];
 
     // ✅ Add Transaction
+    const [addBepariTxn, { isLoading: txnLoading }] = useBepariTxnEntryMutation();
     const handleAddTxn = async (item: any) => {
         if (!confirm("এক্ষুনি যুক্ত করবেন সবকিছু ঠিক আছে?")) return;
         // return
@@ -42,7 +42,7 @@ const CouthaPage = () => {
                 party: item?.supplier?._id,
                 type: "credit",
                 amount: Number(Number(item?.grandTotal) - Number(item?.subTotal)),
-                description: `${item?.invoice} নং মেমোর বিল`,
+                description: `${item?.invoice}`,
             };
             const transfarData = {
                 _id: item._id,

@@ -40,9 +40,16 @@ const cashboxApi = baseApi.injectEndpoints({
             providesTags: ["CashOut"],
         }),
 
+        getClosingBalance: builder.query({
+            query: () => ({
+                url: `/cashbox/closing`,
+                method: "GET",
+            }),
+        }),
+
 
 
     }),
 });
 
-export const { useAddOpeningBalMutation, useGetOpeningBalQuery, useGetCashInQuery, useGetCashOutQuery } = cashboxApi
+export const { useAddOpeningBalMutation, useGetOpeningBalQuery, useGetCashInQuery, useGetCashOutQuery, useGetClosingBalanceQuery } = cashboxApi

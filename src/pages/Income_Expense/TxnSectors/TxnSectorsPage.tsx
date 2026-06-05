@@ -109,10 +109,12 @@ const TxnSectorsPage = () => {
                                                 className="border-t hover:bg-gray-50 transition"
                                             >
                                                 <td className="px-4 py-2">
-                                                    {format(txn?.createdAt, "dd/MM/yyyy hh:mm a")}
+                                                    {format(txn?.createdAt, "dd/MM/yyyy")} <br />
+                                                    {format(txn?.createdAt, "hh:mm a")}
                                                 </td>
 
-                                                <td className="px-4 py-2">
+                                                <td
+                                                    className="px-4 py-2">
                                                     <p className="font-medium">
                                                         {txn.category || txn.referenceType}({txn?.note})
                                                     </p>

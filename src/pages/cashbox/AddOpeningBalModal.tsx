@@ -5,16 +5,17 @@ import InputField from "../../components/form/InputFields";
 import { MdCancel } from "react-icons/md";
 import { toast } from "react-toastify";
 import "../../styles/modalAnimations.css"; // 🔥 animation CSS
-import { useAddOpeningBalMutation } from "../../redux/features/cashbox/cashboxApi";
+import { useAddOpeningBalMutation, useGetClosingBalanceQuery } from "../../redux/features/cashbox/cashboxApi";
 
 export const AddOpeningBalModal = ({ setModalController }: any) => {
     const [loading, setLoading] = useState(false);
-    const [closing, setClosing] = useState(false); // 🔥 control closing animation
+    const [closing, setClosing] = useState(false);
+    const { data: closingBal } = useGetClosingBalanceQuery(undefined)
+    const closingBalance = closingBal?.data?.closingBalance;
 
     const { control, handleSubmit, reset } = useForm({
         defaultValues: {
-            name: "",
-            phone: ""
+            openingBalance: closingBalance
         }
     });
 
@@ -76,6 +77,7 @@ export const AddOpeningBalModal = ({ setModalController }: any) => {
                             name="openingBalance"
                             label="ওপেনিং ব্যালেন্স"
                             type="number"
+                            placeholder={closingBalance}
                             control={control}
                             rules={{ required: "ওপেনিং ব্যালেন্স নাই" }}
                         />

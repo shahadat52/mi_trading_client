@@ -34,7 +34,11 @@ const LabourPage = ({ action, startDate, endDate }: any) => {
                         </thead>
 
                         <tbody>
-                            <p>সেলস</p>
+                            <tr>
+                                <td colSpan={2} className="font-bold bg-gray-100">
+                                    সেলস
+                                </td>
+                            </tr>
                             {fieldWiseData?.sales?.map((data: any, idx: number) => (
                                 <tr key={data?._id}>
                                     <td>{(idx + 1)}) {data?.invoice}</td>
@@ -43,7 +47,11 @@ const LabourPage = ({ action, startDate, endDate }: any) => {
                                     </td>
                                 </tr>
                             ))}
-                            <p>বেপারী</p>
+                            <tr>
+                                <td colSpan={2} className="font-bold bg-gray-100">
+                                    সেলস
+                                </td>
+                            </tr>
                             {fieldWiseData?.couthas?.map((data: any, idx: number) => (
                                 <tr key={data?._id}>
                                     <td>{(idx + 1)}) {data?.invoice}</td>
@@ -52,7 +60,11 @@ const LabourPage = ({ action, startDate, endDate }: any) => {
                                     </td>
                                 </tr>
                             ))}
-                            <p>ক্রয়</p>
+                            <tr>
+                                <td colSpan={2} className="font-bold bg-gray-100">
+                                    সেলস
+                                </td>
+                            </tr>
                             {fieldWiseData?.purchases?.map((data: any, idx: number) => (
                                 <tr key={data?._id}>
                                     <td>{(idx + 1)}) {data?.invoice}</td>

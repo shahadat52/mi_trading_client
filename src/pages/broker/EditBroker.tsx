@@ -22,7 +22,7 @@ const EditBroker = ({ onClose, id }: any) => {
                 onClose?.();
             }
         } catch (error) {
-            console.error("Update failed:", error);
+            // console.error("Update failed:", error);
         }
     };
 

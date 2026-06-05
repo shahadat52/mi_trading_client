@@ -1,14 +1,16 @@
 import { useState } from "react";
-import { useGetCashInQuery, useGetCashOutQuery, useGetOpeningBalQuery } from "../../redux/features/cashbox/cashboxApi";
+import { useGetCashInQuery, useGetCashOutQuery, useGetClosingBalanceQuery, useGetOpeningBalQuery } from "../../redux/features/cashbox/cashboxApi";
 import CashOutPage from "./cash_out/CashOutPage";
 import CashInPage from "./cash_in/CashInPage";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { AddOpeningBalModal } from "./AddOpeningBalModal";
+import { useAppSelector } from "../../redux/hook";
 
 const CashboxPage = () => {
     const [action, setAction] = useState('cash_out')
     const tabs = ['cash_out', 'cash_in'];
     const [modalController, setModalController] = useState(false)
+    const user = useAppSelector((state) => state.auth.auth.user)
 
     const { data } = useGetOpeningBalQuery(undefined);
     const openingBalance = data?.data;
@@ -18,6 +20,11 @@ const CashboxPage = () => {
 
     const { data: cashOut } = useGetCashOutQuery(undefined)
     const cashOutHistories = cashOut?.data
+
+    const { data: closingBal } = useGetClosingBalanceQuery(undefined)
+    const closingBalance = closingBal?.data?.closingBalance;
+    console.log(closingBalance)
+
 
     const cash = ((openingBalance?.openingBalance || 0) + (cashInHistories?.totalCashIn || 0) - (cashOutHistories?.totalCashOut || 0))
 
@@ -41,17 +48,17 @@ const CashboxPage = () => {
             <section className="grid grid-cols-3 sm:grid-cols-3 gap-6 mb-5">
                 <div className=" bg-white shadow-md rounded-lg p-2 text-center mt-5">
                     <p className="text-sm font-semibold text-gray-600">Cash In</p>
-                    <p className="text-sm font-bold text-green-600 mt-2">৳ {cashInHistories?.totalCashIn}</p>
+                    <p className="text-sm font-bold text-green-600 mt-2">৳ {user?.role === 'manager' ? 0 : cashInHistories?.totalCashIn}</p>
                 </div>
 
                 <div className="bg-white shadow-md rounded-lg p-2 text-center">
                     <p className="text-sm font-semibold text-gray-600">Cash</p>
-                    <p className="text-sm font-bold text-blue-600 mt-2">৳ {cash}</p>
+                    <p className="text-sm font-bold text-blue-600 mt-2">৳ {user?.role === 'manager' ? 0 : cash}</p>
                 </div>
 
                 <div className="bg-white shadow-md rounded-lg p-2 text-center mt-5">
                     <p className="text-sm font-semibold text-gray-600">Cash Out</p>
-                    <p className="text-sm font-bold text-red-600 mt-2">৳ {cashOutHistories?.totalCashOut}</p>
+                    <p className="text-sm font-bold text-red-600 mt-2">৳ {user?.role === 'manager' ? 0 : cashOutHistories?.totalCashOut}</p>
                 </div>
             </section>
 

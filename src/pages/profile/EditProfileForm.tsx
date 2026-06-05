@@ -54,6 +54,7 @@ const EditProfileForm = ({ onClose }: EditProfileFormProps) => {
           autoClose: 1500,
         });
 
+
         const token = result?.data?.data?.accessToken;
         if (token) {
           try {
@@ -69,6 +70,9 @@ const EditProfileForm = ({ onClose }: EditProfileFormProps) => {
             });
           }
         }
+      } else {
+        toast.update(toastId, { render: `${(result as any)?.error?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
+
       }
     } catch (err: any) {
       toast.update(toastId, {
@@ -77,6 +81,7 @@ const EditProfileForm = ({ onClose }: EditProfileFormProps) => {
         isLoading: false,
         autoClose: 2000,
       });
+
     }
   };
 
