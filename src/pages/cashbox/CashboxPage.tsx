@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useGetCashInQuery, useGetCashOutQuery, useGetClosingBalanceQuery, useGetOpeningBalQuery } from "../../redux/features/cashbox/cashboxApi";
+import { useGetCashInQuery, useGetCashOutQuery, useGetOpeningBalQuery } from "../../redux/features/cashbox/cashboxApi";
 import CashOutPage from "./cash_out/CashOutPage";
 import CashInPage from "./cash_in/CashInPage";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -20,10 +20,6 @@ const CashboxPage = () => {
 
     const { data: cashOut } = useGetCashOutQuery(undefined)
     const cashOutHistories = cashOut?.data
-
-    const { data: closingBal } = useGetClosingBalanceQuery(undefined)
-    const closingBalance = closingBal?.data?.closingBalance;
-    console.log(closingBalance)
 
 
     const cash = ((openingBalance?.openingBalance || 0) + (cashInHistories?.totalCashIn || 0) - (cashOutHistories?.totalCashOut || 0))

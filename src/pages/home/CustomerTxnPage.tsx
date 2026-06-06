@@ -11,7 +11,6 @@ import { useCustomerTxnEntryMutation, useGetAllTxnByCustomerQuery, useGetCustome
 import InputField from '../../components/form/InputFields';
 import Modal from '../../components/Modal';
 import EditCustomerTxn from './EditCustomerTxn';
-import FileUploadField from '../../components/form/FileUploadField';
 import { paymentMethods } from '../../utils/paymentMethods';
 import Profile from '../../components/profile/Profile';
 import { customRound } from '../../utils/customRound';
@@ -19,6 +18,7 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 import { FaWhatsappSquare } from 'react-icons/fa';
 import { AiFillMessage } from 'react-icons/ai';
 import { sendNumberMsg, sendSingleTxnWhatsAppMsg, sendWhatsAppMsg } from '../../utils/sendSMS';
+import { banksName } from '../accounts/banksName';
 
 const CustomerTxnPage = () => {
     const { id } = useParams();
@@ -26,7 +26,7 @@ const CustomerTxnPage = () => {
     const [isOpen, setIsOpen] = useState(false)
     const [selectedTxn, setSelectedTxn] = useState(null)
     const [loading, setLoading] = useState(false)
-    const { control, handleSubmit, reset } = useForm({
+    const { control, handleSubmit, reset, watch } = useForm({
         defaultValues: {
             paymentMethod: 'cash'
         }
@@ -35,6 +35,7 @@ const CustomerTxnPage = () => {
     const { data: customer } = useGetCustomerByIdQuery(id);
     const [customerTxnEntry] = useCustomerTxnEntryMutation()
     const navigate = useNavigate();
+    const paymentMethod = watch('paymentMethod');
     // const user = useAppSelector((state) => state?.auth?.auth?.user)
 
     const onSubmit = async (data: FieldValues) => {
@@ -43,6 +44,7 @@ const CustomerTxnPage = () => {
         data.date = transactionTime
         data.party = id
         data.partyModel = 'Customer'
+
 
         try {
             setLoading(true);
@@ -167,11 +169,22 @@ const CustomerTxnPage = () => {
                             rules={{ required: "পেমেন্ট মেথড নাই" }}
                         />
 
+                        {
+                            paymentMethod === 'bank' && (
+                                <div className='mt-3'>
+                                    <SelectField
+                                        label="ব্যাংকের নাম"
+                                        name="bankName"
+                                        control={control}
+                                        options={banksName}
+                                        rules={{ required: "ব্যাংকের নাম নাই" }}
+                                    />
+                                </div>
+                            )
+                        }
 
-                        {/* image and delete */}
-                        <div className='flex justify-between mx-4 items-center'>
-                            <FileUploadField control={control} name='img' label='ছবি' />
-                        </div>
+
+
                         <button
                             type="submit"
                             disabled={loading}

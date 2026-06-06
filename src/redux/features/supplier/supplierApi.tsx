@@ -14,11 +14,25 @@ const supplierApi = baseApi.injectEndpoints({
             invalidatesTags: ['Supplier']
         }),
         getAllSuppliers: builder.query({
-            query: (query) => {
-                const params = new URLSearchParams(query).toString();
+            query: ({ type, searchTerm, limit }) => {
+
+                const params = new URLSearchParams();
+
+                if (type) {
+                    params.append("type", type);
+                }
+
+                if (searchTerm) {
+                    params.append("searchTerm", searchTerm);
+                }
+
+                if (limit) {
+                    params.append("limit", limit);
+                }
                 return {
-                    url: `/suppliers?${params}`,
+                    url: '/suppliers',
                     method: 'GET',
+                    params
                 };
             },
             providesTags: ['Supplier'],

@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hook';
 import { setQuantity } from '../../redux/features/commissionProduct/commissionProductSlice';
 import CalculatorField from '../cart/CalculatorField';
 import { compressImage } from '../../utils/compressImage';
+import ImagePicker from '../../components/ImagePicker';
 
 const CommissionProductEntry = ({ onClose }: { onClose: () => void }) => {
     const state = useAppSelector((state) => state.commissionProduct);
@@ -31,25 +32,7 @@ const CommissionProductEntry = ({ onClose }: { onClose: () => void }) => {
         data.quantity = state.quantity
         setLoading(true);
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
-        // try {
-        //     const result = await addProduct(data);
-        //     if (result?.data?.success) {
-        //         toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
-        //         reset();
-        //         setLoading(false);
-        //         onClose();
 
-        //     } else {
-        //         toast.update(toastId, { render: `${(result as any)?.error?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
-        //         setLoading(false);
-        //     }
-        // } catch (err: any) {
-        //     toast.update(toastId, { render: err?.error?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
-        //     setLoading(false);
-        // } finally {
-        //     // reset()
-        //     setLoading(false);
-        // }
 
         try {
             setLoading(true);
@@ -124,16 +107,9 @@ const CommissionProductEntry = ({ onClose }: { onClose: () => void }) => {
                 <div>
                     <label className="block text-sm mb-1">বিল / ছবি</label>
 
-                    <input
-                        type="file"
-                        accept="image/*"
-                        capture="environment"
-                        className="file-input file-input-bordered w-full"
-                        onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                                handleComprssImage(file);
-                            }
+                    <ImagePicker
+                        onFileSelect={(file) => {
+                            handleComprssImage(file);
                         }}
                     />
 

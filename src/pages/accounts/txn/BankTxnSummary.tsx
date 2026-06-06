@@ -6,7 +6,7 @@ import TableSkeleton from "../../../components/table/TableSkeleton";
 import ErrorBoundary from "../../../components/ErrorBoundary";
 import { format } from "date-fns";
 import SelectField from "../../../components/form/SelectField";
-import { bankTxnType } from "../../../utils/transactionType";
+import { bankTxnType, bankingSource } from "../../../utils/transactionType";
 import InputField from "../../../components/form/InputFields";
 import { useForm, type FieldValues } from "react-hook-form";
 import "@daypicker/react/style.css";
@@ -113,9 +113,17 @@ const BankTxnSummary = () => {
                                     type='text'
                                     control={control}
                                 />
-                                <div className=" ">
 
+                                <SelectField
+                                    name="source"
+                                    label="no"
+                                    placeholder='সোর্স'
+                                    options={bankingSource}
+                                    control={control}
+                                    rules={{ required: "সোর্স" }}
+                                />
 
+                                <div className="mt-2  ">
                                     <InputField
                                         control={control}
                                         label="পোস্টিং এর তারিখ"

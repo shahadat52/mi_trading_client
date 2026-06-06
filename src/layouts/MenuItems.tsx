@@ -60,6 +60,11 @@ export const getMenuItems = (role?: string) => {
         },
 
         ...(isSpecial || isAdmin ? [
+            {
+                name: "Cash-box",
+                icon: <MdDashboard size={20} />,
+                subItems: [{ name: "Cash-box", path: "/cashbox" }],
+            },
 
             {
                 name: "Income_Expense",

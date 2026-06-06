@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import SelectField from "../../components/form/SelectField";
 import { customerTxnType } from "../../utils/transactionType";
 import InputField from "../../components/form/InputFields";
-import FileUploadField from "../../components/form/FileUploadField";
 import TableSkeleton from "../../components/table/TableSkeleton";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import Modal from "../../components/Modal";
@@ -15,6 +14,7 @@ import EditSupplierTxn from "./EditSupplierTxn";
 import { paymentMethods } from "../../utils/paymentMethods";
 import Profile from "../../components/profile/Profile";
 import { customRound } from "../../utils/customRound";
+import { banksName } from "../accounts/banksName";
 
 const SupplierTxnPage = () => {
 
@@ -23,7 +23,7 @@ const SupplierTxnPage = () => {
     const [makeTxn, setMakeTxn] = useState(false)
     const [selectedTxn, setSelectedTxn] = useState('')
     const [loading, setLoading] = useState(false)
-    const { control, handleSubmit, reset } = useForm({
+    const { control, handleSubmit, reset, watch } = useForm({
         defaultValues: {
             paymentMethod: 'cash'
         }
@@ -32,6 +32,8 @@ const SupplierTxnPage = () => {
     // const navigate = useNavigate();
     // const user = useAppSelector((state) => state?.auth?.auth?.user)
     const { data, isLoading, isError, } = useGetSpecificSupplierTxnQuery({ id });
+
+    const paymentMethod = watch('paymentMethod')
 
     const onSubmit = async (data: FieldValues) => {
 
@@ -128,13 +130,23 @@ const SupplierTxnPage = () => {
                             options={paymentMethods}
                             rules={{ required: "পেমেন্ট মেথড নাই" }}
                         />
+                        {
+                            paymentMethod === 'bank' && (
+                                <div className='mt-3'>
+                                    <SelectField
+                                        label="ব্যাংকের নাম"
+                                        name="bankName"
+                                        control={control}
+                                        options={banksName}
+                                        rules={{ required: "ব্যাংকের নাম নাই" }}
+                                    />
+                                </div>
+                            )
+                        }
 
 
 
-                        {/* image and delete */}
-                        <div className='flex justify-between mx-4 items-center'>
-                            <FileUploadField control={control} name='img' label='ছবি' />
-                        </div>
+
                         <button
                             type="submit"
                             disabled={loading}

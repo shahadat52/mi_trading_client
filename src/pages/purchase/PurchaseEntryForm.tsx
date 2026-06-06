@@ -14,6 +14,7 @@ import { calculatePurchaseTotals, resetPurchase, setBosta, setCommission, setIsC
 import Loading from "../../components/Loading";
 import CalculatorField from "../cart/CalculatorField";
 import { compressImage } from "../../utils/compressImage";
+import ImagePicker from "../../components/ImagePicker";
 
 const PurchaseEntryForm = () => {
     const dispatch = useAppDispatch()
@@ -216,18 +217,13 @@ const PurchaseEntryForm = () => {
 
             <input value={purchaseData.note || ""} onChange={(e) => { dispatch(setNote(e.target.value)) }} placeholder="নোট লিখুন" type="text" className="input" required />
             <div>
+                {/* <div className='flex justify-between mx-4 items-center'>
+                    <FileUploadField control={control} name='img' label='ছবি' />
+                </div> */}
                 <label className="block text-sm mb-1">বিল / ছবি</label>
-
-                <input
-                    type="file"
-                    accept="image/*"
-                    capture="environment"
-                    className="file-input file-input-bordered w-full"
-                    onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                            handleComprssImage(file);
-                        }
+                <ImagePicker
+                    onFileSelect={(file) => {
+                        handleComprssImage(file);
                     }}
                 />
 

@@ -77,7 +77,7 @@ const CustomersPage = () => {
                     ))}
                 </select>
             </div>
-            <div className="mb-20">
+            <div className="mb-16">
                 {
                     isLoading ? (<TableSkeleton row={5} />)
                         : isError ? (
