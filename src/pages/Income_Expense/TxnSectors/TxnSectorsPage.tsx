@@ -17,6 +17,7 @@ const TxnSectorsPage = () => {
     const expenseSectors = sectors?.filter((sector: any) => sector.head === 'expense')
     const incomeSectors = sectors?.filter((sector: any) => sector.head === 'income')
     const { data, isLoading, isError } = useGetAllTxnQuery({ category: sector, limit })
+    const fullData = data?.data;
     const transactions = data?.data?.data
 
     return (
@@ -90,6 +91,7 @@ const TxnSectorsPage = () => {
                     {/* Data Table */}
                     {!isLoading && !isError && transactions?.length > 0 && (
                         <div className="overflow-x-auto h-[520px] ">
+                            <h2 className="m-3">Balance: {Number(fullData?.totalCredit) - Number(fullData.totalDebit)}</h2>
                             <table className="w-full text-xs">
                                 <thead className="sticky top-0 bg-gray-100 text-gray-700">
                                     <tr>

@@ -49,7 +49,7 @@ const LabourPage = ({ action, startDate, endDate }: any) => {
                             ))}
                             <tr>
                                 <td colSpan={2} className="font-bold bg-gray-100">
-                                    সেলস
+                                    বেপারী
                                 </td>
                             </tr>
                             {fieldWiseData?.couthas?.map((data: any, idx: number) => (
@@ -62,7 +62,7 @@ const LabourPage = ({ action, startDate, endDate }: any) => {
                             ))}
                             <tr>
                                 <td colSpan={2} className="font-bold bg-gray-100">
-                                    সেলস
+                                    ক্রয়
                                 </td>
                             </tr>
                             {fieldWiseData?.purchases?.map((data: any, idx: number) => (

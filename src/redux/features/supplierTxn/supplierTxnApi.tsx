@@ -11,7 +11,7 @@ const supplierTxnApi = baseApi.injectEndpoints({
                     body: supplierTxnData
                 }
             ),
-            invalidatesTags: ['SupplierTxn', 'Transaction', 'Supplier', 'Receivable']
+            invalidatesTags: ['SupplierTxn', 'Transaction', 'Supplier', 'Receivable', 'MFS']
         }),
 
         bepariTxnEntry: builder.mutation({

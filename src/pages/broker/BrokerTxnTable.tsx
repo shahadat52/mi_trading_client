@@ -21,7 +21,6 @@ const BrokerTxnTable = ({ id }: any) => {
     const handleSelectedTxn = (id: string) => {
         setSelectedTxn(id)
         setIsOpen(true)
-
     }
 
     return (

@@ -43,6 +43,7 @@ import BankTxnsPage from "../pages/accounts/txn/BankTxnsPage";
 import BankTxnSummary from "../pages/accounts/txn/BankTxnSummary";
 import KuliGodiTohoriPage from "../pages/Income_Expense/kuli_godi_tohori/KuliGodiTohoriPage";
 import CreateEmployeeEntry from "../pages/hr/employees/CreateEmployeeEntry";
+import MFSPage from "../pages/MFS/MFSPage";
 
 export const router = createBrowserRouter([
     {
@@ -110,11 +111,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: "commission-sales",
-                element: <CommissionPage />,
+                element: <PrivateRoute><CommissionPage /></PrivateRoute>,
             },
             {
-                path: "cashbox",
-                element: <CashboxPage />,
+                path: "/cashbox",
+                element: <PrivateRoute><CashboxPage /></PrivateRoute>,
             },
             {
                 path: "commission-purchase/:id",
@@ -168,9 +169,15 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute><BankTxnSummary /></PrivateRoute>,
             },
             {
+                path: "mfs/:id",
+                element: <PrivateRoute><MFSPage /></PrivateRoute>,
+            },
+
+            {
                 path: "accounts",
                 element: <PrivateRoute><AccountsPage /></PrivateRoute>,
             },
+
             {
                 path: "outstandingTxn",
                 element: <PrivateRoute><OutstandingTxnPage /></PrivateRoute>,

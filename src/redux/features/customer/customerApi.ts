@@ -55,7 +55,7 @@ const authApi = baseApi.injectEndpoints({
                     body: txnData,
                 }
             ),
-            invalidatesTags: ['CustomerTxn', 'Customer', 'Payable']
+            invalidatesTags: ['CustomerTxn', 'Customer', 'Payable', 'MFS']
         }),
 
         getAllCustomerTxn: builder.query({

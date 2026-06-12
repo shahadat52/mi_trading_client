@@ -47,7 +47,7 @@ export const getMenuItems = (role?: string) => {
             name: "Brokery",
             icon: <MdAccountBalance size={20} />,
             subItems: [
-                { name: "দেখুন", path: "dashboard/brokers" },
+                { name: "Open", path: "dashboard/brokers" },
             ],
         },
 
@@ -70,8 +70,8 @@ export const getMenuItems = (role?: string) => {
                 name: "Income_Expense",
                 icon: <MdAttachMoney size={20} />,
                 subItems: [
-                    { name: "আয়_ব্যয়", path: "/income_expense" },
-                    { name: "কুলি_গদি_তহরী", path: "/kuli_godi_tohori" },
+                    { name: "Income_Expense", path: "/income_expense" },
+                    { name: "Labour_Godi_Tohori", path: "/kuli_godi_tohori" },
                 ],
             },
 
@@ -79,7 +79,7 @@ export const getMenuItems = (role?: string) => {
                 name: "Customer & Supplier",
                 icon: <FaPeopleCarryBox size={20} />,
                 subItems: [
-                    { name: "দেখুন", path: "/partners" }
+                    { name: "Open", path: "/partners" }
                 ],
             },
 
@@ -87,8 +87,18 @@ export const getMenuItems = (role?: string) => {
                 name: "Banks Module",
                 icon: <MdAccountBalance size={20} />,
                 subItems: [
-                    { name: "লেনদেন বিবরণী", path: "/bankTxns" },
-                    { name: "অপরিশোধিত লেনদেন", path: "/outstandingTxn" },
+                    { name: "Banks", path: "/bankTxns" },
+                ],
+            },
+
+            {
+                name: "MFS",
+                icon: <MdDashboard size={20} />,
+                subItems: [
+                    // { name: "MFS", path: "/mfs" },
+                    { name: "BKASH", path: "/mfs/bkash" },
+                    { name: "NAGAD", path: "/mfs/nagad" },
+                    { name: "ROCKET", path: "/mfs/rocket" }
                 ],
             },
         ] : []),
