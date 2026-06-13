@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { useForm, type FieldValues } from "react-hook-form";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { toast } from "react-toastify";
 import SelectField from "../../components/form/SelectField";
 import { customerTxnType } from "../../utils/transactionType";
@@ -17,7 +17,7 @@ import { customRound } from "../../utils/customRound";
 import { banksName } from "../accounts/banksName";
 
 const SupplierTxnPage = () => {
-
+    const navigate = useNavigate()
     const { id } = useParams();
     const [isOpen, setIsOpen] = useState(false)
     const [makeTxn, setMakeTxn] = useState(false)
@@ -29,8 +29,6 @@ const SupplierTxnPage = () => {
         }
     })
     const [supplierTxnEntry] = useSupplierTxnEntryMutation()
-    // const navigate = useNavigate();
-    // const user = useAppSelector((state) => state?.auth?.auth?.user)
     const { data, isLoading, isError, } = useGetSpecificSupplierTxnQuery({ id });
 
     const paymentMethod = watch('paymentMethod')
@@ -67,7 +65,15 @@ const SupplierTxnPage = () => {
         setSelectedTxn(id)
         setIsOpen(true)
 
-    }
+    };
+
+    const handleOpenMemo = (no: string) => {
+        if (no.includes("MI(P)")) {
+            navigate(`/invoice/${no}`)
+        } else {
+            return
+        }
+    };
     const transactions = data?.data
     const totalDebit = transactions?.filter((txn: any) => (txn.type === 'debit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0)
     const totalCredit = transactions?.filter((txn: any) => (txn.type === 'credit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0)
@@ -207,7 +213,12 @@ const SupplierTxnPage = () => {
                                                 {new Date(tx.date).toLocaleTimeString()}
                                             </td>
 
-                                            <td className="px-4 py-2">
+                                            <td
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleOpenMemo(tx.description);
+                                                }}
+                                                className="px-4 py-2">
                                                 <p className="font-medium">
                                                     {tx.description || tx.referenceType}
                                                 </p>

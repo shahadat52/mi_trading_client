@@ -11,7 +11,7 @@ const IncomeTableBody = ({ d, idx }: { d: any, idx: number }) => {
                 <span>{d.createdAt}</span>
 
             </td>
-            <td className="px-4 py-2 border">{d?.description}</td>
+            <td className="px-4 py-2 border">{d?.note}</td>
         </tr>
     );
 };

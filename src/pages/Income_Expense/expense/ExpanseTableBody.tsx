@@ -10,7 +10,7 @@ const ExpanseTableBody = ({ d, idx }: { d: any, idx: number }) => {
             <td className="px-4 py-2 border text-center">
                 <span>{d?.date}</span>
             </td>
-            <td className="px-4 py-2 border">{d?.description}</td>
+            <td className="px-4 py-2 border">{d?.note}</td>
         </tr>
     );
 };

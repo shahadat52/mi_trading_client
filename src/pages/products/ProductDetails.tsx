@@ -144,7 +144,7 @@ const ProductDetails = () => {
 
     const handleDeleteProduct = async (id: string) => {
         try {
-            const confirmed = window.confirm("Are you sure you want to delete this product?");
+            const confirmed = window.confirm(`পণ্য ডিলিট করেলে সাপ্লাইয়ার "${purchase.supplier.name}" এর  লেনদেন থেকে এই পন্যের দাম ডিলিট করুন?`);
 
             if (!confirmed) return;
 
@@ -211,8 +211,17 @@ const ProductDetails = () => {
                                 <div>
                                     <ImagePreviewButton
                                         imageUrl={purchase?.imageurl}
-                                        buttonText="View Image"
+                                        buttonText="Image"
                                     />
+                                    <NavLink to={`/purchase/slip/${purchase?._id}`}>
+                                        <button
+                                            className="ml-3"
+                                        >
+                                            <span className="p-2 text-xs font-normal rounded bg-green-700 uppercase text-white hover:bg-black transition shadow">
+                                                Slip
+                                            </span>
+                                        </button>
+                                    </NavLink>
                                 </div>
                             </div>
                         </div>

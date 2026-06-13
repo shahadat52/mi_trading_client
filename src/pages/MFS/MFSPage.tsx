@@ -108,24 +108,6 @@ const MFSPage = () => {
                         </div>
                     )}
                 </div>
-
-                {/* ================= Fixed Total ================= */}
-                <div className="fixed bottom-[60px] left-0 w-full  px-3">
-                    <div className="mx-auto  bg-[#e5efd5]   py-4 text-sm px-2">
-                        <div className="grid  grid-cols-5 justify-between">
-                            <span className="col-span-2 text-red-600 font-medium">
-                                মোট
-                            </span>
-                            <div className='col-span-2 flex justify-between'>
-                                <span className="font-semibold text-red-600"> দিলামঃ ৳ {totalDebit}</span>
-                                <span className="font-semibold text-green-600"> পেলামঃ ৳ {totalCredit}</span>
-                            </div>
-                            <div className='col-span-1 flex justify-between'>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
                     <EditTransaction onClose={() => setIsOpen(false)} selectedTxn={selectedTxn} updateMutation={updateTxn} />
                 </Modal>

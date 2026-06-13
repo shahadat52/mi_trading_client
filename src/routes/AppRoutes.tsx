@@ -44,6 +44,7 @@ import BankTxnSummary from "../pages/accounts/txn/BankTxnSummary";
 import KuliGodiTohoriPage from "../pages/Income_Expense/kuli_godi_tohori/KuliGodiTohoriPage";
 import CreateEmployeeEntry from "../pages/hr/employees/CreateEmployeeEntry";
 import MFSPage from "../pages/MFS/MFSPage";
+import ProductReceivingSlip from "../pages/purchase/ProductReceivingSlip";
 
 export const router = createBrowserRouter([
     {
@@ -68,6 +69,10 @@ export const router = createBrowserRouter([
             {
                 path: "purchase/report/:id",
                 element: <PrivateRoute><PurchaseReport /></PrivateRoute>,
+            },
+            {
+                path: "purchase/slip/:id",
+                element: <PrivateRoute><ProductReceivingSlip /></PrivateRoute>,
             },
             {
                 path: '/products',
