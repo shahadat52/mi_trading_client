@@ -5,6 +5,7 @@ import mi_logo from "../../assets/icons/mi_logo.png";
 import { useGetRegualarPurchaseByIdQuery } from "../../redux/features/purchase/purchaseApi";
 import { format } from "date-fns";
 import Loading from "../../components/Loading";
+import { QRCodeSVG } from "qrcode.react";
 
 const ProductReceivingSlip = () => {
 
@@ -23,7 +24,7 @@ const ProductReceivingSlip = () => {
     }
 
     return (
-        <div className="p-4 bg-gray-100 min-h-screen">
+        <div className="p-2 bg-gray-100 min-h-screen">
             <button
                 onClick={handlePrint}
                 className="mb-4 px-4 py-2 bg-black text-white rounded"
@@ -69,7 +70,7 @@ const ProductReceivingSlip = () => {
                     </p>
 
                     <p className=" text-[10px]" >
-                        01842753607, 01707753607,  01841753607 (দিপু)
+                        01842753607, 01707753607,  02333369499
                     </p>
 
 
@@ -80,77 +81,91 @@ const ProductReceivingSlip = () => {
                 </div>
 
                 {/* Info */}
-                <div className="py-2 space-y-1">
-                    <div className="flex justify-between">
-                        <span>
-                            <strong>তারিখ:</strong>
-                        </span>
-                        <span>{format(purchase?.createdAt, "dd/MM/yyyy")}</span>
+                <div className="relative overflow-hidden">
+                    <div
+                        className="absolute inset-0 pointer-events-none"
+                        style={{
+                            backgroundImage: `url(${mi_logo})`,
+                            backgroundRepeat: "no-repeat",
+                            backgroundPosition: "center",
+                            backgroundSize: "180px",
+                            opacity: 0.15, // watermark opacity
+                        }}
+                    />
+                    <div className="py-2 space-y-1">
+                        <div className="flex justify-between">
+                            <span>
+                                <strong>তারিখ:</strong>
+                            </span>
+                            <span>{format(purchase?.createdAt, "dd/MM/yyyy")}</span>
+                        </div>
+
+                        <div className="flex justify-between">
+                            <span>
+                                <strong>সাপ্লাইয়ার:</strong>
+                            </span>
+                            <span>{purchase?.supplier?.name}</span>
+                        </div>
                     </div>
 
-                    <div className="flex justify-between">
-                        <span>
-                            <strong>ব্রোকার:</strong>
-                        </span>
-                        <span>রহমান ব্রাদার্স</span>
-                    </div>
-                </div>
+                    {/* Product Table */}
+                    <div className="w-full border-collapse border border-black text-[11px]">
 
-                {/* Product Table */}
-                <table className="w-full border-collapse border border-black text-[11px]">
-                    <thead>
-                        <tr>
-                            <th className="border border-black p-1">
+                        <div className="grid grid-cols-3 text-center">
+                            <div className="border border-black p-1">
                                 পণ্য
-                            </th>
-                            <th className="border border-black p-1">
+                            </div>
+                            <div className="border border-black p-1">
                                 বস্তা
-                            </th>
-                            <th className="border border-black p-1">
+                            </div>
+                            <div className="border border-black p-1">
                                 দর
-                            </th>
-                        </tr>
-                    </thead>
+                            </div>
+                        </div>
 
-                    <tbody>
-                        <tr>
-                            <td className="border border-black p-1">
+                        <div className="grid grid-cols-3">
+                            <div className="border border-black p-1">
                                 {purchase?.product}
-                            </td>
+                            </div>
 
-                            <td className="border border-black p-1 text-center">
+                            <div className="border border-black p-1 text-center">
                                 {purchase?.bosta}
-                            </td>
+                            </div>
 
-                            <td className="border border-black p-1 text-right">
+                            <div className="border border-black p-1 text-right">
                                 {purchase?.purchasePrice}/-
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-
-
-                <div className="mt-8 flex justify-between text-center">
-                    <div>
-                        <div className="border-t border-black w-24 mx-auto" />
-                        <p>ব্রোকার</p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div>
-                        <div className="border-t border-black w-24 mx-auto" />
-                        <p>গ্রহণকারী</p>
-                    </div>
-                </div>
 
-                <div className="mt-3 text-center text-[10px]">
-                    <p>
-                        mitrading.202ktg@gmail.com
-                    </p>
-                    Software Powered by M.I Trading ERP
+                    <div className="mt-4 flex justify-between text-center">
+                        <div>
+                            <p> {purchase?.broker?.name}</p>
+                            <div className="border-t border-black w-24 mx-auto" />
+                            <p>ব্রোকার</p>
+                        </div>
+
+                        <div>
+                            <div className="border-t border-black w-24 mx-auto mt-4" />
+                            <p>গ্রহণকারী</p>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center mt-2 text-start justify-around text-[10px]">
+                        <div>
+                            <p>
+                                mitrading.202ktg@gmail.com
+                            </p>
+                            <p>Software Powered by M.I Trading ERP</p>
+                        </div>
+                        <div>
+                            <QRCodeSVG value={purchase?.invoice} size={24} />
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 

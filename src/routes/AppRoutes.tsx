@@ -70,10 +70,7 @@ export const router = createBrowserRouter([
                 path: "purchase/report/:id",
                 element: <PrivateRoute><PurchaseReport /></PrivateRoute>,
             },
-            {
-                path: "purchase/slip/:id",
-                element: <PrivateRoute><ProductReceivingSlip /></PrivateRoute>,
-            },
+
             {
                 path: '/products',
                 element: <PrivateRoute><AllProductsPage /></PrivateRoute>
@@ -237,6 +234,10 @@ export const router = createBrowserRouter([
     {
         path: "/print/coutha/:id",
         element: <BepariCoutha />,
+    },
+    {
+        path: "/purchase/slip/:id",
+        element: <ProductReceivingSlip />,
     },
 
     {
