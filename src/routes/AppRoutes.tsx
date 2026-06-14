@@ -45,6 +45,7 @@ import KuliGodiTohoriPage from "../pages/Income_Expense/kuli_godi_tohori/KuliGod
 import CreateEmployeeEntry from "../pages/hr/employees/CreateEmployeeEntry";
 import MFSPage from "../pages/MFS/MFSPage";
 import ProductReceivingSlip from "../pages/purchase/ProductReceivingSlip";
+import DueSalesPage from "../pages/sales/bothSales/DueSalesPage";
 
 export const router = createBrowserRouter([
     {
@@ -106,6 +107,10 @@ export const router = createBrowserRouter([
             {
                 path: "both/sales",
                 element: <PrivateRoute><BothSalesPage /></PrivateRoute>
+            },
+            {
+                path: "both/due",
+                element: <PrivateRoute><DueSalesPage /></PrivateRoute>
             },
             {
                 path: "both/sales/:id",

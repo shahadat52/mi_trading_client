@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
+import React, { useState } from 'react';
 import { DateTime } from '../../utils/formatDateTime';
+import Modal from '../../components/Modal';
+import InvoiceEditModal from './bothSales/InvoiceEditModal';
 
 interface SalesTableBodyProps {
     row: any;
@@ -11,9 +13,12 @@ interface SalesTableBodyProps {
     expandedRows: Record<string, boolean>;
     openInvoice: (row: any) => void;
     setDelivery: (row: any) => void;
+
 }
 
 const SalesTableBody: React.FC<SalesTableBodyProps> = ({ row, page, limit, idx, toggleExpand, expandedRows, openInvoice, setDelivery }) => {
+    const [selectedInvoice, setSelectedInvoice] = useState(null)
+    const [isOpen, setIsOpen] = useState(false)
     return (
         <React.Fragment key={row._id}>
             <tr className="border-t hover:bg-gray-50 transition-colors">
@@ -45,7 +50,10 @@ const SalesTableBody: React.FC<SalesTableBodyProps> = ({ row, page, limit, idx, 
                     <div className="flex gap-2">
                         <button onClick={() => toggleExpand(row?._id)} className="text-sm px-2 py-1 border rounded">{expandedRows[row?._id] ? 'Hide' : 'Details'}</button>
                         <button onClick={() => openInvoice(row)} className="text-sm px-2 py-1 border rounded">View</button>
-
+                        <button onClick={() => {
+                            setSelectedInvoice((row as any));
+                            setIsOpen(true)
+                        }} className="text-sm px-2 py-1 border rounded">Edit</button>
 
                     </div>
                 </td>
@@ -77,9 +85,17 @@ const SalesTableBody: React.FC<SalesTableBodyProps> = ({ row, page, limit, idx, 
                                 </tbody>
                             </table>
                         </div>
+
                     </td>
                 </tr>
+
             )}
+
+            {
+                isOpen && <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+                    <InvoiceEditModal onClose={() => setIsOpen(false)} sale={selectedInvoice} />
+                </Modal>
+            }
         </React.Fragment>
     );
 };

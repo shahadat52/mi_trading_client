@@ -40,6 +40,7 @@ export const getMenuItems = (role?: string) => {
             icon: <MdBarChart size={20} />,
             subItems: [
                 { name: "Sales Overview", path: "/both/sales" },
+                { name: "Due Sales", path: "/both/due" },
                 { name: "Commission Sales", path: "/commission-sales" },
             ],
         },

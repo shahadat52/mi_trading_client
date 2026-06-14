@@ -89,6 +89,7 @@ const SupplierInvoicePage: React.FC<Props> = ({ invoiceData, loading = false }) 
                     <tr>
                         <th className="px-4 py-2 border">Product</th>
                         <th className="px-4 py-2 border">Quantity</th>
+                        <th className="px-4 py-2 border">Price</th>
                         <th className="px-4 py-2 border">Bosta</th>
                         <th className="px-4 py-2 border">Unit</th>
                     </tr>
@@ -97,6 +98,7 @@ const SupplierInvoicePage: React.FC<Props> = ({ invoiceData, loading = false }) 
                     <tr className="hover:bg-gray-50 transition">
                         <td className="px-4 py-2 border">{product}</td>
                         <td className="px-4 py-2 border text-center">{purchaseQty}</td>
+                        <td className="px-4 py-2 border text-center">{purchasePrice}</td>
                         <td className="px-4 py-2 border text-center">{bosta}</td>
                         <td className="px-4 py-2 border text-center">{unit}</td>
                     </tr>

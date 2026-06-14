@@ -3,6 +3,8 @@ import { useGetBothSaleByInvoiceQuery } from "../../../redux/features/cart/cartA
 import CustomerInvoicePage from "./CustomerInvoicePage";
 import SupplierInvoicePage from "./SupplierInvoicePage";
 import { useGetPurchaseDataByInvoiceQuery } from "../../../redux/features/purchase/purchaseApi";
+import BepariInvoicePage from "./BepariInvoicePage";
+import { useGetCouthaByInvoiceQuery } from "../../../redux/features/coutha/couthaApi";
 
 const MemoPreviewPage = () => {
     const { id } = useParams()
@@ -10,6 +12,7 @@ const MemoPreviewPage = () => {
     const { data, isLoading } = useGetBothSaleByInvoiceQuery(id)
     const sales = data?.data;
     const { data: purchaseData, isLoading: purchaseLoading } = useGetPurchaseDataByInvoiceQuery(id)
+    const { data: couthaData, isLoading: couthaLoading } = useGetCouthaByInvoiceQuery(id)
     const purchases = purchaseData?.data || []
     return (
         <div>
@@ -21,7 +24,7 @@ const MemoPreviewPage = () => {
             }
 
             {
-                type === 'MI(P)' && <SupplierInvoicePage invoiceData={purchases} loading={purchaseLoading} />
+                type === 'MI' && <BepariInvoicePage invoiceData={couthaData?.data} loading={couthaLoading} />
             }
         </div>
     );
