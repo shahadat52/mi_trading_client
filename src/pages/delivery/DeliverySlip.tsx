@@ -88,15 +88,13 @@ const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sal
 
                     {/* Footer Section */}
                     <div className="bg-white p-1  ">
-                        <div className="flex  items-center justify-between text-[10px] my-1">
+                        <div className="flex  items-center justify-center text-[10px] my-1">
 
                             <div className="border border-red-600 p-1 text-red-600 leading-tight">
                                 <p><span className='text-white'>■ </span>বিক্রিত মাল ফেরত নেওয়া হয় না।</p>
                             </div>
 
-                            <div className="border border-red-600 p-1 text-red-600 leading-tight">
-                                <p><span className='text-white'>■ </span>Delivered by: {sale?.deliveryBy?.name}</p>
-                            </div>
+
 
                         </div>
 

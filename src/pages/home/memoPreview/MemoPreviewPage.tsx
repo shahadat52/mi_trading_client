@@ -24,7 +24,7 @@ const MemoPreviewPage = () => {
             }
 
             {
-                type === 'MI' && <BepariInvoicePage invoiceData={couthaData?.data} loading={couthaLoading} />
+                type === 'MI(C)' && <BepariInvoicePage invoiceData={couthaData?.data} loading={couthaLoading} />
             }
         </div>
     );

@@ -2,10 +2,14 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 
 type TCoutha = {
-    kuli: number | string;
-    brokary: number | string;
-    arot: number | string;
-    transport_rent: number | string
+    kuli: any;
+    brokary: any;
+    arot: any;
+    transport_rent: any
+    tohori?: any;
+    haolat?: any;
+    godi?: any;
+
 
 }
 

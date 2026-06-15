@@ -70,7 +70,7 @@ const SupplierTxnPage = () => {
     const handleOpenMemo = (no: string) => {
         if (no.includes("MI(P)")) {
             navigate(`/invoice/${no}`)
-        } else if (no.includes("MI")) {
+        } else if (no.includes("MI(C)")) {
             navigate(`/invoice/${no}`)
         }
         else {

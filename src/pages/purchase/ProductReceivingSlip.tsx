@@ -47,15 +47,15 @@ const ProductReceivingSlip = () => {
                             <img src={mi_logo} alt="" className="size-12 mt-[-12px]" />
                         </div>
                         <div className="col-span-7 text-start  ">
-                            <h1 className="text-red-600 text-[24px] font-bold   ml-[-10px] uppercase">
+                            <h1 className="text-red-600 text-[25px] font-bold   ml-[-10px] uppercase">
                                 M/S. M.I TRADING
                             </h1>
                             <div className="ml-[-12px] mt-[-4px]">
-                                <p>
-                                    202 No.Khatungonj,kotwali,Chattogram
+                                <p className="text-[12px]">
+                                    202 No.Khatungonj, Kotwali, Chattogram
                                 </p>
 
-                                <p className=" text-[10px]" >
+                                <p className=" text-[11px]" >
                                     01842753607,  01707753607,  02333369499
                                 </p>
                             </div>
@@ -65,14 +65,14 @@ const ProductReceivingSlip = () => {
 
 
 
-                    <div className="flex justify-between items-center">
-                        <div className="ml-3">
-                            <QRCodeSVG value={purchase?.invoice} size={28} />
+                    <div className="grid grid-cols-3 justify-between items-center">
+                        <div className="ml-2 mt-1">
+                            <QRCodeSVG value={purchase?.invoice} size={32} />
                         </div>
-                        <div className="mt-2 font-bold border border-black inline-block px-1 py-1">
+                        <div className="mt-2 text-[11px] font-bold border border-black inline-block px-1 py-1">
                             পণ্য গ্রহণ রসিদ
                         </div>
-                        <div className="underline" >
+                        <div className="text-[11px] border-dotted border-b-2 mx-1 mt-1" >
                             No: {purchase?.invoice}
                         </div>
                     </div>
@@ -109,8 +109,8 @@ const ProductReceivingSlip = () => {
                     {/* Product Table */}
                     <div className="w-full border-collapse border border-black text-[11px]">
 
-                        <div className="grid grid-cols-3 text-center">
-                            <div className="border border-black p-1">
+                        <div className="grid grid-cols-4 text-center">
+                            <div className="col-span-2 border border-black p-1">
                                 পণ্য
                             </div>
                             <div className="border border-black p-1">
@@ -121,8 +121,8 @@ const ProductReceivingSlip = () => {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-3">
-                            <div className="border border-black p-1">
+                        <div className="grid grid-cols-4">
+                            <div className="col-span-2 border border-black p-1">
                                 {purchase?.product}
                             </div>
 
@@ -139,7 +139,7 @@ const ProductReceivingSlip = () => {
 
                     <div className="mt-4 flex justify-between text-center">
                         <div>
-                            <p> {purchase?.note}</p>
+                            <p> {purchase?.broker}</p>
                             <div className="border-t border-black w-24 mx-auto" />
                             <p>ব্রোকার</p>
                         </div>

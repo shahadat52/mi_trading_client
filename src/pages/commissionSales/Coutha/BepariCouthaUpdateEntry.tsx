@@ -13,8 +13,7 @@ const BepariCouthaUpdateEntry = ({ onClose, item }: { onClose: () => void, item:
     const dispatch = useAppDispatch()
     const coutha = useAppSelector((state) => state.coutha);
 
-    const { brokary, kuli, transport_rent, tohori, haolat, godi, arot, } = item;
-    const subTotal = brokary + kuli + transport_rent + tohori + haolat + godi + arot
+    const { brokary, kuli, transport_rent, arot } = item;
     const [loading, setLoading] = useState(false)
 
     const { data } = useGetCommissionSalesSupplierLotWiseQuery({ couthaOf: item.couthaOf })
@@ -24,8 +23,7 @@ const BepariCouthaUpdateEntry = ({ onClose, item }: { onClose: () => void, item:
 
     const [updateBepariCoutha] = useUpdateBepariCouthaMutation()
     const onSubmit = async (data: FieldValues) => {
-        data.subTotal = subTotal
-        data.joma = totalSales - subTotal
+        data.totalSales = totalSales
         data.grandTotal = totalSales
         data.arot = coutha.arot,
             data.brokary = coutha.brokary,

@@ -10,7 +10,7 @@ import SearchableSelectField from "../../components/searchableFields/SearchableS
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { useDebounce } from "../../utils/useDebounce";
 import type { RootState } from "../../redux/store";
-import { calculatePurchaseTotals, resetPurchase, setBosta, setCommission, setIsCommissionPaid, setIsLabourPaid, setIsOthersPaid, setLabour, setNote, setOthers, setOthersField, setPaidAmount, setProduct, setPurchaseDate, setPurchasePrice, setQuantity, setSupplier, setUnit, type TPurchase } from "../../redux/features/purchase/purchaseSlice";
+import { calculatePurchaseTotals, resetPurchase, setBosta, setBroker, setCommission, setIsCommissionPaid, setIsLabourPaid, setIsOthersPaid, setLabour, setNote, setOthers, setOthersField, setPaidAmount, setProduct, setPurchaseDate, setPurchasePrice, setQuantity, setSupplier, setUnit, type TPurchase } from "../../redux/features/purchase/purchaseSlice";
 import Loading from "../../components/Loading";
 import CalculatorField from "../cart/CalculatorField";
 import { compressImage } from "../../utils/compressImage";
@@ -218,12 +218,12 @@ const PurchaseEntryForm = () => {
 
             <input type="number" className="input " value={purchaseData.paidAmount || ""} onChange={(e) => { dispatch(setPaidAmount(Number(e.target.value))); dispatch(calculatePurchaseTotals()) }} placeholder="পরিশোধের পরিমান" />
 
-            <input value={purchaseData.note || ""} onChange={(e) => { dispatch(setNote(e.target.value)) }} placeholder="নোট লিখুন" type="text" className="input" required />
+            <input value={purchaseData.broker || ""} onChange={(e) => { dispatch(setBroker(e.target.value)) }} placeholder="ব্রোকারের নাম" type="text" className="input" required />
+            <input value={purchaseData.note || ""} onChange={(e) => { dispatch(setNote(e.target.value)) }} placeholder="নোট লিখুন" type="text" className="input" />
             <div>
                 {/* <div className='flex justify-between mx-4 items-center'>
                     <FileUploadField control={control} name='img' label='ছবি' />
                 </div> */}
-                <label className="block text-sm mb-1">বিল / ছবি</label>
                 <ImagePicker
                     onFileSelect={(file) => {
                         handleComprssImage(file);

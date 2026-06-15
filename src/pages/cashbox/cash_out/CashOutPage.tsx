@@ -1,7 +1,19 @@
 import { format } from "date-fns";
+import { useNavigate } from "react-router";
 
 
 const CashOutPage = ({ transactions }: any) => {
+    const navigate = useNavigate()
+    const handleOpenMemo = (no: string) => {
+        if (no.includes("MI(P)")) {
+            navigate(`/invoice/${no}`)
+        } else if (no.includes("MI(C)")) {
+            navigate(`/invoice/${no}`)
+        }
+        else {
+            return
+        }
+    };
     return (
         <section className="bg-white shadow-md rounded-lg p-6">
             <h2 className="text-xl font-semibold text-gray-700 mb-4">Recent Transactions</h2>
@@ -21,7 +33,11 @@ const CashOutPage = ({ transactions }: any) => {
                                 <td className="py-3 px-4 border-b">
                                     {format(new Date(txn?.createdAt), "hh:mm a")}
                                 </td>
-                                <td className="py-3 px-4 border-b">{txn?.source} <span className="text-xs">({txn?.note})</span></td>
+                                <td
+                                    className="py-3 px-4 border-b"><span onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleOpenMemo(txn?.source);
+                                    }} >{txn?.source}</span> <span className="text-xs">({txn?.note})</span></td>
                                 <td className="py-3 px-4 border-b text-red-600">Cash Out</td>
                                 <td className="py-3 px-4 border-b text-right text-red-600"> {txn?.amount}</td>
                             </tr>

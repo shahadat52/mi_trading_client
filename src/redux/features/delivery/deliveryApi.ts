@@ -24,9 +24,19 @@ const authApi = baseApi.injectEndpoints({
             providesTags: ['Deliveries']
         }),
 
+        deliveryStatusUpdate: builder.mutation({
+            query: ({ id, invoice }) => (
+                {
+                    url: `/deliveries/${id}`,
+                    method: "PATCH",
+                    body: { invoice },
+                }),
+            invalidatesTags: ['Sales', 'Deliveries']
+        }),
+
 
 
     }),
 });
 
-export const { useDeliveryEntryAndUpdateMutation, useGetDeliveriesQuery } = authApi
+export const { useDeliveryEntryAndUpdateMutation, useGetDeliveriesQuery, useDeliveryStatusUpdateMutation } = authApi

@@ -27,9 +27,9 @@ export type TPurchase = {
     sku: string;
     unit: TUnit;
     supplier: string;
+    broker: string;
     purchaseDate: string;
     purchaseType: TPurchaseType;
-
     labour: number | string;
     isLabourPaid: boolean
     commission: number | string;
@@ -37,7 +37,6 @@ export type TPurchase = {
     others: number | string;
     isOthersPaid: boolean
     othersField: string;
-
     quantity: number | string;
     bosta: number | string;
     purchasePrice: number | string;
@@ -61,6 +60,7 @@ const initialState: TPurchase = {
     sku: "",
     unit: "কেজি",
     supplier: "",
+    broker: "",
     purchaseDate: new Date().toISOString(),
     purchaseType: "regular",
 
@@ -102,6 +102,9 @@ const purchaseSlice = createSlice({
 
         setSupplier(state, action: PayloadAction<string>) {
             state.supplier = action.payload;
+        },
+        setBroker(state, action: PayloadAction<string>) {
+            state.broker = action.payload;
         },
 
         setPurchaseDate(state, action: PayloadAction<string>) {
@@ -212,6 +215,7 @@ export const {
     setProduct,
     setUnit,
     setSupplier,
+    setBroker,
     setPurchaseDate,
     setPurchaseType,
     setLabour,

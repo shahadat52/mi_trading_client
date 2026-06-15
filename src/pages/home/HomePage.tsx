@@ -18,8 +18,11 @@ import stock_icon from "../../assets/icons/stock_icon.png";
 import deli_icon from "../../assets/icons/deli_icon.png";
 import income_icon from "../../assets/icons/income_icon.png";
 import hr_icon from "../../assets/icons/hr_icon1.png";
+import { useState } from "react";
+import HomePageMenuToggleButton from "../../components/buttons/HomePageMenuToggleButton";
 
 const HomePage = () => {
+    const [menuOpen, setMenuOpen] = useState(false)
     const menuItems = [
         { path: "/products", label: "Products", icon: <AiFillProduct /> },
         { path: "/purchase/entry", label: "Purchase Entry", icon: <FaClipboardList /> },
@@ -50,10 +53,11 @@ const HomePage = () => {
                 <div className=" w-full">
 
                     {/* Title */}
-                    <h1 className="text-3xl md:text-4xl mb-10 font-bold text-gray-900 text-center">
-                        এম আই ট্রেডিং (ERP) ড্যাশবোর্ড
+                    <h1 className="text-3xl md:text-4xl font-bold text-gray-900 text-center">
+                        M/S M.I TRADING
                     </h1>
 
+                    <HomePageMenuToggleButton menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
                     {/* Grid */}
                     <div className="
                    grid 
@@ -63,11 +67,12 @@ const HomePage = () => {
                    gap-4 
                    md:gap-6
                 ">
-                        {menuItems.map((item, index) => (
-                            <NavLink
-                                key={index}
-                                to={item.path}
-                                className="
+                        {
+                            menuOpen && menuItems.map((item, index) => (
+                                <NavLink
+                                    key={index}
+                                    to={item.path}
+                                    className="
                                 group flex flex-col items-center justify-between gap-3
                                 p-6 sm:p-7 md:p-8
                                 rounded-xl
@@ -80,11 +85,11 @@ const HomePage = () => {
                                 duration-300
                                 cursor-pointer
                             "
-                            >
-                                <div className="flex flex-col items-center text-center gap-3">
+                                >
+                                    <div className="flex flex-col items-center text-center gap-3">
 
-                                    {/* Icon */}
-                                    <div className="
+                                        {/* Icon */}
+                                        <div className="
                                     text-3xl sm:text-4xl md:text-5xl 
                                     text-blue-700 
                                     transition-all 
@@ -92,11 +97,11 @@ const HomePage = () => {
                                     group-hover:scale-110 
                                     group-hover:text-blue-800
                                 ">
-                                        {item.icon}
-                                    </div>
+                                            {item.icon}
+                                        </div>
 
-                                    {/* Label */}
-                                    <div className="
+                                        {/* Label */}
+                                        <div className="
                                     text-sm sm:text-base md:text-lg 
                                     font-semibold 
                                     text-gray-900
@@ -104,12 +109,13 @@ const HomePage = () => {
                                     duration-300 
                                     group-hover:text-blue-800
                                 ">
-                                        {item.label}
-                                    </div>
+                                            {item.label}
+                                        </div>
 
-                                </div>
-                            </NavLink>
-                        ))}
+                                    </div>
+                                </NavLink>
+                            ))
+                        }
                     </div>
                 </div>
             </div>
@@ -134,7 +140,6 @@ const HomePage = () => {
 
             <div className="mb-14 ">
                 <PartyLedgerPage />
-
             </div>
         </div>
     );

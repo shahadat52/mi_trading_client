@@ -11,25 +11,25 @@ const KuliGodiTohoriPage = () => {
     const tabs = ['godi', 'kuli', 'tohori'];
     return (
         <div>
-            <div className="flex flex-row gap-2 w-full lg:w-auto">
-                <div>
-                    <label htmlFor="">Start Date</label>
+            <div className=" flex justify-evenly gap-10 mx-auto w-full">
+                <div className="">
+                    <p >Start Date</p>
                     <input
                         type="date"
                         value={startDate}
                         onChange={(e) => setStartDate(e.target.value)}
-                        className="border rounded px-3 py-2 [95%] text-sm"
+                        className="border rounded px-3 py-2  text-sm"
                     />
 
 
                 </div>
-                <div>
-                    <label htmlFor="">End Date</label>
+                <div className="">
+                    <p>End Date</p>
                     <input
                         type="date"
                         value={toDate}
                         onChange={(e) => setToDate(e.target.value)}
-                        className="border rounded px-3 py-2 w-[95%] text-sm"
+                        className="border rounded px-3 py-2  text-sm"
                     />
                 </div>
             </div>
@@ -50,11 +50,9 @@ const KuliGodiTohoriPage = () => {
                         <button
                             key={tab}
                             onClick={() => setAction(tab)}
-                            className={`px-1 py-2 text-sm font-medium uppercase
-        transition-all duration-200 ease-out active:scale-[0.80]
-        ${action === tab
-                                    ? 'text-blue-600'
-                                    : 'text-gray-500 hover:text-gray-700'
+                            className={`px-1 py-2 text-sm font-medium uppercase transition-all duration-200 ease-out active:scale-[0.80] ${action === tab
+                                ? 'text-blue-600'
+                                : 'text-gray-500 hover:text-gray-700'
                                 }`}
                         >
                             {tab}
