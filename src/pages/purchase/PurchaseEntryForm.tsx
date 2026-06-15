@@ -10,12 +10,11 @@ import SearchableSelectField from "../../components/searchableFields/SearchableS
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { useDebounce } from "../../utils/useDebounce";
 import type { RootState } from "../../redux/store";
-import { calculatePurchaseTotals, resetPurchase, setBosta, setBroker, setBrokerBill, setCommission, setIsCommissionPaid, setIsLabourPaid, setIsOthersPaid, setLabour, setNote, setOthers, setOthersField, setPaidAmount, setProduct, setPurchaseDate, setPurchasePrice, setQuantity, setSupplier, setUnit, type TPurchase } from "../../redux/features/purchase/purchaseSlice";
+import { calculatePurchaseTotals, resetPurchase, setBosta, setCommission, setIsCommissionPaid, setIsLabourPaid, setIsOthersPaid, setLabour, setNote, setOthers, setOthersField, setPaidAmount, setProduct, setPurchaseDate, setPurchasePrice, setQuantity, setSupplier, setUnit, type TPurchase } from "../../redux/features/purchase/purchaseSlice";
 import Loading from "../../components/Loading";
 import CalculatorField from "../cart/CalculatorField";
 import { compressImage } from "../../utils/compressImage";
 import ImagePicker from "../../components/ImagePicker";
-import { useGetAllBrokersQuery } from "../../redux/features/broker/brokerApi";
 
 const PurchaseEntryForm = () => {
     const dispatch = useAppDispatch()
@@ -23,14 +22,9 @@ const PurchaseEntryForm = () => {
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [supplierSearch, setSupplierSearch] = useState("");
 
-    const [brokerSearch, setBrokerSearch] = useState("");
-    const debouncedBrokerSearch = useDebounce(brokerSearch, 400);
-    const { data: brokersData, isFetching: brokerFetch } = useGetAllBrokersQuery({ searchTerm: debouncedBrokerSearch, });
-    const brokers: any[] = brokersData?.data ?? [];
     const debouncedSupplierSearch = useDebounce(supplierSearch, 400);
     const { data: supplierData, isFetching: supplierFetching } = useGetAllSuppliersNameQuery({ searchTerm: debouncedSupplierSearch, type: 'regular', limit: 20 });
     const selectedsupplier: any = useAppSelector((state: RootState) => state.purchase.supplier);
-    const selectedBroker: any = useAppSelector((state: RootState) => state.purchase.broker);
     const suppliers = supplierData?.data ?? [];
 
     // Product Selection
@@ -153,25 +147,6 @@ const PurchaseEntryForm = () => {
                 <input type="number" className="input" value={purchaseData.purchasePrice || ""} onChange={(e) => { dispatch(setPurchasePrice(Number(e.target.value))); dispatch(calculatePurchaseTotals()) }} placeholder="ক্রয় মূল্য" required />
             </div>
 
-            <SearchableSelectField
-                label="ব্রোকার"
-                placeholder="ব্রোকার খুঁজুন..."
-                options={brokers}
-                value={selectedBroker}
-                loading={brokerFetch}
-                onSearch={(value) => setBrokerSearch(value)}
-                onSelect={(supplier) => dispatch(
-                    setBroker(supplier._id)
-                )}
-                displayKeys={{
-                    title: "name"
-                }}
-            />
-
-            <div>
-                <label >ব্রোকার বিল</label>
-                <input type="number" className="input" value={purchaseData.brokerBill || ""} onChange={(e) => { dispatch(setBrokerBill(Number(e.target.value))) }} placeholder="ব্রোকার বিল" required />
-            </div>
 
 
             <div className="">

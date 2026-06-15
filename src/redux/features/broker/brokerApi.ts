@@ -92,8 +92,19 @@ const brokerApi = baseApi.injectEndpoints({
             invalidatesTags: ['BrokerTxn', 'Brokers', 'Broker']
         }),
 
+        deleteBrokerTxn: builder.mutation({
+            query: (id) => (
+                {
+                    url: `/broker/brokerTxn/${id}`,
+                    method: "DELETE",
+                }
+            ),
+            invalidatesTags: ['BrokerTxn', 'Brokers', 'Broker']
+        }),
+
+
 
     }),
 });
 
-export const { useCreateBrokerMutation, useBrokerTxnEntryMutation, useGetAllBrokersQuery, useGetBrokerByIdQuery, useGetSpecificBrokerTxnQuery, useUpdateBrokerTxnMutation, useBrokerDeleteMutation, useBrokerUpdateMutation } = brokerApi
+export const { useCreateBrokerMutation, useBrokerTxnEntryMutation, useGetAllBrokersQuery, useGetBrokerByIdQuery, useGetSpecificBrokerTxnQuery, useUpdateBrokerTxnMutation, useBrokerDeleteMutation, useBrokerUpdateMutation, useDeleteBrokerTxnMutation } = brokerApi

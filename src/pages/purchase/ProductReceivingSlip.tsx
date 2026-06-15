@@ -34,7 +34,7 @@ const ProductReceivingSlip = () => {
 
             <div
                 ref={printRef}
-                className="w-[320px] mx-auto bg-white text-black border border-black p-2 text-[12px]"
+                className="w-[290px] mx-auto bg-white text-black border border-black p-2 text-[12px]"
             >
                 {/* Header */}
                 <div className="text-center border-b border-dashed border-black pb-2">
@@ -43,40 +43,38 @@ const ProductReceivingSlip = () => {
                     </p>
 
                     <div className="grid grid-cols-9 items-center">
-                        <div className="col-span-2 ">
-                            <img src={mi_logo} alt="" className="size-14" />
+                        <div className="col-span-2  mt-[-4px]">
+                            <img src={mi_logo} alt="" className="size-12 mt-[-12px]" />
                         </div>
-                        <div className="col-span-7 text-start ">
-                            <h1 className="text-red-600 text-[24px] font-bold uppercase">
+                        <div className="col-span-7 text-start  ">
+                            <h1 className="text-red-600 text-[24px] font-bold   ml-[-10px] uppercase">
                                 M/S. M.I TRADING
                             </h1>
+                            <div className="ml-[-12px] mt-[-4px]">
+                                <p>
+                                    202 No.Khatungonj,kotwali,Chattogram
+                                </p>
 
-                            <h2 className="font-bold text-xl">
-                                মেসার্স এম.আই ট্রেডিং
-                            </h2>
+                                <p className=" text-[10px]" >
+                                    01842753607,  01707753607,  02333369499
+                                </p>
+                            </div>
+
                         </div>
                     </div>
 
-                    <p className="font-semibold text-sm">
-                        জেনারেল মার্চেন্ট এন্ড কমিশন এজেন্ট
-                    </p>
-                    <p>
-                        ২০২ নং খাতুনগঞ্জ, কোতোয়ালী, চট্টগ্রাম
-                    </p>
-
-                    <p className="font-semibold text-[8px]">
-                        হলুদ, মরিচ, ধনিয়া, ডাল, মশলা ও
-                        সকল ভূষা মালের আড়ৎ
-                    </p>
-
-                    <p className=" text-[10px]" >
-                        01842753607, 01707753607,  02333369499
-                    </p>
 
 
-
-                    <div className="mt-2 font-bold border border-black inline-block px-3 py-1">
-                        পণ্য গ্রহণ রসিদ
+                    <div className="flex justify-between items-center">
+                        <div className="ml-3">
+                            <QRCodeSVG value={purchase?.invoice} size={28} />
+                        </div>
+                        <div className="mt-2 font-bold border border-black inline-block px-1 py-1">
+                            পণ্য গ্রহণ রসিদ
+                        </div>
+                        <div className="underline" >
+                            No: {purchase?.invoice}
+                        </div>
                     </div>
                 </div>
 
@@ -141,7 +139,7 @@ const ProductReceivingSlip = () => {
 
                     <div className="mt-4 flex justify-between text-center">
                         <div>
-                            <p> {purchase?.broker?.name}</p>
+                            <p> {purchase?.note}</p>
                             <div className="border-t border-black w-24 mx-auto" />
                             <p>ব্রোকার</p>
                         </div>
@@ -159,9 +157,7 @@ const ProductReceivingSlip = () => {
                             </p>
                             <p>Software Powered by M.I Trading ERP</p>
                         </div>
-                        <div>
-                            <QRCodeSVG value={purchase?.invoice} size={24} />
-                        </div>
+
                     </div>
                 </div>
             </div>

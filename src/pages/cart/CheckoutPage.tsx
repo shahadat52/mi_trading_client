@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { MdDelete } from "react-icons/md";
-import { calculateGrandTotal, removeItem, setCustomerCommission, setLabour, setComments, setOthers, setPaidAmount, setPaymentMethod, updateCommissionRate, updateQuantity, updateSalePrice, resetCart, updateBosta, setBrokerBill, setBrokerName, setCustomer } from "../../redux/features/cart/cartSlice";
+import { calculateGrandTotal, removeItem, setCustomerCommission, setLabour, setComments, setOthers, setPaidAmount, setPaymentMethod, updateCommissionRate, updateQuantity, updateSalePrice, resetCart, updateBosta, setBrokerBill, setBrokerName, setCustomer, setBankName } from "../../redux/features/cart/cartSlice";
 import Modal from "../../components/Modal";
 import AddCustomer from "../home/AddCustomer";
 import { useState } from "react";
@@ -17,6 +17,7 @@ import { useGetAllCustomersQuery } from "../../redux/features/customer/customerA
 import CalculatorField from "./CalculatorField";
 import type { RootState } from "../../redux/store";
 import { PAYMENT_METHOD_OPTIONS } from "../../utils/options";
+import { banksName } from "../accounts/banksName";
 
 const CheckoutPage = () => {
     const dispatch = useAppDispatch();
@@ -37,14 +38,14 @@ const CheckoutPage = () => {
     const [isOpen, setIsOpen] = useState(false);
     const products = useAppSelector((state: any) => state.cart.items)
     const cart = useAppSelector((state: any) => state.cart)
-    const { register } = useForm();
+    const { register, watch, } = useForm();
     const commissionProds = products?.filter((prod: any) => Number(prod.commission) > 0);
     const totalCommission = commissionProds?.reduce((acc: any, prod: any) => acc + Number(prod.commission || 0), 0);
     const subTotal = products?.map((p: any) => p.salePrice * p.quantity).reduce((acc: any, prod: any) => acc + Number(prod || 0), 0);
 
     const grandTotal = totalCommission + cart.grandTotal
 
-
+    const paymentMethod = watch('paymentMethod')
     const [createSales] = useBothSalesEntryMutation()
     const handleSales = async () => {
         setLoading(true)
@@ -273,33 +274,6 @@ const CheckoutPage = () => {
                                     </div>
 
                                 </div>
-
-                                {/* Payment */}
-                                <div className="">
-                                    <div>
-                                        <label className="mb-1 block text-sm font-medium text-gray-700">
-                                            পেমেন্ট মেথড
-                                        </label>
-                                        <select
-                                            {...register("paymentMethod", {
-                                                onChange: (e) => dispatch(setPaymentMethod(e.target.value)),
-                                            })}
-                                            className="input"
-                                        >
-                                            {PAYMENT_METHOD_OPTIONS?.map((opt) => (
-                                                <option key={opt.value} value={opt.value}>
-                                                    {opt.label}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-
-
-
-                                </div>
-
-                                {/* others input */}
-
                                 <div>
                                     <label htmlFor="">কাস্টমার কমিশন</label>
 
@@ -325,6 +299,48 @@ const CheckoutPage = () => {
                                         }}
                                     />
                                 </div>
+
+                                {/* Payment */}
+                                <div className="">
+                                    <div>
+                                        <label className="mb-1 block text-sm font-medium text-gray-700">
+                                            পেমেন্ট মেথড
+                                        </label>
+                                        <select
+                                            {...register("paymentMethod", {
+                                                onChange: (e) => dispatch(setPaymentMethod(e.target.value)),
+                                            })}
+                                            className="input"
+                                        >
+                                            {PAYMENT_METHOD_OPTIONS?.map((opt) => (
+                                                <option key={opt.value} value={opt.value}>
+                                                    {opt.label}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+                                {
+                                    paymentMethod === 'bank' && (
+                                        <div>
+                                            <label className="mb-1 block text-sm font-medium text-gray-700">
+                                                ব্যাংকের নাম
+                                            </label>
+                                            <select
+                                                {...register("bankName", {
+                                                    onChange: (e) => dispatch(setBankName(e.target.value)),
+                                                })}
+                                                className="input"
+                                            >
+                                                {banksName?.map((opt) => (
+                                                    <option key={opt.value} value={opt.value}>
+                                                        {opt.label}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    )
+                                }
 
                                 <div>
                                     <label htmlFor="">পরিশোধিত মূল্য</label>

@@ -31,7 +31,6 @@ const DueSalesPage = () => {
 
     const sales = data?.data?.data || []
     // const sales = data?.data?.data?.filter((sale: any) => sale.grandTotal === sale.paidAmount) || [];
-    console.log(sales)
     const total = data?.total || 0;
     const totalPages = Math.max(1, Math.ceil(total / limit));
     const toggleExpand = (id: string) => {

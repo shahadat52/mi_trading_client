@@ -32,6 +32,7 @@ export type TCart = {
     grandTotal: number | string;
     paidAmount: number | string;
     paymentMethod: string;
+    bankName?: string;
     comments: string
 };
 
@@ -47,6 +48,7 @@ const initialState: TCart = {
     grandTotal: 0,
     paidAmount: 0,
     paymentMethod: "cash",
+    bankName: '',
     comments: ''
 
 };
@@ -90,6 +92,10 @@ const cartSlice = createSlice({
 
         setPaymentMethod(state, action: PayloadAction<string>) {
             state.paymentMethod = action.payload;
+        },
+
+        setBankName(state, action: PayloadAction<string>) {
+            state.bankName = action.payload;
         },
 
         setComments(state, action: PayloadAction<string>) {
@@ -203,6 +209,7 @@ export const {
     setOthers,
     setPaidAmount,
     setPaymentMethod,
+    setBankName,
     setComments,
     updateSalePrice,
     updateCommissionRate,

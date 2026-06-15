@@ -40,7 +40,17 @@ const mfsApi = baseApi.injectEndpoints({
             ),
             invalidatesTags: ['MFS']
         }),
+
+        deleteMfsTxn: builder.mutation({
+            query: (id) => (
+                {
+                    url: `/mfs/${id}`,
+                    method: "DELETE",
+                }
+            ),
+            invalidatesTags: ['MFS']
+        }),
     }),
 });
 
-export const { useMfsTxnEntryMutation, useGetMfsTxnByHeadQuery, useUpdateMfsTxnMutation } = mfsApi
+export const { useMfsTxnEntryMutation, useGetMfsTxnByHeadQuery, useUpdateMfsTxnMutation, useDeleteMfsTxnMutation } = mfsApi

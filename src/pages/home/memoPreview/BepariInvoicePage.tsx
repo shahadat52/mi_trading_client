@@ -35,7 +35,6 @@ type Props = {
 };
 
 const BepariInvoicePage: React.FC<Props> = ({ invoiceData, loading = false }) => {
-    console.log(invoiceData)
     if (loading) {
         return (
             <div className="flex justify-center items-center h-screen">

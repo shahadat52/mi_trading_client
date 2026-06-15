@@ -165,9 +165,11 @@ const BrokerTxn = () => {
             < BrokerTxnTable id={id} />
 
 
-            <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-                <EditBroker onClose={() => setIsOpen(false)} id={selectedBroker} />
-            </Modal>
+            {
+                selectedBroker && <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+                    <EditBroker onClose={() => setIsOpen(false)} id={selectedBroker} />
+                </Modal>
+            }
 
         </div >
     );

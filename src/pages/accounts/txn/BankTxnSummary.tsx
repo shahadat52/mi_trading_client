@@ -27,7 +27,6 @@ const BankTxnSummary = () => {
     const { control, handleSubmit, reset } = useForm()
     const { data, isLoading, isError } = useGetBankWiseTxnQuery({ bankName: id, limit })
     const transactions = data?.data || [];
-
     const handleSelectedTxn = (id: any) => {
         setSelectedTxn(id)
         setIsOpen(true)
@@ -191,7 +190,6 @@ const BankTxnSummary = () => {
                                 <tr>
                                     <th className="px-[6px] py-2 text-left">Date</th>
                                     <th className="px-[6px] py-2 text-left">Description</th>
-                                    <th className="px-[6px] py-2 text-right">Status</th>
                                     <th className="px-[6px] py-2 text-right">Debit</th>
                                     <th className="px-[6px] py-2 text-right">Credit</th>
                                     <th className="px-[6px] py-2 text-right">Balance</th>
@@ -205,11 +203,10 @@ const BankTxnSummary = () => {
                                         <tr
                                             onClick={() => handleSelectedTxn(tx)}
                                             key={tx._id}
-                                            className="text-[8px] border-t hover:bg-gray-50 transition"
+                                            className="text-sm border-t hover:bg-gray-50 transition"
                                         >
                                             <td className=" px-1 py-2">
-                                                {`I:${format(new Date(tx.issueDate), "dd/MM/yy")}`} <br />
-                                                {`P:${format(new Date(tx.postingDate), "dd/MM/yy")}`}
+                                                {`${format(new Date(tx.createdAt), "dd/MM/yy")}`} <br />
                                             </td>
 
                                             <td className="px-1 py-2">
@@ -219,10 +216,6 @@ const BankTxnSummary = () => {
                                                 <span className="text-xs text-gray-400">
                                                     {tx.referenceType}
                                                 </span>
-                                            </td>
-
-                                            <td className="px-1 py-2 text-right ">
-                                                {tx.status}
                                             </td>
 
                                             <td className="px-1 py-2 text-right text-red-600">
