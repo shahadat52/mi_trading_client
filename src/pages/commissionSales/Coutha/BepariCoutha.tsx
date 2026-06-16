@@ -29,7 +29,6 @@ const BepariCoutha = () => {
         documentTitle: `Bepari-Coutha-${coutha?.invoice || "memo"}`,
     });
 
-
     const LIMIT = 25;
     const regSales = sales?.slice(0, LIMIT);
     const restSales = sales?.slice(LIMIT);
@@ -152,7 +151,7 @@ const BepariCoutha = () => {
                                                 <td className="py-1 text-right font-bold">{(sale?.product?.quantity * sale?.product?.salePrice).toLocaleString()}</td>
                                                 <td className="py-1 text-right print:hidden">
                                                     <button
-                                                        onClick={() => { setSelected(sale?._id); setIsOpen(true); }}
+                                                        onClick={() => { setSelected(sale); setIsOpen(true); }}
                                                         className="text-[10px] bg-gray-200 px-1 rounded hover:bg-blue-600 hover:text-white transition-colors"
                                                     >
                                                         EDIT

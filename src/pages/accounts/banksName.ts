@@ -7,4 +7,8 @@ export const banksName = [
     { label: 'আল-আরাফাহ ইসলামী ব্যাংক', value: 'Al_Arafah' },
     { label: 'আইএফআইসি ব্যাংক (CD)', value: 'IFIC_CD' },
     { label: 'পূবালী ব্যাংক', value: 'Pubali' },
+    { label: 'ডাচ বাংলা ব্যাংক', value: 'Dutch_Bangla' },
+    { label: 'কৃষি ব্যাংক', value: 'Krishi' },
+    { label: 'প্রাইম ব্যাংক', value: 'Prime' },
+    { label: 'আইএফআইসি ব্যাংক (AZS)', value: 'IFIC_AZS' },
 ];

@@ -60,7 +60,6 @@ const PurchaseOverviewTable = () => {
             }
             setDeleteItem(null);
         } catch (err) {
-            // console.error(err);
         }
     };
 

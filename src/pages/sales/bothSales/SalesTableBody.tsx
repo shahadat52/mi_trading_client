@@ -1,29 +1,43 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
-import { DateTime } from '../../utils/formatDateTime';
-import Modal from '../../components/Modal';
-import InvoiceEditModal from './bothSales/InvoiceEditModal';
+import { DateTime } from '../../../utils/formatDateTime';
+import Modal from '../../../components/Modal';
+import InvoiceEditModal from './InvoiceEditModal';
+import { useNavigate } from 'react-router';
+import { useAppDispatch, useAppSelector } from '../../../redux/hook';
+import { setDueShow } from '../../../redux/features/sales/salesSlice';
 
 interface SalesTableBodyProps {
     row: any;
     page: number;
     limit: number;
     idx: number;
-    toggleExpand: (id: string) => void;
-    expandedRows: Record<string, boolean>;
     openInvoice: (row: any) => void;
     setDelivery: (row: any) => void;
-
 }
 
-const SalesTableBody: React.FC<SalesTableBodyProps> = ({ row, page, limit, idx, toggleExpand, expandedRows, openInvoice, setDelivery }) => {
+const SalesTableBody: React.FC<SalesTableBodyProps> = ({ row, page, limit, idx, openInvoice, setDelivery }) => {
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
     const [selectedInvoice, setSelectedInvoice] = useState(null)
-    const [isOpen, setIsOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState(false);
+    const dueShow = useAppSelector((state) => state.sales.dueShow)
+
+    const handleOpenMemo = (no: string) => {
+        if (no.includes("MI(S)")) {
+            navigate(`/invoice/${no}`)
+        } else {
+            return
+        }
+    };
     return (
         <React.Fragment key={row._id}>
             <tr className="border-t hover:bg-gray-50 transition-colors">
                 <td className="px-4 py-2">{(page - 1) * limit + idx + 1}</td>
-                <td className="px-4 py-2">{row.invoice}</td>
+                <td onClick={(e) => {
+                    e.stopPropagation();
+                    handleOpenMemo(row?.invoice);
+                }} className="px-4 py-2">{row.invoice}</td>
                 <td className="px-4 py-2">{row?.customer?.name}</td>
                 <td className="px-4 py-2">{row?.customer?.phone}</td>
                 <td className="px-4 py-2">{DateTime(row.date)}</td>
@@ -48,7 +62,7 @@ const SalesTableBody: React.FC<SalesTableBodyProps> = ({ row, page, limit, idx, 
                     className={`cursor-pointer px-4 py-2  p-2   rounded ${row?.isDelivered ? 'text-green-700' : 'text-red-700'}`}>{row?.isDelivered ? 'Yes' : 'No'}</td>
                 <td className="px-4 py-2">
                     <div className="flex gap-2">
-                        <button onClick={() => toggleExpand(row?._id)} className="text-sm px-2 py-1 border rounded">{expandedRows[row?._id] ? 'Hide' : 'Details'}</button>
+                        <button onClick={() => dispatch(setDueShow(!dueShow))} className="text-sm px-2 py-1 border rounded">{dueShow ? 'Hide Due' : 'Show Due'}</button>
                         <button onClick={() => openInvoice(row)} className="text-sm px-2 py-1 border rounded">View</button>
                         <button onClick={() => {
                             setSelectedInvoice((row as any));
@@ -58,38 +72,6 @@ const SalesTableBody: React.FC<SalesTableBodyProps> = ({ row, page, limit, idx, 
                     </div>
                 </td>
             </tr>
-
-            {/* Expanded Row: show salesProducts */}
-            {(expandedRows[row?._id] as any) && (
-                <tr className="bg-green-300 rounded-2xl">
-                    <td colSpan={9} className="px-4 py-3">
-                        <div className="overflow-auto">
-                            <table className="w-full text-sm">
-                                <thead className=''>
-                                    <tr className="text-left text-gray-800">
-                                        <th className="py-2">Product</th>
-                                        <th className="py-2">Qty</th>
-                                        <th className="py-2">Unit Price</th>
-                                        <th className="py-2 text-right">Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody className='bg-gray-100 rounded-2xl'>
-                                    {row?.items?.map((p: any, i: any) => (
-                                        <tr key={i} className="border-t ">
-                                            <td className="p-2">{p.name}</td>
-                                            <td className="p-2">{p.quantity}</td>
-                                            <td className="p-2">{p.salePrice}</td>
-                                            <td className="p-2 text-right">{p.quantity * p.salePrice}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </td>
-                </tr>
-
-            )}
 
             {
                 isOpen && <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>

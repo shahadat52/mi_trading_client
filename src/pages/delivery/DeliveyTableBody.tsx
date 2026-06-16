@@ -54,11 +54,11 @@ const DeliveryTableBody = ({ d, openDeliverySlip, }: { d: TDelivery; openDeliver
 
             <td className="px-4 py-2 border text-center">
                 <span>
-                    {format(d?.createdAt, 'dd/MM/yyyy')}
+                    {format(d?.updatedAt, 'dd/MM/yyyy')}
                 </span>
                 <br />
                 <span>
-                    {format(d?.createdAt, 'hh:mm aa')}
+                    {format(d?.updatedAt, 'hh:mm aa')}
                 </span>
             </td>
 

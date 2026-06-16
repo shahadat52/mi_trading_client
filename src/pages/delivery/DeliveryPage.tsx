@@ -79,7 +79,7 @@ const DeliveryPage: React.FC = () => {
     const deliveries = data?.data;
 
     return (
-        <div className="p-4 sm:p-6">
+        <div className="p-4 sm:p-6 mb-14">
             {/* Filters */}
             <div className="flex flex-col lg:flex-row gap-4 mb-4">
 
@@ -106,7 +106,7 @@ const DeliveryPage: React.FC = () => {
             </div>
 
             {/* Table for desktop */}
-            <div className="hidden md:block overflow-x-auto">
+            <div className="hidden md:block overflow-x-auto ">
                 <table className="min-w-full border border-gray-300 text-sm">
                     <thead className="bg-gray-100">
                         <tr>

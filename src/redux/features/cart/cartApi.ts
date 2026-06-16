@@ -14,6 +14,7 @@ const bothSalesApi = baseApi.injectEndpoints({
             ),
             invalidatesTags: ['BothSales', 'Products', 'CommissionProduct', 'Receivable', 'DueSales']
         }),
+
         getAllBothSales: builder.query({
             query: (query) => (
                 {
@@ -34,9 +35,6 @@ const bothSalesApi = baseApi.injectEndpoints({
                 }
                 if (search) {
                     params.append('search', search);
-                }
-                if (limit) {
-                    params.append('limit', limit);
                 }
                 if (dateFrom) {
                     params.append('dateFrom', dateFrom);

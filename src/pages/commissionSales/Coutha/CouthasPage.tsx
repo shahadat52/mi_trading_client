@@ -118,7 +118,7 @@ const CouthaPage = () => {
     }
 
     return (
-        <div>
+        <div className='mb-16'>
             <div className='grid grid-cols-1 lg:grid-cols-3'>
                 {settlements.map((item: any, idx: number) => (
                     <div

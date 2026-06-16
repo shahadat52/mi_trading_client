@@ -8,6 +8,8 @@ import { toast } from "react-toastify";
 import { useDeleteSalesInvoiceMutation } from "../../../redux/features/cart/cartApi";
 import Modal from "../../../components/Modal";
 import Loading from "../../../components/Loading";
+import { useAppDispatch, useAppSelector } from "../../../redux/hook";
+import { setDueShow } from "../../../redux/features/sales/salesSlice";
 
 
 // Define the Sale interface (replace with the actual structure if different)
@@ -31,10 +33,12 @@ interface Props {
 }
 
 const SalesCard: React.FC<Props> = ({ sale, onInvoice, setDelivery }) => {
+    const dispatch = useAppDispatch();
     const [selectedInvoice, setSelectedInvoice] = useState(null)
     const [isOpen, setIsOpen] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [deleteInvoice] = useDeleteSalesInvoiceMutation()
+    const [deleteInvoice] = useDeleteSalesInvoiceMutation();
+    const dueShow = useAppSelector((state) => state.sales.dueShow)
 
 
 
@@ -101,12 +105,13 @@ const SalesCard: React.FC<Props> = ({ sale, onInvoice, setDelivery }) => {
                 >
                     Memo
                 </button>
+                <button onClick={() => dispatch(setDueShow(!dueShow))} className="text-sm px-2 py-1 border rounded">{dueShow ? 'Hide Due' : 'Show Due'}</button>
 
                 <button
                     onClick={() => setDelivery(sale)}
                     className="flex-1 border py-2 rounded text-sm"
                 >
-                    Delivery Entry
+                    Delivery
                 </button>
                 <button
                     className="flex-1 bg-orange-600 text-white py-2 rounded text-sm"

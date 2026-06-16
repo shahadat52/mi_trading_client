@@ -25,7 +25,7 @@ const BankTxnsPage = () => {
     const { data } = useGetAllBankTxnQuery(undefined);
     const transactions = data?.data;
     return (
-        <div className="p-6">
+        <div className="p-6 mb-16">
             {
 
                 transactions?.map((txn: BankGroup, idx: any) => <div onClick={() => navigate(`/bank_wise/${txn.bankName}`)} key={idx} className="border border-gray-700 mb-2 rounded p-2"><p className="font-bold">{txn.bankName} Bank</p> <p className="">Balance: {txn.currentBalance}</p></div>)

@@ -16,11 +16,11 @@ const commissionSalesApi = baseApi.injectEndpoints({
         }),
 
         commissionSalesUpdate: builder.mutation({
-            query: (commissionSalesData: any) => (
+            query: ({ id, productId, salePrice, quantity, bosta }) => (
                 {
-                    url: `commissionSales/update/${commissionSalesData.id}`,
+                    url: `commissionSales/update/${id}`,
                     method: "PATCH",
-                    body: { salePrice: commissionSalesData.salePrice, quantity: commissionSalesData.quantity, bosta: commissionSalesData.bosta }
+                    body: { productId, salePrice, quantity, bosta }
                 }
             ),
             invalidatesTags: ['Sales', 'Income', 'CommissionSales', 'CommissionProduct']
@@ -52,8 +52,9 @@ const commissionSalesApi = baseApi.injectEndpoints({
                 if (query.couthaOf) params.append('couthaOf', query.couthaOf);
 
                 return {
-                    url: `/commissionSales/couthaOf/?${params.toString()}`,
+                    url: `/commissionSales/couthaOf`,
                     method: 'GET',
+                    params
 
                 };
             },

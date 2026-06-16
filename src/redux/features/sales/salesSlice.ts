@@ -1,22 +1,22 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-interface CommissionSales {
-    customer: string;
+interface TMemo {
+    dueShow: boolean;
 
 }
 
-const initialState: CommissionSales = {
-    customer: "",
+const initialState: TMemo = {
+    dueShow: false,
 };
 
 
 
 const salesSlice = createSlice({
-    name: "commissionSales",
+    name: "sales",
     initialState,
     reducers: {
-        setCustomer(state, action: PayloadAction<string>) {
-            state.customer = action.payload;
+        setDueShow(state, action: PayloadAction<boolean>) {
+            state.dueShow = action.payload;
         },
         resetForm() {
             return initialState;
@@ -25,7 +25,7 @@ const salesSlice = createSlice({
 });
 
 export const {
-    setCustomer,
+    setDueShow,
     resetForm,
 } = salesSlice.actions;
 

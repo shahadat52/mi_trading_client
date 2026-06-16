@@ -2,8 +2,8 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import Loading from "../../components/Loading";
-import { useDeliveryEntryAndUpdateMutation } from "../../redux/features/delivery/deliveryApi";
+import Loading from "../../../components/Loading";
+import { useDeliveryEntryAndUpdateMutation } from "../../../redux/features/delivery/deliveryApi";
 
 
 type SalesDeliveryModalProps = {
@@ -56,12 +56,12 @@ export const SalesDeliveryEntry = ({ item, deliveryModalClose }: SalesDeliveryMo
 
                     <input
                         className="border w-full px-2 py-1 rounded"
-                        {...register("destination")}
+                        {...register("destination")} defaultValue={item?.customer?.address}
                         placeholder="কোথায় যাবে"
                     />
                     <input
                         className="border w-full px-2 py-1 rounded"
-                        {...register("phone")}
+                        {...register("phone")} defaultValue={item?.customer?.phone}
                         placeholder="ফোন নাম্বার"
                     />
                     <input

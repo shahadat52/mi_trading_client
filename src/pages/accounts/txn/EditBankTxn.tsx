@@ -41,9 +41,11 @@ const EditBankTxn = ({ onClose, txn, transactions }: { onClose: () => void, txn:
 
     const handleDelete = async () => {
         const isConfirm = confirm("আপনি কি নিশ্চিত! ডিলিট করেই দিবেন?")
-        if (!isConfirm || transactions?.transactions?.length < 2) {
+
+        if (!isConfirm || transactions.length < 2) {
             return
         }
+
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
         try {
             const result = await deleteTxn(txn._id);

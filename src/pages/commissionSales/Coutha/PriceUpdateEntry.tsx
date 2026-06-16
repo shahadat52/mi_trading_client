@@ -8,7 +8,8 @@ const PriceUpdateEntry = ({ item, onClose }: any) => {
 
     const onSubmit = async (data: FieldValues) => {
         const payload = {
-            id: item,
+            id: item._id,
+            productId: item.product.product,
             salePrice: Number(data.price),
             quantity: Number(data.quantity),
             bosta: Number(data.bosta),
@@ -25,6 +26,7 @@ const PriceUpdateEntry = ({ item, onClose }: any) => {
         } catch (error) {
         }
     };
+
 
     return (
         <form onClick={(e) => e.stopPropagation()}

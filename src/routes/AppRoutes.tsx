@@ -46,6 +46,7 @@ import CreateEmployeeEntry from "../pages/hr/employees/CreateEmployeeEntry";
 import MFSPage from "../pages/MFS/MFSPage";
 import ProductReceivingSlip from "../pages/purchase/ProductReceivingSlip";
 import DueSalesPage from "../pages/sales/bothSales/DueSalesPage";
+import UnpaidMemo from "../pages/sales/memo/UnpaidMemo";
 
 export const router = createBrowserRouter([
     {
@@ -239,6 +240,10 @@ export const router = createBrowserRouter([
     {
         path: "/print/coutha/:id",
         element: <BepariCoutha />,
+    },
+    {
+        path: "/print/duememo/:id",
+        element: <UnpaidMemo />,
     },
     {
         path: "/purchase/slip/:id",

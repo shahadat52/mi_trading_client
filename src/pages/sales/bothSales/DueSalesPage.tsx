@@ -4,21 +4,23 @@ import useDebouncedSearch from '../../../hooks/useDebouncedSearch';
 import { useGetAllDueSalesQuery } from '../../../redux/features/cart/cartApi';
 import ErrorBoundary from '../../../components/ErrorBoundary';
 import TableSkeleton from '../../../components/table/TableSkeleton';
-import { salesTableHeads } from '../salesTableHeads';
-import SalesTableBody from '../SalesTableBody';
+import { salesTableHeads } from './salesTableHeads';
+import SalesTableBody from './SalesTableBody';
 import SalesCard from './SalesCard';
-import { SalesDeliveryEntry } from '../SalesDeliveryEntry';
-import PrintSaleMemoModal from './PrintSaleMemoModal';
+import { SalesDeliveryEntry } from './SalesDeliveryEntry';
+import PrintSaleMemoModal from '../memo/PrintSaleMemoModal';
+import { endOfDay, startOfDay } from 'date-fns';
 
 const DueSalesPage = () => {
+    const start = startOfDay(new Date());
+    const end = endOfDay(new Date());
+
     const [page, setPage] = useState<number>(1);
     const [limit, setLimit] = useState<number>(10);
     const [sortBy, setSortBy] = useState<string>('createdAt');
     const [order, setOrder] = useState('desc');
-    const [dateFrom, setDateFrom] = useState<string>('');
-    const [dateTo, setDateTo] = useState<string>('');
-
-    const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+    const [dateFrom, setDateFrom] = useState<string>(start.toISOString());
+    const [dateTo, setDateTo] = useState<string>(end.toISOString());
     const [selectedSale, setSelectedSale] = useState<any | null>(null);
     const [delivery, setDelivery] = useState<{ items: any[] } | null>(null);
 
@@ -33,10 +35,6 @@ const DueSalesPage = () => {
     // const sales = data?.data?.data?.filter((sale: any) => sale.grandTotal === sale.paidAmount) || [];
     const total = data?.total || 0;
     const totalPages = Math.max(1, Math.ceil(total / limit));
-    const toggleExpand = (id: string) => {
-        setExpandedRows((prev) => ({ ...prev, [id]: !prev[id] }));
-    };
-
     const openInvoice = (sale: any) => setSelectedSale(sale);
     const closeInvoice = () => setSelectedSale(null);
     const deliveryModalClose = () => setDelivery(null);
@@ -130,8 +128,6 @@ const DueSalesPage = () => {
                                     page={page}
                                     limit={limit}
                                     idx={idx}
-                                    toggleExpand={toggleExpand}
-                                    expandedRows={expandedRows}
                                     openInvoice={openInvoice}
                                     setDelivery={setDelivery}
                                 />

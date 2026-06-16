@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { useDebounce } from "../../utils/useDebounce";
-import { useGetAllCustomersQuery } from "../../redux/features/customer/customerApi";
-import { useAppDispatch, useAppSelector } from "../../redux/hook";
-import { setCustomer } from "../../redux/features/cart/cartSlice";
+import { useDebounce } from "../../../utils/useDebounce";
+import { useGetAllCustomersQuery } from "../../../redux/features/customer/customerApi";
+import { useAppDispatch, useAppSelector } from "../../../redux/hook";
+import { setCustomer } from "../../../redux/features/cart/cartSlice";
 
 type Customer = {
     _id: string;

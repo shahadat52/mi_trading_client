@@ -68,10 +68,21 @@ const authApi = baseApi.injectEndpoints({
             providesTags: ['CustomerTxn']
         }),
 
+
+
         getAllTxnByCustomer: builder.query({
             query: ({ id }) => (
                 {
                     url: `/customerTxn/${id}`,
+                    method: 'GET',
+                }),
+            providesTags: ['CustomerTxn']
+        }),
+
+        getCustomerDue: builder.query({
+            query: ({ id }) => (
+                {
+                    url: `/customerTxn/due/${id}`,
                     method: 'GET',
                 }),
             providesTags: ['CustomerTxn']
@@ -131,4 +142,4 @@ const authApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useAddCustomerMutation, useGetAllCustomersQuery, useGetCustomerByIdQuery, useUpdateCustomerDataMutation, useCustomerTxnEntryMutation, useGetAllCustomerTxnQuery, useGetAllTxnByCustomerQuery, useUpdateCustomerTxnMutation, useDeleteCustomerTxnMutation, useDeleteCustomerMutation, useGetUnapprovedCustomerTxnQuery, useMakeApproveCustomerTxnMutation } = authApi
+export const { useAddCustomerMutation, useGetAllCustomersQuery, useGetCustomerByIdQuery, useUpdateCustomerDataMutation, useCustomerTxnEntryMutation, useGetAllCustomerTxnQuery, useGetCustomerDueQuery, useGetAllTxnByCustomerQuery, useUpdateCustomerTxnMutation, useDeleteCustomerTxnMutation, useDeleteCustomerMutation, useGetUnapprovedCustomerTxnQuery, useMakeApproveCustomerTxnMutation } = authApi

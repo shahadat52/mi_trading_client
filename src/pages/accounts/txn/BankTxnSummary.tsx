@@ -78,7 +78,7 @@ const BankTxnSummary = () => {
 
                     {/*Transaction entry section */}
                     {
-                        makeTxn && <div className="sticky flex flex-col lg:flex-row gap-2 mb-2 p-1 ">
+                        makeTxn && <div className=" ">
                             <form onSubmit={handleSubmit(onSubmit)} className="">
 
                                 <div className='flex items-center gap-3'>
@@ -121,16 +121,6 @@ const BankTxnSummary = () => {
                                     control={control}
                                     rules={{ required: "সোর্স" }}
                                 />
-
-                                <div className="mt-2  ">
-                                    <InputField
-                                        control={control}
-                                        label="পোস্টিং এর তারিখ"
-                                        type='datetime-local'
-                                        name="postingDate"
-                                        rules={{ required: "পোস্টিং এর তারিখ নাই" }}
-                                    />
-                                </div>
 
                                 <button
                                     type="submit"
@@ -211,7 +201,7 @@ const BankTxnSummary = () => {
 
                                             <td className="px-1 py-2">
                                                 <p className="font-medium">
-                                                    {tx.note || tx.referenceType}({tx?.party?.name})
+                                                    {tx.note || tx.referenceType}
                                                 </p>
                                                 <span className="text-xs text-gray-400">
                                                     {tx.referenceType}

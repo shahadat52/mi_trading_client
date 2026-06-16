@@ -7,4 +7,5 @@ export type TDelivery = {
     destination: string;
     description: string;
     createdAt: Date
+    updatedAt: Date
 }
