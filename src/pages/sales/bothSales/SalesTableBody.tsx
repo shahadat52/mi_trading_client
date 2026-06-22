@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
-import { DateTime } from '../../../utils/formatDateTime';
 import Modal from '../../../components/Modal';
 import InvoiceEditModal from './InvoiceEditModal';
 import { useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../../redux/hook';
 import { setDueShow } from '../../../redux/features/sales/salesSlice';
+import { format } from 'date-fns';
 
 interface SalesTableBodyProps {
     row: any;
@@ -40,7 +40,7 @@ const SalesTableBody: React.FC<SalesTableBodyProps> = ({ row, page, limit, idx, 
                 }} className="px-4 py-2">{row.invoice}</td>
                 <td className="px-4 py-2">{row?.customer?.name}</td>
                 <td className="px-4 py-2">{row?.customer?.phone}</td>
-                <td className="px-4 py-2">{DateTime(row.date)}</td>
+                <td className="px-4 py-2">{format(row.date, 'dd/MM/yyyy')} <br />{format(row.date, 'hh:mm')}</td>
                 <td className="px-4 py-2 ">{row?.grandTotal}</td>
                 <td className="px-4 py-2 ">{row?.paidAmount || 0}</td>
                 <td className="px-4 py-2">

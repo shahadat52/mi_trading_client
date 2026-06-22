@@ -75,9 +75,9 @@ const CustomerInvoicePage: React.FC<Props> = ({ invoiceData, loading = false }) 
     const totalCommission = (Number(perProductsCommission) || 0) + (Number(customerCommission) || 0)
 
     return (
-        <div className="max-w-4xl mb-10 mx-auto p-6 bg-white shadow-md rounded-md mt-6">
+        <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-md mt-6 mb-6">
             {/* Header */}
-            <div className="flex justify-between mb-6">
+            <div className="flex justify-between">
                 <div>
                     <h1 className="text-2xl font-bold">Invoice #{invoice}</h1>
                     <p className="text-gray-500">Date:{DateTime(date)}</p>

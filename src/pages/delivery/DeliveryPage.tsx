@@ -26,6 +26,7 @@ const DeliveryPage: React.FC = () => {
 
 
 
+
     const openDeliverySlip = (sale: any) => setSelectedDelivery(sale);
     const closeDeliverySlip = () => setSelectedDelivery(null)
 

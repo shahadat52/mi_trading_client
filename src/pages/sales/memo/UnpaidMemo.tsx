@@ -2,13 +2,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { QRCodeSVG } from 'qrcode.react';
 import { FaWhatsapp } from 'react-icons/fa';
-import { engNumberToBanglaWords } from '../../../utils/engNumberToBanglaWords';
 import { FaSquareFacebook } from "react-icons/fa6";
-import { DateTime } from '../../../utils/formatDateTime';
 import { useParams } from 'react-router';
 import { useGetBothSaleByInvoiceQuery } from '../../../redux/features/cart/cartApi';
 import { useAppSelector } from '../../../redux/hook';
 import { useGetCustomerDueQuery } from '../../../redux/features/customer/customerApi';
+import { toCurrency } from 'to-words/bn-BD';
+import { format } from 'date-fns';
 
 
 const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
@@ -84,22 +84,25 @@ const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
                     </div>
 
                     {/* Info Section */}
-                    <div className="p-2 text-[8px]">
-                        <div className="flex justify-between ">
-                            <div>মেমো নং: <span className="">{sale.invoice}</span></div>
+                    <div className="p-2 text-[10px]">
+                        <div className="grid grid-cols-3 text-start mb-1 ">
+                            <div className='text-start'>মেমো নং: <span className="">{sale.invoice}</span></div>
                             <div>
-                                <div className="w-full text-center">মোবাইল:  <span className=" mb-2">{sale?.customer?.phone}</span></div>
-
+                                <div className="w-full text-start">ব্রোকার:  <span className=" mb-2">{sale?.broker}</span></div>
                             </div>
-                            <div className="">
-                                তারিখ: {DateTime(sale?.date)}
+                            <div className="text-start">
+                                তারিখ: {format(sale.date, 'dd/MM/yyyy')}: ({format(sale.date, 'hh:mm a')})
                             </div>
                         </div>
-                        <div className=' mb-[-3px] flex justify-between'>
-                            <div className=" my-1 flex justify-between">
-                                <div className='' > নাম: <span className=" ">{sale?.customer?.name}</span> </div>
+                        <div className='grid grid-cols-3  text-start'>
+                            <div className=" flex justify-between text-start ">
+                                <div className='text-start' > নাম: <span className=" ">{sale?.customer?.name}</span> </div>
                             </div>
-                            <div >ঠিকানা: <span className="">{sale?.customer?.address}</span></div>
+
+                            <div>
+                                <div className="w-full text-start">মোবাইল:  <span className=" mb-2">{sale?.customer?.phone}</span></div>
+                            </div>
+                            <div className='text-start' >ঠিকানা: <span className="">{sale?.customer?.address}</span></div>
                         </div>
 
                     </div>
@@ -120,7 +123,7 @@ const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
 
                             {/* Actual table rows */}
                             {sale.items?.map((p: any, idx: number) => (
-                                <tr key={idx} className="text-[7px] relative border-b text-start  border-gray-100">
+                                <tr key={idx} className="text-[10px] relative border-b text-start  border-gray-100">
                                     <td className="border-r border-gray-300 text-center ">{idx + 1}</td>
                                     <td className="border-r pl-3 border-gray-300 ">
                                         {p.name} {" "} - {p?.bosta} বস্তা - {p.quantity} {p?.unit}
@@ -131,40 +134,40 @@ const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
                             ))}
                         </tbody>
                         <tfoot>
-                            <tr className="text-[8px] border-t border-gray-700 bg-blue-100 text-black">
+                            <tr className="text-[10px] border-t border-gray-700 bg-blue-100 text-black">
                                 <td colSpan={2} className="px-2  font-"><span></span></td>
                                 <td className="text-end text-[7px]">  <span>সাব টোটাল- </span></td>
                                 <td className="text-center ">  <span>{sale?.subtotal} </span></td>
                             </tr>
-                            <tr className="text-[7px] border-t border-gray-700 bg-blue-100 text-black">
+                            <tr className="text-[10px] border-t border-gray-700 bg-blue-100 text-black">
                                 <td colSpan={2} className=" px-2  font-"><span></span></td>
                                 <td className="text-end ">  <span>লেবার- </span></td>
                                 <td className="text-center ">  <span>{sale?.labour} </span></td>
                             </tr>
-                            <tr className="text-[7px] border-t border-gray-700 bg-blue-100 text-black">
+                            <tr className="text-[10px] border-t border-gray-700 bg-blue-100 text-black">
                                 <td colSpan={2} className=" px-2  font-"><span></span></td>
                                 <td className="text-end ">  <span>কমিশন- </span></td>
                                 <td className="text-center ">  <span>{sale?.customerCommission + (sale?.grandTotal) - (sale?.subtotal + sale?.others + sale?.labour + sale?.customerCommission)} </span></td>
                             </tr>
-                            <tr className="text-[7px] border-t border-gray-700 bg-blue-100 text-black">
+                            <tr className="text-[10px] border-t border-gray-700 bg-blue-100 text-black">
                                 <td colSpan={2} className=" px-2  font-"><span></span></td>
                                 <td className="text-end ">  <span>অন্যান্য-</span></td>
                                 <td className="text-center ">  <span>{sale?.others} </span></td>
                             </tr>
 
-                            <tr className=" text-[7px] border-t border-gray-700 bg-blue-100 text-black">
+                            <tr className=" text-[10px] border-t border-gray-700 bg-blue-100 text-black">
                                 <td colSpan={2} className=" px-2  font-"><span></span></td>
                                 <td className="text-end ">  <span>সর্বমোট- </span></td>
                                 <td className=" text-center">  <span className=''>{sale?.grandTotal} </span></td>
                             </tr>
-                            <tr className=" text-[7px] border-t border-gray-700 bg-blue-100 text-black">
+                            <tr className=" text-[10px] border-t border-gray-700 bg-blue-100 text-black">
                                 <td colSpan={2} className=" px-2  font-"><span></span></td>
                                 <td className="text-end ">  <span>জমা- </span></td>
                                 <td className=" text-center">  <span className='bg-red-50 border-red-600 text-black rounded px-1 border-2'>{sale?.paidAmount} </span></td>
                             </tr>
 
-                            <tr className="text-[8px] border-t border-gray-400 bg-blue-900 text-white">
-                                <td colSpan={2} className="  text-start px-2 py-1 font-"><span>কথায়ঃ {engNumberToBanglaWords(sale?.grandTotal)}</span></td>
+                            <tr className="text-[10px] border-t border-gray-400 bg-blue-900 text-white">
+                                <td colSpan={2} className="  text-start px-2 py-1 font-"><span>কথায়ঃ {toCurrency(sale?.grandTotal)}</span></td>
                                 <td className=" text-end p-1 ">  <span>বাকি-</span></td>
                                 <td className=" text-center p-1 ">  <span className='bg-red-600 border-red-600 text-white rounded px-1 border-2'>{sale?.grandTotal - sale?.paidAmount} </span></td>
                             </tr>

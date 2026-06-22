@@ -1,8 +1,8 @@
 import { QRCodeSVG } from "qrcode.react";
-import { engNumberToBanglaWords } from "../../../utils/engNumberToBanglaWords";
 import { FaWhatsapp } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
-import { DateTime } from "../../../utils/formatDateTime";
+import { toCurrency } from 'to-words/bn-BD';
+import { format } from "date-fns";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const PaidMemo = ({ sale, onClose }: any) => {
@@ -34,7 +34,7 @@ const PaidMemo = ({ sale, onClose }: any) => {
                     <div className="p-4 text-sm">
                         <div className="flex justify-between mb-2">
                             <div>নং: {sale.invoice}</div>
-                            <div>তারিখ: {DateTime(sale?.date)}
+                            <div>তারিখ: {format(sale.date, 'dd/MM/yyyy')}:({format(sale.date, 'hh:mm a')})
                             </div>
                         </div>
                         <div className='flex justify-between my-4' >
@@ -102,7 +102,7 @@ const PaidMemo = ({ sale, onClose }: any) => {
                             </tr>
 
                             <tr className=" border-t border-gray-400 bg-blue-900 text-white">
-                                <td colSpan={2} className="text-center px-2 py-1 font-"><span>কথায়ঃ {engNumberToBanglaWords(sale?.grandTotal)}</span></td>
+                                <td colSpan={2} className="text-center px-2 py-1 font-"><span>কথায়ঃ {toCurrency(sale?.grandTotal)}</span></td>
                                 <td className="p-1 ">  <span>মোটঃ</span></td>
                                 <td className="p-1 ">  <span> {(sale?.grandTotal)} </span></td>
                             </tr>

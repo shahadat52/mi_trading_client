@@ -11,7 +11,7 @@ const PendingApprovalsPage = () => {
   const [activeTab, setActiveTab] = useState<ApprovalType>("customer");
 
   return (
-    <div className="p-1 space-y-6 ">
+    <div className="p-1 space-y-6  mb-18">
       {/* Page Header */}
       <div>
         <h1 className="text-2xl font-semibold text-gray-800">Pending Approvals</h1>

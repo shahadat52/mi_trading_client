@@ -8,6 +8,7 @@ import { IoLocationSharp } from 'react-icons/io5';
 const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sale, onClose }) => {
     if (!sale) return null;
     const products = sale?.sales?.items;
+    const sales = sale?.sales;
     return (
         <div className="fixed inset-0 z-50 flex  items-start justify-center overflow-auto  bg-black/40 min-h-screen   ">
 
@@ -41,17 +42,17 @@ const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sal
 
                             </div>
                         </div>
-                        <div className='my-4' >নাম: <span className="border-dashed border-b px-2">জসিম</span> </div>
+                        <div className='my-4' >নাম: <span className="border-dashed border-b px-2">{sales?.customer?.name}</span> </div>
                         <div className="flex justify-between mb-2">
-                            <div >ঠিকানা: <span className=" border-dashed border-b px-2">{sale?.destination}</span></div>
-                            <div className=" text-right">মোবা:  <span className="border-dashed border-b px-2">01866168264</span></div>
+                            <div >ঠিকানা: <span className=" border-dashed border-b px-2">{sales?.customer?.address}</span></div>
+                            <div className=" text-right">মোবা:  <span className="border-dashed border-b px-2">{sales?.customer?.phone}</span></div>
                         </div>
                         <div className=""><span className=''>ট্রান্সপোর্ট/গাড়ির নাম্বার: </span> <span className="border-dashed border-b px-2">{sale?.via}</span></div>
 
                     </div>
 
                     {/* Table Section */}
-                    <div className='mx-[6px] bg-white'>
+                    <div className='mx-[6px] bg-white '>
                         <table className="w-full border-collapse border-y  ">
                             <thead className=''>
                                 <tr className=" bg-orange-400 grid grid-cols-3 text-white text-xs">
@@ -59,7 +60,7 @@ const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sal
                                     <th className="col-span-1 border-r border-gray-200 p-1 ">পরিমাণ</th>
                                 </tr>
                             </thead>
-                            <tbody className=" my-section align-top overflow-hidden">
+                            <tbody className=" my-section align-top overflow-hidden min-h-[200px]">
 
 
                                 {/* 

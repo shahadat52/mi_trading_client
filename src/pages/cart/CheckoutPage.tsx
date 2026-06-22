@@ -38,13 +38,13 @@ const CheckoutPage = () => {
     const [isOpen, setIsOpen] = useState(false);
     const products = useAppSelector((state: any) => state.cart.items)
     const cart = useAppSelector((state: any) => state.cart)
-    const { register, watch, } = useForm();
+    const {
+        register, watch, } = useForm();
     const commissionProds = products?.filter((prod: any) => Number(prod.commission) > 0);
     const totalCommission = commissionProds?.reduce((acc: any, prod: any) => acc + Number(prod.commission || 0), 0);
     const subTotal = products?.map((p: any) => p.salePrice * p.quantity).reduce((acc: any, prod: any) => acc + Number(prod || 0), 0);
 
-    const grandTotal = totalCommission + cart.grandTotal
-
+    const grandTotal = Math.round(totalCommission + cart.grandTotal);
     const paymentMethod = watch('paymentMethod')
     const [createSales] = useBothSalesEntryMutation()
     const handleSales = async () => {
@@ -52,7 +52,7 @@ const CheckoutPage = () => {
         const toastId = toast.loading("Processing...");
         const updatedCart = {
             ...cart,
-            subtotal: subTotal,
+            subtotal: Math.round(subTotal),
             grandTotal: grandTotal,
             customer: cart.customer._id,
 

@@ -10,6 +10,7 @@ import SalesCard from './SalesCard';
 import { SalesDeliveryEntry } from './SalesDeliveryEntry';
 import PrintSaleMemoModal from '../memo/PrintSaleMemoModal';
 import { endOfDay, startOfDay } from 'date-fns';
+import { LIMIT_OPTIONS } from '../../../utils/options';
 
 const BothSalesPage = () => {
     const start = startOfDay(new Date());
@@ -80,18 +81,23 @@ const BothSalesPage = () => {
                             <option value='grandTotal'>Grand Total</option>
                             <option value='customer'>Customer</option>
                         </select>
-                        <select value={limit} onChange={(e) => { setLimit(Number(e.target.value)); setPage(1); }} className="border rounded px-3 py-2 text-sm">
-                            <option value={5}>5</option>
-                            <option value={10}>10</option>
-                            <option value={25}>25</option>
-                            <option value={50}>50</option>
-                            <option value={100}>100</option>
+                        <select
+                            value={limit}
+                            onChange={(e) => setLimit(Number(e.target.value))}
+                            className=" sm:w-full lg:w-1/3 select my-2"
+                        >
+                            {
+                                LIMIT_OPTIONS?.map((opt: any) => (
+                                    <option key={opt.value} value={opt.value} className="border m-1 text-xs">
+                                        {opt.label}
+                                    </option>
+                                ))
+                            }
                         </select>
                     </div>
                     <div className='flex gap-2'>
                         <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} className="border rounded px-3 py-2 text-[12px] w-[116px] " />
                         <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} className="border rounded px-3 py-2 text-[12px] w-[116px]" />
-
                         <button type="submit" className="px-3 py-2 bg-blue-600 text-white rounded text-sm">Search</button>
                         <button type="button" onClick={clearFilters} className="px-3 py-2 border rounded text-sm">Clear</button>
                     </div>

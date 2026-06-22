@@ -15,7 +15,7 @@ const MemoPreviewPage = () => {
     const { data: couthaData, isLoading: couthaLoading } = useGetCouthaByInvoiceQuery(id)
     const purchases = purchaseData?.data || []
     return (
-        <div>
+        <div className="mb-16">
             {
                 type === 'MI(S)' && <CustomerInvoicePage invoiceData={sales} loading={isLoading} />
             }

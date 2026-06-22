@@ -25,7 +25,7 @@ const PrintSaleMemoModal = ({ sale, dueShow, onClose }: any) => {
             {!isPaid && (
                 <div className="">
 
-                    <div className=" print:flex print:flex-row print:gap-20 mt-[4px]">
+                    <div className=" print:flex print:flex-row print:gap-10 mt-[4px]">
 
                         <div className="hidden print:block print:w-1/2">
                             <UnpaidMemo dueShow={dueShow} sale={sale} onClose={onClose} copyLabel="কাস্টমার কপি  " />

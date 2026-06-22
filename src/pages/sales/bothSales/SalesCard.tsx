@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useState } from "react";
-import { DateTime } from "../../../utils/formatDateTime";
 import InvoiceEditModal from "./InvoiceEditModal";
 import { MdDelete } from "react-icons/md";
 import { toast } from "react-toastify";
@@ -10,6 +9,7 @@ import Modal from "../../../components/Modal";
 import Loading from "../../../components/Loading";
 import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import { setDueShow } from "../../../redux/features/sales/salesSlice";
+import { format } from "date-fns";
 
 
 // Define the Sale interface (replace with the actual structure if different)
@@ -94,7 +94,7 @@ const SalesCard: React.FC<Props> = ({ sale, onInvoice, setDelivery }) => {
                 </div>
                 <div className="flex justify-between">
                     <span className="font-semibold">তারিখ:</span>
-                    <span>{DateTime(sale.createdAt)}</span>
+                    <span>{format(sale.createdAt, 'dd/MM/yyyy')}:({format(sale.createdAt, 'hh:mm')})</span>
                 </div>
             </div>
 

@@ -32,6 +32,7 @@
     "react-tooltip": "^5.29.1",
     "redux-persist": "^6.0.0",
     "tailwindcss": "^4.1.14",
+    "to-words": "^5.6.1",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
