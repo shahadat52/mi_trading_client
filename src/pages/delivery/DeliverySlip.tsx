@@ -52,15 +52,15 @@ const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sal
                     </div>
 
                     {/* Table Section */}
-                    <div className='mx-[6px] bg-white '>
-                        <table className="w-full border-collapse border-y  ">
+                    <div className=' bg-white '>
+                        <table className="w-full border-collapse border-y min-h-[200px]  ">
                             <thead className=''>
                                 <tr className=" bg-orange-400 grid grid-cols-3 text-white text-xs">
                                     <th className="col-span-2  p-1 border-r border-gray-900 ">মালের বিবরণ</th>
                                     <th className="col-span-1 border-r border-gray-200 p-1 ">পরিমাণ</th>
                                 </tr>
                             </thead>
-                            <tbody className="text-xs my-section align-top overflow-hidden min-h-[200px]">
+                            <tbody className="text-xs my-section align-top overflow-hidden ">
                                 {products?.map((ite: any, idx: number) => (
                                     <tr key={idx} className="grid grid-cols-3 text-center">
                                         <td className="text-start col-span-2 border-r py-[2px] ml-1 border-gray-900 ">
