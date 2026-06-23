@@ -7,11 +7,11 @@ import { format } from "date-fns";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const PaidMemo = ({ sale, onClose }: any) => {
     return (
-        <div className="border max-w-[30%] mx-auto rounded overflow-auto print-area w-[28%] bg-white border-gray-300 shadow-lg">
+        <div className=" max-w-[30%] mx-auto rounded overflow-auto print-area w-[28%] bg-white">
 
-            <div className="fixed inset-0 z-50 flex items-start justify-center overflow-auto bg-black/40 min-h-screen p-4 ">
+            <div className="fixed inset-0 z-50 flex items-start justify-center overflow-auto  min-h-screen  ">
 
-                <div className=" border max-w-3xl rounded  overflow-auto print-area w-[500px] bg-white  border-gray-300 shadow-lg ">
+                <div className=" border max-w-3xl rounded  overflow-auto print-area w-[450px] bg-white  border-gray-300 shadow-lg ">
 
                     {/* Header Section */}
                     <div className="bg-[#f08c1d] p-4 text-center text-black relative">
@@ -32,18 +32,18 @@ const PaidMemo = ({ sale, onClose }: any) => {
 
                     {/* Info Section */}
                     <div className="p-4 text-sm">
-                        <div className="flex justify-between mb-2">
+                        <div className="grid grid-cols-2 text-start my-1">
                             <div>নং: {sale.invoice}</div>
                             <div>তারিখ: {format(sale.date, 'dd/MM/yyyy')}:({format(sale.date, 'hh:mm a')})
                             </div>
                         </div>
-                        <div className='flex justify-between my-4' >
+                        <div className='grid grid-cols-2 text-start my-1' >
                             <p>নাম: {sale?.customer?.name}</p>
                             <p>{sale?.broker === '' ? '' : ` ব্রোকার:${sale?.broker}`}</p>
                         </div>
-                        <div className="flex justify-between">
+                        <div className="grid grid-cols-2 text-start">
                             <div >ঠিকানা:{sale?.customer?.address}</div>
-                            <div className="w-1/3">মোবা: {sale?.customer?.phone} </div>
+                            <div className="">মোবা: {sale?.customer?.phone} </div>
                         </div>
                     </div>
 

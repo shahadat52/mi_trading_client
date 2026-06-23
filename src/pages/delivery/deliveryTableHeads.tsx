@@ -1,4 +1,5 @@
 export const deliveryTableHeads = [
+    "Customer",
     "Delivery By",
     "Delivery Time",
     "Via",

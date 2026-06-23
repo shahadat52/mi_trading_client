@@ -111,10 +111,10 @@ const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
                     <table className="w-full h-auto  min-h-[200px] border-collapse border-y border-gray-400">
                         <thead>
                             <tr className="bg-blue-900 text-white text-xs">
-                                <th className="border-r border-gray-200 p-1 w-12">সংখ্যা</th>
+                                <th className="border-r border-gray-200 p-1 w-10">সংখ্যা</th>
                                 <th className="border-r border-gray-200 p-1">পণ্য ও পরিমাণ</th>
-                                <th className="border-r border-gray-200 p-1 w-20">দর</th>
-                                <th className="p-1 w-24">মোট</th>
+                                <th className="border-r border-gray-200 p-1 w-16">দর</th>
+                                <th className="p-1 w-20">মোট</th>
                             </tr>
                         </thead>
                         <tbody className="my-section h-auto align-top overflow-hidden">
@@ -126,7 +126,7 @@ const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
                                 <tr key={idx} className="text-[10px] relative border-b text-start  border-gray-100">
                                     <td className="border-r border-gray-300 text-center ">{idx + 1}</td>
                                     <td className="border-r pl-3 border-gray-300 ">
-                                        {p.name} {" "} - {p?.bosta} বস্তা - {p.quantity} {p?.unit}
+                                        {p.name} {" "} - {p?.bosta}|-{p.quantity} {p?.unit === 'কেজি' ? 'kg' : p.unit}
                                     </td>
                                     <td className="border-r text-center border-gray-300  ">{p.salePrice} </td>
                                     <td className=" text-center">{p?.salePrice * p?.quantity} </td>
@@ -167,7 +167,7 @@ const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
                             </tr>
 
                             <tr className="text-[10px] border-t border-gray-400 bg-blue-900 text-white">
-                                <td colSpan={2} className="  text-start px-2 py-1 font-"><span>কথায়ঃ {toCurrency(sale?.grandTotal)}</span></td>
+                                <td colSpan={2} className="  text-start px-2 py-1 font-"><span>কথায়ঃ {toCurrency(sale?.grandTotal - sale?.paidAmount)}</span></td>
                                 <td className=" text-end p-1 ">  <span>বাকি-</span></td>
                                 <td className=" text-center p-1 ">  <span className='bg-red-600 border-red-600 text-white rounded px-1 border-2'>{sale?.grandTotal - sale?.paidAmount} </span></td>
                             </tr>

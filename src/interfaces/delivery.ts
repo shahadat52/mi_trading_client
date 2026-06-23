@@ -3,7 +3,10 @@ export type TDelivery = {
     deliveryBy: string;
     deliveryTime: Date;
     via: string;
-    sales: { invoice: string };
+    sales: {
+        customer: any,
+        invoice: string
+    };
     destination: string;
     description: string;
     createdAt: Date

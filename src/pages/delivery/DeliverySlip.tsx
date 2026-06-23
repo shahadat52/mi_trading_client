@@ -16,14 +16,14 @@ const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sal
 
                 <div className=' shadow shadow-blue-900   '>
                     {/* Header Section */}
-                    <div className="grid grid-cols-12 bg-[#082882] text-center text-white  ">
+                    <div className="grid grid-cols-12 bg-[#182c64] text-center text-white  ">
                         <div className="col-span-2  h-20 w-20 flex my-auto mx-auto bg-white rounded-full items-center justify-center font-bold">
                             <img src="/mi_logo.png" alt="Logo" className='h-20 w-20' />
                         </div>
                         <div className='col-span-8'>
-                            <p className="text-xs italic my-2">বিসমিল্লাহির রাহমানির রাহিম</p>
-                            <h1 className="text-red-700 text-[24px] ml-[13px] font-bold">মেসার্স এম.আই ট্রেডিং</h1>
-                            <h2 className="text-orange-400  text-xl font-serif italic">M/S. M.I TRADING</h2>
+                            <p className="text-xs italic my-1">বিসমিল্লাহির রাহমানির রাহিম</p>
+                            <h1 className="text-white text-[24px] ml-[13px] font-bold">মেসার্স এম.আই ট্রেডিং</h1>
+                            <h2 className="text-red-500  text-xl font-serif">M/S. M.I TRADING</h2>
                             <p className="text-sm">জেনারেল মার্চেন্ট এন্ড কমিশন এজেন্ট</p>
                             <p className="text-xs  flex items-center justify-center"> <IoLocationSharp /> ২০২ নং খাতুনগঞ্জ, কোতোয়ালী, চট্টগ্রাম। </p>
 
@@ -34,7 +34,7 @@ const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sal
                     </div>
 
                     {/* Info Section */}
-                    <div className="p-4 text-sm  rounded-t-4xl bg-white mx-[6px]">
+                    <div className="p-4 text-xs  rounded-t-4xl bg-white mx-[6px]">
                         <div className="flex justify-between mb-2">
                             <div> নং: <span className="border-dashed border-b px-2">{sale?.sales?.invoice}</span></div>
                             <div >
@@ -42,12 +42,12 @@ const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sal
 
                             </div>
                         </div>
-                        <div className='my-4' >নাম: <span className="border-dashed border-b px-2">{sales?.customer?.name}</span> </div>
-                        <div className="flex justify-between mb-2">
-                            <div >ঠিকানা: <span className=" border-dashed border-b px-2">{sales?.customer?.address}</span></div>
-                            <div className=" text-right">মোবা:  <span className="border-dashed border-b px-2">{sales?.customer?.phone}</span></div>
+                        <div className='my-2'>নাম: <span className="border-dashed border-b px-2">{sales?.customer?.name}</span> </div>
+                        <div className="grid grid-cols-2 mb-2">
+                            <div className="text-left">মোবা:  <span className="border-dashed border-b px-1">{sales?.customer?.phone}</span></div>
+                            <div className=""><span className=''>ট্রান্সপোর্ট/গাড়ির নাম্বার: </span> <span className="border-dashed border-b px-2"> বান্দরবন ট্রান্সপোর্ট</span></div>
                         </div>
-                        <div className=""><span className=''>ট্রান্সপোর্ট/গাড়ির নাম্বার: </span> <span className="border-dashed border-b px-2">{sale?.via}</span></div>
+                        <div >ঠিকানা:<span className=" border-dashed border-b px-1">{sales?.customer?.address}</span></div>
 
                     </div>
 
@@ -60,19 +60,13 @@ const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sal
                                     <th className="col-span-1 border-r border-gray-200 p-1 ">পরিমাণ</th>
                                 </tr>
                             </thead>
-                            <tbody className=" my-section align-top overflow-hidden min-h-[200px]">
-
-
-                                {/* 
-                                {/* Actual table rows */}
-
-
+                            <tbody className="text-xs my-section align-top overflow-hidden min-h-[200px]">
                                 {products?.map((ite: any, idx: number) => (
                                     <tr key={idx} className="grid grid-cols-3 text-center">
-                                        <td className="col-span-2 border-r  border-gray-900 p-2">
-                                            {ite?.name}
+                                        <td className="text-start col-span-2 border-r py-[2px] ml-1 border-gray-900 ">
+                                            {idx + 1}) {ite?.name}
                                         </td>
-                                        <td className="col-span-1 border-r border-gray-300 p-2 ">{ite?.bosta} বস্তা</td>
+                                        <td className="col-span-1 border-r border-gray-300  ">{ite?.bosta} বস্তা</td>
                                     </tr>
                                 ))}
                             </tbody>

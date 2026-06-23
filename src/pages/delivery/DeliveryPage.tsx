@@ -114,7 +114,7 @@ const DeliveryPage: React.FC = () => {
                             {deliveryTableHeads?.map((head: string) => (
                                 <th
                                     key={head}
-                                    className="px-4 py-2 border whitespace-nowrap text-left"
+                                    className="px-1 py-1 border whitespace-nowrap text-left"
                                 >
                                     {head}
                                 </th>
@@ -146,7 +146,13 @@ const DeliveryPage: React.FC = () => {
                         className="border rounded-lg shadow-sm p-4 bg-white"
                     >
                         <p className="text-sm font-semibold">
-                            DeliveryBy: <span className="font-normal">{d.deliveryBy}</span>
+                            Customer: <span className="font-normal">{d?.sales?.customer?.name}</span>
+                        </p>
+                        <p className="text-sm font-semibold">
+                            Invoice: <span className="font-normal">{d?.sales?.invoice}</span>
+                        </p>
+                        <p className="text-sm font-semibold">
+                            Delivered By: <span className="font-normal">{d.deliveryBy}</span>
                         </p>
                         <p className="text-sm font-semibold">
                             Destination: <span className="font-normal">{d.destination}</span>
@@ -154,9 +160,7 @@ const DeliveryPage: React.FC = () => {
                         <p className="text-sm font-semibold">
                             Via: <span className="font-normal">{d.via}</span>
                         </p>
-                        <p className="text-sm font-semibold">
-                            Description: <span className="font-normal">{d.description}</span>
-                        </p>
+
                         <p className="text-sm font-semibold">
                             Date: <span className="font-normal">{new Date(d.deliveryTime).toLocaleDateString()}</span> {"--"}
                             Time: <span className="font-normal">{new Date(d.deliveryTime).toLocaleTimeString()}</span>

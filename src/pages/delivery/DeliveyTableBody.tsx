@@ -50,9 +50,10 @@ const DeliveryTableBody = ({ d, openDeliverySlip, }: { d: TDelivery; openDeliver
 
     return (
         <tr className="hover:bg-gray-50">
-            <td className="px-4 py-2 border">{d?.deliveryBy}</td>
+            <td className="px-1 py-1 border">{d?.sales?.customer?.name}</td>
+            <td className="px-1 py-1 border">{d?.deliveryBy}</td>
 
-            <td className="px-4 py-2 border text-center">
+            <td className="px-1 py-1 border text-center">
                 <span>
                     {format(d?.updatedAt, 'dd/MM/yyyy')}
                 </span>
@@ -62,13 +63,13 @@ const DeliveryTableBody = ({ d, openDeliverySlip, }: { d: TDelivery; openDeliver
                 </span>
             </td>
 
-            <td className="px-4 py-2 border">{d?.via}</td>
+            <td className="px-1 py-1 border">{d?.via}</td>
 
-            <td className="px-4 py-2 border">{d?.sales?.invoice}</td>
+            <td className="px-1 py-1 border">{d?.sales?.invoice}</td>
 
-            <td className="px-4 py-2 border">{d?.destination}</td>
+            <td className="px-1 py-1 border">{d?.destination}</td>
 
-            <td className="px-4 py-2 border">
+            <td className="px-1 py-1 border">
                 <button
                     onClick={() =>
                         handleDeliveryStatusUpdate(
@@ -76,16 +77,16 @@ const DeliveryTableBody = ({ d, openDeliverySlip, }: { d: TDelivery; openDeliver
                             d?.sales?.invoice as string
                         )
                     }
-                    className="bg-blue-600 text-white px-4 py-2 rounded"
+                    className="bg-blue-600 text-white px-1 py-1 rounded"
                 >
                     সম্পন্ন করুন
                 </button>
             </td>
 
-            <td className="px-4 py-2 border">
+            <td className="px-1 py-1 border">
                 <button
                     onClick={() => openDeliverySlip(d)}
-                    className="bg-blue-600 text-white px-4 py-2 rounded"
+                    className="bg-blue-600 text-white px-1 py-1 rounded"
                 >
                     স্লিপ প্রিন্ট করুণ
                 </button>
