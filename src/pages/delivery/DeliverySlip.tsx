@@ -34,7 +34,7 @@ const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sal
                     </div>
 
                     {/* Info Section */}
-                    <div className="p-4 text-xs  rounded-t-4xl bg-white mx-[6px]">
+                    <div className="p-2 text-xs  rounded-t-4xl bg-white mx-[6px]">
                         <div className="flex justify-between mb-2">
                             <div> নং: <span className="border-dashed border-b px-2">{sale?.sales?.invoice}</span></div>
                             <div >
@@ -45,7 +45,7 @@ const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sal
                         <div className='my-2'>নাম: <span className="border-dashed border-b px-2">{sales?.customer?.name}</span> </div>
                         <div className="grid grid-cols-2 mb-2">
                             <div className="text-left">মোবা:  <span className="border-dashed border-b px-1">{sales?.customer?.phone}</span></div>
-                            <div className=""><span className=''>ট্রান্সপোর্ট/গাড়ির নাম্বার: </span> <span className="border-dashed border-b px-2"> বান্দরবন ট্রান্সপোর্ট</span></div>
+                            <div className=""><span className=''>ট্রান্সপোর্ট নাম/নাম্বার: </span> <span className="border-dashed border-b px-১">{sale?.via}</span></div>
                         </div>
                         <div >ঠিকানা:<span className=" border-dashed border-b px-1">{sales?.customer?.address}</span></div>
 
