@@ -115,7 +115,6 @@ const ProductDetails = () => {
             await refetch();
             setIsEditing(false);
         } catch (error) {
-            // console.error("Update failed:", error);
         }
     };
 

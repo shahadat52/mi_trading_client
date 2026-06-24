@@ -17,7 +17,7 @@ import { customRound } from '../../utils/customRound';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { FaWhatsappSquare } from 'react-icons/fa';
 import { AiFillMessage } from 'react-icons/ai';
-import { sendNumberMsg, sendSingleTxnWhatsAppMsg, sendWhatsAppMsg } from '../../utils/sendSMS';
+import { sendSMSByReve, sendSingleTxnWhatsAppMsg, sendWhatsAppMsg } from '../../utils/sendSMS';
 import { banksName } from '../accounts/banksName';
 
 const CustomerTxnPage = () => {
@@ -78,12 +78,52 @@ const CustomerTxnPage = () => {
         }
     };
 
+
+
     const transactions = data?.data
     const totalDebit = customRound(transactions?.filter((txn: any) => (txn.type === 'debit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0))
     const totalCredit = customRound(transactions?.filter((txn: any) => (txn.type === 'credit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0))
-    const due = totalDebit - totalCredit || 0
+    const dueAmount = totalDebit - totalCredit || 0
 
     const customerData = customer?.data
+
+    const handleSendTxnSMS = async (amount: number, balance: number, type: string) => {
+        const isConfirm = confirm("SMS পাঠাতে চাচ্ছেন?")
+        if (!isConfirm) {
+            return
+        }
+        try {
+            const message =
+                `প্রিয় গ্রাহক,
+আপনি ${amount} ${type === "credit" ? "টাকা জমা দিয়েছেন" : "টাকার পণ্য নিয়েছেন"}। বর্তমানে ${Math.abs(balance)} টাকা বকেয়া আছে।
+ধন্যবাদ,
+M.I TRADING`;
+            await sendSMSByReve(
+                customerData?.phone,
+                message,
+            );
+        } catch (err) {
+        }
+    }
+
+    const handleSendDueSMS = async (due: number) => {
+        const isConfirm = confirm("SMS পাঠাতে চাচ্ছেন?")
+        if (!isConfirm) {
+            return
+        }
+        try {
+            const message =
+                `প্রিয় গ্রাহক,
+আপনার কাছে ${due} টাকা বকেয়া আছে। দ্রুত পরিশোধ করুন।
+ধন্যবাদ,
+M.I TRADING`;
+            await sendSMSByReve(
+                customerData?.phone,
+                message,
+            );
+        } catch (err) {
+        }
+    }
     return (
         <div className=''>
             <div className='flex justify-around items-center'>
@@ -95,7 +135,7 @@ const CustomerTxnPage = () => {
 
                     <ul tabIndex={-1} className="dropdown-content menu bg-base-100 rounded-box w-44 p-2 shadow">
                         <li
-                            onClick={() => sendWhatsAppMsg(customerData?.phone, due)}
+                            onClick={() => sendWhatsAppMsg(customerData?.phone, dueAmount)}
                             className="bg-white text-white rounded m-1"
                         >
                             <p className='text-green-800 text-4xl'>
@@ -104,8 +144,7 @@ const CustomerTxnPage = () => {
                         </li>
 
                         <li
-                            onClick={() => sendNumberMsg(customerData?.phone, `আসসালামু আলাইকুম, M.I trading এর পক্ষ থেকে শুভেচ্ছা।
-                             আপনার ${due} টাকা বাকি আছে। দ্রুত পরিশোধ করুণ`)}
+                            onClick={() => handleSendDueSMS(dueAmount)}
                             className="bg-white text-black rounded m-1"
                         >
                             <p className='text-gray-800 text-4xl'>
@@ -119,7 +158,7 @@ const CustomerTxnPage = () => {
                 <button
                     onClick={() => setMakeTxn(!makeTxn)} className='p-1 m-1 text-white bg-blue-600 rounded-xl'>Make Txn
                 </button>
-                <p>Due: {`${due} টাকা ${due < 0 ? 'দিব' : 'পাবো'} `}</p>
+                <p>Due: {`${dueAmount} টাকা ${dueAmount < 0 ? 'দিব' : 'পাবো'} `}</p>
             </div>
 
 
@@ -294,16 +333,9 @@ const CustomerTxnPage = () => {
 
                                                     {/* SMS Button */}
                                                     <button
-                                                        onClick={(e) => {
+                                                        onClick={async (e) => {
                                                             e.stopPropagation();
-
-                                                            sendNumberMsg(
-                                                                customerData?.phone,
-                                                                `আপনি ${tx.amount} ${tx.type === "credit"
-                                                                    ? "টাকা জমা দিয়েছেন"
-                                                                    : "টাকার পণ্য নিয়েছেন"
-                                                                } বর্তমানে ${Math.abs(tx.balance)} টাকা বকেয়া আছে`
-                                                            );
+                                                            handleSendTxnSMS(tx.amount, tx.balance, tx.type)
                                                         }}
                                                         className="group flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-blue-700 transition-all duration-200 hover:bg-blue-600 hover:text-white"
                                                         title="SMS"

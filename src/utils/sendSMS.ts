@@ -43,7 +43,31 @@ export const sendSingleTxnWhatsAppMsg = (phone: string, type: string, paid: numb
 };
 
 export const sendNumberMsg = (phone: string, message: string) => {
-    // const phone = "8801XXXXXXXXX"; // number with country code
-    // const message = "Hello, I want to contact you";
     window.location.href = `sms:${phone}?body=${encodeURIComponent(message)}`;
 };
+
+export const sendSMSByReve = async (phone: any, message: string) => {
+
+
+
+    const params = new URLSearchParams(
+        {
+            apikey: import.meta.env.VITE_REVE_API_KEY as string,
+            secretkey: import.meta.env.VITE_REVE_SECRET_KEY as string,
+            callerID: import.meta.env.VITE_REVE_SENDER_ID as string,
+            toUser: phone,
+            messageContent: message,
+        }
+    );
+
+    const response = await fetch(
+        `https://smpp.revesms.com:7790/sendtext?${params}`
+    );
+
+    const result = await response.json();
+    if (!response.ok) {
+        throw new Error(result);
+    }
+
+    return result;
+}

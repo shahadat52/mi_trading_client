@@ -34,10 +34,10 @@ const ProductReceivingSlip = () => {
 
             <div
                 ref={printRef}
-                className="w-[290px] mx-auto bg-white text-black border border-black p-2 text-[12px]"
+                className="min-h-[450px] w-[290px] mx-auto bg-white text-black border border-black p-2  text-[12px]"
             >
                 {/* Header */}
-                <div className="text-center border-b border-dashed border-black pb-2">
+                <div className="text-center border-b  border-dashed mt-2 border-black pb-2">
                     <p className="font-semibold">
                         بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
                     </p>
@@ -79,16 +79,11 @@ const ProductReceivingSlip = () => {
                 </div>
 
                 {/* Info */}
-                <div className="relative overflow-hidden">
-                    <div
-                        className="absolute inset-0 pointer-events-none"
-                        style={{
-                            backgroundImage: `url(${mi_logo})`,
-                            backgroundRepeat: "no-repeat",
-                            backgroundPosition: "center",
-                            backgroundSize: "180px",
-                            opacity: 0.15, // watermark opacity
-                        }}
+                <div className=" relative overflow-hidden">
+                    <img
+                        src={mi_logo}
+                        alt="watermark"
+                        className="absolute top-1/2 left-1/2 w-40 -translate-x-1/2 -translate-y-1/2 opacity-20"
                     />
                     <div className="py-2 space-y-1">
                         <div className="flex justify-between">
