@@ -62,7 +62,7 @@ const BothSalesPage = () => {
                     <input
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        placeholder="ইনভয়েস খুঁজুন..."
+                        placeholder="নাম/ফোন/ইনভয়েস দিয়ে খুঁজুন..."
                         className="border rounded px-3 py-2 text-sm lg:w-64 w-full"
                     />
                     <div className="flex gap-3 items-center">

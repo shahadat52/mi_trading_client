@@ -17,7 +17,7 @@ const CashOutPage = ({ transactions }: any) => {
     return (
         <section className="bg-white shadow-md rounded-lg p-6">
             <h2 className="text-xl font-semibold text-gray-700 mb-4">Recent Transactions</h2>
-            <table className="w-full table-auto text-left border-collapse">
+            <table className="w-full table-auto text-left border-collapse mb-16">
                 <thead>
                     <tr className="bg-gray-50 text-gray-600 uppercase text-sm">
                         <th className="py-3 px-4 border-b">Date</th>

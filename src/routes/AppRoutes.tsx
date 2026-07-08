@@ -254,10 +254,6 @@ export const router = createBrowserRouter([
         path: "login",
         element: <LoginPage />,
     },
-    // {
-    //     path: "testMemo",
-    //     element: <SalesMemo />,
-    // },
     {
         path: "*",
         element: <ErrorBoundary />,

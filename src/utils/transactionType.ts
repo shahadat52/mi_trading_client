@@ -4,3 +4,4 @@ export const bankTxnType = [{ label: "Credit", value: 'credit' }, { label: "Debi
 export const bankingSource = [{ label: "Cash", value: 'cash' }, { label: "Others", value: 'others' }]
 
 export const customerTxnType = [{ label: "পেলাম", value: 'credit' }, { label: "দিলাম", value: 'debit' }]
+export const mfsTxnType = [{ label: "পেলাম", value: 'credit' }, { label: "দিলাম", value: 'debit' }]

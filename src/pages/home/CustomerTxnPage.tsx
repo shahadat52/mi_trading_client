@@ -7,7 +7,7 @@ import { useForm, type FieldValues } from 'react-hook-form';
 import SelectField from '../../components/form/SelectField';
 import { customerTxnType } from '../../utils/transactionType';
 import { toast } from 'react-toastify';
-import { useCustomerTxnEntryMutation, useGetAllTxnByCustomerQuery, useGetCustomerByIdQuery } from '../../redux/features/customer/customerApi';
+import { useCustomerTxnEntryMutation, useGetAllTxnByCustomerQuery, useGetCustomerByIdQuery, useSendDueSmsMutation, useSendTxnSmsMutation } from '../../redux/features/customer/customerApi';
 import InputField from '../../components/form/InputFields';
 import Modal from '../../components/Modal';
 import EditCustomerTxn from './EditCustomerTxn';
@@ -17,7 +17,7 @@ import { customRound } from '../../utils/customRound';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { FaWhatsappSquare } from 'react-icons/fa';
 import { AiFillMessage } from 'react-icons/ai';
-import { sendSMSByReve, sendSingleTxnWhatsAppMsg, sendWhatsAppMsg } from '../../utils/sendSMS';
+import { sendSingleTxnWhatsAppMsg, sendWhatsAppMsg } from '../../utils/sendSMS';
 import { banksName } from '../accounts/banksName';
 
 const CustomerTxnPage = () => {
@@ -26,6 +26,8 @@ const CustomerTxnPage = () => {
     const [isOpen, setIsOpen] = useState(false)
     const [selectedTxn, setSelectedTxn] = useState(null)
     const [loading, setLoading] = useState(false)
+    const [sendTxnSms] = useSendTxnSmsMutation();
+    const [sendDueSms] = useSendDueSmsMutation();
     const { control, handleSubmit, reset, watch } = useForm({
         defaultValues: {
             paymentMethod: 'cash'
@@ -92,37 +94,52 @@ const CustomerTxnPage = () => {
         if (!isConfirm) {
             return
         }
+
+        const toastId = toast.loading("Processing...", { autoClose: 2000 });
         try {
-            const message =
-                `প্রিয় গ্রাহক,
-আপনি ${amount} ${type === "credit" ? "টাকা জমা দিয়েছেন" : "টাকার পণ্য নিয়েছেন"}। বর্তমানে ${Math.abs(balance)} টাকা বকেয়া আছে।
-ধন্যবাদ,
-M.I TRADING`;
-            await sendSMSByReve(
-                customerData?.phone,
-                message,
-            );
-        } catch (err) {
+            const result = await sendTxnSms({ phone: customerData?.phone, amount, balance, type });
+            if (result?.data?.success) {
+                toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
+
+            } else {
+                toast.update(toastId, { render: `${(result as any)?.error?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
+                setLoading(false);
+
+            }
+        } catch (err: any) {
+            toast.update(toastId, { render: err?.error?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
+
+
+        } finally {
         }
+
     }
+
 
     const handleSendDueSMS = async (due: number) => {
         const isConfirm = confirm("SMS পাঠাতে চাচ্ছেন?")
         if (!isConfirm) {
             return
         }
+
+        const toastId = toast.loading("Processing...", { autoClose: 2000 });
         try {
-            const message =
-                `প্রিয় গ্রাহক,
-আপনার কাছে ${due} টাকা বকেয়া আছে। দ্রুত পরিশোধ করুন।
-ধন্যবাদ,
-M.I TRADING`;
-            await sendSMSByReve(
-                customerData?.phone,
-                message,
-            );
-        } catch (err) {
+            const result = await sendDueSms({ phone: customerData?.phone, due });
+            if (result?.data?.success) {
+                toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
+
+            } else {
+                toast.update(toastId, { render: `${(result as any)?.error?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
+                setLoading(false);
+
+            }
+        } catch (err: any) {
+            toast.update(toastId, { render: err?.error?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
+
+
+        } finally {
         }
+
     }
     return (
         <div className=''>

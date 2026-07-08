@@ -6,10 +6,12 @@ import SelectField from "../../../components/form/SelectField";
 import { toast } from "react-toastify";
 import { useGetAllSectorsQuery, useTxnEntryMutation } from "../../../redux/features/inExTxn/inExTxnApi";
 import { paymentMethods } from "../../../utils/paymentMethods";
+import { bankingSource } from "../../../utils/transactionType";
+import { banksName } from "../../accounts/banksName";
 
 const IncomeEntry = ({ onClose }: { onClose: () => void }) => {
     const [loading, setLoading] = useState(false)
-    const { handleSubmit, control, reset } = useForm();
+    const { handleSubmit, control, reset, watch } = useForm();
     const [addIncome] = useTxnEntryMutation();
 
     const { data: sectorData } = useGetAllSectorsQuery({ head: 'income' });
@@ -42,6 +44,8 @@ const IncomeEntry = ({ onClose }: { onClose: () => void }) => {
         }
 
     }
+
+    const paymentMethod = watch("paymentMethod")
 
     return (
         <div className="lg:max-w-[50%] mx-auto ">
@@ -79,6 +83,29 @@ const IncomeEntry = ({ onClose }: { onClose: () => void }) => {
                     options={paymentMethods}
                     rules={{ required: "পেমেন্ট মেথড নাই" }}
                 />
+
+                {
+                    paymentMethod === 'bank' && (
+                        <div className='mt-3'>
+                            <SelectField
+                                label="ব্যাংকের নাম"
+                                name="bankName"
+                                control={control}
+                                options={banksName}
+                                rules={{ required: "ব্যাংকের নাম নাই" }}
+                            />
+
+                            <SelectField
+                                name="source"
+                                label="no"
+                                placeholder='সোর্স'
+                                options={bankingSource}
+                                control={control}
+                                rules={{ required: "সোর্স" }}
+                            />
+                        </div>
+                    )
+                }
                 <button
                     type="submit"
                     disabled={loading}

@@ -8,7 +8,6 @@ import InputField from '../../../components/form/InputFields';
 import { bankTxnType } from '../../../utils/transactionType';
 
 const EditBankTxn = ({ onClose, txn, transactions }: { onClose: () => void, txn: any, transactions: any }) => {
-
     const [loading, setLoading] = useState(false)
     const { handleSubmit, control, reset } = useForm();
     const [updateTxn] = useUpdateBankTxnMutation()
@@ -42,7 +41,7 @@ const EditBankTxn = ({ onClose, txn, transactions }: { onClose: () => void, txn:
     const handleDelete = async () => {
         const isConfirm = confirm("আপনি কি নিশ্চিত! ডিলিট করেই দিবেন?")
 
-        if (!isConfirm || transactions.length < 2) {
+        if (!isConfirm || transactions?.transactions?.length < 2) {
             return
         }
 

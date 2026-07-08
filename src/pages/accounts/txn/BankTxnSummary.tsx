@@ -13,6 +13,7 @@ import "@daypicker/react/style.css";
 import Modal from "../../../components/Modal";
 import EditBankTxn from "./EditBankTxn";
 import { toast } from "react-toastify";
+import { customRound } from "../../../utils/customRound";
 
 
 const BankTxnSummary = () => {
@@ -27,6 +28,11 @@ const BankTxnSummary = () => {
     const { control, handleSubmit, reset } = useForm()
     const { data, isLoading, isError } = useGetBankWiseTxnQuery({ bankName: id, limit })
     const transactions = data?.data || [];
+    const allTxns = data?.data[0]?.transactions
+
+    const totalDebit: number = customRound(allTxns?.filter((txn: any) => (txn.type === 'debit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0))
+    const totalCredit: number = customRound(allTxns?.filter((txn: any) => (txn.type === 'credit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0))
+    const currentBalance = totalCredit - totalDebit
     const handleSelectedTxn = (id: any) => {
         setSelectedTxn(id)
         setIsOpen(true)
@@ -66,7 +72,7 @@ const BankTxnSummary = () => {
         <div>
             {/* Filters */}
             <div className=" mb-2">
-                <h1 className="m-2 text-lg font-bold">{id} Bank    (Balance: {transactions[0]?.totalAmount})</h1>
+                <h1 className="m-2 text-lg font-bold">{id} Bank    (Balance: {currentBalance})</h1>
 
                 <div className="">
                     <div className="flex  items-center gap-4">
@@ -174,19 +180,18 @@ const BankTxnSummary = () => {
 
                 {/* Data Table */}
                 {!isLoading && !isError && transactions?.length > 0 && (
-                    <div className="overflow-x-auto overflow-auto mb-20">
-                        <table className="w-full text-sm">
+                    <div className="overflow-x-auto overflow-auto mb-20 m-3">
+                        <table className="w-full text-sm ">
                             <thead className="bg-gray-100 text-gray-700">
                                 <tr>
                                     <th className="px-[6px] py-2 text-left">Date</th>
                                     <th className="px-[6px] py-2 text-left">Description</th>
                                     <th className="px-[6px] py-2 text-right">Debit</th>
                                     <th className="px-[6px] py-2 text-right">Credit</th>
-                                    <th className="px-[6px] py-2 text-right">Balance</th>
                                 </tr>
                             </thead>
 
-                            <tbody>
+                            <tbody className="p-4">
                                 {transactions[0]?.transactions?.map((tx: any) => {
 
                                     return (
@@ -196,7 +201,7 @@ const BankTxnSummary = () => {
                                             className="text-sm border-t hover:bg-gray-50 transition"
                                         >
                                             <td className=" px-1 py-2">
-                                                {`${format(new Date(tx.createdAt), "dd/MM/yy")}`} <br />
+                                                {`${format(new Date(tx.createdAt), "dd/MM/yyyy")}`} <br />
                                             </td>
 
                                             <td className="px-1 py-2">
@@ -216,9 +221,7 @@ const BankTxnSummary = () => {
                                                 {tx.type === 'credit' ? `৳ ${tx.amount}` : "-"}
                                             </td>
 
-                                            <td className="px-1 py-2 text-right font-semibold">
-                                                ৳ {tx.balance}
-                                            </td>
+
                                         </tr>
                                     );
                                 })}

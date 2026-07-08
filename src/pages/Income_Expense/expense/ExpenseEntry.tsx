@@ -6,10 +6,12 @@ import SelectField from "../../../components/form/SelectField";
 import InputField from "../../../components/form/InputFields";
 import { useGetAllSectorsQuery, useTxnEntryMutation } from "../../../redux/features/inExTxn/inExTxnApi";
 import { paymentMethods } from "../../../utils/paymentMethods";
+import { banksName } from "../../accounts/banksName";
+import { bankingSource } from "../../../utils/transactionType";
 
 const ExpenseEntry = ({ onClose }: { onClose: () => void }) => {
     const [loading, setLoading] = useState(false)
-    const { handleSubmit, control, reset } = useForm();
+    const { handleSubmit, control, reset, watch } = useForm();
 
     const { data: sectorData } = useGetAllSectorsQuery({ head: 'expense' });
     const expenseSources = sectorData?.data || [];
@@ -42,6 +44,9 @@ const ExpenseEntry = ({ onClose }: { onClose: () => void }) => {
         }
 
     }
+
+
+    const paymentMethod = watch('paymentMethod');
     return (
         <div className="m-4 ">
             <h1 className="text-2xl text-center font-bold mb-4 ">আপনার ব্যয় যোগ করূন </h1>
@@ -79,6 +84,28 @@ const ExpenseEntry = ({ onClose }: { onClose: () => void }) => {
                     options={paymentMethods}
                     rules={{ required: "পেমেন্ট মেথড নাই" }}
                 />
+                {
+                    paymentMethod === 'bank' && (
+                        <div className='mt-3'>
+                            <SelectField
+                                label="ব্যাংকের নাম"
+                                name="bankName"
+                                control={control}
+                                options={banksName}
+                                rules={{ required: "ব্যাংকের নাম নাই" }}
+                            />
+
+                            <SelectField
+                                name="source"
+                                label="no"
+                                placeholder='সোর্স'
+                                options={bankingSource}
+                                control={control}
+                                rules={{ required: "সোর্স" }}
+                            />
+                        </div>
+                    )
+                }
 
 
                 <button

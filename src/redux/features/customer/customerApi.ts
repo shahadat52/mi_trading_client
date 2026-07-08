@@ -137,9 +137,32 @@ const authApi = baseApi.injectEndpoints({
             invalidatesTags: ['UnapprovedCustomerTxn']
         }),
 
+        sendTxnSms: builder.mutation({
+            query: (payload) => (
+
+                {
+                    url: `/sms/txn`,
+                    method: "POST",
+                    body: payload
+
+                }
+            )
+        }),
+
+        sendDueSms: builder.mutation({
+            query: (payload) => (
+                {
+                    url: `/sms/due`,
+                    method: "POST",
+                    body: payload
+
+                }
+            )
+        }),
+
 
 
     }),
 });
 
-export const { useAddCustomerMutation, useGetAllCustomersQuery, useGetCustomerByIdQuery, useUpdateCustomerDataMutation, useCustomerTxnEntryMutation, useGetAllCustomerTxnQuery, useGetCustomerDueQuery, useGetAllTxnByCustomerQuery, useUpdateCustomerTxnMutation, useDeleteCustomerTxnMutation, useDeleteCustomerMutation, useGetUnapprovedCustomerTxnQuery, useMakeApproveCustomerTxnMutation } = authApi
+export const { useAddCustomerMutation, useGetAllCustomersQuery, useGetCustomerByIdQuery, useUpdateCustomerDataMutation, useCustomerTxnEntryMutation, useGetAllCustomerTxnQuery, useGetCustomerDueQuery, useGetAllTxnByCustomerQuery, useUpdateCustomerTxnMutation, useDeleteCustomerTxnMutation, useDeleteCustomerMutation, useGetUnapprovedCustomerTxnQuery, useMakeApproveCustomerTxnMutation, useSendTxnSmsMutation, useSendDueSmsMutation } = authApi

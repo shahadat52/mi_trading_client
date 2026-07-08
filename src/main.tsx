@@ -21,5 +21,4 @@ if (rootElement) {
     </Provider>
   );
 } else {
-  console.error("Root element not found");
 }

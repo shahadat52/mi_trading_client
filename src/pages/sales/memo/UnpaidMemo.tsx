@@ -118,9 +118,6 @@ const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
                             </tr>
                         </thead>
                         <tbody className="my-section h-auto align-top overflow-hidden">
-
-
-
                             {/* Actual table rows */}
                             {sale.items?.map((p: any, idx: number) => (
                                 <tr key={idx} className="text-[10px] relative border-b text-start  border-gray-100">

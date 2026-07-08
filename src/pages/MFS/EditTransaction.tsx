@@ -25,6 +25,7 @@ const EditTransaction = ({ selectedTxn, onClose, updateMutation }: Props) => {
         try {
             const result = await updateMutation({ data, id });
             if (result?.data?.success) {
+
                 toast.update(toastId, {
                     render: result.data.message,
                     type: "success",
@@ -32,7 +33,6 @@ const EditTransaction = ({ selectedTxn, onClose, updateMutation }: Props) => {
                     autoClose: 1500,
                     closeOnClick: true,
                 });
-
                 reset();
                 onClose();
             } else {
@@ -65,6 +65,7 @@ const EditTransaction = ({ selectedTxn, onClose, updateMutation }: Props) => {
             const result = await deleteMfsTxn(id);
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
+                onClose()
             } else {
                 toast.update(toastId, { render: `${(result as any)?.error?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
                 setLoading(false);

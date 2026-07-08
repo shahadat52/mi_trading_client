@@ -6,6 +6,7 @@ import { useAppSelector } from '../../redux/hook';
 import { format } from 'date-fns';
 
 const DeliveryTableBody = ({ d, openDeliverySlip, }: { d: TDelivery; openDeliverySlip: any; }) => {
+
     const user = useAppSelector((state: any) => state?.auth?.auth?.user);
     const [updateDeliveryStatus] = useDeliveryStatusUpdateMutation();
 
@@ -77,7 +78,11 @@ const DeliveryTableBody = ({ d, openDeliverySlip, }: { d: TDelivery; openDeliver
                             d?.sales?.invoice as string
                         )
                     }
-                    className="bg-blue-600 text-white px-1 py-1 rounded"
+                    disabled={d.deliveryBy !== ""}
+                    className={`px-1 py-1 rounded text-white ${d.deliveryBy === ""
+                        ? "bg-blue-600 hover:bg-blue-700 cursor-pointer"
+                        : "bg-gray-400 cursor-not-allowed"
+                        }`}
                 >
                     সম্পন্ন করুন
                 </button>

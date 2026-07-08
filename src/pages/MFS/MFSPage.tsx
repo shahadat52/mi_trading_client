@@ -1,5 +1,5 @@
 import { useParams } from 'react-router';
-import { useGetMfsTxnByHeadQuery, useUpdateMfsTxnMutation } from '../../redux/features/mfs/mfsApi';
+import { useGetMfsTxnByHeadQuery, useMfsTxnEntryMutation, useUpdateMfsTxnMutation } from '../../redux/features/mfs/mfsApi';
 import ErrorBoundary from '../../components/ErrorBoundary';
 import TableSkeleton from '../../components/table/TableSkeleton';
 import { customRound } from '../../utils/customRound';
@@ -7,12 +7,25 @@ import { useState } from 'react';
 import Modal from '../../components/Modal';
 import EditTransaction from './EditTransaction';
 import { format } from 'date-fns';
+import { useForm, type FieldValues } from 'react-hook-form';
+import SelectField from '../../components/form/SelectField';
+import InputField from '../../components/form/InputFields';
+import { toast } from 'react-toastify';
+import { bankingSource, mfsTxnType } from '../../utils/transactionType';
 
 const MFSPage = () => {
+    const [loading, setLoading] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
+    const [makeTxn, setMakeTxn] = useState(false)
     const [selectedTxn, setSelectedTxn] = useState('')
-    const { id } = useParams()
-    const [updateTxn] = useUpdateMfsTxnMutation()
+    const { id } = useParams();
+    const { control, handleSubmit, reset } = useForm({
+        defaultValues: {
+            source: 'others'
+        }
+    })
+    const [updateTxn] = useUpdateMfsTxnMutation();
+    const [mfsTxnEntry] = useMfsTxnEntryMutation()
     const { data, isLoading, isError, } = useGetMfsTxnByHeadQuery({ head: id })
     const transactions = data?.data || []
 
@@ -25,9 +38,101 @@ const MFSPage = () => {
         setSelectedTxn(id)
         setIsOpen(true)
     }
+
+    const onSubmit = async (data: FieldValues) => {
+        setLoading(true)
+        const toastId = toast.loading("Processing...");
+        data.head = id
+        try {
+
+            const result = await mfsTxnEntry(data);
+            if (result?.data?.success) {
+                toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
+                setLoading(false)
+                reset();
+
+            } else {
+                toast.update(toastId, { render: `${(result as any)?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
+                setLoading(false)
+            }
+        } catch (err: any) {
+            toast.update(toastId, { render: err?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
+        } finally {
+            setLoading(false)
+        }
+    };
+
     return (
         <div>
             <h1 className='text-center text-2xl font-bold uppercase'>{id} Transaction Page</h1>
+            <button
+                onClick={() => setMakeTxn(!makeTxn)} className='p-1 m-1 text-white bg-blue-600 rounded-xl'>Make Txn
+            </button>
+            <div>
+                {
+                    makeTxn && <div className="sticky flex flex-col lg:flex-row gap-2 mb-2 p-1 ">
+                        <form onSubmit={handleSubmit(onSubmit)} className="">
+
+                            <div className='flex items-center gap-1'>
+                                <SelectField
+                                    name="type"
+                                    label="no"
+                                    placeholder='লেনদেনের ধরণ'
+                                    options={mfsTxnType}
+                                    control={control}
+                                    rules={{ required: "লেনদেনের ধরন নাই" }}
+                                />
+
+                                <div className='mt-4'>
+                                    <InputField
+
+                                        name="amount"
+                                        label=""
+                                        placeholder='কত টাকা *'
+                                        type='number'
+                                        control={control}
+                                        rules={{ required: "টাকার পরিমান নাই" }}
+                                    />
+                                </div>
+
+
+                            </div>
+                            <InputField
+                                name="note"
+                                label=""
+                                placeholder='বিবরণ'
+                                type='text'
+                                control={control}
+                            />
+
+                            <SelectField
+                                name="source"
+                                label="no"
+                                placeholder='সোর্স'
+                                options={bankingSource}
+                                control={control}
+                                rules={{ required: "সোর্স" }}
+                            />
+
+
+
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className="btn btn-primary w-full mt-2"
+                            >
+                                {loading ? (
+                                    <span className="loading loading-dots loading-lg"></span>
+                                ) : (
+                                    "লেনদেন করুন"
+                                )}
+                            </button>
+                        </form>
+                    </div>
+                }
+
+            </div>
+
             <div className='m-2'>
                 <h2 className='text-lg'>Total Credit: {totalCredit}</h2>
                 <h2 className='text-lg'>Total Debit: {totalDebit}</h2> <hr />
@@ -109,7 +214,7 @@ const MFSPage = () => {
                     )}
                 </div>
                 <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-                    <EditTransaction onClose={() => setIsOpen(false)} selectedTxn={selectedTxn} updateMutation={updateTxn} />
+                    <EditTransaction selectedTxn={selectedTxn} onClose={() => setIsOpen(false)} updateMutation={updateTxn} />
                 </Modal>
             </div>
 

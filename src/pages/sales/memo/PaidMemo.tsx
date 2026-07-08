@@ -6,6 +6,7 @@ import { format } from "date-fns";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const PaidMemo = ({ sale, onClose }: any) => {
+    const MIN_ROWS = 7;
     return (
         <div className=" max-w-[30%] mx-auto rounded overflow-auto print-area w-[28%] bg-white">
 
@@ -31,10 +32,11 @@ const PaidMemo = ({ sale, onClose }: any) => {
                     </div>
 
                     {/* Info Section */}
-                    <div className="p-4 text-sm">
+                    <div className="px-4 py-1 text-sm">
                         <div className="grid grid-cols-2 text-start my-1">
                             <div>নং: {sale.invoice}</div>
-                            <div>তারিখ: {format(sale.date, 'dd/MM/yyyy')}:({format(sale.date, 'hh:mm a')})
+                            <div>
+                                তারিখ: {format(sale.date, 'dd/MM/yyyy')}
                             </div>
                         </div>
                         <div className='grid grid-cols-2 text-start my-1' >
@@ -57,23 +59,37 @@ const PaidMemo = ({ sale, onClose }: any) => {
                                 <th className="p-1 w-24">মোট</th>
                             </tr>
                         </thead>
-                        <tbody className="my-section  h-64 align-top overflow-hidden">
 
 
-
-                            {/* Actual table rows */}
+                        <tbody>
                             {sale.items?.map((p: any, idx: number) => (
-                                <tr key={idx} className="relative border-b border-gray-100">
-                                    <td className="border-r border-gray-300 p-2">{idx + 1}</td>
-                                    <td className="border-r border-gray-300 p-2">
-                                        {p?.name} {" "} {p?.bosta} বস্তা - {p?.quantity} {p?.unit}
+                                <tr key={idx} className="text-[12px] border-b border-gray-100">
+                                    <td className="p-[2px] text-center border-r border-gray-300">
+                                        {idx + 1}
                                     </td>
-                                    <td className="border-r border-gray-300 p-2 ">{p?.salePrice}</td>
-                                    <td className="text-left p-2">{p?.salePrice * p?.quantity}</td>
+                                    <td className="p-[2px] border-r border-gray-300">
+                                        {p.name} - {p?.bosta} | - {p.quantity}{" "}
+                                        {p?.unit === "কেজি" ? "kg" : p.unit}
+                                    </td>
+                                    <td className="p-[2px] text-center border-r border-gray-300">
+                                        {p?.salePrice}
+                                    </td>
+                                    <td className="p-[2px] text-center">{p?.salePrice * p?.quantity}</td>
+                                </tr>
+                            ))}
+
+                            {Array.from({
+                                length: Math.max(0, MIN_ROWS - (sale.items?.length || 0)),
+                            }).map((_, idx) => (
+                                <tr key={`empty-${idx}`} className="h-6">
+                                    <td className="border-r border-gray-300">&nbsp;</td>
+                                    <td className="border-r border-gray-300"></td>
+                                    <td className="border-r border-gray-300"></td>
+                                    <td></td>
                                 </tr>
                             ))}
                         </tbody>
-                        <tfoot>
+                        <tfoot className="text-[12px]">
                             <tr className=" border-t border-gray-400 bg-blue-900 text-white">
                                 <td colSpan={2} className="text-center px-2  font-"><span></span></td>
                                 <td className=" text-xs">  <span>সাব টোটালঃ </span></td>
@@ -112,9 +128,9 @@ const PaidMemo = ({ sale, onClose }: any) => {
                     {/* Footer Section */}
                     <div >
 
-                        <div className="flex justify-between items-center m-1">
+                        <div className="text-[11px] flex justify-between items-center m-1">
                             <div>
-                                <p className="text-[12px] mt-6 border-t-2">ক্রেতার স্বাক্ষর</p>
+                                <p className="text-[10px] mt-6 border-t-2">ক্রেতার স্বাক্ষর</p>
                             </div>
                             <div className=" p-1 text-white border-1 border-red-700  ">
                                 <p className="text-cyan-600">■ বিক্রিত মাল ফেরত নেওয়া হয় না।</p>
@@ -130,11 +146,11 @@ const PaidMemo = ({ sale, onClose }: any) => {
                         <div className="bg-blue-950 text-white p-2 flex flex-col   rounded-b-lg">
 
 
-                            <div className="flex justify-between items-center">
+                            <div className="text-[12px] flex justify-between items-center">
                                 <div>
                                     <span className='flex flex-col '>
                                         <div className='flex flex-row '>
-                                            <span className='my-auto text-green-600 text-xl'><FaWhatsapp /></span>  01842753607,<img src="/bkash_nogod_logo.png" alt="My Logo" className='w-8 h-4 pl-1 my-auto' /> 01707753607, 01841753607
+                                            <span className='my-auto text-green-600'>{" "} <FaWhatsapp /> </span>  {" "}  01842753607,<img src="/bkash_nogod_logo.png" alt="My Logo" className='w-8 h-4 pl-1 my-auto' /> 01707753607, 01841753607
                                         </div>
                                         <p className="flex flex-row gap-2">
                                             <img src="/communication.png" alt="My Logo" className='w-6 h-[22px] pl-1 my-auto' /> mitrading.202ktg@gmail.com
@@ -153,7 +169,6 @@ const PaidMemo = ({ sale, onClose }: any) => {
                                     />
                                 </div>
                             </div>
-
                         </div>
                     </div>
                     <div className="flex justify-between items-center mt-8 pb-6 print:hidden">
