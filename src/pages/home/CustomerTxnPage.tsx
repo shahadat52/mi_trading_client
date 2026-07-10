@@ -142,7 +142,7 @@ const CustomerTxnPage = () => {
 
     }
     return (
-        <div className=''>
+        <div className='mx-auto'>
             <div className='flex justify-around items-center'>
                 <Profile person={customerData} />
                 <div className="dropdown dropdown-left">
@@ -181,10 +181,10 @@ const CustomerTxnPage = () => {
 
             {/*Transaction entry section */}
             {
-                makeTxn && <div className="sticky flex flex-col lg:flex-row gap-2 mb-2 p-1 ">
+                makeTxn && <div className="flex flex-col lg:flex-row gap-2 mb-2 p-1 ">
                     <form onSubmit={handleSubmit(onSubmit)} className="">
 
-                        <div className='flex items-center gap-1'>
+                        <div className='flex items-center gap-2'>
                             <SelectField
                                 name="type"
                                 label="no"
@@ -194,7 +194,7 @@ const CustomerTxnPage = () => {
                                 rules={{ required: "লেনদেনের ধরন নাই" }}
                             />
 
-                            <div className='mt-[6px]'>
+                            <div className='mt-[14px]'>
                                 <InputField
 
                                     name="amount"
@@ -224,7 +224,6 @@ const CustomerTxnPage = () => {
                             options={paymentMethods}
                             rules={{ required: "পেমেন্ট মেথড নাই" }}
                         />
-
                         {
                             paymentMethod === 'bank' && (
                                 <div className='mt-3'>
@@ -238,6 +237,7 @@ const CustomerTxnPage = () => {
                                 </div>
                             )
                         }
+
 
 
 

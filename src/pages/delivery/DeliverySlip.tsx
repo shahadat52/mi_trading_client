@@ -38,7 +38,7 @@ const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sal
                         <div className="flex justify-between mb-2">
                             <div> নং: <span className="border-dashed border-b px-2">{sale?.sales?.invoice}</span></div>
                             <div >
-                                তারিখ: <span className="text-sta border-dashed border-b px-2">{DateTime(sale?.deliveryTime)}</span>
+                                তারিখ: <span className="text-sta border-dashed border-b px-2">{DateTime(sale?.updatedAt)}</span>
 
                             </div>
                         </div>

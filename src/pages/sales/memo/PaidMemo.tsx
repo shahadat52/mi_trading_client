@@ -3,16 +3,17 @@ import { FaWhatsapp } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import { toCurrency } from 'to-words/bn-BD';
 import { format } from "date-fns";
+import mi_logo from "../../../assets/icons/mi_logo.png";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const PaidMemo = ({ sale, onClose }: any) => {
     const MIN_ROWS = 7;
     return (
-        <div className=" max-w-[30%] mx-auto rounded overflow-auto print-area w-[28%] bg-white">
+        <div className=" max-w-3xl mx-auto rounded overflow-auto print-area  bg-white">
 
             <div className="fixed inset-0 z-50 flex items-start justify-center overflow-auto  min-h-screen  ">
 
-                <div className=" border max-w-3xl rounded  overflow-auto print-area w-[450px] bg-white  border-gray-300 shadow-lg ">
+                <div className=" border max-w-3xl rounded  overflow-auto print-area bg-white  border-gray-300 shadow-lg ">
 
                     {/* Header Section */}
                     <div className="bg-[#f08c1d] p-4 text-center text-black relative">
@@ -36,7 +37,7 @@ const PaidMemo = ({ sale, onClose }: any) => {
                         <div className="grid grid-cols-2 text-start my-1">
                             <div>নং: {sale.invoice}</div>
                             <div>
-                                তারিখ: {format(sale.date, 'dd/MM/yyyy')}
+                                তারিখ: {format(sale.date, 'dd/MM/yyyy')} ({format(sale.date, 'mm:hh a')})
                             </div>
                         </div>
                         <div className='grid grid-cols-2 text-start my-1' >
@@ -50,6 +51,7 @@ const PaidMemo = ({ sale, onClose }: any) => {
                     </div>
 
                     {/* Table Section */}
+
                     <table className="w-full border-collapse border-y border-gray-400">
                         <thead>
                             <tr className="bg-blue-900 text-white text-xs">
@@ -61,7 +63,16 @@ const PaidMemo = ({ sale, onClose }: any) => {
                         </thead>
 
 
-                        <tbody>
+                        <tbody className="relative">
+                            <tr>
+                                <td>
+                                    <img
+                                        src={mi_logo}
+                                        alt="watermark"
+                                        className="absolute top-1/2 left-1/2 w-40 -translate-x-1/2 -translate-y-1/2 opacity-20"
+                                    />
+                                </td>
+                            </tr>
                             {sale.items?.map((p: any, idx: number) => (
                                 <tr key={idx} className="text-[12px] border-b border-gray-100">
                                     <td className="p-[2px] text-center border-r border-gray-300">

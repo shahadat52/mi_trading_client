@@ -6,6 +6,7 @@ import Modal from '../../components/Modal';
 import { useState } from 'react';
 import EditTxnForm from './EditTxnForm';
 import { customRound } from '../../utils/customRound';
+import { format } from 'date-fns';
 
 const BrokerTxnTable = ({ id }: any) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -17,7 +18,6 @@ const BrokerTxnTable = ({ id }: any) => {
     const totalDebit: number = customRound(transactions?.filter((txn: any) => (txn.type === 'debit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0))
     const totalCredit: number = customRound(transactions?.filter((txn: any) => (txn.type === 'credit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0))
 
-
     const handleSelectedTxn = (id: string) => {
         setSelectedTxn(id)
         setIsOpen(true)
@@ -25,6 +25,12 @@ const BrokerTxnTable = ({ id }: any) => {
 
     return (
         <div>
+
+            <div className='m-2'>
+                <h2 className='text-lg'>Total Credit: {totalCredit}</h2>
+                <h2 className='text-lg'>Total Debit: {totalDebit}</h2> <hr />
+                <h2 className='text-lg ml-4'>Balance: {totalCredit - totalDebit}</h2>
+            </div>
             {/* Table Section */}
             <div className="relative  bg-white rounded-xl shadow overflow-hidden mb-40">
                 {/* Loading State */}
@@ -52,7 +58,6 @@ const BrokerTxnTable = ({ id }: any) => {
                                     <th className="px-4 py-2 text-left">Description</th>
                                     <th className="px-4 py-2 text-right">Debit</th>
                                     <th className="px-4 py-2 text-right">Credit</th>
-                                    <th className="px-4 py-2 text-right">Balance</th>
                                 </tr>
                             </thead>
 
@@ -66,8 +71,8 @@ const BrokerTxnTable = ({ id }: any) => {
                                             className="border-t hover:bg-gray-50 transition"
                                         >
                                             <td className="px-4 py-2">
-                                                {new Date(tx.date).toLocaleDateString()} <br />
-                                                {new Date(tx.date).toLocaleTimeString()}
+                                                {format(new Date(tx?.createdAt), "dd/MM/yyyy")}  <br />
+                                                {format(new Date(tx?.createdAt), "hh:mm a")}
                                             </td>
 
                                             <td className="px-4 py-2">
@@ -85,9 +90,6 @@ const BrokerTxnTable = ({ id }: any) => {
 
                                             <td className="px-4 py-2 text-right text-green-600">
                                                 {tx.type === 'credit' ? `৳ ${tx.amount}` : "-"}
-                                            </td>
-                                            <td className="px-4 py-2 text-right">
-                                                {tx?.runningBalance}
                                             </td>
 
 

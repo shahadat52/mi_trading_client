@@ -70,7 +70,7 @@ const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
                                 </span>
 
                             </div>
-                            <p className="flex justify-center items-center text-[8px] mt-[-7px]  text-center text-black">
+                            <div className="flex justify-center items-center text-[8px] mt-[-7px]  text-center text-black">
                                 <span className='flex justify-center items-center  my-1'>
                                     <span className='my-auto text-[8px]'>
                                     </span>
@@ -78,7 +78,7 @@ const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
                                         <img src="/communication.png" alt="My Logo" className='w-4 h-[13px] pl-1 my-1' /> mitrading.202ktg@gmail.com
                                     </p></span> <span className=' text-blue-600 text-xs'> <FaSquareFacebook /> </span> M/S.M.I Trading
                                 </span>
-                            </p>
+                            </div>
                         </div>
 
                     </div>

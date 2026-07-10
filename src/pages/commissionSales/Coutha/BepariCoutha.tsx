@@ -9,6 +9,8 @@ import { useRef } from "react";
 import { useGetCommissionSalesSupplierLotWiseQuery } from "../../../redux/features/commissionSales/commissionSalesApi";
 import { useNavigate, useParams } from "react-router";
 import { useGetCouthaByIdQuery } from "../../../redux/features/coutha/couthaApi";
+import mi_logo from "../../../assets/icons/mi_logo.png";
+
 
 
 
@@ -67,13 +69,13 @@ const BepariCoutha = () => {
     return (
         <div
             ref={printRef}
-            className="overflow-y-scroll print:max-w-[400px] mx-auto h-[1588px] print-area fixed inset-0 z-50 flex items-start justify-center   p-4 sm:p-8 print:p-0"
+            className="mt-1 overflow-y-scroll print:max-w-[400px] mx-auto min-h-screen print-area fixed inset-0 z-50 flex items-start justify-center   p-4 sm:p-8 print:p-0"
 
         >
             <div
 
                 onClick={(e) => e.stopPropagation()}
-                className=" bg-white w-full max-w-2xl shadow-2xl print:shadow-none print:max-w-full rounded-lg overflow-hidden "
+                className="border bg-white w-full max-w-2xl shadow-2xl print:shadow-none print:max-w-full rounded-lg overflow-hidden "
             >
                 {/* --- PRINT HEADER / BRANDING --- */}
                 <div className="relative border-b-2 border-red-600 bg-white p-2">
@@ -97,28 +99,29 @@ const BepariCoutha = () => {
 
                     <div className="grid grid-cols-2 mt-2 text-[11px] text-gray-700 border-t border-dashed border-gray-300 pt-2">
                         <div>
-                            <p className="text-[7px] flex items-center gap-1"><FaLocationArrow className="text-red-600" /> ২০২ নং খাতুনগঞ্জ, কোতোয়ালী, চট্টগ্রাম।</p>
-                            <p className="text-[7px] flex items-center gap-1 font-bold"><FaWhatsapp className="text-green-600" /> 01842-753607, 01707-753607, 01841753607(দিপু)</p>
+                            <p className="text-[10px] flex items-center gap-1"><FaLocationArrow className="text-red-600" /> ২০২ নং খাতুনগঞ্জ, কোতোয়ালী, চট্টগ্রাম।</p>
+                            <p className="text-[10px] flex items-center gap-1 font-bold"><FaWhatsapp className="text-green-600" /> 01842-753607, 01707-753607,</p>
                         </div>
-                        <div className="text-[7px] text-right">
+                        <div className="text-[10px] text-right">
                             <p>Email: mitrading.202ktg@gmail.com</p>
                             <p className="flex items-center justify-end gap-1"><FaFacebookSquare className="text-blue-600" /> M/S.M.I Trading</p>
+                            <p>01841753607(দিপু)</p>
                         </div>
                     </div>
                 </div>
 
                 {/* --- INVOICE INFO --- */}
-                <div className="px-5 py-3  bg-gray-50  text-xs font-medium">
+                <div className="px-2 py-3  bg-gray-50  text-xs font-medium">
                     <div className="flex justify-between items-center">
-                        <p className="text-[6px]">ইনভয়েস নং: <span className="font-normal">{coutha?.invoice}</span></p>
-                        <p className="text-[6px]">তারিখ: <span className="font-normal">{DateTime(coutha?.createdAt)}</span></p>
+                        <p className="text-[10px]">ইনভয়েস নং: <span className="font-normal">{coutha?.invoice}</span></p>
+                        <p className="text-[10px]">তারিখ: <span className="font-normal">{DateTime(coutha?.createdAt)}</span></p>
                     </div>
                     <div className=" grid grid-cols-2 gap-4 text-sm">
                         <div className="bg-red-50/50  rounded border border-red-100">
-                            <span className="text-gray-500 block text-[8px] uppercase ">নাম: {coutha?.supplier?.name}</span>
+                            <span className="text-black block text-[10px] uppercase ">নাম: {coutha?.supplier?.name}</span>
                         </div>
                         <div className="bg-red-50/50  rounded border border-red-100">
-                            <span className="text-right text-gray-500 block text-[8px] uppercase ">ঠিকানা: {coutha?.supplier?.address}</span>
+                            <span className="text-right text-black block text-[10px] uppercase ">ঠিকানা: {coutha?.supplier?.address}</span>
                         </div>
                     </div>
                 </div>
@@ -127,14 +130,19 @@ const BepariCoutha = () => {
 
 
                 {/* --- MAIN LEDGER TABLE --- */}
-                <div className="grid grid-cols-12 ">
+                <div className="relative grid grid-cols-12 ">
+                    <img
+                        src={mi_logo}
+                        alt="watermark"
+                        className="absolute top-1/2 left-1/2 w-60 -translate-x-1/2 -translate-y-1/2 opacity-20"
+                    />
                     {/* Sales Side (Credit) */}
                     <div className="col-span-7 border-r border-gray-300">
                         <div className="bg-green-700  text-gray-50 text-center py-1 text-xs font-bold uppercase tracking-wider">জমা (Sales)</div>
                         <div className="p-2">
                             <table className="w-full text-[8px] text-left border-collapse">
                                 <thead>
-                                    <tr className="border-b border-gray-200 text-gray-500">
+                                    <tr className="border-b border-gray-200 text-black">
                                         <th className="py-1">পরিমাণ</th>
                                         <th className="py-1 text-right">দর</th>
                                         <th className="py-1 text-right">মোট</th>
@@ -142,6 +150,16 @@ const BepariCoutha = () => {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-100">
+
+                                    {/* <tr>
+                                        <td>
+                                            <img
+                                                src={mi_logo}
+                                                alt="watermark"
+                                                className="absolute top-1/2 left-1/2 w-40 -translate-x-1/2 -translate-y-1/2 opacity-20"
+                                            />
+                                        </td>
+                                    </tr> */}
                                     {
 
                                         regSales.map((sale: any, idx: number) => (

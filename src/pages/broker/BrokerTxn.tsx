@@ -47,7 +47,6 @@ const BrokerTxn = () => {
         }
     };
 
-
     const handleDelete = async (id: string) => {
         const isConfirm = confirm("ডিলিট করেই দিবেন?")
         if (!isConfirm) {
@@ -71,11 +70,6 @@ const BrokerTxn = () => {
         }
 
     };
-
-
-
-
-
     return (
         <div className='mx-auto'>
             {/*Transaction entry section */}
@@ -115,9 +109,8 @@ const BrokerTxn = () => {
                     />
 
 
-                    {/* image and delete */}
+                    {/* Edit and delete */}
                     <div className='flex justify-between mx-4 mt-2 items-center'>
-
                         <div>
                             {
                                 user?.role === 'admin' ?

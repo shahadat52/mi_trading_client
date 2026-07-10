@@ -79,7 +79,7 @@ const ProductReceivingSlip = () => {
                 </div>
 
                 {/* Info */}
-                <div className=" relative overflow-hidden">
+                <div className="relative overflow-hidden">
                     <img
                         src={mi_logo}
                         alt="watermark"

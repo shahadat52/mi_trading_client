@@ -71,7 +71,6 @@ const BrokersPage = () => {
                                         </div>
                                     </div>
                                     <div className="flex gap-2 items-center">
-                                        <p className='text-blue-800'>{broker?.currentBalance}</p>
                                         <span><FaChevronRight /></span>
                                     </div>
                                 </div>
