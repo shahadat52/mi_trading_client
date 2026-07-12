@@ -1,5 +1,6 @@
 export const banksName = [
     // রাষ্ট্রায়ত্ত বাণিজ্যিক ব্যাংক
+    { label: 'নির্বাচন করুন', value: '' },
     { label: 'ট্রাস্ট ব্যাংক', value: 'Trust' },
     { label: 'ন্যাশনাল ব্যাংক', value: 'National' },
     { label: 'ইসলামী ব্যাংক বাংলাদেশ', value: 'Islami' },

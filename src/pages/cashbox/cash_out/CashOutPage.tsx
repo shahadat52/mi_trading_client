@@ -10,6 +10,9 @@ const CashOutPage = ({ transactions }: any) => {
         } else if (no.includes("MI(C)")) {
             navigate(`/invoice/${no}`)
         }
+        else if (no.includes("MI(S)")) {
+            navigate(`/invoice/${no}`)
+        }
         else {
             return
         }
@@ -36,8 +39,11 @@ const CashOutPage = ({ transactions }: any) => {
                                 <td
                                     className="py-3 px-4 border-b"><span onClick={(e) => {
                                         e.stopPropagation();
-                                        handleOpenMemo(txn?.source);
-                                    }} >{txn?.source}</span> <span className="text-xs">({txn?.note})</span></td>
+                                        handleOpenMemo(txn?.source || txn.note);
+                                    }} >{txn?.source}</span> <span onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleOpenMemo(txn.note);
+                                    }} className="text-xs">{txn?.note}</span></td>
                                 <td className="py-3 px-4 border-b text-red-600">Cash Out</td>
                                 <td className="py-3 px-4 border-b text-right text-red-600"> {txn?.amount}</td>
                             </tr>
