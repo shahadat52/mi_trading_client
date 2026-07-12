@@ -46,7 +46,12 @@ export const PAYMENT_METHOD_OPTIONS = [
   { value: 'bkash', label: 'bKash' },
   { value: 'nagad', label: 'Nagad' },
   { value: 'rocket', label: 'Rocket' },
-  { value: 'card', label: 'Card' },
+  { value: 'others', label: 'Others' },
+];
+
+export const BROKERY_PAYMENT_METHOD_OPTIONS = [
+  { value: 'cash', label: 'Cash' },
+  { value: 'others', label: 'Others' },
 ];
 
 

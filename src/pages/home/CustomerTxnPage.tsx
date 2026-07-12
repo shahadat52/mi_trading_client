@@ -47,7 +47,6 @@ const CustomerTxnPage = () => {
         data.party = id
         data.partyModel = 'Customer'
 
-
         try {
             setLoading(true);
 

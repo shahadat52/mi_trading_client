@@ -42,6 +42,7 @@ export type TPurchase = {
     purchasePrice: number | string;
 
     paidAmount: number | string;
+    paymentMethod: string;
     note: string;
     invoice?: string;
 
@@ -76,6 +77,7 @@ const initialState: TPurchase = {
     bosta: 0,
     purchasePrice: 0,
     paidAmount: 0,
+    paymentMethod: 'cash',
     note: "",
 
     subTotal: 0,
@@ -165,6 +167,10 @@ const purchaseSlice = createSlice({
             state.paidAmount = action.payload;
         },
 
+        setPaymentMethod(state, action: PayloadAction<string>) {
+            state.paymentMethod = action.payload;
+        },
+
         setNote(state, action: PayloadAction<string>) {
             state.note = action.payload;
         },
@@ -229,6 +235,7 @@ export const {
     setBosta,
     setPurchasePrice,
     setPaidAmount,
+    setPaymentMethod,
     setNote,
     updatePurchaseField,
     calculatePurchaseTotals,

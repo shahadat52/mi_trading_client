@@ -79,7 +79,7 @@ const PaidMemo = ({ sale, onClose }: any) => {
                                         {idx + 1}
                                     </td>
                                     <td className="p-[2px] border-r border-gray-300">
-                                        {p.name} - {p?.bosta} | - {p.quantity}{" "}
+                                        {p.name} - {p?.bosta} | {p.quantity}{" "}
                                         {p?.unit === "কেজি" ? "kg" : p.unit}
                                     </td>
                                     <td className="p-[2px] text-center border-r border-gray-300">

@@ -10,11 +10,12 @@ import SearchableSelectField from "../../components/searchableFields/SearchableS
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { useDebounce } from "../../utils/useDebounce";
 import type { RootState } from "../../redux/store";
-import { calculatePurchaseTotals, resetPurchase, setBosta, setBroker, setCommission, setIsCommissionPaid, setIsLabourPaid, setIsOthersPaid, setLabour, setNote, setOthers, setOthersField, setPaidAmount, setProduct, setPurchaseDate, setPurchasePrice, setQuantity, setSupplier, setUnit, type TPurchase } from "../../redux/features/purchase/purchaseSlice";
+import { calculatePurchaseTotals, resetPurchase, setBosta, setBroker, setCommission, setIsCommissionPaid, setIsLabourPaid, setIsOthersPaid, setLabour, setNote, setOthers, setOthersField, setPaidAmount, setPaymentMethod, setProduct, setPurchaseDate, setPurchasePrice, setQuantity, setSupplier, setUnit, type TPurchase } from "../../redux/features/purchase/purchaseSlice";
 import Loading from "../../components/Loading";
 import CalculatorField from "../cart/CalculatorField";
 import { compressImage } from "../../utils/compressImage";
 import ImagePicker from "../../components/ImagePicker";
+import { purchase_paymentMethods } from "../../utils/paymentMethods";
 
 const PurchaseEntryForm = () => {
     const dispatch = useAppDispatch()
@@ -166,6 +167,8 @@ const PurchaseEntryForm = () => {
                 </select>
             </div>
 
+
+
             <div className="flex gap-2 items-end w-full ">
                 <div className="w-full">
                     <label className="text-xs font-normal">লেবার</label>
@@ -217,7 +220,21 @@ const PurchaseEntryForm = () => {
             </div>
 
             <input type="number" className="input " value={purchaseData.paidAmount || ""} onChange={(e) => { dispatch(setPaidAmount(Number(e.target.value))); dispatch(calculatePurchaseTotals()) }} placeholder="পরিশোধের পরিমান" />
+            <div className="">
+                <select
+                    value={purchaseData.paymentMethod ?? ""}
+                    onChange={(e) => dispatch(setPaymentMethod(e.target.value))}
+                    className="select select-bordered w-full"
+                    required
+                >
 
+                    {purchase_paymentMethods.map((method) => (
+                        <option key={method.value} value={method.value}>
+                            {method.label}
+                        </option>
+                    ))}
+                </select>
+            </div>
             <input value={purchaseData.broker || ""} onChange={(e) => { dispatch(setBroker(e.target.value)) }} placeholder="ব্রোকারের নাম" type="text" className="input" required />
             <input value={purchaseData.note || ""} onChange={(e) => { dispatch(setNote(e.target.value)) }} placeholder="নোট লিখুন" type="text" className="input" />
             <div>

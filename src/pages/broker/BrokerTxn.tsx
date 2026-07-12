@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useForm, type FieldValues } from "react-hook-form";
 import { toast } from "react-toastify";
-import { useBrokerDeleteMutation, useBrokerTxnEntryMutation } from "../../redux/features/broker/brokerApi";
+import { useBrokerDeleteMutation, useBrokerTxnEntryMutation, useGetBrokerByIdQuery } from "../../redux/features/broker/brokerApi";
 import SelectField from "../../components/form/SelectField";
 import { customerTxnType } from "../../utils/transactionType";
 import InputField from "../../components/form/InputFields";
@@ -12,6 +12,8 @@ import { useNavigate, useParams } from "react-router";
 import BrokerTxnTable from "./BrokerTxnTable";
 import Modal from "../../components/Modal";
 import EditBroker from "./EditBroker";
+import { BROKERY_PAYMENT_METHOD_OPTIONS } from "../../utils/options";
+import Profile from "../../components/profile/Profile";
 
 const BrokerTxn = () => {
     const [selectedBroker, setSelectedBroker] = useState(null)
@@ -23,7 +25,9 @@ const BrokerTxn = () => {
     const user = useAppSelector((state: any) => state?.auth?.auth?.user)
     const [txnEntry] = useBrokerTxnEntryMutation();
     const [deleteBroker] = useBrokerDeleteMutation()
+    const { data } = useGetBrokerByIdQuery(id)
 
+    const brokerData = data?.data || {};
 
     const onSubmit = async (data: FieldValues) => {
         const toastId = toast.loading("Processing...");
@@ -72,6 +76,7 @@ const BrokerTxn = () => {
     };
     return (
         <div className='mx-auto'>
+            <Profile person={brokerData} />
             {/*Transaction entry section */}
             <div className="sticky flex flex-col lg:flex-row gap-2 mb-2 p-1 ">
                 <form onSubmit={handleSubmit(onSubmit)} className="">
@@ -86,7 +91,7 @@ const BrokerTxn = () => {
                             rules={{ required: "লেনদেনের ধরন নাই" }}
                         />
 
-                        <div className='mt-[14px]'>
+                        <div className='mt-[16px]'>
                             <InputField
 
                                 name="amount"
@@ -99,6 +104,7 @@ const BrokerTxn = () => {
                         </div>
 
 
+
                     </div>
                     <InputField
                         name="description"
@@ -106,6 +112,15 @@ const BrokerTxn = () => {
                         placeholder='বিবরণ'
                         type='text'
                         control={control}
+                    />
+
+                    <SelectField
+                        name="paymentMethod"
+                        label=""
+                        placeholder="পেমেন্ট মেথড"
+                        control={control}
+                        options={BROKERY_PAYMENT_METHOD_OPTIONS}
+                        rules={{ required: "পেমেন্ট মেথড নাই" }}
                     />
 
 
