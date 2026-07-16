@@ -22,9 +22,8 @@ export const sendWhatsAppMsg = (phone: string, due: number) => {
 export const sendSupplierDueWhatsAppMsg = (phone: string, due: number) => {
     const message = [
         "আসসালামু আলাইকুম/আদাব,",
-        "প্রিয় গ্রাহক,",
-        `আপনার নিকট বর্তমানে ৳${Math.abs(due)} টাকা বকেয়া রয়েছে।`,
-        "অনুগ্রহ করে যথা সময়ে পরিশোধ করুন।",
+        "প্রিয় সাপ্লাইয়ার,",
+        `${due < 1 ? `আপনার কাছে ${Math.abs(due)} টাকা পাবো।` : `আপনি ${Math.abs(due)} টাকা পাবেন।`}`,
 
         "ধন্যবাদান্তে,",
         "M.I Trading"
@@ -63,8 +62,8 @@ export const sendSingleTxnWhatsAppMsg = (phone: string, type: string, paid: numb
 export const sendSupplierTxnWhatsAppMsg = (phone: string, type: string, paid: number, due: number) => {
     const message = [
         "আসসালামু আলাইকুম/আদাব,",
-        "প্রিয় গ্রাহক,",
-        `আপনি ${paid}  ${type === 'credit' ? 'টাকা জমা দিয়েছেন' : 'টাকার পণ্য নিয়েছেন'}।`,
+        "প্রিয় সাপ্লাইয়ার,",
+        `${paid} টাকা ${type === 'credit' ? "মূল্যের পণ্য গ্রহণ করা হয়েছে" : "পরিশোধ করা হয়েছে"}।`,
         `বর্তমানে  ${Math.abs(due)} টাকা বকেয়া আছে।`,
         "",
         "ধন্যবাদ,",
