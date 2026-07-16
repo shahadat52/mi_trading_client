@@ -38,7 +38,6 @@ const CustomerTxnPage = () => {
     const [customerTxnEntry] = useCustomerTxnEntryMutation()
     const navigate = useNavigate();
     const paymentMethod = watch('paymentMethod');
-    // const user = useAppSelector((state) => state?.auth?.auth?.user)
 
     const onSubmit = async (data: FieldValues) => {
         const toastId = toast.loading("Processing...");

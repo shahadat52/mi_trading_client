@@ -82,8 +82,30 @@ const supplierTxnApi = baseApi.injectEndpoints({
             ),
             invalidatesTags: ['UnapprovedSupplierTxn']
         }),
+        sendSupplierTxnSms: builder.mutation({
+            query: (payload) => (
+
+                {
+                    url: `/sms/supplier/txn`,
+                    method: "POST",
+                    body: payload
+
+                }
+            )
+        }),
+
+        sendSupplierDueSms: builder.mutation({
+            query: (payload) => (
+                {
+                    url: `/sms/supplier/due`,
+                    method: "POST",
+                    body: payload
+
+                }
+            )
+        }),
 
     }),
 });
 
-export const { useSupplierTxnEntryMutation, useBepariTxnEntryMutation, useGetAllSupplierTxnQuery, useGetSpecificSupplierTxnQuery, useUpdateSupplierTxnDataMutation, useDeleteSupplierTxnMutation, useGetUnapprovedSupplierTxnQuery, useMakeApproveSupplierTxnMutation } = supplierTxnApi
+export const { useSupplierTxnEntryMutation, useBepariTxnEntryMutation, useGetAllSupplierTxnQuery, useGetSpecificSupplierTxnQuery, useUpdateSupplierTxnDataMutation, useDeleteSupplierTxnMutation, useGetUnapprovedSupplierTxnQuery, useMakeApproveSupplierTxnMutation, useSendSupplierTxnSmsMutation, useSendSupplierDueSmsMutation } = supplierTxnApi

@@ -46,7 +46,7 @@ const PurchaseEntryForm = () => {
     const [addPurchase] = usePurchaseEntryMutation();
     const handlePurchase = async () => {
         const toastId = toast.loading("Processing...");
-        (purchaseData)
+
         const { grandTotal, dueAmount, subTotal, ...payload } = purchaseData;
         if (payload.supplier === '' || payload.product === '' || payload.purchasePrice === 0 || payload.quantity === 0 || payload.bosta === 0) {
             toast.update(toastId, { render: 'সব গুলো দেওয়া হয় নাই ', type: "warning", isLoading: false, autoClose: 1500, closeOnClick: true });
@@ -238,9 +238,6 @@ const PurchaseEntryForm = () => {
             <input value={purchaseData.broker || ""} onChange={(e) => { dispatch(setBroker(e.target.value)) }} placeholder="ব্রোকারের নাম" type="text" className="input" required />
             <input value={purchaseData.note || ""} onChange={(e) => { dispatch(setNote(e.target.value)) }} placeholder="নোট লিখুন" type="text" className="input" />
             <div>
-                {/* <div className='flex justify-between mx-4 items-center'>
-                    <FileUploadField control={control} name='img' label='ছবি' />
-                </div> */}
                 <ImagePicker
                     onFileSelect={(file) => {
                         handleComprssImage(file);

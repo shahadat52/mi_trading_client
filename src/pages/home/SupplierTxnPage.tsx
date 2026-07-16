@@ -9,12 +9,16 @@ import InputField from "../../components/form/InputFields";
 import TableSkeleton from "../../components/table/TableSkeleton";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import Modal from "../../components/Modal";
-import { useGetSpecificSupplierTxnQuery, useSupplierTxnEntryMutation } from "../../redux/features/supplierTxn/supplierTxnApi";
+import { useGetSpecificSupplierTxnQuery, useSendSupplierDueSmsMutation, useSendSupplierTxnSmsMutation, useSupplierTxnEntryMutation } from "../../redux/features/supplierTxn/supplierTxnApi";
 import EditSupplierTxn from "./EditSupplierTxn";
 import { paymentMethods } from "../../utils/paymentMethods";
 import Profile from "../../components/profile/Profile";
 import { customRound } from "../../utils/customRound";
 import { banksName } from "../accounts/banksName";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { sendSupplierDueWhatsAppMsg, sendSupplierTxnWhatsAppMsg } from "../../utils/sendSMS";
+import { FaWhatsappSquare } from "react-icons/fa";
+import { AiFillMessage } from "react-icons/ai";
 
 const SupplierTxnPage = () => {
     const navigate = useNavigate()
@@ -23,19 +27,19 @@ const SupplierTxnPage = () => {
     const [makeTxn, setMakeTxn] = useState(false)
     const [selectedTxn, setSelectedTxn] = useState('')
     const [loading, setLoading] = useState(false)
+    const [sendSupplierTxnSms] = useSendSupplierTxnSmsMutation();
+    const [sendSupplierDueSms] = useSendSupplierDueSmsMutation();
     const { control, handleSubmit, reset, watch } = useForm({
         defaultValues: {
             paymentMethod: 'cash'
         }
-    })
+    });
     const [supplierTxnEntry] = useSupplierTxnEntryMutation()
     const { data, isLoading, isError, } = useGetSpecificSupplierTxnQuery({ id });
 
     const paymentMethod = watch('paymentMethod')
 
     const onSubmit = async (data: FieldValues) => {
-
-
         const toastId = toast.loading("Processing...");
         const transactionTime = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Dhaka' });
         data.date = transactionTime
@@ -81,18 +85,97 @@ const SupplierTxnPage = () => {
     const totalDebit = transactions?.filter((txn: any) => (txn.type === 'debit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0)
     const totalCredit = transactions?.filter((txn: any) => (txn.type === 'credit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0)
     const supplierData = transactions ? transactions[0]?.supplier[0] : {}
-    const due = customRound(totalCredit - totalDebit || 0)
+    const dueAmount = customRound(totalCredit - totalDebit || 0)
+
+    const handleSendTxnSMS = async (amount: number, balance: number, type: string) => {
+        const isConfirm = confirm("SMS পাঠাতে চাচ্ছেন?")
+        if (!isConfirm) {
+            return
+        }
+
+        const toastId = toast.loading("Processing...", { autoClose: 2000 });
+        try {
+            const result = await sendSupplierTxnSms({ phone: supplierData?.phone, amount, balance, type });
+            if (result?.data?.success) {
+                toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
+
+            } else {
+                toast.update(toastId, { render: `${(result as any)?.error?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
+                setLoading(false);
+
+            }
+        } catch (err: any) {
+            toast.update(toastId, { render: err?.error?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
+
+
+        } finally {
+        }
+
+    }
+
+
+    const handleSendDueSMS = async (due: number) => {
+        const isConfirm = confirm("SMS পাঠাতে চাচ্ছেন?")
+        if (!isConfirm) {
+            return
+        }
+
+        const toastId = toast.loading("Processing...", { autoClose: 2000 });
+        try {
+            const result = await sendSupplierDueSms({ phone: supplierData?.phone, due });
+            if (result?.data?.success) {
+                toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
+
+            } else {
+                toast.update(toastId, { render: `${(result as any)?.error?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
+                setLoading(false);
+
+            }
+        } catch (err: any) {
+            toast.update(toastId, { render: err?.error?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
+
+
+        } finally {
+        }
+
+    }
     return (
         <div className="mx-auto">
-            <div>
+            <div className='flex justify-around items-center'>
                 <Profile person={supplierData} />
+                <div className="dropdown dropdown-left">
+                    <div tabIndex={0} role="button" className="text-2xl cursor-pointer mr-4">
+                        <BsThreeDotsVertical />
+                    </div>
+
+                    <ul tabIndex={-1} className="dropdown-content menu bg-base-100 rounded-box w-44 p-2 shadow">
+                        <li
+                            onClick={() => sendSupplierDueWhatsAppMsg(supplierData?.phone, dueAmount)}
+                            className="bg-white text-white rounded m-1"
+                        >
+                            <p className='text-green-800 text-4xl'>
+                                <FaWhatsappSquare /> <span className='text-lg'> Whatsapp</span>
+                            </p>
+                        </li>
+
+                        <li
+                            onClick={() => handleSendDueSMS(dueAmount)}
+                            className="bg-white text-black rounded m-1"
+                        >
+                            <p className='text-gray-800 text-4xl'>
+                                <AiFillMessage /><span className='text-lg'> Message</span>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div className="flex  items-center gap-4">
                 <button
                     onClick={() => setMakeTxn(!makeTxn)} className='p-1 m-1 text-white bg-blue-600 rounded-xl'>Make Txn
                 </button>
-                <p>Due: {`${due} টাকা ${due < 0 ? 'পাবো' : 'দিব'} `}</p>
+                <p>Due: {`${dueAmount} টাকা ${dueAmount < 1 ? 'পাবো' : 'দিব'} `}</p>
             </div>
+
 
             {/*Transaction entry section */}
             {
@@ -240,6 +323,38 @@ const SupplierTxnPage = () => {
 
                                             <td className="px-4 py-2 text-right ">
                                                 {customRound(tx?.balance)}
+                                            </td>
+                                            <td className="px-2 py-2">
+                                                <div className="flex items-center justify-center gap-1">
+                                                    {/* WhatsApp Button */}
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            sendSupplierTxnWhatsAppMsg(
+                                                                supplierData?.phone,
+                                                                tx.type,
+                                                                tx.amount,
+                                                                tx?.balance
+                                                            );
+                                                        }}
+                                                        className="group flex h-8 w-8 items-center justify-center rounded-lg bg-green-100 text-green-700 transition-all duration-200 hover:bg-green-600 hover:text-white"
+                                                        title="WhatsApp"
+                                                    >
+                                                        <FaWhatsappSquare className="text-lg" />
+                                                    </button>
+
+                                                    {/* SMS Button */}
+                                                    <button
+                                                        onClick={async (e) => {
+                                                            e.stopPropagation();
+                                                            handleSendTxnSMS(tx.amount, tx.balance, tx.type)
+                                                        }}
+                                                        className="group flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-blue-700 transition-all duration-200 hover:bg-blue-600 hover:text-white"
+                                                        title="SMS"
+                                                    >
+                                                        <AiFillMessage className="text-base" />
+                                                    </button>
+                                                </div>
                                             </td>
 
 

@@ -33,10 +33,20 @@ const authApi = baseApi.injectEndpoints({
                 }),
             invalidatesTags: ['Sales', 'Deliveries']
         }),
+        uploadImage: builder.mutation<any, FormData>({
+            query: ({ formData, id }: any) => (
+                {
+                    url: `/deliveries/upload/${id}`,
+                    method: "PATCH",
+                    body: formData,
+                }
+            ),
+            invalidatesTags: ["Deliveries"],
+        }),
 
 
 
     }),
 });
 
-export const { useDeliveryEntryAndUpdateMutation, useGetDeliveriesQuery, useDeliveryStatusUpdateMutation } = authApi
+export const { useDeliveryEntryAndUpdateMutation, useGetDeliveriesQuery, useDeliveryStatusUpdateMutation, useUploadImageMutation } = authApi
