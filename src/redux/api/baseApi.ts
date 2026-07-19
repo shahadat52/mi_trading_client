@@ -13,6 +13,6 @@ export const baseApi = createApi({
             return headers;
         }
     }),
-    tagTypes: ['Users', 'Employees', 'Purchases', 'CommissionPurchase', 'RegularPurchase', 'Products', 'ProductStock', 'ProductDetails', 'CommissionSales', 'CommissionProduct', 'Couthas', 'Coutha', 'Receivable', 'Payable', 'CustomerTxn', 'UnapprovedCustomerTxn', 'Customer', 'Supplier', 'SupplierTxn', 'UnapprovedSupplierTxn', 'Sales', 'BothSales', 'DueSales', 'Deliveries', 'Stock', 'Income', 'Expenses', 'Account', 'Transaction', 'Transactions', 'Brokers', 'Broker', 'BrokerTxn', "Sectors", "InExTxn", 'Cashbox', 'CashIn', 'CashOut', 'Attendances', 'Attendance', 'MFS'],
+    tagTypes: ['Users', 'Employees', 'Purchases', 'CommissionPurchase', 'RegularPurchase', 'Products', 'ProductStock', 'ProductDetails', 'CommissionSales', 'CommissionProduct', 'Couthas', 'Coutha', 'Receivable', 'Payable', 'CustomerTxn', 'UnapprovedCustomerTxn', 'Customer', 'Supplier', 'SupplierTxn', 'UnapprovedSupplierTxn', 'Sales', 'BothSales', 'DueSales', 'Delivery', 'Deliveries', 'Stock', 'Income', 'Expenses', 'Account', 'Transaction', 'Transactions', 'Brokers', 'Broker', 'BrokerTxn', "Sectors", "InExTxn", 'Cashbox', 'CashIn', 'CashOut', 'Attendances', 'Attendance', 'MFS'],
     endpoints: () => ({}),
 });     

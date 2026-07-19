@@ -10,6 +10,8 @@ import DeliverySlip from "./DeliverySlip";
 import { toast } from "react-toastify";
 import { useAppSelector } from "../../redux/hook";
 import { format } from "date-fns";
+import { useNavigate } from "react-router";
+import { IoMdCloudUpload } from "react-icons/io";
 
 const DeliveryPage: React.FC = () => {
     const today = format(new Date(), "yyyy-MM-dd");
@@ -18,6 +20,7 @@ const DeliveryPage: React.FC = () => {
     const [selectedDelivery, setSelectedDelivery] = useState<any | null>(null)
     const user = useAppSelector((state: any) => state?.auth?.auth?.user);
     const [updateDeliveryStatus] = useDeliveryStatusUpdateMutation();
+    const navigate = useNavigate()
 
     const { data, isLoading, isError } = useGetDeliveriesQuery({
         startDate,
@@ -143,8 +146,12 @@ const DeliveryPage: React.FC = () => {
                 {deliveries?.map((d: TDelivery) => (
                     <div
                         key={d._id}
-                        className="border rounded-lg shadow-sm p-4 bg-white"
+                        className="relative border rounded-lg shadow-sm p-4 bg-white"
                     >
+                        <p onClick={() => navigate(`/upload/${d._id}`)}
+                            className="absolute top-2 right-4 text-[50px] font-semibold">
+                            <IoMdCloudUpload />
+                        </p>
                         <p className="text-sm font-semibold">
                             Customer: <span className="font-normal">{d?.sales?.customer?.name}</span>
                         </p>
@@ -179,7 +186,11 @@ const DeliveryPage: React.FC = () => {
                                         d?.sales?.invoice as string
                                     )
                                 }
-                                className="bg-blue-600 text-white  px-1 py-1 text-xs mt-1 rounded"
+                                disabled={d.deliveryBy !== ""}
+                                className={`px-1 py-1 rounded text-white ${d.deliveryBy === ""
+                                    ? "bg-blue-600 hover:bg-blue-700 cursor-pointer"
+                                    : "bg-gray-400 cursor-not-allowed"
+                                    }`}
                             > ডেলিভারি সম্পন্ন করুন
                             </button>
                         </div>

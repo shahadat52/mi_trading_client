@@ -1,14 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { DateTime } from '../../utils/formatDateTime';
 import { QRCodeSVG } from 'qrcode.react';
 import { FaWhatsapp } from 'react-icons/fa';
 import { IoLocationSharp } from 'react-icons/io5';
+import { format } from 'date-fns';
+import mi_logo from "../../assets/icons/mi_logo.png";
+
 
 const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sale, onClose }) => {
     if (!sale) return null;
-    const products = sale?.sales?.items;
     const sales = sale?.sales;
+    const products = sale?.sales?.items;
+    const totalBosta = products?.reduce(
+        (sum: number, item: any) => sum + Number(item.bosta),
+        0
+    );
+
+    const minRows = 8;
+    const emptyRows = Math.max(minRows - products.length, 0);
+
     return (
         <div className="fixed inset-0 z-50 flex  items-start justify-center overflow-auto  bg-black/40 min-h-screen   ">
 
@@ -16,7 +26,7 @@ const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sal
 
                 <div className=' shadow shadow-blue-900   '>
                     {/* Header Section */}
-                    <div className="grid grid-cols-12 bg-[#182c64] text-center text-white  ">
+                    <div className="grid grid-cols-12 bg-[#182c64] text-center text-white ">
                         <div className="col-span-2  h-20 w-20 flex my-auto mx-auto bg-white rounded-full items-center justify-center font-bold">
                             <img src="/mi_logo.png" alt="Logo" className='h-20 w-20' />
                         </div>
@@ -38,46 +48,99 @@ const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sal
                         <div className="flex justify-between mb-2">
                             <div> নং: <span className="border-dashed border-b px-2">{sale?.sales?.invoice}</span></div>
                             <div >
-                                তারিখ: <span className="text-sta border-dashed border-b px-2">{DateTime(sale?.updatedAt)}</span>
-
+                                তারিখ: {format(sale.updatedAt, 'dd/MM/yyyy')} <br /> সময়: {format(sale.updatedAt, 'hh:mm a')}
                             </div>
                         </div>
-                        <div className='my-2'>নাম: <span className="border-dashed border-b px-2">{sales?.customer?.name}</span> </div>
+                        <div className='mb-2 mt-[-10px]'>নাম: <span className="border-dashed border-b px-2">{sales?.customer?.name}</span> </div>
                         <div className="grid grid-cols-2 mb-2">
-                            <div className="text-left">মোবা:  <span className="border-dashed border-b px-1">{sales?.customer?.phone}</span></div>
+                            <div className="text-left">মোবাইল:  <span className="border-dashed border-b px-1">{sales?.customer?.phone}</span></div>
                             <div className=""><span className=''>ট্রান্সপোর্ট নাম/নাম্বার: </span> <span className="border-dashed border-b px-১">{sale?.via}</span></div>
                         </div>
-                        <div >ঠিকানা:<span className=" border-dashed border-b px-1">{sales?.customer?.address}</span></div>
+                        <div className='mt-[-10px]'>ঠিকানা:<span className=" border-dashed border-b px-1">{sales?.customer?.address}</span></div>
 
                     </div>
 
                     {/* Table Section */}
                     <div className=' bg-white '>
-                        <table className="w-full border-collapse border-y min-h-[200px]  ">
-                            <thead className=''>
-                                <tr className=" bg-orange-400 grid grid-cols-3 text-white text-xs">
-                                    <th className="col-span-2  p-1 border-r border-gray-900 ">মালের বিবরণ</th>
-                                    <th className="col-span-1 border-r border-gray-200 p-1 ">পরিমাণ</th>
+                        <table className="w-full border border-gray-900 border-collapse text-xs min-h-[200px] relative">
+
+
+                            <thead className="relative z-10">
+                                <tr className="bg-orange-500 text-white">
+                                    <th className="w-12 border border-gray-900 py-1 text-center">
+                                        নং
+                                    </th>
+                                    <th className="border border-gray-900 py-1 text-center">
+                                        মালের বিবরণ
+                                    </th>
+                                    <th className="w-24 border border-gray-900 py-1 text-center">
+                                        পরিমাণ
+                                    </th>
                                 </tr>
                             </thead>
-                            <tbody className="text-xs my-section align-top overflow-hidden ">
-                                {products?.map((ite: any, idx: number) => (
-                                    <tr key={idx} className="grid grid-cols-3 text-center">
-                                        <td className="text-start col-span-2 border-r py-[2px] ml-1 border-gray-900 ">
-                                            {idx + 1}) {ite?.name}
+
+                            <tbody className="relative z-10">
+                                {/* Watermark */}
+                                <tr>
+                                    <td>
+                                        <img
+                                            src={mi_logo}
+                                            alt="watermark"
+                                            className="absolute top-1/2 left-1/2 w-40 -translate-x-1/2 -translate-y-1/2 opacity-20"
+                                        />
+                                    </td>
+                                </tr>
+                                {products?.length ? (
+                                    products.map((ite: any, idx: number) => (
+                                        <tr key={idx} className="hover:bg-gray-50">
+                                            <td className="border  text-center py-1">
+                                                {idx + 1}
+                                            </td>
+
+                                            <td className="border  px-2 py-1">
+                                                {ite?.name}
+                                            </td>
+
+                                            <td className="border  text-center py-1">
+                                                {ite?.bosta} বস্তা
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td
+                                            colSpan={3}
+                                            className="border  text-center py-10 text-gray-500"
+                                        >
+                                            কোনো পণ্য নেই
                                         </td>
-                                        <td className="col-span-1 border-r border-gray-300  ">{ite?.bosta} বস্তা</td>
+                                    </tr>
+                                )}
+
+                                {/* Empty rows for fixed height */}
+                                {Array.from({ length: emptyRows }).map((_, i) => (
+                                    <tr key={i}>
+                                        <td className="border py-3"></td>
+                                        <td className="border py-3"></td>
+                                        <td className="border py-3"></td>
                                     </tr>
                                 ))}
                             </tbody>
 
-                            <tfoot>
-                                <tr className=" bg-blue-700 grid grid-cols-3 text-white text-xs">
-                                    <th className="col-span-2  p-1 border-r border-gray-900 text-end "></th>
-                                    <th className="col-span-1 border-r border-gray-200 p-1 "></th>
+                            <tfoot className="relative z-10">
+                                <tr className="bg-blue-600 text-white font-semibold">
+                                    <td
+                                        colSpan={2}
+                                        className="border border-gray-900 text-end px-2 py-1"
+                                    >
+                                        মোটঃ
+                                    </td>
+
+                                    <td className="border border-gray-900 text-center py-1">
+                                        {totalBosta} বস্তা
+                                    </td>
                                 </tr>
                             </tfoot>
-
                         </table>
                     </div>
 

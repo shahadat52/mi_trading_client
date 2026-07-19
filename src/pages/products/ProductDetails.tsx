@@ -479,9 +479,7 @@ const ProductDetails = () => {
                 </div>
             </div>
 
-            {/* {
-                open && 
-            } */}
+
         </div >
     );
 };

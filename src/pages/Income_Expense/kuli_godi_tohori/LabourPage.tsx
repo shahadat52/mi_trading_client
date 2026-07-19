@@ -6,7 +6,6 @@ const LabourPage = ({ action, startDate, endDate }: any) => {
     const fieldWiseData = items?.data;
     const sales = fieldWiseData?.sales?.reduce((sum: number, item: any) => sum + Number(item.labour || 0), 0)
     const bepariSales = fieldWiseData?.couthas?.reduce((sum: number, item: any) => sum + Number(item.kuli || 0), 0)
-    const purchases = fieldWiseData?.purchases?.reduce((sum: number, item: any) => sum + Number(item.labour || 0), 0)
     const { data } = useGetAllTxnQuery({ category: 'kuli', startDate, endDate })
     const transactions = data?.data?.data
     return (
@@ -21,7 +20,7 @@ const LabourPage = ({ action, startDate, endDate }: any) => {
                             <tr className="font-bold">
                                 <td>মোট</td>
                                 <td className="text-right">
-                                    {sales + purchases + bepariSales}
+                                    {sales + bepariSales}
                                 </td>
                             </tr>
                         </thead>
@@ -60,7 +59,7 @@ const LabourPage = ({ action, startDate, endDate }: any) => {
                                     </td>
                                 </tr>
                             ))}
-                            <tr>
+                            {/* <tr>
                                 <td colSpan={2} className="font-bold bg-gray-100">
                                     ক্রয়
                                 </td>
@@ -73,7 +72,7 @@ const LabourPage = ({ action, startDate, endDate }: any) => {
                                     </td>
                                 </tr>
                             ))}
-
+ */}
 
                         </tbody>
                     </table>

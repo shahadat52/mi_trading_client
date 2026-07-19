@@ -37,7 +37,7 @@ const PaidMemo = ({ sale, onClose }: any) => {
                         <div className="grid grid-cols-2 text-start my-1">
                             <div>নং: {sale.invoice}</div>
                             <div>
-                                তারিখ: {format(sale.date, 'dd/MM/yyyy')} ({format(sale.date, 'mm:hh a')})
+                                তারিখ: {format(sale.date, 'dd/MM/yyyy')} সময়ঃ {format(new Date(sale.createdAt), 'hh:mm a')}
                             </div>
                         </div>
                         <div className='grid grid-cols-2 text-start my-1' >
@@ -45,8 +45,8 @@ const PaidMemo = ({ sale, onClose }: any) => {
                             <p>{sale?.broker === '' ? '' : ` ব্রোকার:${sale?.broker}`}</p>
                         </div>
                         <div className="grid grid-cols-2 text-start">
-                            <div >ঠিকানা:{sale?.customer?.address}</div>
-                            <div className="">মোবা: {sale?.customer?.phone} </div>
+                            <div >ঠিকানা:{sale?.customer?.address}।</div>
+                            <div className="">মোবাইল: {sale?.customer?.phone} </div>
                         </div>
                     </div>
 
@@ -79,7 +79,7 @@ const PaidMemo = ({ sale, onClose }: any) => {
                                         {idx + 1}
                                     </td>
                                     <td className="p-[2px] border-r border-gray-300">
-                                        {p.name} - {p?.bosta} | {p.quantity}{" "}
+                                        {p.name}  {p?.bosta} | {p.quantity}{" "}
                                         {p?.unit === "কেজি" ? "kg" : p.unit}
                                     </td>
                                     <td className="p-[2px] text-center border-r border-gray-300">

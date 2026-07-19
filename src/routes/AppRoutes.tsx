@@ -47,6 +47,7 @@ import MFSPage from "../pages/MFS/MFSPage";
 import ProductReceivingSlip from "../pages/purchase/ProductReceivingSlip";
 import DueSalesPage from "../pages/sales/bothSales/DueSalesPage";
 import UnpaidMemo from "../pages/sales/memo/UnpaidMemo";
+import DeliveryUpload from "../pages/delivery/DeliveryUpload";
 
 export const router = createBrowserRouter([
     {
@@ -136,6 +137,10 @@ export const router = createBrowserRouter([
             {
                 path: "deliveries",
                 element: <DeliveryPage />,
+            },
+            {
+                path: "upload/:id",
+                element: <DeliveryUpload />,
             },
             {
                 path: "profile",

@@ -13,7 +13,6 @@ import "@daypicker/react/style.css";
 import Modal from "../../../components/Modal";
 import EditBankTxn from "./EditBankTxn";
 import { toast } from "react-toastify";
-import { customRound } from "../../../utils/customRound";
 
 
 const BankTxnSummary = () => {
@@ -28,11 +27,7 @@ const BankTxnSummary = () => {
     const { control, handleSubmit, reset } = useForm()
     const { data, isLoading, isError } = useGetBankWiseTxnQuery({ bankName: id, limit })
     const transactions = data?.data || [];
-    const allTxns = data?.data[0]?.transactions
 
-    const totalDebit: number = customRound(allTxns?.filter((txn: any) => (txn.type === 'debit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0))
-    const totalCredit: number = customRound(allTxns?.filter((txn: any) => (txn.type === 'credit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0))
-    const currentBalance = totalCredit - totalDebit
     const handleSelectedTxn = (id: any) => {
         setSelectedTxn(id)
         setIsOpen(true)
@@ -72,7 +67,7 @@ const BankTxnSummary = () => {
         <div>
             {/* Filters */}
             <div className=" mb-2">
-                <h1 className="m-2 text-lg font-bold">{id} Bank    (Balance: {currentBalance})</h1>
+                <h1 className="m-2 text-lg font-bold">{id} Bank    (Balance: {transactions[0]?.currentBalance || 0})</h1>
 
                 <div className="">
                     <div className="flex  items-center gap-4">

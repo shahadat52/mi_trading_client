@@ -71,31 +71,6 @@ const PartyLedgerPage = () => {
         },
     };
 
-    // const currentSummary = useMemo(() => {
-    //     switch (activeTab) {
-    //         case 'Customer':
-    //             return {
-    //                 title: 'মোট পাবো',
-    //                 ...summaryData.customer,
-    //             };
-    //         case 'Supplier':
-    //             return {
-    //                 title: 'মোট সাপ্লাইয়ারদের  দিবো',
-    //                 ...summaryData.supplier,
-    //             };
-    //         case 'Bepari':
-    //             return {
-    //                 title: 'মোট বেপারীদের দিবো',
-    //                 ...summaryData.bepari,
-    //             };
-    //         default:
-    //             return {
-    //                 title: 'মোট ব্যালেন্স',
-    //                 totalParty: 0,
-    //                 totalAmount: 0,
-    //             };
-    //     }
-    // }, [activeTab, summaryData.customer, summaryData.supplier, summaryData.bepari]);
 
 
     if (isLoading) {
@@ -105,14 +80,7 @@ const PartyLedgerPage = () => {
     }
     return (
         <div className="max-w-screen bg-gray-300 rounded-lg p-1 md:p-6">
-            {/* Summary Cards */}
-            {/* <div className="mb-2 grid grid-cols-1 gap-4 md:grid-cols-2">
-                <SummaryCard
-                    title={currentSummary.title}
-                    value={`৳ ${currentSummary.totalAmount.toLocaleString()}`}
-                    icon={<FaWallet size={20} />}
-                />
-            </div> */}
+
 
             <div className="mb-2 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 

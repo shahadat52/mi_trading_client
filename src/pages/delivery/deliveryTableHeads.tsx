@@ -6,5 +6,6 @@ export const deliveryTableHeads = [
     "Sales",
     "Destination",
     "Delivery",
-    "Print"
+    "Print",
+    "Upload"
 ];

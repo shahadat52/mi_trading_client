@@ -19,6 +19,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { sendSupplierDueWhatsAppMsg, sendSupplierTxnWhatsAppMsg } from "../../utils/sendSMS";
 import { FaWhatsappSquare } from "react-icons/fa";
 import { AiFillMessage } from "react-icons/ai";
+import { format } from "date-fns";
 
 const SupplierTxnPage = () => {
     const navigate = useNavigate()
@@ -173,7 +174,7 @@ const SupplierTxnPage = () => {
                 <button
                     onClick={() => setMakeTxn(!makeTxn)} className='p-1 m-1 text-white bg-blue-600 rounded-xl'>Make Txn
                 </button>
-                <p>Due: {`${dueAmount} টাকা ${dueAmount < 1 ? 'পাবো' : 'দিব'} `}</p>
+                <p>Due: {`${dueAmount} টাকা ${totalCredit > totalDebit ? 'দিব' : 'পাবো'} `}</p>
             </div>
 
 
@@ -295,8 +296,8 @@ const SupplierTxnPage = () => {
                                             className="border-t hover:bg-gray-50 transition"
                                         >
                                             <td className="px-4 py-2">
-                                                {new Date(tx.date).toLocaleDateString()} <br />
-                                                {new Date(tx.date).toLocaleTimeString()}
+                                                {format(new Date(tx.date), 'dd/MM/yyyy')} <br />
+                                                {format(new Date(tx.date), 'hh:mm a')}
                                             </td>
 
                                             <td

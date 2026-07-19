@@ -23,6 +23,14 @@ const authApi = baseApi.injectEndpoints({
                 }),
             providesTags: ['Deliveries']
         }),
+        getDelivery: builder.query({
+            query: ({ id }) => (
+                {
+                    url: `/deliveries/${id}`,
+                    method: 'GET',
+                }),
+            providesTags: ['Delivery']
+        }),
 
         deliveryStatusUpdate: builder.mutation({
             query: ({ id, invoice }) => (
@@ -33,15 +41,15 @@ const authApi = baseApi.injectEndpoints({
                 }),
             invalidatesTags: ['Sales', 'Deliveries']
         }),
-        uploadImage: builder.mutation<any, FormData>({
-            query: ({ formData, id }: any) => (
+        uploadImage: builder.mutation<any, any>({
+            query: ({ id, formData }: any) => (
                 {
                     url: `/deliveries/upload/${id}`,
                     method: "PATCH",
                     body: formData,
                 }
             ),
-            invalidatesTags: ["Deliveries"],
+            invalidatesTags: ["Delivery"],
         }),
 
 
@@ -49,4 +57,4 @@ const authApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useDeliveryEntryAndUpdateMutation, useGetDeliveriesQuery, useDeliveryStatusUpdateMutation, useUploadImageMutation } = authApi
+export const { useDeliveryEntryAndUpdateMutation, useGetDeliveriesQuery, useGetDeliveryQuery, useDeliveryStatusUpdateMutation, useUploadImageMutation } = authApi
