@@ -48,6 +48,9 @@ import ProductReceivingSlip from "../pages/purchase/ProductReceivingSlip";
 import DueSalesPage from "../pages/sales/bothSales/DueSalesPage";
 import UnpaidMemo from "../pages/sales/memo/UnpaidMemo";
 import DeliveryUpload from "../pages/delivery/DeliveryUpload";
+import CusotmerTxnReportPage from "../pages/home/Report/CusotmerTxnReportPage";
+import SupplierTxnReportPage from "../pages/home/Report/SupplierTxnReportPage";
+import BankTxnReportPage from "../pages/home/Report/BankTxnReportPage";
 
 export const router = createBrowserRouter([
     {
@@ -98,6 +101,7 @@ export const router = createBrowserRouter([
                 path: "customerTxn/:id",
                 element: <PrivateRoute><CustomerTxnPage /></PrivateRoute>
             },
+
             {
                 path: "supplierTxn/:id",
                 element: <PrivateRoute><SupplierTxnPage /></PrivateRoute>
@@ -233,6 +237,18 @@ export const router = createBrowserRouter([
             },
 
         ],
+    },
+    {
+        path: "report/customer/:id",
+        element: <PrivateRoute><CusotmerTxnReportPage /></PrivateRoute>
+    },
+    {
+        path: "report/supplier/:id",
+        element: <PrivateRoute><SupplierTxnReportPage /></PrivateRoute>
+    },
+    {
+        path: "report/bank/:id",
+        element: <PrivateRoute><BankTxnReportPage /></PrivateRoute>
     },
     {
         path: "send-otp/:id",

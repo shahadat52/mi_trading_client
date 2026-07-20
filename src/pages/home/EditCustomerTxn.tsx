@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, type FieldValues, type SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import InputField from '../../components/form/InputFields';
@@ -9,10 +9,13 @@ import { useDeleteCustomerTxnMutation, useUpdateCustomerTxnMutation } from '../.
 
 const EditCustomerTxn = ({ onClose, txn, transactions }: { onClose: () => void, txn: any, transactions: any }) => {
     const [loading, setLoading] = useState(false)
-    const { handleSubmit, control, reset } = useForm();
+    const { handleSubmit, control, reset } = useForm<any>({
+        defaultValues: {
+            description: txn?.description
+        }
+    });
     const [updateTxn] = useUpdateCustomerTxnMutation()
     const [deleteTxn] = useDeleteCustomerTxnMutation()
-
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         setLoading(true);
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
@@ -65,6 +68,14 @@ const EditCustomerTxn = ({ onClose, txn, transactions }: { onClose: () => void, 
 
     };
 
+    useEffect(() => {
+        reset({
+            type: txn?.type,
+            amount: txn?.amount,
+            description: txn?.description,
+        });
+    }, [txn]);
+
     return (
         <div className="m-4 ">
             <form
@@ -84,7 +95,6 @@ const EditCustomerTxn = ({ onClose, txn, transactions }: { onClose: () => void, 
 
                     <div className='mt-[14px]'>
                         <InputField
-
                             name="amount"
                             label=""
                             placeholder={txn?.amount}

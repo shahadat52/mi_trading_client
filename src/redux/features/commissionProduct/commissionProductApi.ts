@@ -28,12 +28,21 @@ const commissionProduct = baseApi.injectEndpoints({
         }),
 
         getCommissionProducts: builder.query({
-            query: ({ searchTerm }) => (
-                {
-                    url: `/commissionProduct/?searchTerm=${searchTerm}`,
-                    method: 'GET',
+            query: ({ searchTerm, limit }) => {
+                const params = new URLSearchParams();
 
-                }),
+                if (searchTerm) {
+                    params.append('searchTerm', searchTerm);
+                }
+                if (limit) {
+                    params.append('limit', limit);
+                }
+                return {
+                    url: "/commissionProduct",
+                    method: 'GET',
+                    params
+                }
+            },
             providesTags: ['CommissionProduct']
         }),
 

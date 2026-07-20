@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, type FieldValues, type SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import InputField from '../../components/form/InputFields';
@@ -7,9 +7,13 @@ import SelectField from '../../components/form/SelectField';
 import { customerTxnType } from '../../utils/transactionType';
 import { useDeleteSupplierTxnMutation, useUpdateSupplierTxnDataMutation } from '../../redux/features/supplierTxn/supplierTxnApi';
 
-const EditSupplierTxn = ({ onClose, id, transactions }: { onClose: () => void, id: string, transactions: any }) => {
+const EditSupplierTxn = ({ onClose, txn, transactions }: { onClose: () => void, txn: any, transactions: any }) => {
     const [loading, setLoading] = useState(false)
-    const { handleSubmit, control, reset } = useForm();
+    const { handleSubmit, control, reset } = useForm({
+        defaultValues: {
+
+        }
+    });
     const [updateTxn] = useUpdateSupplierTxnDataMutation()
     const [deleteTxn] = useDeleteSupplierTxnMutation()
 
@@ -17,7 +21,7 @@ const EditSupplierTxn = ({ onClose, id, transactions }: { onClose: () => void, i
         setLoading(true);
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
         try {
-            const result = await updateTxn({ data, id });
+            const result = await updateTxn({ data, id: txn._id });
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
                 reset();
@@ -45,7 +49,7 @@ const EditSupplierTxn = ({ onClose, id, transactions }: { onClose: () => void, i
         }
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
         try {
-            const result = await deleteTxn(id);
+            const result = await deleteTxn(txn._id);
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
 
@@ -61,8 +65,15 @@ const EditSupplierTxn = ({ onClose, id, transactions }: { onClose: () => void, i
         } finally {
             onClose();
         }
-
     };
+
+    useEffect(() => {
+        reset({
+            type: txn?.type,
+            amount: txn?.amount,
+            description: txn?.description,
+        });
+    }, [txn]);
     return (
         <div className="m-4 ">
             <form

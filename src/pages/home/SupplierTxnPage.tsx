@@ -18,7 +18,7 @@ import { banksName } from "../accounts/banksName";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { sendSupplierDueWhatsAppMsg, sendSupplierTxnWhatsAppMsg } from "../../utils/sendSMS";
 import { FaWhatsappSquare } from "react-icons/fa";
-import { AiFillMessage } from "react-icons/ai";
+import { AiFillMessage, AiOutlineDownload } from "react-icons/ai";
 import { format } from "date-fns";
 
 const SupplierTxnPage = () => {
@@ -26,7 +26,7 @@ const SupplierTxnPage = () => {
     const { id } = useParams();
     const [isOpen, setIsOpen] = useState(false)
     const [makeTxn, setMakeTxn] = useState(false)
-    const [selectedTxn, setSelectedTxn] = useState('')
+    const [selectedTxn, setSelectedTxn] = useState(null)
     const [loading, setLoading] = useState(false)
     const [sendSupplierTxnSms] = useSendSupplierTxnSmsMutation();
     const [sendSupplierDueSms] = useSendSupplierDueSmsMutation();
@@ -66,8 +66,8 @@ const SupplierTxnPage = () => {
     };
 
 
-    const handleSelectedTxn = (id: string) => {
-        setSelectedTxn(id)
+    const handleSelectedTxn = (txn: any) => {
+        setSelectedTxn(txn)
         setIsOpen(true)
 
     };
@@ -154,8 +154,8 @@ const SupplierTxnPage = () => {
                             onClick={() => sendSupplierDueWhatsAppMsg(supplierData?.phone, dueAmount)}
                             className="bg-white text-white rounded m-1"
                         >
-                            <p className='text-green-800 text-4xl'>
-                                <FaWhatsappSquare /> <span className='text-lg'> Whatsapp</span>
+                            <p className='text-green-800 text-xl'>
+                                <FaWhatsappSquare /> <span className='text-xs'> Whatsapp</span>
                             </p>
                         </li>
 
@@ -163,8 +163,16 @@ const SupplierTxnPage = () => {
                             onClick={() => handleSendDueSMS(dueAmount)}
                             className="bg-white text-black rounded m-1"
                         >
-                            <p className='text-gray-800 text-4xl'>
-                                <AiFillMessage /><span className='text-lg'> Message</span>
+                            <p className='text-gray-800 text-xl'>
+                                <AiFillMessage /><span className='text-xs'> Message</span>
+                            </p>
+                        </li>
+                        <li
+                            onClick={() => navigate(`/report/supplier/${id}`)}
+                            className="bg-white text-black rounded m-1"
+                        >
+                            <p className='text-gray-800 text-xl'>
+                                <AiOutlineDownload /><span className='text-xs'> Report Download</span>
                             </p>
                         </li>
                     </ul>
@@ -291,7 +299,7 @@ const SupplierTxnPage = () => {
 
                                     return (
                                         <tr
-                                            onClick={() => handleSelectedTxn(tx._id)}
+                                            onClick={() => handleSelectedTxn(tx)}
                                             key={tx._id}
                                             className="border-t hover:bg-gray-50 transition"
                                         >
@@ -384,7 +392,7 @@ const SupplierTxnPage = () => {
             </div>
 
             <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-                <EditSupplierTxn onClose={() => setIsOpen(false)} id={selectedTxn} transactions={transactions} />
+                <EditSupplierTxn onClose={() => setIsOpen(false)} txn={selectedTxn} transactions={transactions} />
             </Modal>
         </div>
     );

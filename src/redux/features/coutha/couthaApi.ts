@@ -22,6 +22,14 @@ const couthaApi = baseApi.injectEndpoints({
             }),
             providesTags: ['Coutha'],
         }),
+
+        getCouthaByProductId: builder.query({
+            query: (id) => ({
+                url: `/settlement/product/${id}`,
+                method: 'GET'
+            }),
+            providesTags: ['Coutha'],
+        }),
         getCouthaByInvoice: builder.query({
             query: (id) => ({
                 url: `/settlement/invoice/${id}`,
@@ -85,4 +93,4 @@ const couthaApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useCreateCouthaMutation, useGetAllCouthasOfSupplierQuery, useGetCouthaByIdQuery, useGetCouthaByInvoiceQuery, useGetFieldWiseDataQuery, useUpdateBepariCouthaMutation, useDeleteBepariCouthaMutation } = couthaApi;
+export const { useCreateCouthaMutation, useGetAllCouthasOfSupplierQuery, useGetCouthaByIdQuery, useGetCouthaByProductIdQuery, useGetCouthaByInvoiceQuery, useGetFieldWiseDataQuery, useUpdateBepariCouthaMutation, useDeleteBepariCouthaMutation } = couthaApi;

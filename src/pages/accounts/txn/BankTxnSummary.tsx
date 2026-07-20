@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useBankTxnEntryMutation, useGetBankWiseTxnQuery } from "../../../redux/features/bankTransaction/bankTransactionApi";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { LIMIT_OPTIONS } from "../../../utils/options";
 import TableSkeleton from "../../../components/table/TableSkeleton";
 import ErrorBoundary from "../../../components/ErrorBoundary";
@@ -13,9 +13,12 @@ import "@daypicker/react/style.css";
 import Modal from "../../../components/Modal";
 import EditBankTxn from "./EditBankTxn";
 import { toast } from "react-toastify";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { AiOutlineDownload } from "react-icons/ai";
 
 
 const BankTxnSummary = () => {
+    const navigate = useNavigate()
     const [makeTxn, setMakeTxn] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
     const [selectedTxn, setSelectedTxn] = useState(null)
@@ -67,8 +70,26 @@ const BankTxnSummary = () => {
         <div>
             {/* Filters */}
             <div className=" mb-2">
-                <h1 className="m-2 text-lg font-bold">{id} Bank    (Balance: {transactions[0]?.currentBalance || 0})</h1>
+                <div className="flex justify-between">
+                    <h1 className="m-2 text-lg font-bold">{id} Bank    (Balance: {transactions[0]?.currentBalance || 0})</h1>
+                    <div className="dropdown dropdown-left mr-5 mt-5">
+                        <div tabIndex={0} role="button" className="text-2xl cursor-pointer mr-4">
+                            <BsThreeDotsVertical />
+                        </div>
 
+                        <ul tabIndex={-1} className="dropdown-content menu bg-base-100 rounded-box w-44 p-2 shadow">
+
+                            <li
+                                onClick={() => navigate(`/report/bank/${id}`)}
+                                className="bg-white text-black rounded m-1"
+                            >
+                                <p className='text-gray-800 text-xl'>
+                                    <AiOutlineDownload /><span className='text-xs'> Report Download</span>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <div className="">
                     <div className="flex  items-center gap-4">
                         <button
@@ -176,6 +197,8 @@ const BankTxnSummary = () => {
                 {/* Data Table */}
                 {!isLoading && !isError && transactions?.length > 0 && (
                     <div className="overflow-x-auto overflow-auto mb-20 m-3">
+
+
                         <table className="w-full text-sm ">
                             <thead className="bg-gray-100 text-gray-700">
                                 <tr>

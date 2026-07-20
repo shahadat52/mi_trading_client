@@ -16,9 +16,10 @@ import Profile from '../../components/profile/Profile';
 import { customRound } from '../../utils/customRound';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { FaWhatsappSquare } from 'react-icons/fa';
-import { AiFillMessage } from 'react-icons/ai';
+import { AiFillMessage, AiOutlineDownload } from 'react-icons/ai';
 import { sendSingleTxnWhatsAppMsg, sendWhatsAppMsg } from '../../utils/sendSMS';
 import { banksName } from '../accounts/banksName';
+import { format } from 'date-fns';
 
 const CustomerTxnPage = () => {
     const { id } = useParams();
@@ -153,8 +154,8 @@ const CustomerTxnPage = () => {
                             onClick={() => sendWhatsAppMsg(customerData?.phone, dueAmount)}
                             className="bg-white text-white rounded m-1"
                         >
-                            <p className='text-green-800 text-4xl'>
-                                <FaWhatsappSquare /> <span className='text-lg'> Whatsapp</span>
+                            <p className='text-green-800 text-xl'>
+                                <FaWhatsappSquare /> <span className='text-xs'> Whatsapp</span>
                             </p>
                         </li>
 
@@ -162,8 +163,16 @@ const CustomerTxnPage = () => {
                             onClick={() => handleSendDueSMS(dueAmount)}
                             className="bg-white text-black rounded m-1"
                         >
-                            <p className='text-gray-800 text-4xl'>
-                                <AiFillMessage /><span className='text-lg'> Message</span>
+                            <p className='text-gray-800 text-xl'>
+                                <AiFillMessage /><span className='text-xs'> Message</span>
+                            </p>
+                        </li>
+                        <li
+                            onClick={() => navigate(`/report/customer/${id}`)}
+                            className="bg-white text-black rounded m-1"
+                        >
+                            <p className='text-gray-800 text-xl'>
+                                <AiOutlineDownload /><span className='text-xs'> Report Download</span>
                             </p>
                         </li>
                     </ul>
@@ -296,8 +305,8 @@ const CustomerTxnPage = () => {
                                             className="border-t hover:bg-gray-50 transition"
                                         >
                                             <td className="px-4 py-2">
-                                                {new Date(tx.date).toLocaleDateString()} <br />
-                                                {new Date(tx.date).toLocaleTimeString()}
+                                                {format(new Date(tx.date), 'dd/MM/yyyy')} <br />
+                                                {format(new Date(tx.date), 'hh:mm a')}
                                             </td>
 
                                             <td

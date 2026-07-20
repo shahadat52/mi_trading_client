@@ -109,7 +109,7 @@ const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
                     </div>
 
                     {/* Table Section */}
-                    <table className="w-full h-auto  min-h-[250px] border-collapse border-y border-gray-400">
+                    <table className="w-full h-auto  min-h-[300px] border-collapse border-y border-gray-400">
                         <thead>
                             <tr className="bg-[#1F4E79] text-white text-xs">
                                 <th className="border-r border-gray-200 p-1 w-10">সংখ্যা</th>
@@ -118,7 +118,7 @@ const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
                                 <th className="p-1 w-20">মোট</th>
                             </tr>
                         </thead>
-                        <tbody className="relative  h-auto align-top  overflow-hidden">
+                        <tbody className="relative align-top  overflow-hidden">
                             <tr>
                                 <td>
                                     <img

@@ -36,7 +36,6 @@ const authApi = baseApi.injectEndpoints({
             providesTags: ['Customer']
         }),
 
-
         updateCustomerData: builder.mutation({
             query: (updatedData) => (
                 {
@@ -71,11 +70,23 @@ const authApi = baseApi.injectEndpoints({
 
 
         getAllTxnByCustomer: builder.query({
-            query: ({ id }) => (
-                {
+            query: ({ id, startDate, endDate, limit }) => {
+                const params = new URLSearchParams();
+                if (startDate) {
+                    params.append('startDate', startDate);
+                }
+                if (endDate) {
+                    params.append('endDate', endDate);
+                }
+                if (limit) {
+                    params.append('limit', limit);
+                }
+                return {
                     url: `/customerTxn/${id}`,
                     method: 'GET',
-                }),
+                    params
+                }
+            },
             providesTags: ['CustomerTxn']
         }),
 

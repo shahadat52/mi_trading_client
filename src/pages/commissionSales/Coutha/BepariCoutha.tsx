@@ -73,7 +73,7 @@ const BepariCoutha = () => {
         >
             <div
                 onClick={(e) => e.stopPropagation()}
-                className="border rounded-lg print:shadow-none w-[580px]  overflow-hidden "
+                className="border rounded-lg print:shadow-none w-[550px]  overflow-hidden "
             >
                 {/* --- PRINT HEADER / BRANDING --- */}
                 <div className="   relative border-b-2 border-red-600  p-2">
@@ -130,15 +130,15 @@ const BepariCoutha = () => {
                 </div>
 
                 {/* --- MAIN LEDGER TABLE --- */}
-                <div className=" relative grid grid-cols-12 h-[500px] ">
+                <div className=" relative grid grid-cols-12 h-[600px] ">
                     <img
                         src={memo_mi_logo}
                         alt="watermark"
-                        className=" absolute top-1/2 left-1/2 w-100 -translate-x-1/2 -translate-y-1/2 opacity-25 pointer-events-none "
+                        className=" absolute top-1/2 mt-10 left-1/2 w-100 -translate-x-1/2 -translate-y-1/2 opacity-25 pointer-events-none "
                     />
 
                     {/* Sales Side (Credit) */}
-                    <div className="col-span-7 border-r bg-green-200  border-gray-300">
+                    <div className="col-span-7 border-r  border-gray-300">
                         <div className="bg-green-700  text-gray-50 text-center py-1 text-xs font-bold uppercase tracking-wider">জমা (Sales)</div>
                         <div className="p-2">
                             <table className="w-full text-[12px] text-left border-collapse">
@@ -150,12 +150,12 @@ const BepariCoutha = () => {
                                         <th className="py-1 print:hidden"></th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-gray-100 text-[9px]">
+                                <tbody className="divide-y divide-gray-100 text-[12px]">
                                     {
 
                                         regSales.map((sale: any, idx: number) => (
                                             <tr key={idx} className="hover:bg-gray-50">
-                                                <td className="py-[2px]">{sale?.product?.bosta}| {sale?.product?.quantity} কেজি</td>
+                                                <td className="py-[2px]">{sale?.product?.bosta}| {sale?.product?.quantity} kg</td>
                                                 <td className="py-[2px] text-right">{sale?.product?.salePrice}</td>
                                                 <td className="py-[2px] text-right font-bold">{(sale?.product?.quantity * sale?.product?.salePrice).toLocaleString()}</td>
                                                 <td className="py-[2px] text-right print:hidden">
@@ -171,7 +171,7 @@ const BepariCoutha = () => {
 
                                     {
                                         restSales?.length >= 1 && result?.map((sale: any, idx: number) => (
-                                            <tr key={idx} className="hover:bg-gray-50">
+                                            <tr key={idx} className="hover:bg-gray-50 ">
                                                 <td className="py-[2px]">{sale?.totalBosta}| {sale?.totalQuantity} kg</td>
                                                 <td className="py-[2px] text-right">{sale?.averagePrice}</td>
                                                 <td className="py-[2px] text-right font-bold">{(sale?.totalAmount)}</td>
@@ -190,7 +190,7 @@ const BepariCoutha = () => {
                     </div>
 
                     {/* Expenses Side (Debit) */}
-                    <div className="col-span-5 bg-red-200">
+                    <div className="col-span-5 ">
                         <div className="text-gray-50  bg-red-700 text-center py-1 text-xs font-bold uppercase tracking-wider">খরচ (Expenses)</div>
                         <div className="p-3 space-y-1.5 text-[12px] text-gray-700">
                             {[

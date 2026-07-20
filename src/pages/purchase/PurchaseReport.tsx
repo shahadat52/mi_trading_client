@@ -2,14 +2,17 @@ import { useParams } from "react-router";
 import { useGetProductWiseSalesReportsQuery, useGetRegualarPurchaseByIdQuery } from "../../redux/features/purchase/purchaseApi";
 import SummaryCard from "./SummaryCard";
 import CardSkeleton from "../../components/CardSkeleton";
+import { useGetCouthaByProductIdQuery } from "../../redux/features/coutha/couthaApi";
 
 const PurchaseReport = () => {
     const { id } = useParams();
     const { data: purchaseData } = useGetRegualarPurchaseByIdQuery(id, {
         skip: !id,
     });
+    const { data: bepariCoutha } = useGetCouthaByProductIdQuery(id)
     const { data, isLoading, error } = useGetProductWiseSalesReportsQuery(id);
     const reports = data?.data;
+    const bepariCouthaData = bepariCoutha?.data;
     const productName = data?.data?.product
     const products = data?.data?.items?.length;
     const summeryCart = [
@@ -24,6 +27,7 @@ const PurchaseReport = () => {
 
 
     const purchase = purchaseData?.data;
+    const isCommission = reports?.items?.some((item: any) => item.commission >= 0);
     const commission = reports?.items?.reduce((sum: number, item: any) =>
         sum + item.commission, 0
     );
@@ -99,8 +103,10 @@ const PurchaseReport = () => {
                         <div className="rounded-2xl border border-blue-100 bg-blue-50 px-2 py-5 shadow-sm">
                             <p className="text-sm text-blue-600 font-medium">প্রফিট</p>
                             <h3 className="text-sm font-semibold text-blue-800 mt-2">
+
                                 {
-                                    commission ? commission : <p>{reports?.totalAmount} - {cost} = {reports?.totalAmount - cost}</p>
+                                    isCommission ? (commission + bepariCouthaData?.arot || 0) :
+                                        <p>{(Number(reports?.totalAmount) || 0)} - {(Number(cost) || 0)} = {((Number(reports?.totalAmount) || 0) - (Number(cost) || 0))}</p>
                                 }
                             </h3>
                         </div>
