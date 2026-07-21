@@ -26,12 +26,20 @@ const supplierTxnApi = baseApi.injectEndpoints({
             invalidatesTags: ['SupplierTxn', 'Transaction', 'Supplier', 'Receivable']
         }),
         getAllSupplierTxn: builder.query({
-            query: (query) => (
-                new URLSearchParams(query).toString(),
-                {
-                    url: `/supplierTxn?${new URLSearchParams(query).toString()}`,
+            query: ({ startDate, endDate }) => {
+                const params = new URLSearchParams();
+                if (startDate) {
+                    params.append('startDate', startDate);
+                }
+                if (endDate) {
+                    params.append('endDate', endDate);
+                }
+                return {
+                    url: "/supplierTxn",
                     method: 'GET',
-                }),
+                    params
+                }
+            },
             providesTags: ['SupplierTxn']
         }),
 
@@ -105,7 +113,15 @@ const supplierTxnApi = baseApi.injectEndpoints({
             )
         }),
 
+        getTotalPayableToSupplier: builder.query({
+            query: () => (
+                {
+                    url: "/supplierTxn/totalpayable",
+                    method: 'GET',
+                })
+        }),
+
     }),
 });
 
-export const { useSupplierTxnEntryMutation, useBepariTxnEntryMutation, useGetAllSupplierTxnQuery, useGetSpecificSupplierTxnQuery, useUpdateSupplierTxnDataMutation, useDeleteSupplierTxnMutation, useGetUnapprovedSupplierTxnQuery, useMakeApproveSupplierTxnMutation, useSendSupplierTxnSmsMutation, useSendSupplierDueSmsMutation } = supplierTxnApi
+export const { useSupplierTxnEntryMutation, useBepariTxnEntryMutation, useGetAllSupplierTxnQuery, useGetSpecificSupplierTxnQuery, useUpdateSupplierTxnDataMutation, useDeleteSupplierTxnMutation, useGetUnapprovedSupplierTxnQuery, useMakeApproveSupplierTxnMutation, useSendSupplierTxnSmsMutation, useSendSupplierDueSmsMutation, useGetTotalPayableToSupplierQuery } = supplierTxnApi

@@ -2,6 +2,8 @@ import { useNavigate } from "react-router";
 import { useGetAllPayableTxnQuery } from "../../redux/features/partyledger/partyLedgerApi";
 import Loading from "../../components/Loading";
 import { useState } from "react";
+import { useGetTotalPayableToSupplierQuery } from "../../redux/features/supplierTxn/supplierTxnApi";
+import { customRound } from "../../utils/customRound";
 
 
 
@@ -14,6 +16,8 @@ type Props = {
 const Suppliers = ({ searchTerm }: Props) => {
     const [limit, setLimit] = useState(10)
     const { data: payable, isLoading } = useGetAllPayableTxnQuery({ search: searchTerm, type: 'regular', limit })
+
+    const { data: totalpayable } = useGetTotalPayableToSupplierQuery(undefined)
     const payableData = payable?.data
     const navigate = useNavigate()
 
@@ -24,7 +28,7 @@ const Suppliers = ({ searchTerm }: Props) => {
         <div>
             <div className="mb-1 ">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-bold text-slate-800">পাওনাদারদের তালিকা</h2>
+                    <h2 className="text-xl font-bold text-slate-800">মোট দেনাঃ {customRound(totalpayable?.data?.totalPayable).toLocaleString() || 0}  টাকা</h2>
                     <div className=''>
                         <select
                             value={limit}

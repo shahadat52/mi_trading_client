@@ -21,7 +21,7 @@ const TextAreaField = ({ name, label, control, placeholder, rules }: Props) => (
                     <textarea
                         {...field}
                         placeholder={placeholder}
-                        className={`textarea textarea-bordered w-full ${fieldState.error ? "border-red-500" : ""}`}
+                        className={`textarea textarea-bordered w-full h-40 ${fieldState.error ? "border-red-500" : ""}`}
                     />
                     {fieldState.error && (
                         <span className="text-red-500 text-xs">{fieldState.error.message}</span>

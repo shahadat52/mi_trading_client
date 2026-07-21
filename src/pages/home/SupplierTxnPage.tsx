@@ -9,7 +9,7 @@ import InputField from "../../components/form/InputFields";
 import TableSkeleton from "../../components/table/TableSkeleton";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import Modal from "../../components/Modal";
-import { useGetSpecificSupplierTxnQuery, useSendSupplierDueSmsMutation, useSendSupplierTxnSmsMutation, useSupplierTxnEntryMutation } from "../../redux/features/supplierTxn/supplierTxnApi";
+import { useGetSpecificSupplierTxnQuery, useSendSupplierDueSmsMutation, useSupplierTxnEntryMutation } from "../../redux/features/supplierTxn/supplierTxnApi";
 import EditSupplierTxn from "./EditSupplierTxn";
 import { paymentMethods } from "../../utils/paymentMethods";
 import Profile from "../../components/profile/Profile";
@@ -20,15 +20,16 @@ import { sendSupplierDueWhatsAppMsg, sendSupplierTxnWhatsAppMsg } from "../../ut
 import { FaWhatsappSquare } from "react-icons/fa";
 import { AiFillMessage, AiOutlineDownload } from "react-icons/ai";
 import { format } from "date-fns";
+import MessageBox from "./MessageBox";
 
 const SupplierTxnPage = () => {
     const navigate = useNavigate()
     const { id } = useParams();
     const [isOpen, setIsOpen] = useState(false)
-    const [makeTxn, setMakeTxn] = useState(false)
+    const [makeTxn, setMakeTxn] = useState(false);
+    const [openMsgBox, setOpenMsgBox] = useState<any>(null)
     const [selectedTxn, setSelectedTxn] = useState(null)
     const [loading, setLoading] = useState(false)
-    const [sendSupplierTxnSms] = useSendSupplierTxnSmsMutation();
     const [sendSupplierDueSms] = useSendSupplierDueSmsMutation();
     const { control, handleSubmit, reset, watch } = useForm({
         defaultValues: {
@@ -87,32 +88,6 @@ const SupplierTxnPage = () => {
     const totalCredit = transactions?.filter((txn: any) => (txn.type === 'credit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0)
     const supplierData = transactions ? transactions[0]?.supplier[0] : {}
     const dueAmount = customRound(totalCredit - totalDebit || 0)
-
-    const handleSendTxnSMS = async (amount: number, balance: number, type: string) => {
-        const isConfirm = confirm("SMS পাঠাতে চাচ্ছেন?")
-        if (!isConfirm) {
-            return
-        }
-
-        const toastId = toast.loading("Processing...", { autoClose: 2000 });
-        try {
-            const result = await sendSupplierTxnSms({ phone: supplierData?.phone, amount, balance, type });
-            if (result?.data?.success) {
-                toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
-
-            } else {
-                toast.update(toastId, { render: `${(result as any)?.error?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
-                setLoading(false);
-
-            }
-        } catch (err: any) {
-            toast.update(toastId, { render: err?.error?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
-
-
-        } finally {
-        }
-
-    }
 
 
     const handleSendDueSMS = async (due: number) => {
@@ -356,7 +331,7 @@ const SupplierTxnPage = () => {
                                                     <button
                                                         onClick={async (e) => {
                                                             e.stopPropagation();
-                                                            handleSendTxnSMS(tx.amount, tx.balance, tx.type)
+                                                            setOpenMsgBox({ amount: tx.amount, balance: tx.balance, type: tx.type })
                                                         }}
                                                         className="group flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-blue-700 transition-all duration-200 hover:bg-blue-600 hover:text-white"
                                                         title="SMS"
@@ -393,6 +368,10 @@ const SupplierTxnPage = () => {
 
             <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
                 <EditSupplierTxn onClose={() => setIsOpen(false)} txn={selectedTxn} transactions={transactions} />
+            </Modal>
+
+            <Modal isOpen={openMsgBox} onClose={() => setOpenMsgBox(null)}>
+                <MessageBox onClose={() => setOpenMsgBox(null)} txn={openMsgBox} phone={supplierData?.phone} receiver={'supplier'} />
             </Modal>
         </div>
     );

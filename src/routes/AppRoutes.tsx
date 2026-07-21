@@ -51,6 +51,7 @@ import DeliveryUpload from "../pages/delivery/DeliveryUpload";
 import CusotmerTxnReportPage from "../pages/home/Report/CusotmerTxnReportPage";
 import SupplierTxnReportPage from "../pages/home/Report/SupplierTxnReportPage";
 import BankTxnReportPage from "../pages/home/Report/BankTxnReportPage";
+import ActivityPage from "../pages/activity/ActivityPage";
 
 export const router = createBrowserRouter([
     {
@@ -67,6 +68,10 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute>
                     <HomePage />
                 </PrivateRoute>,
+            },
+            {
+                path: "activity",
+                element: <PrivateRoute><ActivityPage /></PrivateRoute>,
             },
             {
                 path: "purchase/entry",

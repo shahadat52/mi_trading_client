@@ -16,11 +16,58 @@ const bothSalesApi = baseApi.injectEndpoints({
         }),
 
         getAllBothSales: builder.query({
-            query: (query) => (
-                {
-                    url: `/bothSales/all?${new URLSearchParams(query).toString()}`,
+            query: ({ page, limit, search, order, sortBy, dateFrom, dateTo }: any) => {
+                const params = new URLSearchParams();
+                if (page) {
+                    params.append('page', page);
+                }
+                if (limit) {
+                    params.append('limit', limit);
+                }
+                if (search) {
+                    params.append('search', search);
+                }
+                if (dateFrom) {
+                    params.append('dateFrom', dateFrom);
+                }
+                if (dateTo) {
+                    params.append('dateTo', dateTo);
+                }
+
+                if (order) {
+                    params.append('order', order);
+                }
+                if (sortBy) {
+                    params.append('sortBy', sortBy);
+                }
+
+                return {
+                    url: "/bothSales/all",
                     method: 'GET',
-                }),
+                    params
+                }
+            },
+            providesTags: ['BothSales']
+        }),
+
+        getProductWiseSales: builder.query({
+            query: ({ dateFrom, dateTo }: any) => {
+                const params = new URLSearchParams();
+
+                if (dateFrom) {
+                    params.append('dateFrom', dateFrom);
+                }
+                if (dateTo) {
+                    params.append('dateTo', dateTo);
+                }
+
+
+                return {
+                    url: "/bothSales/productwise/sales",
+                    method: 'GET',
+                    params
+                }
+            },
             providesTags: ['BothSales']
         }),
 
@@ -97,4 +144,4 @@ const bothSalesApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useBothSalesEntryMutation, useUpdateInvoiceMutation, useDeleteSalesInvoiceMutation, useGetAllBothSalesQuery, useGetAllDueSalesQuery, useGetBothSaleByInvoiceQuery, useGetBothSalesReportQuery } = bothSalesApi
+export const { useBothSalesEntryMutation, useUpdateInvoiceMutation, useDeleteSalesInvoiceMutation, useGetAllBothSalesQuery, useGetProductWiseSalesQuery, useGetAllDueSalesQuery, useGetBothSaleByInvoiceQuery, useGetBothSalesReportQuery } = bothSalesApi

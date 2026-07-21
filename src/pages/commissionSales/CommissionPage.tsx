@@ -54,7 +54,6 @@ const CommissionPage = () => {
     const suppliers = commissionSuppliers?.data || [];
     const total = data?.meta?.total || 0;
     const totalPages = Math.ceil(total / PAGE_LIMIT);
-
     const handleDeleteConfirm = async (id: string) => {
         try {
             await deleteSupplier(id).unwrap();

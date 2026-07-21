@@ -16,6 +16,26 @@ const mfsApi = baseApi.injectEndpoints({
             invalidatesTags: ['MFS']
         }),
 
+        getAllMfsTxns: builder.query({
+            query: ({ dateFrom, dateTo }) => {
+                const params = new URLSearchParams();
+
+                if (dateFrom) {
+                    params.append("dateFrom", dateFrom);
+                }
+                if (dateTo) {
+                    params.append("dateTo", dateTo);
+                }
+
+                return {
+                    url: "/mfs/txns",
+                    method: "GET",
+                    params,
+                };
+            },
+            providesTags: ['MFS']
+        }),
+
         getMfsTxnByHead: builder.query({
             query: ({ head }) => {
                 const params = new URLSearchParams();
@@ -53,4 +73,4 @@ const mfsApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useMfsTxnEntryMutation, useGetMfsTxnByHeadQuery, useUpdateMfsTxnMutation, useDeleteMfsTxnMutation } = mfsApi
+export const { useMfsTxnEntryMutation, useGetAllMfsTxnsQuery, useGetMfsTxnByHeadQuery, useUpdateMfsTxnMutation, useDeleteMfsTxnMutation } = mfsApi

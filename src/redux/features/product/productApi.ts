@@ -15,11 +15,17 @@ const authApi = baseApi.injectEndpoints({
             invalidatesTags: ['Products']
         }),
         getAllProducts: builder.query({
-            query: ({ searchTerm, limit }) => {
+            query: ({ searchTerm, limit, startDate, endDate }) => {
                 const params = new URLSearchParams();
 
                 if (searchTerm) {
                     params.append('searchTerm', searchTerm);
+                }
+                if (startDate) {
+                    params.append('startDate', startDate);
+                }
+                if (endDate) {
+                    params.append('endDate', endDate);
                 }
                 if (limit) {
                     params.append('limit', limit);

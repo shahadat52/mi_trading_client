@@ -58,16 +58,22 @@ const authApi = baseApi.injectEndpoints({
         }),
 
         getAllCustomerTxn: builder.query({
-            query: (query) => (
-                new URLSearchParams(query).toString(),
-                {
-                    url: `/customerTxn?${new URLSearchParams(query).toString()}`,
+            query: ({ startDate, endDate, }) => {
+                const params = new URLSearchParams();
+                if (startDate) {
+                    params.append('startDate', startDate);
+                }
+                if (endDate) {
+                    params.append('endDate', endDate);
+                }
+                return {
+                    url: "/customerTxn",
                     method: 'GET',
-                }),
+                    params
+                }
+            },
             providesTags: ['CustomerTxn']
         }),
-
-
 
         getAllTxnByCustomer: builder.query({
             query: ({ id, startDate, endDate, limit }) => {
@@ -171,9 +177,17 @@ const authApi = baseApi.injectEndpoints({
             )
         }),
 
+        getTotalDueFromAllCustomers: builder.query({
+            query: () => (
+                {
+                    url: "/customerTxn/totaldue",
+                    method: 'GET',
+                })
+        }),
+
 
 
     }),
 });
 
-export const { useAddCustomerMutation, useGetAllCustomersQuery, useGetCustomerByIdQuery, useUpdateCustomerDataMutation, useCustomerTxnEntryMutation, useGetAllCustomerTxnQuery, useGetCustomerDueQuery, useGetAllTxnByCustomerQuery, useUpdateCustomerTxnMutation, useDeleteCustomerTxnMutation, useDeleteCustomerMutation, useGetUnapprovedCustomerTxnQuery, useMakeApproveCustomerTxnMutation, useSendTxnSmsMutation, useSendDueSmsMutation } = authApi
+export const { useAddCustomerMutation, useGetAllCustomersQuery, useGetCustomerByIdQuery, useUpdateCustomerDataMutation, useCustomerTxnEntryMutation, useGetAllCustomerTxnQuery, useGetCustomerDueQuery, useGetAllTxnByCustomerQuery, useUpdateCustomerTxnMutation, useDeleteCustomerTxnMutation, useDeleteCustomerMutation, useGetUnapprovedCustomerTxnQuery, useMakeApproveCustomerTxnMutation, useSendTxnSmsMutation, useSendDueSmsMutation, useGetTotalDueFromAllCustomersQuery } = authApi

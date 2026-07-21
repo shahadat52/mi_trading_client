@@ -6,6 +6,7 @@ import {
     MdAttachMoney,
     MdAccountBalance,
 } from "react-icons/md";
+import { LuSquareActivity } from "react-icons/lu";
 import { CgProfile } from "react-icons/cg";
 import { BiSolidPurchaseTag } from "react-icons/bi";
 import { FaPeopleCarryBox } from "react-icons/fa6";
@@ -61,6 +62,12 @@ export const getMenuItems = (role?: string) => {
         },
 
         ...(isSpecial || isAdmin ? [
+
+            {
+                name: "Business Activity",
+                icon: <LuSquareActivity size={20} />,
+                subItems: [{ name: "All Activity", path: "/activity" }],
+            },
             {
                 name: "Cash-box",
                 icon: <MdDashboard size={20} />,

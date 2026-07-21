@@ -7,10 +7,11 @@ interface FormSelectProps {
     control: any;
     options: { label: string; value: string }[];
     rules?: object;
+    readOnly?: boolean;
     placeholder?: string
 }
 
-const SelectField = ({ name, label, control, options, rules, placeholder }: FormSelectProps) => (
+const SelectField = ({ name, label, control, options, rules, placeholder, readOnly = false }: FormSelectProps) => (
     <div className="flex flex-col gap-1 w-full">
         <label className="text-sm font-medium">{label === 'no' ? '' : label}</label>
         <Controller
@@ -22,7 +23,7 @@ const SelectField = ({ name, label, control, options, rules, placeholder }: Form
                     <select {...field} className={`select select-bordered w-full ${fieldState.error ? "border-red-500" : ""}`}>
                         <option value="" >{placeholder ? placeholder : 'Select'} {label === 'no' ? '' : label}</option>
                         {options?.map((opt) => (
-                            <option key={opt.value} value={opt.value}>
+                            <option disabled={readOnly} key={opt.value} value={opt.value}>
                                 {opt.label}
                             </option>
                         ))}

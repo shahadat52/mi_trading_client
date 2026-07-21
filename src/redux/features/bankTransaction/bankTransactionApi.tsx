@@ -15,6 +15,26 @@ const bankTxnApi = baseApi.injectEndpoints({
             invalidatesTags: ['Transaction', 'Account']
         }),
 
+        getAllBankTxns: builder.query({
+            query: ({ dateFrom, dateTo }) => {
+                const params = new URLSearchParams();
+
+                if (dateFrom) {
+                    params.append("dateFrom", dateFrom);
+                }
+                if (dateTo) {
+                    params.append("dateTo", dateTo);
+                }
+
+                return {
+                    url: "/bankTxn/txns",
+                    method: "GET",
+                    params,
+                };
+            },
+            providesTags: ['Transactions']
+        }),
+
         getAllBankTxn: builder.query({
             query: (query: any) => (
                 {
@@ -25,8 +45,7 @@ const bankTxnApi = baseApi.injectEndpoints({
         }),
 
         getBankWiseTxn: builder.query({
-            query: ({ bankName, fromDate,
-                toDate, limit }) => {
+            query: ({ bankName, fromDate, toDate, limit }) => {
                 const params = new URLSearchParams();
 
                 if (bankName) {
@@ -81,4 +100,4 @@ const bankTxnApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useBankTxnEntryMutation, useGetAllBankTxnQuery, useGetBankWiseTxnQuery, useUpdateBankTxnMutation, useDeleteBankTxnMutation } = bankTxnApi
+export const { useBankTxnEntryMutation, useGetAllBankTxnsQuery, useGetAllBankTxnQuery, useGetBankWiseTxnQuery, useUpdateBankTxnMutation, useDeleteBankTxnMutation } = bankTxnApi

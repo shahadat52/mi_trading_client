@@ -15,12 +15,20 @@ const purchaseApi = baseApi.injectEndpoints({
             ],
         }),
         getAllPurchases: builder.query({
-            query: (query) => (
-                new URLSearchParams(query).toString(),
-                {
-                    url: `/purchase?${new URLSearchParams(query).toString()}`,
+            query: ({ startDate, endDate }) => {
+                const params = new URLSearchParams();
+                if (startDate) {
+                    params.append('startDate', startDate);
+                }
+                if (endDate) {
+                    params.append('endDate', endDate);
+                }
+                return {
+                    url: "/purchase",
                     method: 'GET',
-                }),
+                    params
+                }
+            },
             providesTags: ['Purchases']
         }),
 
