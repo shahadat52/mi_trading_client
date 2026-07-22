@@ -3,15 +3,23 @@ import { useGetProductWiseSalesReportsQuery, useGetRegualarPurchaseByIdQuery } f
 import SummaryCard from "./SummaryCard";
 import CardSkeleton from "../../components/CardSkeleton";
 import { useGetCouthaByProductIdQuery } from "../../redux/features/coutha/couthaApi";
+import Modal from "../../components/Modal";
+import AddCommissionProductProfit from "./AddCommissionProductProfitModal";
+import { useState } from "react";
+import AddNormalProductProfit from "./AddNormalProductProfitModal";
 
-const PurchaseReport = () => {
+const ProductWiseSalesReports = () => {
     const { id } = useParams();
+    const [openCommission, setOpenCommission] = useState<any>(null)
+    const [openNormal, setOpenNormal] = useState<any>(null)
     const { data: purchaseData } = useGetRegualarPurchaseByIdQuery(id, {
         skip: !id,
     });
     const { data: bepariCoutha } = useGetCouthaByProductIdQuery(id)
-    const { data, isLoading, error } = useGetProductWiseSalesReportsQuery(id);
+    const { data, isLoading, error } = useGetProductWiseSalesReportsQuery(id); // Normal product sales history
     const reports = data?.data;
+
+
     const bepariCouthaData = bepariCoutha?.data;
     const productName = data?.data?.product
     const products = data?.data?.items?.length;
@@ -25,13 +33,18 @@ const PurchaseReport = () => {
         return <CardSkeleton />
     }
 
-
-    const purchase = purchaseData?.data;
+    const purchase = purchaseData?.data;  // Normal product purchase data
     const isCommission = reports?.items?.some((item: any) => item.commission >= 0);
+
+    // const normalProduct
     const commission = reports?.items?.reduce((sum: number, item: any) =>
         sum + item.commission, 0
     );
-    const cost = Number(purchase?.labour) + purchase?.commission + (purchase?.purchaseQty * purchase?.purchasePrice)
+    const cost = Number(purchase?.labour) + Number(purchase?.commission) + (purchase?.purchaseQty * purchase?.purchasePrice)
+
+    const profit = reports?.items === undefined ? 0 :
+        isCommission ? (commission + bepariCouthaData?.arot || 0) :
+            ((Number(reports?.totalAmount) || 0) - (Number(cost) || 0))
     return (
         <div className="w-full mb-16 mx-auto rounded-2xl mt-4 bg-white  shadow-md border border-gray-200 p-4 md:p-6">
             {/* Header */}
@@ -47,9 +60,19 @@ const PurchaseReport = () => {
                     )}
                 </div>
 
-                <div className="text-sm text-gray-500">
-                    Total Records:{" "}
-                    <span className="font-semibold text-gray-700">{reports?.items?.length || 0}</span>
+                <div className=" text-sm text-gray-500">
+
+                    <div>
+                        Total Record:{" "}
+                        <span className="font-semibold text-gray-700">{reports?.items?.length || 0}</span>
+                    </div>
+                    <div>
+                        {
+                            isCommission ?
+                                <button onClick={() => setOpenCommission(bepariCouthaData)} className="btn btn-active">Add Profit</button> :
+                                <button onClick={() => setOpenNormal(purchase)} className="btn btn-active">Add Profit</button>
+                        }
+                    </div>
                 </div>
             </div>
 
@@ -105,16 +128,25 @@ const PurchaseReport = () => {
                             <h3 className="text-sm font-semibold text-blue-800 mt-2">
 
                                 {
-                                    isCommission ? (commission + bepariCouthaData?.arot || 0) :
-                                        <p>{(Number(reports?.totalAmount) || 0)} - {(Number(cost) || 0)} = {((Number(reports?.totalAmount) || 0) - (Number(cost) || 0))}</p>
+                                    reports?.items === undefined ? 'NO SALES' :
+                                        isCommission ? (commission + bepariCouthaData?.arot || 0) :
+                                            <p>{(Number(reports?.totalAmount) || 0)} - {(Number(cost) || 0)} = {((Number(reports?.totalAmount) || 0) - (Number(cost) || 0))}</p>
+
                                 }
                             </h3>
                         </div>
                     </div>
                 </>
             )}
+
+            <Modal isOpen={openNormal} onClose={() => setOpenNormal(null)}>
+                <AddNormalProductProfit onClose={() => setOpenNormal(null)} profit={profit} product={openNormal} />
+            </Modal>
+            <Modal isOpen={openCommission} onClose={() => setOpenCommission(null)}>
+                <AddCommissionProductProfit onClose={() => setOpenCommission(null)} profit={profit} product={openCommission} />
+            </Modal>
         </div>
     );
 };
 
-export default PurchaseReport;
+export default ProductWiseSalesReports;

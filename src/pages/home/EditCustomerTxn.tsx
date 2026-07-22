@@ -6,10 +6,8 @@ import InputField from '../../components/form/InputFields';
 import SelectField from '../../components/form/SelectField';
 import { customerTxnType } from '../../utils/transactionType';
 import { useDeleteCustomerTxnMutation, useUpdateCustomerTxnMutation } from '../../redux/features/customer/customerApi';
-import { useAppSelector } from '../../redux/hook';
 
 const EditCustomerTxn = ({ onClose, txn, transactions }: { onClose: () => void, txn: any, transactions: any }) => {
-    const user = useAppSelector((state: any) => state.auth.auth.user);
     const [loading, setLoading] = useState(false)
     const { handleSubmit, control, reset } = useForm<any>({
         defaultValues: {
@@ -89,7 +87,6 @@ const EditCustomerTxn = ({ onClose, txn, transactions }: { onClose: () => void, 
                     <SelectField
                         name="type"
                         label="no"
-                        readOnly={user?.role === 'manager'}
                         placeholder={txn?.type}
                         options={customerTxnType}
                         control={control}
@@ -99,7 +96,6 @@ const EditCustomerTxn = ({ onClose, txn, transactions }: { onClose: () => void, 
                     <div className='mt-[14px]'>
                         <InputField
                             name="amount"
-                            readOnly={user?.role === 'manager'}
                             label=""
                             placeholder={txn?.amount}
                             type='number'

@@ -126,6 +126,7 @@ export const getMenuItems = (role?: string) => {
                     icon: <MdDashboard size={20} />,
                     subItems: [
                         { name: "Report", path: "dashboard" },
+                        { name: "Profit & Loss", path: "dashboard/profitLoss" },
                         { name: "Pending Approvals", path: "dashboard/approvals" },
                         { name: "User management", path: "dashboard/users" },
                         { name: "User Register", path: "register" }

@@ -1,8 +1,11 @@
 import { useEffect } from "react";
 import { useForm, type FieldValues } from "react-hook-form";
 import { useUpdateInvoiceMutation } from "../../../redux/features/cart/cartApi";
+import { useAppSelector } from "../../../redux/hook";
 
 const InvoiceEditModal = ({ onClose, sale }: any) => {
+    const user = useAppSelector((state) => state.auth.auth.user);
+
     const [updateInvoice] = useUpdateInvoiceMutation();
 
     const {
@@ -76,6 +79,7 @@ const InvoiceEditModal = ({ onClose, sale }: any) => {
                                         <td className="px-3 py-2 text-center">
                                             <input
                                                 type="number"
+                                                readOnly={user?.role === 'manager'}
                                                 step="any"
                                                 {...register(`items.${idx}.quantity`, {
                                                     required: true,
@@ -88,6 +92,7 @@ const InvoiceEditModal = ({ onClose, sale }: any) => {
                                             <input
                                                 type="number"
                                                 step="any"
+                                                readOnly={user?.role === 'manager'}
                                                 {...register(`items.${idx}.salePrice`, {
                                                     required: true,
                                                 })}
@@ -107,6 +112,7 @@ const InvoiceEditModal = ({ onClose, sale }: any) => {
 
                     <Input
                         label="Customer Commission"
+                        readOnly={user?.role === 'manager'}
                         step='any'
                         type="number"
                         {...register("customerCommission", { required: true })}
@@ -114,6 +120,7 @@ const InvoiceEditModal = ({ onClose, sale }: any) => {
 
                     <Input
                         label="Labour"
+                        readOnly={user?.role === 'manager'}
                         step='any'
                         type="number"
                         {...register("labour", { required: true })}
@@ -121,6 +128,7 @@ const InvoiceEditModal = ({ onClose, sale }: any) => {
 
                     <Input
                         label="Paid Amount"
+                        readOnly={user?.role === 'manager'}
                         step='any'
                         type="number"
                         {...register("paidAmount", { required: true })}
@@ -128,6 +136,7 @@ const InvoiceEditModal = ({ onClose, sale }: any) => {
 
                     <Input
                         label="Others"
+                        readOnly={user?.role === 'manager'}
                         step='any'
                         type="number"
                         {...register("others", { required: true })}
@@ -135,6 +144,7 @@ const InvoiceEditModal = ({ onClose, sale }: any) => {
 
                     <Input
                         label="Sub Total"
+                        readOnly={user?.role === 'manager'}
                         step='any'
                         type="number"
                         {...register("subtotal", { required: true })}
@@ -142,6 +152,7 @@ const InvoiceEditModal = ({ onClose, sale }: any) => {
 
                     <Input
                         label="Grand Total"
+                        readOnly={user?.role === 'manager'}
                         step='any'
                         type="number"
                         {...register("grandTotal", { required: true })}

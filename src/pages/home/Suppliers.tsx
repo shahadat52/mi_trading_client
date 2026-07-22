@@ -14,12 +14,13 @@ type Props = {
 
 
 const Suppliers = ({ searchTerm }: Props) => {
+    const navigate = useNavigate()
     const [limit, setLimit] = useState(10)
     const { data: payable, isLoading } = useGetAllPayableTxnQuery({ search: searchTerm, type: 'regular', limit })
-
-    const { data: totalpayable } = useGetTotalPayableToSupplierQuery(undefined)
     const payableData = payable?.data
-    const navigate = useNavigate()
+
+    const { data: total } = useGetTotalPayableToSupplierQuery({ supplierType: 'regular' })
+
 
     if (isLoading) {
         return <Loading />
@@ -28,7 +29,7 @@ const Suppliers = ({ searchTerm }: Props) => {
         <div>
             <div className="mb-1 ">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-bold text-slate-800">মোট দেনাঃ {customRound(totalpayable?.data?.totalPayable).toLocaleString() || 0}  টাকা</h2>
+                    <h2 className="text-xl font-bold text-slate-800">↗️দেনা: {customRound(total?.data?.totalPayable).toLocaleString() || 0} ৳</h2>
                     <div className=''>
                         <select
                             value={limit}

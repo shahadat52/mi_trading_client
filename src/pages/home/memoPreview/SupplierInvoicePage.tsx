@@ -15,6 +15,7 @@ type Invoice = {
     quantity: number;
     purchaseQty: number;
     bosta: number;
+    purchaseBosta: number
     lot: string;
     labour: number;
     commission: number;
@@ -58,7 +59,7 @@ const SupplierInvoicePage: React.FC<Props> = ({ invoiceData, loading = false }) 
         );
     }
 
-    const { invoice, bosta, product, imageurl, commission, lot, note, purchasePrice, purchaseQty, supplier, purchaseDate, unit, othersField, paidAmount, others, labour, } = invoiceData;
+    const { invoice, purchaseBosta, product, imageurl, commission, lot, note, purchasePrice, purchaseQty, supplier, purchaseDate, unit, othersField, paidAmount, others, labour, } = invoiceData;
 
 
 
@@ -99,7 +100,7 @@ const SupplierInvoicePage: React.FC<Props> = ({ invoiceData, loading = false }) 
                         <td className="px-4 py-2 border">{product}</td>
                         <td className="px-4 py-2 border text-center">{purchaseQty}</td>
                         <td className="px-4 py-2 border text-center">{purchasePrice}</td>
-                        <td className="px-4 py-2 border text-center">{bosta}</td>
+                        <td className="px-4 py-2 border text-center">{purchaseBosta}</td>
                         <td className="px-4 py-2 border text-center">{unit}</td>
                     </tr>
                 </tbody>

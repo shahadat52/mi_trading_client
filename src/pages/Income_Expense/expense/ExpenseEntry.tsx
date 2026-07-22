@@ -8,13 +8,23 @@ import { useGetAllSectorsQuery, useTxnEntryMutation } from "../../../redux/featu
 import { paymentMethods } from "../../../utils/paymentMethods";
 import { banksName } from "../../accounts/banksName";
 import { bankingSource } from "../../../utils/transactionType";
+import ImagePicker from "../../../components/ImagePicker";
+import { compressImage } from "../../../utils/compressImage";
 
 const ExpenseEntry = ({ onClose }: { onClose: () => void }) => {
+    const [imageFile, setImageFile] = useState<File | null>(null);
+
     const [loading, setLoading] = useState(false)
     const { handleSubmit, control, reset, watch } = useForm();
 
     const { data: sectorData } = useGetAllSectorsQuery({ head: 'expense' });
     const expenseSources = sectorData?.data || [];
+
+    const handleComprssImage = async (file: any) => {
+        if (!file) return;
+        const compressedFile = await compressImage(file);
+        setImageFile(compressedFile);
+    }
 
     const [addExpense] = useTxnEntryMutation();
 
@@ -24,7 +34,17 @@ const ExpenseEntry = ({ onClose }: { onClose: () => void }) => {
         setLoading(true);
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
         try {
-            const result = await addExpense(data);
+            const formData = new FormData();
+
+            Object.entries(data).forEach(([key, value]) => {
+                formData.append(key, String(value));
+            });
+
+            if (imageFile) {
+                formData.append("image", imageFile);
+            }
+
+            const result = await addExpense(formData);
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
                 reset();
@@ -107,7 +127,27 @@ const ExpenseEntry = ({ onClose }: { onClose: () => void }) => {
                     )
                 }
 
+                <div>
+                    <ImagePicker
+                        onFileSelect={(file) => {
+                            handleComprssImage(file);
+                        }}
+                    />
 
+                    {imageFile && (
+                        <p className="text-xs text-green-600 mt-1">
+                            {imageFile.name}
+                        </p>
+                    )}
+
+                    {imageFile && (
+                        <img
+                            src={URL.createObjectURL(imageFile)}
+                            alt="preview"
+                            className="w-10 h-15 object-cover rounded mt-2"
+                        />
+                    )}
+                </div>
                 <button
                     type="submit"
                     disabled={loading}

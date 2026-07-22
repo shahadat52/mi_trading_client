@@ -122,7 +122,7 @@ const ProductReceivingSlip = () => {
                             </div>
 
                             <div className="border border-black p-1 text-center">
-                                {purchase?.bosta}
+                                {purchase?.purchaseBosta}
                             </div>
 
                             <div className="border border-black p-1 text-right">

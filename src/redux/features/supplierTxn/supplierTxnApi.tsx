@@ -114,13 +114,19 @@ const supplierTxnApi = baseApi.injectEndpoints({
         }),
 
         getTotalPayableToSupplier: builder.query({
-            query: () => (
-                {
+            query: ({ supplierType }) => {
+                const params = new URLSearchParams();
+                if (supplierType) {
+                    params.append('supplierType', supplierType);
+                }
+
+                return {
                     url: "/supplierTxn/totalpayable",
                     method: 'GET',
-                })
-        }),
-
+                    params
+                }
+            }
+        })
     }),
 });
 

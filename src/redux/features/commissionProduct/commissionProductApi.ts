@@ -70,7 +70,7 @@ const commissionProduct = baseApi.injectEndpoints({
         updateCommissionProd: builder.mutation({
             query: (commissionProductData: any) => (
                 {
-                    url: `commissionProduct/update/${commissionProductData.id}`,
+                    url: `/commissionProduct/update/${commissionProductData.id}`,
                     method: "PATCH",
                     body: commissionProductData.data
                 }
@@ -81,16 +81,47 @@ const commissionProduct = baseApi.injectEndpoints({
         deleteCommissionProd: builder.mutation({
             query: (id: any) => (
                 {
-                    url: `commissionProduct/${id}`,
+                    url: `/commissionProduct/${id}`,
                     method: "DELETE"
                 }
             ),
             invalidatesTags: ['CommissionProduct']
         }),
 
+        addProfitCommissionProduct: builder.mutation({
+            query: ({ id, data }) => (
+                {
+                    url: `/commissionProduct/addProfit/${id}`,
+                    method: "PATCH",
+                    body: data
+
+                }
+            ),
+            invalidatesTags: ['CommissionProduct']
+        }),
+
+        getTotalProfitCommissionProduct: builder.query({
+            query: ({ startDate, endDate, limit }) => {
+                const params = new URLSearchParams();
+                if (startDate) {
+                    params.append('startDate', startDate);
+                }
+                if (endDate) {
+                    params.append('endDate', endDate);
+                }
+                if (limit) {
+                    params.append('limit', limit);
+                }
+                return {
+                    url: "/commissionProduct/totalProfit",
+                    method: 'GET',
+                    params
+                }
+            },
+        })
 
 
     }),
 });
 
-export const { useCommissionProductEntryMutation, useGetCommissionProductsByIdQuery, useGetCommissionProductsQuery, useGetCommissionProductsBySupplierQuery, useUpdateCommissionProdMutation, useDeleteCommissionProdMutation } = commissionProduct    
+export const { useCommissionProductEntryMutation, useGetCommissionProductsByIdQuery, useGetCommissionProductsQuery, useGetCommissionProductsBySupplierQuery, useUpdateCommissionProdMutation, useDeleteCommissionProdMutation, useAddProfitCommissionProductMutation, useGetTotalProfitCommissionProductQuery } = commissionProduct    

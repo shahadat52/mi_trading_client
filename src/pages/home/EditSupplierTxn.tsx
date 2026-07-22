@@ -6,10 +6,8 @@ import InputField from '../../components/form/InputFields';
 import SelectField from '../../components/form/SelectField';
 import { customerTxnType } from '../../utils/transactionType';
 import { useDeleteSupplierTxnMutation, useUpdateSupplierTxnDataMutation } from '../../redux/features/supplierTxn/supplierTxnApi';
-import { useAppSelector } from '../../redux/hook';
 
 const EditSupplierTxn = ({ onClose, txn, transactions }: { onClose: () => void, txn: any, transactions: any }) => {
-    const user = useAppSelector((state) => state.auth.auth.user);
     const [loading, setLoading] = useState(false)
     const { handleSubmit, control, reset } = useForm({
         defaultValues: {
@@ -87,7 +85,6 @@ const EditSupplierTxn = ({ onClose, txn, transactions }: { onClose: () => void, 
                     <SelectField
                         name="type"
                         label="no"
-                        readOnly={user?.role === 'manager'}
                         placeholder='লেনদেনের ধরণ'
                         options={customerTxnType}
                         control={control}
@@ -96,7 +93,6 @@ const EditSupplierTxn = ({ onClose, txn, transactions }: { onClose: () => void, 
 
                     <div className='mt-[14px]'>
                         <InputField
-                            readOnly={user?.role === 'manager'}
                             name="amount"
                             label=""
                             placeholder='কত টাকা *'

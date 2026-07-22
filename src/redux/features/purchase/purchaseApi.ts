@@ -109,7 +109,39 @@ const purchaseApi = baseApi.injectEndpoints({
             // providesTags: ['Purchases']
         }),
 
+        addProfit: builder.mutation({
+            query: (payload) => (
+                {
+                    url: `/purchase/addProfit/${payload.id}`,
+                    method: "PATCH",
+                    body: payload.data
+
+                }
+            ),
+            invalidatesTags: ['Purchases', 'Products', 'RegularPurchase', 'Payable']
+        }),
+
+        getTotalProfitNormalProduct: builder.query({
+            query: ({ startDate, endDate, limit }) => {
+                const params = new URLSearchParams();
+                if (startDate) {
+                    params.append('startDate', startDate);
+                }
+                if (endDate) {
+                    params.append('endDate', endDate);
+                }
+                if (limit) {
+                    params.append('limit', limit);
+                }
+                return {
+                    url: "/purchase/totalProfit",
+                    method: 'GET',
+                    params
+                }
+            },
+        })
+
     }),
 });
 
-export const { usePurchaseEntryMutation, useGetCommissionPurchasesQuery, useGetRegualarPurchaseByIdQuery, useGetAllPurchasesQuery, useGetCommissionPurchaseByIdQuery, useDeletePurchaseMutation, useUpdatePurchaseMutation, useGetPurchaseReportsQuery, useGetProductWiseSalesReportsQuery, useGetPurchaseDataByInvoiceQuery } = purchaseApi
+export const { usePurchaseEntryMutation, useGetCommissionPurchasesQuery, useGetRegualarPurchaseByIdQuery, useGetAllPurchasesQuery, useGetCommissionPurchaseByIdQuery, useDeletePurchaseMutation, useUpdatePurchaseMutation, useGetPurchaseReportsQuery, useGetProductWiseSalesReportsQuery, useGetPurchaseDataByInvoiceQuery, useAddProfitMutation, useGetTotalProfitNormalProductQuery } = purchaseApi

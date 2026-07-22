@@ -5,6 +5,8 @@ type Item = {
     name: string;
     product: string;
     quantity: number;
+    supplyQty: number;
+    supplyBosta: number;
     bosta: number;
     unit: string;
     [key: string]: any;
@@ -111,8 +113,8 @@ const CustomerInvoicePage: React.FC<Props> = ({ invoiceData, loading = false }) 
                             <tr key={item.product} className="hover:bg-gray-50 transition">
                                 <td className="px-4 py-2 border text-center">{index + 1}</td>
                                 <td className="px-4 py-2 border">{item.name}</td>
-                                <td className="px-4 py-2 border text-center">{item.quantity}</td>
-                                <td className="px-4 py-2 border text-center">{item.bosta}</td>
+                                <td className="px-4 py-2 border text-center">{item.supplyQty}</td>
+                                <td className="px-4 py-2 border text-center">{item.supplyBosta}</td>
                                 <td className="px-4 py-2 border text-center">{item.unit}</td>
                             </tr>
                         ))

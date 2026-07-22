@@ -50,7 +50,7 @@ const SalesActivity = ({ startDate: dateFrom, endDate: dateTo }: any) => {
                                             {sale.salesHistory.map((item: any, idx: number) => (
                                                 <div key={idx}>
                                                     <p className="ml-1">
-                                                        {item?.invoice} ({item.quantity}kg X {item.salePrice})
+                                                        {item?.invoice} ({item.quantity}kg X {item.salePrice}৳)
                                                     </p>
                                                 </div>
                                             ))}

@@ -76,7 +76,7 @@ const PurchaseActivity = ({ startDate, endDate }: any) => {
                                             </td>
 
                                             <td className="px-4 py-2 text-right text-red-600">
-                                                {tx?.bosta} | {tx?.purchaseQty}
+                                                {tx?.purchaseBosta} | {tx?.purchaseQty}
                                             </td>
 
                                             <td className="px-4 py-2 text-right text-green-600">

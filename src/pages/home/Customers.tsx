@@ -18,7 +18,6 @@ const Customers = ({ searchTerm }: Props) => {
     const { data: totalDue } = useGetTotalDueFromAllCustomersQuery(undefined)
     const { data, isLoading } = useGetAllReceivableTxnQuery({ search: searchTerm, limit: limit, category: category });
     const receivableData = data?.data;
-    console.log(totalDue)
     const navigate = useNavigate()
 
     if (isLoading) {
@@ -31,7 +30,7 @@ const Customers = ({ searchTerm }: Props) => {
             <div className="mb-4 ">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h2 className="text-xl font-bold text-slate-800">মোট পাওনাঃ {customRound(totalDue?.data?.totalReceivable).toLocaleString() || 0}  টাকা</h2>
+                        <h2 className="text-xl font-bold text-slate-800">↙️পাওনা: {customRound(totalDue?.data?.totalReceivable).toLocaleString() || 0} ৳</h2>
                         <select
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}

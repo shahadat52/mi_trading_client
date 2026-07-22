@@ -33,7 +33,7 @@ import ProductDetails from "../pages/products/ProductDetails";
 import CommissionProductDetails from "../pages/products/CommissionProductDetails";
 import MemoPreviewPage from "../pages/home/memoPreview/MemoPreviewPage";
 import CashboxPage from "../pages/cashbox/CashboxPage";
-import PurchaseReport from "../pages/purchase/PurchaseReport";
+import ProductWiseSalesReports from "../pages/purchase/ProductWiseSalesReports";
 import IncomeExpensePage from "../pages/Income_Expense/IncomeExpensePage";
 import BepariCoutha from "../pages/commissionSales/Coutha/BepariCoutha";
 import HRPage from "../pages/hr/HRpage";
@@ -52,6 +52,7 @@ import CusotmerTxnReportPage from "../pages/home/Report/CusotmerTxnReportPage";
 import SupplierTxnReportPage from "../pages/home/Report/SupplierTxnReportPage";
 import BankTxnReportPage from "../pages/home/Report/BankTxnReportPage";
 import ActivityPage from "../pages/activity/ActivityPage";
+import ProfitLossPage from "../pages/dashboard/ProfitLoss/ProfitLossPage";
 
 export const router = createBrowserRouter([
     {
@@ -79,7 +80,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "purchase/report/:id",
-                element: <PrivateRoute><PurchaseReport /></PrivateRoute>,
+                element: <PrivateRoute><ProductWiseSalesReports /></PrivateRoute>,
             },
 
             {
@@ -239,6 +240,10 @@ export const router = createBrowserRouter([
             {
                 path: "/kuli_godi_tohori",
                 element: <PrivateRoute><KuliGodiTohoriPage /></PrivateRoute>
+            },
+            {
+                path: "/dashboard/profitLoss",
+                element: <PrivateRoute><ProfitLossPage /></PrivateRoute>
             },
 
         ],

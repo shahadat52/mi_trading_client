@@ -2,6 +2,8 @@ import { useNavigate } from "react-router";
 import { useGetAllPayableTxnQuery } from "../../redux/features/partyledger/partyLedgerApi";
 import Loading from "../../components/Loading";
 import { useState } from "react";
+import { useGetTotalPayableToSupplierQuery } from "../../redux/features/supplierTxn/supplierTxnApi";
+import { customRound } from "../../utils/customRound";
 
 type Props = {
     searchTerm: string;
@@ -11,8 +13,10 @@ const Beparis = ({ searchTerm }: Props) => {
     const [limit, setLimit] = useState(10)
     const { data: payable, isLoading } = useGetAllPayableTxnQuery({ search: searchTerm, type: 'commission', limit })
     const payableData = payable?.data
-    const navigate = useNavigate()
 
+    const { data: total } = useGetTotalPayableToSupplierQuery({ supplierType: 'commission' })
+    const navigate = useNavigate()
+    const totalPayable = total?.data
     if (isLoading) {
         return <Loading />
     }
@@ -20,7 +24,7 @@ const Beparis = ({ searchTerm }: Props) => {
         <div>
             <div className="mb-4 ">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-bold text-slate-800">পাওনাদারদের তালিকা</h2>
+                    <h2 className="text-xl font-bold text-slate-800">↗️দেনা: {customRound(totalPayable?.totalPayable).toLocaleString() || 0} ৳</h2>
                     <div className=''>
                         <select
                             value={limit}

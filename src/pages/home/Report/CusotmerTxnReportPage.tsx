@@ -64,7 +64,7 @@ const CusotmerTxnReportPage = () => {
                 `}
             </style>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 no-print">
                 <button
                     onClick={handlePrint}
                     className="min-w-40 mb-[-23px] px-3 py-2 rounded bg-blue-600 text-white no-print"
@@ -78,7 +78,7 @@ const CusotmerTxnReportPage = () => {
                         type="date"
                         value={startDate}
                         onChange={(e) => setStartDate(e.target.value)}
-                        className="border rounded px-3 py-2 text-sm"
+                        className="border rounded px-3 py-2 text-sm no-print"
                     />
                 </div>
 
@@ -163,7 +163,7 @@ const CusotmerTxnReportPage = () => {
                 {/* Footer */}
                 <div className="flex justify-between mt-16">
                     <div className="text-center">
-                        <p>{user?.name}</p>
+                        <p>{user.role === 'admin' ? 'admin' : user?.name}</p>
                         <div className="border-t w-40"></div>
                         <p>Prepared By</p>
                     </div>

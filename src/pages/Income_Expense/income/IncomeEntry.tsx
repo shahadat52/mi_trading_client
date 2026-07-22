@@ -8,8 +8,11 @@ import { useGetAllSectorsQuery, useTxnEntryMutation } from "../../../redux/featu
 import { paymentMethods } from "../../../utils/paymentMethods";
 import { bankingSource } from "../../../utils/transactionType";
 import { banksName } from "../../accounts/banksName";
+import { compressImage } from "../../../utils/compressImage";
+import ImagePicker from "../../../components/ImagePicker";
 
 const IncomeEntry = ({ onClose }: { onClose: () => void }) => {
+    const [imageFile, setImageFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false)
     const { handleSubmit, control, reset, watch } = useForm();
     const [addIncome] = useTxnEntryMutation();
@@ -17,13 +20,27 @@ const IncomeEntry = ({ onClose }: { onClose: () => void }) => {
     const { data: sectorData } = useGetAllSectorsQuery({ head: 'income' });
     const incomeSources = sectorData?.data || [];
 
+    const handleComprssImage = async (file: any) => {
+        if (!file) return;
+        const compressedFile = await compressImage(file);
+        setImageFile(compressedFile);
+    }
+
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         data.head = 'income'
         data.type = 'credit'
         setLoading(true);
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
         try {
+            const formData = new FormData();
 
+            Object.entries(data).forEach(([key, value]) => {
+                formData.append(key, String(value));
+            });
+
+            if (imageFile) {
+                formData.append("image", imageFile);
+            }
             const result = await addIncome(data);
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
@@ -48,7 +65,7 @@ const IncomeEntry = ({ onClose }: { onClose: () => void }) => {
     const paymentMethod = watch("paymentMethod")
 
     return (
-        <div className="lg:max-w-[50%] mx-auto ">
+        <div className="mx-auto ">
             <h1 className="text-2xl text-center font-bold mb-4 ">আপনার আয় যোগ করূন </h1>
             <form
                 onSubmit={handleSubmit(onSubmit)}
@@ -106,6 +123,28 @@ const IncomeEntry = ({ onClose }: { onClose: () => void }) => {
                         </div>
                     )
                 }
+
+                <div>
+                    <ImagePicker
+                        onFileSelect={(file) => {
+                            handleComprssImage(file);
+                        }}
+                    />
+
+                    {imageFile && (
+                        <p className="text-xs text-green-600 mt-1">
+                            {imageFile.name}
+                        </p>
+                    )}
+
+                    {imageFile && (
+                        <img
+                            src={URL.createObjectURL(imageFile)}
+                            alt="preview"
+                            className="w-10 h-15 object-cover rounded mt-2"
+                        />
+                    )}
+                </div>
                 <button
                     type="submit"
                     disabled={loading}
