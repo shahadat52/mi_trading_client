@@ -5,4 +5,5 @@ export const incomeTableHeads = [
     "পরিমাণ",
     "তারিখ ও সময়",
     "বিবরণ",
+    "ছবি",
 ];

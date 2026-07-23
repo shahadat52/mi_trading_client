@@ -104,9 +104,13 @@ const CusotmerTxnReportPage = () => {
                     <p className="text-sm bg-[#317cc2] rounded-xl text-white w-1/2 mx-auto">জেনারেল মার্চেন্ট এন্ড কমিশন এজেন্ট</p>
                     <p className="">হলুদ, মরিচ, ধনিয়া, ডাল, মশলা ও যাবতীয় ভূষা মালের আড়ৎ</p>
                 </div>
+                <div className="text-center text-sm ">
+                    <h2>Customer Transactions Statement</h2>
+                    <p>{format(startDate, 'dd/MM/yyyy')} ↔️ {format(endDate, 'dd/MM/yyyy')}</p>
 
+                </div>
                 {/* Customer */}
-                <div className="grid grid-cols-2 mt-5 gap-2 text-sm">
+                <div className="grid grid-cols-2 mt-3 gap-2 text-sm">
                     <div>
                         <b>Customer :</b> {customer?.name} <br />
                         <b>Phone :</b> {customer?.phone} <br />

@@ -5,11 +5,18 @@ import type { TUser } from '../dashboard/userManagement/UserTable';
 import { EMPLOYEE_ROLE_OPTIONS, employeeTableHeads } from '../../utils/options';
 import { useNavigate } from 'react-router';
 import { useFireEmployeeMutation, useGetAllEmployeesQuery, useUpdateEmployeeRoleMutation, useUpdateEmployeeStatusMutation } from '../../redux/features/employee/employeeApi';
-
+import { useMemo } from "react";
 import { MdDeleteForever } from 'react-icons/md';
 import EmployeeTable from './EmployeeTable';
 
 const HRpage = () => {
+
+    const now = new Date();
+    const showSalaryGenerate = useMemo(() => {
+        const day = now.getDate();
+        return day >= 1 && day <= 5;
+    }, []);
+
     const navigate = useNavigate()
     const { data, isLoading, isError, error } = useGetAllEmployeesQuery(undefined);
     const employees = data?.data || [];
@@ -85,8 +92,19 @@ const HRpage = () => {
     return (
         <div className='mb-16 p-1 text-xl font-bold uppercase'>
             <h1 className='my-4 text-center'>H.R Department</h1>
-            <div className='mb-2 flex justify-end'>
-                <button onClick={() => navigate(`/hr/join`)} className='btn '>Join New Employee</button>
+            <div className="mb-2 flex justify-end">
+                {showSalaryGenerate && (
+                    <button className="btn mr-2">
+                        Salary Generate
+                    </button>
+                )}
+
+                <button
+                    onClick={() => navigate(`/hr/join`)}
+                    className="btn"
+                >
+                    Join New Employee
+                </button>
             </div>
             {/* Desktop view */}
             <div className="overflow-x-auto font-semibold bg-white rounded-lg shadow-sm hidden md:block">

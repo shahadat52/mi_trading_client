@@ -41,7 +41,7 @@ const IncomeEntry = ({ onClose }: { onClose: () => void }) => {
             if (imageFile) {
                 formData.append("image", imageFile);
             }
-            const result = await addIncome(data);
+            const result = await addIncome(formData);
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
                 reset();

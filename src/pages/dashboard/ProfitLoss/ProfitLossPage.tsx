@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { endOfDay, format, startOfDay } from "date-fns";
 import { useGetTotalProfitCommissionProductQuery } from "../../../redux/features/commissionProduct/commissionProductApi";
 import { useGetTotalProfitNormalProductQuery } from "../../../redux/features/purchase/purchaseApi";
 import { LIMIT_OPTIONS } from "../../../utils/options";
+import { useReactToPrint } from "react-to-print";
 
 const ProfitLossPage = () => {
     const [limit, setLimit] = useState(10);
@@ -37,6 +38,12 @@ const ProfitLossPage = () => {
 
     const normalProfit = normal?.data;
     const commissionProfit = commission?.data;
+
+    const printRef = useRef<HTMLDivElement>(null);
+    const handlePrint = useReactToPrint({
+        contentRef: printRef,
+        documentTitle: "Customer-Transaction-Report",
+    });
 
     if (normalLoading || commissionLoading) {
         return (
@@ -102,127 +109,139 @@ const ProfitLossPage = () => {
                 </div>
             </div>
 
+            <button
+                onClick={handlePrint}
+                className="min-w-40 mb-[-23px] px-3 py-2 rounded bg-blue-600 text-white no-print"
+            >
+                Print Report
+            </button>
+
             {/* Profit Cards */}
 
-            <div className="grid lg:grid-cols-2 gap-6 mb-18">
+            <div
+                ref={printRef}
+                className="w-[210mm] min-h-[297mm] mx-auto bg-white p-6 text-[12px]"
+            >
 
                 {/* Normal */}
 
-                <div className="bg-white rounded-xl shadow border">
+                <div className="grid grid-cols-1 lg:grid-cols-2 print:grid-cols-2 gap-6 mb-18">
+                    <div className="bg-white rounded-xl shadow border">
 
-                    <div className="border-b px-5 py-4 flex justify-between items-center">
-                        <h2 className="text-xl font-bold">
-                            Normal Product Profit
-                        </h2>
+                        <div className="border-b px-5 py-4 flex justify-between items-center">
+                            <h2 className="text-lg font-bold">
+                                Normal Product Profit
+                            </h2>
 
-                        <div className="text-green-600 font-bold text-lg">
-                            ৳ {normalProfit?.totalProfit || 0}
+                            <div className="text-green-600 font-bold text-lg">
+                                ৳ {normalProfit?.totalProfit || 0}
+                            </div>
+                        </div>
+
+                        <div className="overflow-x-auto">
+
+                            <table className="table table-zebra">
+
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Product</th>
+                                        <th>Bag</th>
+                                        <th>Quantity</th>
+                                        <th className="text-right">Profit</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody className="text-[12px]">
+
+                                    {normalProfit?.products?.length ? (
+                                        normalProfit.products.map((item: any, index: number) => (
+                                            <tr key={index}>
+                                                <td>{index + 1}</td>
+                                                <td>{item.product}</td>
+                                                <td>{item.purchaseBosta}</td>
+                                                <td>{item.purchaseQty}</td>
+                                                <td className="text-right font-semibold text-green-600">
+                                                    ৳ {item.profit}
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td
+                                                colSpan={5}
+                                                className="text-center py-8 text-gray-500"
+                                            >
+                                                No Profit Data Found
+                                            </td>
+                                        </tr>
+                                    )}
+
+                                </tbody>
+
+                            </table>
+
                         </div>
                     </div>
 
-                    <div className="overflow-x-auto">
+                    {/* Commission */}
 
-                        <table className="table table-zebra">
+                    <div className="bg-white rounded-xl shadow border">
 
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Product</th>
-                                    <th>Bag</th>
-                                    <th>Quantity</th>
-                                    <th className="text-right">Profit</th>
-                                </tr>
-                            </thead>
+                        <div className="border-b px-5 py-4 flex justify-between items-center">
+                            <h2 className="text-lg font-bold">
+                                Commission Product Profit
+                            </h2>
 
-                            <tbody>
-
-                                {normalProfit?.products?.length ? (
-                                    normalProfit.products.map((item: any, index: number) => (
-                                        <tr key={index}>
-                                            <td>{index + 1}</td>
-                                            <td>{item.product}</td>
-                                            <td>{item.purchaseBosta}</td>
-                                            <td>{item.purchaseQty}</td>
-                                            <td className="text-right font-semibold text-green-600">
-                                                ৳ {item.profit}
-                                            </td>
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td
-                                            colSpan={5}
-                                            className="text-center py-8 text-gray-500"
-                                        >
-                                            No Profit Data Found
-                                        </td>
-                                    </tr>
-                                )}
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
-                </div>
-
-                {/* Commission */}
-
-                <div className="bg-white rounded-xl shadow border">
-
-                    <div className="border-b px-5 py-4 flex justify-between items-center">
-                        <h2 className="text-xl font-bold">
-                            Commission Product Profit
-                        </h2>
-
-                        <div className="text-blue-600 font-bold text-lg">
-                            ৳ {commissionProfit?.totalProfit || 0}
+                            <div className="text-blue-600 font-bold text-lg">
+                                ৳ {commissionProfit?.totalProfit || 0}
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="overflow-x-auto">
+                        <div className="overflow-x-auto">
 
-                        <table className="table table-zebra">
+                            <table className="table table-zebra">
 
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Product</th>
-                                    <th>Bag</th>
-                                    <th>Quantity</th>
-                                    <th className="text-right">Profit</th>
-                                </tr>
-                            </thead>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Product</th>
+                                        <th>Bag</th>
+                                        <th>Quantity</th>
+                                        <th className="text-right">Profit</th>
+                                    </tr>
+                                </thead>
 
-                            <tbody>
+                                <tbody className="text-[12px]">
 
-                                {commissionProfit?.products?.length ? (
-                                    commissionProfit.products.map((item: any, index: number) => (
-                                        <tr key={index}>
-                                            <td>{index + 1}</td>
-                                            <td>{item.name}</td>
-                                            <td>{item.supplyBosta}</td>
-                                            <td>{item.supplyQty}</td>
-                                            <td className="text-right font-semibold text-blue-600">
-                                                ৳ {item.profit}
+                                    {commissionProfit?.products?.length ? (
+                                        commissionProfit.products.map((item: any, index: number) => (
+                                            <tr key={index}>
+                                                <td>{index + 1}</td>
+                                                <td>{item.name}</td>
+                                                <td>{item.supplyBosta}</td>
+                                                <td>{item.supplyQty}</td>
+                                                <td className="text-right font-semibold text-blue-600">
+                                                    ৳ {item.profit}
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td
+                                                colSpan={5}
+                                                className="text-center py-8 text-gray-500"
+                                            >
+                                                No Profit Data Found
                                             </td>
                                         </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td
-                                            colSpan={5}
-                                            className="text-center py-8 text-gray-500"
-                                        >
-                                            No Profit Data Found
-                                        </td>
-                                    </tr>
-                                )}
+                                    )}
 
-                            </tbody>
+                                </tbody>
 
-                        </table>
+                            </table>
 
+                        </div>
                     </div>
                 </div>
             </div>

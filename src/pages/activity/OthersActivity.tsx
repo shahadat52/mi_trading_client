@@ -5,6 +5,7 @@ import { useGetAllTxnQuery } from "../../redux/features/inExTxn/inExTxnApi";
 
 const OthersActivity = ({ startDate, endDate }: any) => {
     const { data, isLoading, isError } = useGetAllTxnQuery({ startDate, endDate })
+    const summery = data?.data || {};
     const transactions = data?.data?.data || [];
     return (
         <div>
@@ -26,60 +27,67 @@ const OthersActivity = ({ startDate, endDate }: any) => {
 
                 {/* Data Table */}
                 {!isLoading && !isError && transactions?.length > 0 && (
-                    <div className="overflow-x-auto h-[680px] ">
-                        <table className="w-full text-sm">
-                            <thead className="sticky top-0 bg-gray-100 text-gray-700">
-                                <tr>
-                                    <th className="px-4 py-2 text-left">Sector</th>
-                                    <th className="px-4 py-2 text-left">Date</th>
-                                    <th className="px-4 py-2 text-left">Description</th>
-                                    <th className="px-4 py-2 text-right">Debit</th>
-                                    <th className="px-4 py-2 text-right">Credit</th>
-                                    <th className="px-4 py-2 text-right"></th>
-                                </tr>
-                            </thead>
+                    <div>
+                        <div className='ml-3 mt-2'>
+                            <h2>Total Credit: {summery?.totalCredit}</h2>
+                            <h2>Total Debit: {summery?.totalDebit}</h2>
+                            <h2>Current Balance: {(summery?.totalCredit) - (summery?.totalDebit)}</h2>
+                        </div>
+                        <div className="overflow-x-auto h-[680px] ">
+                            <table className="w-full text-sm">
+                                <thead className="sticky top-0 bg-gray-100 text-gray-700">
+                                    <tr>
+                                        <th className="px-4 py-2 text-left">Sector</th>
+                                        <th className="px-4 py-2 text-left">Date</th>
+                                        <th className="px-4 py-2 text-left">Description</th>
+                                        <th className="px-4 py-2 text-right">Debit</th>
+                                        <th className="px-4 py-2 text-right">Credit</th>
+                                        <th className="px-4 py-2 text-right"></th>
+                                    </tr>
+                                </thead>
 
-                            <tbody>
-                                {transactions?.map((tx: any) => {
+                                <tbody>
+                                    {transactions?.map((tx: any) => {
 
-                                    return (
-                                        <tr
+                                        return (
+                                            <tr
 
-                                            key={tx?._id}
-                                            className="border-t hover:bg-gray-50 transition"
-                                        >
-                                            <td className="px-4 py-2">
+                                                key={tx?._id}
+                                                className="border-t hover:bg-gray-50 transition"
+                                            >
+                                                <td className="px-4 py-2">
 
-                                                {tx?.category}
-                                            </td>
-                                            <td className="px-4 py-2">
-                                                {format(new Date(tx?.createdAt), 'dd/MM/yyyy')} <br />
-                                                {format(new Date(tx?.createdAt), 'hh:mm a')}
-                                            </td>
+                                                    {tx?.category}
+                                                </td>
+                                                <td className="px-4 py-2">
+                                                    {format(new Date(tx?.createdAt), 'dd/MM/yyyy')} <br />
+                                                    {format(new Date(tx?.createdAt), 'hh:mm a')}
+                                                </td>
 
-                                            <td
+                                                <td
 
-                                                className="px-4 py-2">
-                                                <p className="font-medium">
-                                                    {tx?.note || tx?.referenceType}
-                                                </p>
-                                                <span className="text-xs text-gray-400">
-                                                    {tx?.referenceType}
-                                                </span>
-                                            </td>
+                                                    className="px-4 py-2">
+                                                    <p className="font-medium">
+                                                        {tx?.note || tx?.referenceType}
+                                                    </p>
+                                                    <span className="text-xs text-gray-400">
+                                                        {tx?.referenceType}
+                                                    </span>
+                                                </td>
 
-                                            <td className="px-4 py-2 text-right text-red-600">
-                                                {tx?.type === 'debit' ? `৳ ${tx?.amount}` : "-"}
-                                            </td>
+                                                <td className="px-4 py-2 text-right text-red-600">
+                                                    {tx?.type === 'debit' ? `৳ ${tx?.amount}` : "-"}
+                                                </td>
 
-                                            <td className="px-4 py-2 text-right text-green-600">
-                                                {tx?.type === 'credit' ? `৳ ${tx?.amount}` : "-"}
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
+                                                <td className="px-4 py-2 text-right text-green-600">
+                                                    {tx?.type === 'credit' ? `৳ ${tx?.amount}` : "-"}
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 )}
             </div>

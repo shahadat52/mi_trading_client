@@ -53,6 +53,7 @@ import SupplierTxnReportPage from "../pages/home/Report/SupplierTxnReportPage";
 import BankTxnReportPage from "../pages/home/Report/BankTxnReportPage";
 import ActivityPage from "../pages/activity/ActivityPage";
 import ProfitLossPage from "../pages/dashboard/ProfitLoss/ProfitLossPage";
+import BrokerTxnReportPage from "../pages/home/Report/BrokerTxnReportPage";
 
 export const router = createBrowserRouter([
     {
@@ -255,6 +256,10 @@ export const router = createBrowserRouter([
     {
         path: "report/supplier/:id",
         element: <PrivateRoute><SupplierTxnReportPage /></PrivateRoute>
+    },
+    {
+        path: "report/broker/:id",
+        element: <PrivateRoute><BrokerTxnReportPage /></PrivateRoute>
     },
     {
         path: "report/bank/:id",

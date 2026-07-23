@@ -100,8 +100,13 @@ const BankTxnReportPage = () => {
                     <p className="">হলুদ, মরিচ, ধনিয়া, ডাল, মশলা ও যাবতীয় ভূষা মালের আড়ৎ</p>
                 </div>
 
+                <div className="text-center text-sm">
+                    <h2>Bank Transactions Statement</h2>
+                    <p>{format(fromDate, 'dd/MM/yyyy')} ↔️ {format(toDate, 'dd/MM/yyyy')}</p>
+                </div>
+
                 {/* Customer */}
-                <div className="grid grid-cols-2 mt-5 gap-2 text-sm">
+                <div className="grid grid-cols-2 mt-3 gap-2 text-sm">
                     <div>
                         <b>Bank Name :</b> {bankData?.bankName} <br />
                         <b>Current Balance :</b> {bankData?.currentBalance.toLocaleString()}/- <br />

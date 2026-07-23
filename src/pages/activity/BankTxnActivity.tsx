@@ -5,7 +5,9 @@ import { useGetAllBankTxnsQuery } from '../../redux/features/bankTransaction/ban
 
 const BankTxnActivity = ({ startDate: dateFrom, endDate: dateTo }: any) => {
     const { data, isLoading, isError } = useGetAllBankTxnsQuery({ dateFrom, dateTo })
-    const transactions = data?.data || [];
+
+    const summery = data?.data || [];
+    const transactions = data?.data?.transactions || [];
     return (
         <div>
             <div className=" bg-white rounded-xl shadow overflow-hidden mb-16">
@@ -26,60 +28,69 @@ const BankTxnActivity = ({ startDate: dateFrom, endDate: dateTo }: any) => {
 
                 {/* Data Table */}
                 {!isLoading && !isError && transactions?.length > 0 && (
-                    <div className="overflow-x-auto h-[680px] ">
-                        <table className="w-full text-sm">
-                            <thead className="sticky top-0 bg-gray-100 text-gray-700">
-                                <tr>
-                                    <th className="px-4 py-2 text-left">Bank</th>
-                                    <th className="px-4 py-2 text-left">Date</th>
-                                    <th className="px-4 py-2 text-left">Description</th>
-                                    <th className="px-4 py-2 text-right">Debit</th>
-                                    <th className="px-4 py-2 text-right">Credit</th>
-                                    <th className="px-4 py-2 text-right"></th>
-                                </tr>
-                            </thead>
+                    <div>
+                        <div className='ml-3 mt-2'>
+                            <h2>Total Credit: {summery?.summary?.totalCredit}</h2>
+                            <h2>Total Debit: {summery?.summary?.totalDebit}</h2>
+                            <h2>Total Balance: {summery?.summary?.currentBalance}</h2>
+                        </div>
 
-                            <tbody>
-                                {transactions?.map((tx: any) => {
+                        <div className="overflow-x-auto  ">
+                            <table className="w-full text-sm">
 
-                                    return (
-                                        <tr
+                                <thead className="sticky top-0 bg-gray-100 text-gray-700">
+                                    <tr>
+                                        <th className="px-4 py-2 text-left">Bank</th>
+                                        <th className="px-4 py-2 text-left">Date</th>
+                                        <th className="px-4 py-2 text-left">Description</th>
+                                        <th className="px-4 py-2 text-right">Debit</th>
+                                        <th className="px-4 py-2 text-right">Credit</th>
+                                        <th className="px-4 py-2 text-right"></th>
+                                    </tr>
+                                </thead>
 
-                                            key={tx?._id}
-                                            className="border-t hover:bg-gray-50 transition"
-                                        >
-                                            <td className="px-4 py-2">
+                                <tbody>
+                                    {transactions?.map((tx: any) => {
 
-                                                {tx?.bankName}
-                                            </td>
-                                            <td className="px-4 py-2">
-                                                {format(new Date(tx?.createdAt), 'dd/MM/yyyy')} <br />
-                                                {format(new Date(tx?.createdAt), 'hh:mm a')}
-                                            </td>
+                                        return (
+                                            <tr
 
-                                            <td
+                                                key={tx?._id}
+                                                className="border-t hover:bg-gray-50 transition"
+                                            >
+                                                <td className="px-4 py-2">
 
-                                                className="px-4 py-2">
-                                                <p className="font-medium">
-                                                    {tx?.note || tx?.referenceType}
-                                                </p>
-                                                <span className="text-xs text-gray-400">
-                                                    {tx?.referenceType}
-                                                </span>
-                                            </td>
+                                                    {tx?.bankName}
+                                                </td>
+                                                <td className="px-4 py-2">
+                                                    {format(new Date(tx?.createdAt), 'dd/MM/yyyy')} <br />
+                                                    {format(new Date(tx?.createdAt), 'hh:mm a')}
+                                                </td>
 
-                                            <td className="px-4 py-2 text-right text-red-600">
-                                                {tx?.type === 'debit' ? `৳ ${tx?.amount}` : "-"}
-                                            </td>
+                                                <td
 
-                                            <td className="px-4 py-2 text-right text-green-600">
-                                                {tx?.type === 'credit' ? `৳ ${tx?.amount}` : "-"}
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
+                                                    className="px-4 py-2">
+                                                    <p className="font-medium">
+                                                        {tx?.note || tx?.referenceType}
+                                                    </p>
+                                                    <span className="text-xs text-gray-400">
+                                                        {tx?.referenceType}
+                                                    </span>
+                                                </td>
+
+                                                <td className="px-4 py-2 text-right text-red-600">
+                                                    {tx?.type === 'debit' ? `৳ ${tx?.amount}` : "-"}
+                                                </td>
+
+                                                <td className="px-4 py-2 text-right text-green-600">
+                                                    {tx?.type === 'credit' ? `৳ ${tx?.amount}` : "-"}
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 )}
             </div>

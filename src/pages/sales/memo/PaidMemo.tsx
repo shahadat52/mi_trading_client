@@ -7,13 +7,13 @@ import mi_logo from "../../../assets/icons/mi_logo.png";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const PaidMemo = ({ sale, onClose }: any) => {
-    const MIN_ROWS = 7;
+    const MIN_ROWS = 9;
     return (
-        <div className=" max-w-3xl mx-auto rounded overflow-auto print-area  bg-white">
+        <div className=" max-w-2xl mx-auto rounded overflow-auto print-area  bg-white">
 
             <div className="fixed inset-0 z-50 flex items-start justify-center overflow-auto  min-h-screen  ">
 
-                <div className=" border max-w-3xl rounded  overflow-auto print-area bg-white  border-gray-300 shadow-lg ">
+                <div className=" border max-w-[430px] rounded  overflow-auto print-area bg-white  border-gray-300 shadow-lg ">
 
                     {/* Header Section */}
                     <div className="bg-[#f08c1d] p-4 text-center text-black relative">

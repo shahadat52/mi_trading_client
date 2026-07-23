@@ -69,7 +69,7 @@ const BepariCoutha = () => {
     return (
         <div
             ref={printRef}
-            className=" mt-1 overflow-y-scroll mx-auto  print-area fixed inset-0 z-50 flex items-start justify-center   p-4 sm:p-8 print:p-0"
+            className=" mt-3 overflow-y-scroll mx-auto  print-area fixed inset-0 z-50 flex items-start justify-center   p-4 sm:p-8 print:p-0"
         >
             <div
                 onClick={(e) => e.stopPropagation()}

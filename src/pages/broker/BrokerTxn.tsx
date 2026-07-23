@@ -14,6 +14,8 @@ import Modal from "../../components/Modal";
 import EditBroker from "./EditBroker";
 import { BROKERY_PAYMENT_METHOD_OPTIONS } from "../../utils/options";
 import Profile from "../../components/profile/Profile";
+import { AiOutlineDownload } from "react-icons/ai";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 const BrokerTxn = () => {
     const [selectedBroker, setSelectedBroker] = useState(null)
@@ -76,7 +78,28 @@ const BrokerTxn = () => {
     };
     return (
         <div className='mx-auto'>
-            <Profile person={brokerData} />
+            <div className="flex  items-center" >
+                <Profile person={brokerData} />
+                <div className="dropdown dropdown-left mr-5">
+                    <div tabIndex={0} role="button" className="text-2xl cursor-pointer mr-4">
+                        <BsThreeDotsVertical />
+                    </div>
+
+                    <ul tabIndex={-1} className="dropdown-content menu bg-base-100 rounded-box w-44 p-2 shadow">
+
+                        <li
+                            onClick={() => navigate(`/report/broker/${id}`)}
+                            className="bg-white text-black rounded m-1"
+                        >
+                            <p className='text-gray-800 text-xl'>
+                                <AiOutlineDownload /><span className='text-xs'> Report Download</span>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+
+
+            </div>
             {/*Transaction entry section */}
             <div className="sticky flex flex-col lg:flex-row gap-2 mb-2 p-1 ">
                 <form onSubmit={handleSubmit(onSubmit)} className="">

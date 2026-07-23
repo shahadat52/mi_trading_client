@@ -50,14 +50,25 @@ const brokerApi = baseApi.injectEndpoints({
                 }),
             providesTags: ['Broker']
         }),
-
         getSpecificBrokerTxn: builder.query({
-            query: (id) => (
-                {
+            query: ({ id, startDate, endDate, limit }) => {
+                const params = new URLSearchParams();
+                if (startDate) {
+                    params.append('startDate', startDate);
+                }
+                if (endDate) {
+                    params.append('endDate', endDate);
+                }
+                if (limit) {
+                    params.append('limit', limit);
+                }
+                return {
                     url: `/brokerTxn/${id}`,
                     method: 'GET',
-                }),
-            providesTags: ['BrokerTxn']
+                    params
+                }
+            },
+            providesTags: ['CustomerTxn']
         }),
 
         updateBrokerTxn: builder.mutation({

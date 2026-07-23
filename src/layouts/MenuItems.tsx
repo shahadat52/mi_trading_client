@@ -52,6 +52,14 @@ export const getMenuItems = (role?: string) => {
                 { name: "Open", path: "dashboard/brokers" },
             ],
         },
+        {
+            name: "Income_Expense",
+            icon: <MdAttachMoney size={20} />,
+            subItems: [
+                { name: "Income_Expense", path: "/income_expense" },
+                { name: "Labour_Godi_Tohori", path: "/kuli_godi_tohori" },
+            ],
+        },
 
         {
             name: "Profile",
@@ -62,25 +70,10 @@ export const getMenuItems = (role?: string) => {
         },
 
         ...(isSpecial || isAdmin ? [
-
-            {
-                name: "Business Activity",
-                icon: <LuSquareActivity size={20} />,
-                subItems: [{ name: "All Activity", path: "/activity" }],
-            },
             {
                 name: "Cash-box",
                 icon: <MdDashboard size={20} />,
                 subItems: [{ name: "Cash-box", path: "/cashbox" }],
-            },
-
-            {
-                name: "Income_Expense",
-                icon: <MdAttachMoney size={20} />,
-                subItems: [
-                    { name: "Income_Expense", path: "/income_expense" },
-                    { name: "Labour_Godi_Tohori", path: "/kuli_godi_tohori" },
-                ],
             },
 
             {
@@ -114,6 +107,11 @@ export const getMenuItems = (role?: string) => {
         // ✅ Admin / Super Admin only
         ...(isAdmin
             ? [
+                {
+                    name: "Business Activity",
+                    icon: <LuSquareActivity size={20} />,
+                    subItems: [{ name: "All Activity", path: "/activity" }],
+                },
                 {
                     name: "Human Resources",
                     icon: <MdPeople size={20} />,

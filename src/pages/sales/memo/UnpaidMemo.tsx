@@ -24,7 +24,7 @@ const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
         <div className=" border max-w-3xl rounded overflow-auto print-area bg-white border-[#444444] shadow-lg print:shadow-none">
             <div className="flex items-start justify-center overflow-auto     ">
 
-                <div className=" border max-w-3xl rounded  overflow-auto print-area  bg-white  border-[#444444] shadow-lg ">
+                <div className=" border max-w-3xl  rounded  overflow-auto print-area  bg-white  border-[#444444] shadow-lg ">
 
                     {/* Header Section bg-[#f08c1d]  */}
                     <div className='shadow-lg '>
@@ -85,7 +85,7 @@ const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
                     </div>
 
                     {/* Info Section */}
-                    <div className="p-2 text-[10px]">
+                    <div className="p-2 text-[12px]">
                         <div className="grid grid-cols-3 text-start mb-1 ">
                             <div className='text-start'>মেমো নং: <span className="">{sale.invoice}</span></div>
                             <div>
@@ -109,9 +109,9 @@ const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
                     </div>
 
                     {/* Table Section */}
-                    <table className="w-full h-auto  min-h-[300px] border-collapse border-y border-gray-400">
+                    <table className="w-full h-auto  min-h-[400px] border-collapse border-y border-gray-400">
                         <thead>
-                            <tr className="bg-[#1F4E79] text-white text-xs">
+                            <tr className="bg-[#1F4E79] text-white text-sm">
                                 <th className="border-r border-gray-200 p-1 w-10">সংখ্যা</th>
                                 <th className="border-r border-gray-200 p-1">পণ্য ও পরিমাণ</th>
                                 <th className="border-r border-gray-200 p-1 w-16">দর</th>
@@ -130,7 +130,7 @@ const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
                             </tr>
                             {/* Actual table rows */}
                             {sale.items?.map((p: any, idx: number) => (
-                                <tr key={idx} className="text-[10px] relative border-b text-start  border-gray-100">
+                                <tr key={idx} className="text-[12px]  border-b text-start  border-gray-100">
                                     <td className="border-r border-gray-300 text-center ">{idx + 1}</td>
                                     <td className="border-r pl-3 border-gray-300 ">
                                         {p.name} {" "} {p?.bosta}| {p.quantity} {p?.unit === 'কেজি' ? 'kg' : p.unit}
@@ -139,41 +139,42 @@ const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
                                     <td className=" text-center">{p?.salePrice * p?.quantity} </td>
                                 </tr>
                             ))}
+
                         </tbody>
                         <tfoot>
-                            <tr className="text-[10px] border-t border-gray-700  bg-[#dbeefa] text-[#222222]">
+                            <tr className="text-[12px] border-t border-gray-700  bg-[#dbeefa] text-[#222222]">
                                 <td colSpan={2} className="px-2  font-"><span></span></td>
-                                <td className="text-end text-[7px]">  <span>সাব টোটাল- </span></td>
+                                <td className="text-end text-[12px]">  <span>সাব টোটাল- </span></td>
                                 <td className="text-center ">  <span>{sale?.subtotal} </span></td>
                             </tr>
-                            <tr className="text-[10px] border-t border-gray-700  bg-[#dbeefa] text-[#222222]">
+                            <tr className="text-[12px] border-t border-gray-700  bg-[#dbeefa] text-[#222222]">
                                 <td colSpan={2} className=" px-2  font-"><span></span></td>
                                 <td className="text-end ">  <span>লেবার- </span></td>
                                 <td className="text-center ">  <span>{sale?.labour} </span></td>
                             </tr>
-                            <tr className="text-[10px] border-t border-gray-700  bg-[#dbeefa] text-[#222222]">
+                            <tr className="text-[12px] border-t border-gray-700  bg-[#dbeefa] text-[#222222]">
                                 <td colSpan={2} className=" px-2  font-"><span></span></td>
                                 <td className="text-end ">  <span>কমিশন- </span></td>
                                 <td className="text-center ">  <span>{sale?.customerCommission + (sale?.grandTotal) - (sale?.subtotal + sale?.others + sale?.labour + sale?.customerCommission)} </span></td>
                             </tr>
-                            <tr className="text-[10px] border-t border-gray-700  bg-[#dbeefa] text-[#222222]">
+                            <tr className="text-[12px] border-t border-gray-700  bg-[#dbeefa] text-[#222222]">
                                 <td colSpan={2} className=" px-2  font-"><span></span></td>
                                 <td className="text-end ">  <span>অন্যান্য-</span></td>
                                 <td className="text-center ">  <span>{sale?.others} </span></td>
                             </tr>
 
-                            <tr className=" text-[10px] border-t border-gray-700  bg-[#dbeefa] text-[#222222]">
+                            <tr className=" text-[12px] border-t border-gray-700  bg-[#dbeefa] text-[#222222]">
                                 <td colSpan={2} className=" px-2  font-"><span></span></td>
                                 <td className="text-end ">  <span>সর্বমোট- </span></td>
                                 <td className=" text-center">  <span className=''>{sale?.grandTotal} </span></td>
                             </tr>
-                            <tr className=" text-[10px] border-t border-gray-700  bg-[#dbeefa] text-[#222222]">
+                            <tr className=" text-[12px] border-t border-gray-700  bg-[#dbeefa] text-[#222222]">
                                 <td colSpan={2} className=" px-2  font-"><span></span></td>
                                 <td className="text-end ">  <span>জমা- </span></td>
                                 <td className=" text-center">  <span className='bg-red-50 border-red-600 text-[#222222] rounded px-1 border-2'>{sale?.paidAmount} </span></td>
                             </tr>
 
-                            <tr className="text-[10px] border-t border-gray-400 bg-blue-900 text-white">
+                            <tr className="text-[12px] border-t border-gray-400 bg-blue-900 text-white">
                                 <td colSpan={2} className="  text-start px-2 py-1 font-"><span>কথায়ঃ {toCurrency(sale?.grandTotal - sale?.paidAmount)}</span></td>
                                 <td className=" text-end p-1 ">  <span>বাকি-</span></td>
                                 <td className=" text-center p-1 ">  <span className='bg-[#B22222] border-red-600 text-white rounded px-1 border-2'>{sale?.grandTotal - sale?.paidAmount} </span></td>

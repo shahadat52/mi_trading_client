@@ -5,4 +5,5 @@ export const expenseTableHeads = [
     "Amount",
     "Date & Time",
     "Description",
+    "Image"
 ];
