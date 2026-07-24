@@ -18,6 +18,9 @@ import { AiOutlineDownload } from "react-icons/ai";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
 const BrokerTxn = () => {
+    const [makeTxn, setMakeTxn] = useState(false)
+    // const [startDate, setStartDate] = useState<string>(format(startOfDay(new Date()), "yyyy-MM-dd"));
+    // const [endDate, setEndDate] = useState<string>(format(endOfDay(new Date()), "yyyy-MM-dd"));
     const [selectedBroker, setSelectedBroker] = useState(null)
     const [isOpen, setIsOpen] = useState(false)
     const navigate = useNavigate()
@@ -94,6 +97,50 @@ const BrokerTxn = () => {
                             <p className='text-gray-800 text-xl'>
                                 <AiOutlineDownload /><span className='text-xs'> Report Download</span>
                             </p>
+
+                        </li>
+
+                        <li
+                            // onClick={() => navigate(`/report/broker/${id}`)}
+                            className="bg-white text-black rounded m-1"
+                        >
+                            <p className='text-gray-800 text-xl'>
+                                {
+                                    user?.role === 'admin' ?
+                                        <p
+                                            onClick={() => handleDelete((id as string))}
+                                            className='text-sm text-red-600'
+                                        >
+                                            <span className="flex items-center">
+                                                <MdDelete /> Broker Delete
+                                            </span>
+                                        </p> : <></>
+                                }
+                            </p>
+                        </li>
+
+                        <li
+                            // onClick={() => navigate(`/report/broker/${id}`)}
+                            className="bg-white text-black rounded m-1"
+                        >
+                            <p className='text-gray-800 text-xl'>
+                                {
+                                    user?.role === 'admin' ?
+                                        <p
+                                            onClick={() => {
+                                                setSelectedBroker((id as any));
+                                                setIsOpen(true)
+                                            }
+                                            }
+                                            className='text-sm text-red-600'
+                                        >
+                                            <span className="flex items-center">
+                                                <MdEdit /> Broker Edit
+                                            </span>
+                                        </p> : <></>
+                                }
+                            </p>
+
                         </li>
                     </ul>
                 </div>
@@ -101,97 +148,92 @@ const BrokerTxn = () => {
 
             </div>
             {/*Transaction entry section */}
-            <div className="sticky flex flex-col lg:flex-row gap-2 mb-2 p-1 ">
-                <form onSubmit={handleSubmit(onSubmit)} className="">
+            <button
+                onClick={() => setMakeTxn(!makeTxn)} className='p-1 m-1 text-white bg-blue-600 rounded-xl'>Make Txn
+            </button>
+            {
+                makeTxn && <div className="flex flex-col lg:flex-row gap-2 mb-2 p-1 ">
+                    <form onSubmit={handleSubmit(onSubmit)} className="">
 
-                    <div className='flex items-center gap-2'>
-                        <SelectField
-                            name="type"
-                            label="no"
-                            placeholder='লেনদেনের ধরণ'
-                            options={customerTxnType}
+                        <div className='flex items-center gap-2'>
+                            <SelectField
+                                name="type"
+                                label="no"
+                                placeholder='লেনদেনের ধরণ'
+                                options={customerTxnType}
+                                control={control}
+                                rules={{ required: "লেনদেনের ধরন নাই" }}
+                            />
+
+                            <div className='mt-[14px]'>
+                                <InputField
+
+                                    name="amount"
+                                    label=""
+                                    placeholder='কত টাকা *'
+                                    type='number'
+                                    control={control}
+                                    rules={{ required: "টাকার পরিমান নাই" }}
+                                />
+                            </div>
+
+
+                        </div>
+                        <InputField
+                            name="description"
+                            label=""
+                            placeholder='বিবরণ'
+                            type='text'
                             control={control}
-                            rules={{ required: "লেনদেনের ধরন নাই" }}
                         />
 
-                        <div className='mt-[16px]'>
-                            <InputField
-
-                                name="amount"
-                                label=""
-                                placeholder='কত টাকা *'
-                                type='number'
-                                control={control}
-                                rules={{ required: "টাকার পরিমান নাই" }}
-                            />
-                        </div>
+                        <SelectField
+                            name="paymentMethod"
+                            label=""
+                            placeholder="পেমেন্ট মেথড"
+                            control={control}
+                            options={BROKERY_PAYMENT_METHOD_OPTIONS}
+                            rules={{ required: "পেমেন্ট মেথড নাই" }}
+                        />
 
 
 
-                    </div>
-                    <InputField
-                        name="description"
-                        label=""
-                        placeholder='বিবরণ'
-                        type='text'
-                        control={control}
+
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="btn btn-primary w-full mt-2"
+                        >
+                            {loading ? (
+                                <span className="loading loading-dots loading-lg"></span>
+                            ) : (
+                                "লেনদেন করুন"
+                            )}
+                        </button>
+                    </form>
+                </div>
+            }
+            {/* <div>
+                <div>
+                    <p>Start Date</p>
+                    <input
+                        type="date"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                        className="border rounded px-3 py-2 text-sm no-print"
                     />
+                </div>
 
-                    <SelectField
-                        name="paymentMethod"
-                        label=""
-                        placeholder="পেমেন্ট মেথড"
-                        control={control}
-                        options={BROKERY_PAYMENT_METHOD_OPTIONS}
-                        rules={{ required: "পেমেন্ট মেথড নাই" }}
+                <div>
+                    <p>End Date</p>
+                    <input
+                        type="date"
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                        className="border rounded px-3 py-2 text-sm"
                     />
-
-
-                    {/* Edit and delete */}
-                    <div className='flex justify-between mx-4 mt-2 items-center'>
-                        <div>
-                            {
-                                user?.role === 'admin' ?
-                                    <p
-                                        onClick={() => handleDelete((id as string))}
-                                        className='text-4xl text-red-600'
-                                    >
-                                        <MdDelete />
-                                    </p> : <></>
-                            }
-                        </div>
-
-                        <div>
-                            {
-                                user?.role === 'admin' ?
-                                    <p
-                                        onClick={() => {
-                                            setSelectedBroker((id as any));
-                                            setIsOpen(true)
-                                        }
-                                        }
-                                        className='text-4xl text-red-600'
-                                    >
-                                        <MdEdit />
-                                    </p> : <></>
-                            }
-                        </div>
-
-                    </div>
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="btn btn-primary w-full mt-2"
-                    >
-                        {loading ? (
-                            <span className="loading loading-dots loading-lg"></span>
-                        ) : (
-                            "লেনদেন করুন"
-                        )}
-                    </button>
-                </form>
-            </div >
-
+                </div>
+            </div> */}
             {/* Table Section */}
             < BrokerTxnTable id={id} />
 

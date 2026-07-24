@@ -12,8 +12,8 @@ const BrokerTxnTable = ({ id }: any) => {
     const [isOpen, setIsOpen] = useState(false)
     const [selectedTxn, setSelectedTxn] = useState('')
     const [updateTxn] = useUpdateBrokerTxnMutation()
-    const { data, isLoading, isError } = useGetSpecificBrokerTxnQuery(id);
-    const transactions = data?.data
+    const { data, isLoading, isError } = useGetSpecificBrokerTxnQuery({ id });
+    const transactions = data?.data?.transactions || [];
 
     const totalDebit: number = customRound(transactions?.filter((txn: any) => (txn.type === 'debit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0))
     const totalCredit: number = customRound(transactions?.filter((txn: any) => (txn.type === 'credit'))?.reduce((sum: number, txn: { amount: number }) => sum + (txn.amount || 0), 0))

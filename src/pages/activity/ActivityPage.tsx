@@ -12,11 +12,11 @@ const ActivityPage = () => {
     const [action, setAction] = useState("Sales");
 
     const [startDate, setStartDate] = useState<string>(
-        format(startOfDay(new Date()), "yyyy-MM-dd")
+        format(startOfDay(new Date()), "dd/MM/yyyy")
     );
 
     const [toDate, setToDate] = useState<string>(
-        format(endOfDay(new Date()), "yyyy-MM-dd")
+        format(endOfDay(new Date()), "dd/MM/yyyy")
     );
 
     const tabs = ["Sales", "Purchase", "CustomerTxn", "SupplierTxn", "BankTxn", "MFSTxn", "Others"];

@@ -7,6 +7,7 @@ import Modal from "../../components/Modal";
 import AddCommissionProductProfit from "./AddCommissionProductProfitModal";
 import { useState } from "react";
 import AddNormalProductProfit from "./AddNormalProductProfitModal";
+import { customRound } from "../../utils/customRound";
 
 const ProductWiseSalesReports = () => {
     const { id } = useParams();
@@ -24,7 +25,7 @@ const ProductWiseSalesReports = () => {
     const productName = data?.data?.product
     const products = data?.data?.items?.length;
     const summeryCart = [
-        { head: "মোট বিক্রয়", value: reports?.totalAmount },
+        { head: "মোট বিক্রয়", value: customRound(reports?.totalAmount) },
         { head: "মোট পণ্য", value: reports?.totalQuantity, unit: reports?.unit },
         { head: "মোট বস্তা", value: reports?.totalBosta },
     ]
@@ -128,10 +129,19 @@ const ProductWiseSalesReports = () => {
                             <h3 className="text-sm font-semibold text-blue-800 mt-2">
 
                                 {
-                                    reports?.items === undefined ? 'NO SALES' :
-                                        isCommission ? (commission + bepariCouthaData?.arot || 0) :
-                                            <p>{(Number(reports?.totalAmount) || 0)} - {(Number(cost) || 0)} = {((Number(reports?.totalAmount) || 0) - (Number(cost) || 0))}</p>
-
+                                    reports?.items === undefined
+                                        ? "NO SALES"
+                                        : isCommission
+                                            ? customRound((commission || 0) + (bepariCouthaData?.arot || 0))
+                                            : (
+                                                <p>
+                                                    {customRound(Number(reports?.totalAmount) || 0)} -{" "}
+                                                    {customRound(Number(cost) || 0)} ={" "}
+                                                    {customRound(
+                                                        (Number(reports?.totalAmount) || 0) - (Number(cost) || 0)
+                                                    )}
+                                                </p>
+                                            )
                                 }
                             </h3>
                         </div>

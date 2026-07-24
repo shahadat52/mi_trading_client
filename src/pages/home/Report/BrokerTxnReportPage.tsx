@@ -121,7 +121,7 @@ const BrokerTxnReportPage = () => {
                 </div>
 
                 {/* Table */}
-                <table className="w-full border-collapse mt-5">
+                <table className="w-full border-collapse mt-5 ">
                     <thead>
                         <tr className="bg-gray-200">
                             <th className="border p-2">SL</th>

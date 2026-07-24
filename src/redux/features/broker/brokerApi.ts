@@ -68,7 +68,7 @@ const brokerApi = baseApi.injectEndpoints({
                     params
                 }
             },
-            providesTags: ['CustomerTxn']
+            providesTags: ['BrokerTxn']
         }),
 
         updateBrokerTxn: builder.mutation({
