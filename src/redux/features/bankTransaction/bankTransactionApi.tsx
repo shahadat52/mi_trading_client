@@ -16,7 +16,7 @@ const bankTxnApi = baseApi.injectEndpoints({
         }),
 
         getAllBankTxns: builder.query({
-            query: ({ dateFrom, dateTo }) => {
+            query: ({ dateFrom, dateTo, limit }) => {
                 const params = new URLSearchParams();
 
                 if (dateFrom) {
@@ -24,6 +24,10 @@ const bankTxnApi = baseApi.injectEndpoints({
                 }
                 if (dateTo) {
                     params.append("dateTo", dateTo);
+                }
+
+                if (limit) {
+                    params.append('limit', limit)
                 }
 
                 return {

@@ -27,9 +27,6 @@ const DeliveryPage: React.FC = () => {
         endDate,
     });
 
-
-
-
     const openDeliverySlip = (sale: any) => setSelectedDelivery(sale);
     const closeDeliverySlip = () => setSelectedDelivery(null)
 
@@ -169,8 +166,8 @@ const DeliveryPage: React.FC = () => {
                         </p>
 
                         <p className="text-sm font-semibold">
-                            Date: <span className="font-normal">{new Date(d.deliveryTime).toLocaleDateString()}</span> {"--"}
-                            Time: <span className="font-normal">{new Date(d.deliveryTime).toLocaleTimeString()}</span>
+                            Date: <span className="font-normal">{format(d?.createdAt, 'dd/MM/yyyy')}</span> {"--"}
+                            Time: <span className="font-normal">{format(d?.createdAt, 'hh:mm a')}</span>
                         </p>
                         <div className="flex items-center justify-between">
                             <button

@@ -68,6 +68,15 @@ const employeeApi = baseApi.injectEndpoints({
             invalidatesTags: ['Employees']
         }),
 
+        generateMonthlyPayroll: builder.mutation({
+            query: () => (
+                {
+                    url: `/employee/monthly/payroll`,
+                    method: 'POST'
+                }
+            )
+        }),
+
 
 
 
@@ -75,4 +84,4 @@ const employeeApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useJoinEmployeeMutation, useGetAllEmployeesQuery, useUpdateEmployeeDataMutation, useUpdateEmployeeRoleMutation, useUpdateEmployeeStatusMutation, useFireEmployeeMutation } = employeeApi
+export const { useJoinEmployeeMutation, useGetAllEmployeesQuery, useUpdateEmployeeDataMutation, useUpdateEmployeeRoleMutation, useUpdateEmployeeStatusMutation, useFireEmployeeMutation, useGenerateMonthlyPayrollMutation } = employeeApi

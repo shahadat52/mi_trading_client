@@ -3,8 +3,8 @@ import ErrorBoundary from '../../components/ErrorBoundary';
 import TableSkeleton from '../../components/table/TableSkeleton';
 import { useGetAllBankTxnsQuery } from '../../redux/features/bankTransaction/bankTransactionApi';
 
-const BankTxnActivity = ({ startDate: dateFrom, endDate: dateTo }: any) => {
-    const { data, isLoading, isError } = useGetAllBankTxnsQuery({ dateFrom, dateTo })
+const BankTxnActivity = ({ startDate: dateFrom, endDate: dateTo, limit }: any) => {
+    const { data, isLoading, isError } = useGetAllBankTxnsQuery({ dateFrom, dateTo, limit })
 
     const summery = data?.data || [];
     const transactions = data?.data?.transactions || [];

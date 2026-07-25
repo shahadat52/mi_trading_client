@@ -65,7 +65,7 @@ const DeliveryTableBody = ({ d, openDeliverySlip, }: { d: TDelivery; openDeliver
                 </span>
                 <br />
                 <span>
-                    {format(d?.updatedAt, 'hh:mm aa')}
+                    {format(d?.updatedAt, 'hh:mm a')}
                 </span>
             </td>
 

@@ -7,19 +7,23 @@ import SupplierTxnActivity from "./SupplierTxnActivity";
 import BankTxnActivity from "./BankTxnActivity";
 import MfsTxnActivity from "./MfsTxnActivity";
 import OthersActivity from "./OthersActivity";
+import BrokerTxnActivity from "./BrokerTxnActivity";
+import { LIMIT_OPTIONS } from "../../utils/options";
 
 const ActivityPage = () => {
+    const [limit, setLimit] = useState(10)
+
     const [action, setAction] = useState("Sales");
 
     const [startDate, setStartDate] = useState<string>(
-        format(startOfDay(new Date()), "dd/MM/yyyy")
+        format(startOfDay(new Date()), "yyyy-MM-dd")
     );
 
     const [toDate, setToDate] = useState<string>(
-        format(endOfDay(new Date()), "dd/MM/yyyy")
+        format(endOfDay(new Date()), "yyyy-MM-dd")
     );
 
-    const tabs = ["Sales", "Purchase", "CustomerTxn", "SupplierTxn", "BankTxn", "MFSTxn", "Others"];
+    const tabs = ["Sales", "Purchase", "CustomerTxn", "SupplierTxn", "BankTxn", "MFSTxn", "BrokerTxns", "Others"];
 
     const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
@@ -60,6 +64,29 @@ const ActivityPage = () => {
                         onChange={(e) => setToDate(e.target.value)}
                         className="border rounded px-3 py-2 text-sm"
                     />
+                </div>
+                <div className="flex items-center gap-3">
+                    <label
+                        htmlFor="limit"
+                        className="whitespace-nowrap text-sm font-medium text-gray-700"
+                    >
+                        Show
+                    </label>
+
+                    <select
+                        id="limit"
+                        value={limit}
+                        onChange={(e) => setLimit(Number(e.target.value))}
+                        className="select select-bordered select-sm w-24"
+                    >
+                        {LIMIT_OPTIONS.map(({ value, label }) => (
+                            <option key={value} value={value}>
+                                {label}
+                            </option>
+                        ))}
+                    </select>
+
+                    <span className="text-sm text-gray-500">entries</span>
                 </div>
             </div>
 
@@ -104,7 +131,6 @@ const ActivityPage = () => {
 
                     {action === "Purchase" && (
                         <PurchaseActivity
-                            action={action}
                             startDate={startDate}
                             endDate={toDate}
                         />
@@ -112,7 +138,6 @@ const ActivityPage = () => {
 
                     {action === "CustomerTxn" && (
                         <CustomerTxnActivity
-                            action={action}
                             startDate={startDate}
                             endDate={toDate}
                         />
@@ -120,7 +145,6 @@ const ActivityPage = () => {
 
                     {action === "SupplierTxn" && (
                         <SupplierTxnActivity
-                            action={action}
                             startDate={startDate}
                             endDate={toDate}
                         />
@@ -128,14 +152,21 @@ const ActivityPage = () => {
 
                     {action === "BankTxn" && (
                         <BankTxnActivity
-                            action={action}
+                            limit={limit}
                             startDate={startDate}
                             endDate={toDate}
                         />
                     )}
                     {action === "MFSTxn" && (
                         <MfsTxnActivity
-                            action={action}
+                            startDate={startDate}
+                            endDate={toDate}
+                        />
+                    )}
+
+                    {action === "BrokerTxns" && (
+                        <BrokerTxnActivity
+                            limit={limit}
                             startDate={startDate}
                             endDate={toDate}
                         />
@@ -143,11 +174,12 @@ const ActivityPage = () => {
 
                     {action === "Others" && (
                         <OthersActivity
-                            action={action}
                             startDate={startDate}
                             endDate={toDate}
                         />
                     )}
+
+
                 </div>
             </div>
         </div>

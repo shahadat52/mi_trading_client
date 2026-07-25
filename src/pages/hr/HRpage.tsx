@@ -4,10 +4,10 @@ import TableSkeleton from '../../components/table/TableSkeleton';
 import type { TUser } from '../dashboard/userManagement/UserTable';
 import { EMPLOYEE_ROLE_OPTIONS, employeeTableHeads } from '../../utils/options';
 import { useNavigate } from 'react-router';
-import { useFireEmployeeMutation, useGetAllEmployeesQuery, useUpdateEmployeeRoleMutation, useUpdateEmployeeStatusMutation } from '../../redux/features/employee/employeeApi';
-import { useMemo } from "react";
+import { useFireEmployeeMutation, useGenerateMonthlyPayrollMutation, useGetAllEmployeesQuery, useUpdateEmployeeRoleMutation, useUpdateEmployeeStatusMutation } from '../../redux/features/employee/employeeApi';
 import { MdDeleteForever } from 'react-icons/md';
 import EmployeeTable from './EmployeeTable';
+import { useMemo } from 'react';
 
 const HRpage = () => {
 
@@ -16,6 +16,8 @@ const HRpage = () => {
         const day = now.getDate();
         return day >= 1 && day <= 5;
     }, []);
+
+
 
     const navigate = useNavigate()
     const { data, isLoading, isError, error } = useGetAllEmployeesQuery(undefined);
@@ -89,12 +91,36 @@ const HRpage = () => {
         }
 
     };
+
+    const [generateMonthlyPayroll] = useGenerateMonthlyPayrollMutation();
+    const handleGeneratePayroll = async () => {
+        const toastId = toast.loading("Processing...", { autoClose: 2000 });
+        try {
+
+            const result = await generateMonthlyPayroll(undefined)
+            if (result?.data?.success) {
+                toast.update(toastId, { render: `${result.data?.data?.message}`, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
+
+
+            } else {
+                toast.update(toastId, { render: `${(result as any)?.error?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
+
+            }
+        } catch (err: any) {
+            toast.update(toastId, { render: err?.error?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
+
+        } finally {
+            // reset()
+        }
+    };
     return (
         <div className='mb-16 p-1 text-xl font-bold uppercase'>
             <h1 className='my-4 text-center'>H.R Department</h1>
             <div className="mb-2 flex justify-end">
-                {showSalaryGenerate && (
-                    <button className="btn mr-2">
+                {showSalaryGenerate === true && (
+                    <button
+                        onClick={() => handleGeneratePayroll()}
+                        className="btn mr-2">
                         Salary Generate
                     </button>
                 )}

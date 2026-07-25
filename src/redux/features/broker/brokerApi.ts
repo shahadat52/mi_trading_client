@@ -50,6 +50,31 @@ const brokerApi = baseApi.injectEndpoints({
                 }),
             providesTags: ['Broker']
         }),
+
+        getBrokerTxns: builder.query({
+            query: ({ startDate, endDate, limit }) => {
+                const params = new URLSearchParams();
+                if (startDate) {
+                    params.append('startDate', startDate);
+                }
+
+                if (endDate) {
+                    params.append('endDate', endDate);
+                }
+
+                if (limit) {
+                    params.append('limit', limit);
+                }
+                return {
+                    url: "/brokerTxn",
+                    method: 'GET',
+                    params
+                }
+            },
+            providesTags: ['BrokerTxn']
+        }),
+
+
         getSpecificBrokerTxn: builder.query({
             query: ({ id, startDate, endDate, limit }) => {
                 const params = new URLSearchParams();
@@ -118,4 +143,4 @@ const brokerApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useCreateBrokerMutation, useBrokerTxnEntryMutation, useGetAllBrokersQuery, useGetBrokerByIdQuery, useGetSpecificBrokerTxnQuery, useUpdateBrokerTxnMutation, useBrokerDeleteMutation, useBrokerUpdateMutation, useDeleteBrokerTxnMutation } = brokerApi
+export const { useCreateBrokerMutation, useBrokerTxnEntryMutation, useGetAllBrokersQuery, useGetBrokerByIdQuery, useGetBrokerTxnsQuery, useGetSpecificBrokerTxnQuery, useUpdateBrokerTxnMutation, useBrokerDeleteMutation, useBrokerUpdateMutation, useDeleteBrokerTxnMutation } = brokerApi
