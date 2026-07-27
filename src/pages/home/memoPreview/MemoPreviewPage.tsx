@@ -12,8 +12,17 @@ const MemoPreviewPage = () => {
     const { data, isLoading } = useGetBothSaleByInvoiceQuery(id)
     const sales = data?.data;
     const { data: purchaseData, isLoading: purchaseLoading } = useGetPurchaseDataByInvoiceQuery(id)
-    const { data: couthaData, isLoading: couthaLoading } = useGetCouthaByInvoiceQuery(id)
-    const purchases = purchaseData?.data || []
+    const { data: coutha, isLoading: couthaLoading } = useGetCouthaByInvoiceQuery(id)
+    const purchases = purchaseData?.data
+    const couthaData = coutha?.data
+    if (!sales && !purchases && !couthaData) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <p className="text-gray-500 text-lg">No invoice data found.</p>
+            </div>
+        );
+    }
+
     return (
         <div className="mb-16">
             {

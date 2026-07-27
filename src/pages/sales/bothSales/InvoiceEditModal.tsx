@@ -64,6 +64,7 @@ const InvoiceEditModal = ({ onClose, sale }: any) => {
                             <thead>
                                 <tr className="bg-gray-50 text-sm text-gray-600">
                                     <th className="px-3 py-2 text-left">Product</th>
+                                    <th className="px-3 py-2 text-center">Bag</th>
                                     <th className="px-3 py-2 text-center">Qty</th>
                                     <th className="px-3 py-2 text-center">Price</th>
                                 </tr>
@@ -74,6 +75,18 @@ const InvoiceEditModal = ({ onClose, sale }: any) => {
                                     <tr key={idx} className="hover:bg-gray-50">
                                         <td className="px-3 py-2 text-sm font-medium text-gray-800">
                                             {item?.name}
+                                        </td>
+
+                                        <td className="px-3 py-2 text-center">
+                                            <input
+                                                type="number"
+                                                readOnly={user?.role === 'manager'}
+                                                step="any"
+                                                {...register(`items.${idx}.bosta`, {
+                                                    required: true,
+                                                })}
+                                                className="w-20 text-center border rounded-lg px-2 py-1 focus:ring-2 focus:ring-blue-500 outline-none"
+                                            />
                                         </td>
 
                                         <td className="px-3 py-2 text-center">

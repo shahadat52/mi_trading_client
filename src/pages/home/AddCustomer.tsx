@@ -26,7 +26,7 @@ const AddCustomer = ({ onClose }: { onClose: () => void }) => {
                 reset();
                 onClose();
             } else {
-                toast.update(toastId, { render: `${(result as any)?.error?.message}`, type: "error", isLoading: false, autoClose: 2000 });
+                toast.update(toastId, { render: `${(result as any)?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
             }
         } catch (err: any) {
             toast.update(toastId, { render: err?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });

@@ -73,10 +73,10 @@ const CustomerTxnPage = () => {
     }
 
     const handleOpenMemo = (no: string) => {
-        if (no.includes("MI(S)")) {
-            navigate(`/invoice/${no}`)
+        if (no.includes("MI(S)") || no.includes("MI(P)")) {
+            navigate(`/invoice/${no}`);
         } else {
-            return
+            return;
         }
     };
 

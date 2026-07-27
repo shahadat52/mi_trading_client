@@ -42,7 +42,7 @@ type Props = {
     loading?: boolean;
 };
 
-const SupplierInvoicePage: React.FC<Props> = ({ invoiceData, loading = false }) => {
+const SupplierInvoicePage: React.FC<Props> = ({ invoiceData, loading }) => {
     if (loading) {
         return (
             <div className="flex justify-center items-center h-screen">
