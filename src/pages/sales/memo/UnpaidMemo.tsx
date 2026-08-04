@@ -13,6 +13,7 @@ import mi_logo from "../../../assets/icons/mi_logo.png";
 
 
 const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
+    const MIN_ROWS = 11;
     const dueShow = useAppSelector((state) => state.sales.dueShow)
     const { id } = useParams()
     const { data } = useGetBothSaleByInvoiceQuery(id)
@@ -109,37 +110,47 @@ const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
                     </div>
 
                     {/* Table Section */}
-                    <table className="w-full h-auto  min-h-[400px] border-collapse border-y border-gray-400">
-                        <thead>
-                            <tr className="bg-[#1F4E79] text-white text-sm">
-                                <th className="border-r border-gray-200 p-1 w-10">সংখ্যা</th>
-                                <th className="border-r border-gray-200 p-1">পণ্য ও পরিমাণ</th>
-                                <th className="border-r border-gray-200 p-1 w-16">দর</th>
-                                <th className="p-1 w-20">মোট</th>
-                            </tr>
-                        </thead>
-                        <tbody className="relative align-top  overflow-hidden">
+                    <table className="w-full   border-collapse border-y border-gray-400">
+
+                        <tbody className="relative">
                             <tr>
                                 <td>
                                     <img
                                         src={mi_logo}
                                         alt="watermark"
-                                        className="absolute mt-8 top-1/2 left-1/2 w-40 -translate-x-1/2 -translate-y-1/2 opacity-25"
+                                        className="absolute top-1/2 left-1/2 w-50 -translate-x-1/2 -translate-y-1/2 opacity-20"
                                     />
                                 </td>
                             </tr>
-                            {/* Actual table rows */}
                             {sale.items?.map((p: any, idx: number) => (
-                                <tr key={idx} className="text-[12px]  border-b text-start  border-gray-100">
-                                    <td className="border-r border-gray-300 text-center ">{idx + 1}</td>
-                                    <td className="border-r pl-3 border-gray-300 ">
-                                        {p.name} {" "} {p?.bosta}| {p.quantity} {p?.unit === 'কেজি' ? 'kg' : p.unit}
+                                <tr key={idx} className="text-[12px] border-b border-gray-100">
+                                    <td className="p-[2px] text-center border-r border-gray-300">
+                                        {idx + 1}
                                     </td>
-                                    <td className="border-r text-center border-gray-300  ">{p.salePrice} </td>
-                                    <td className=" text-center">{p?.salePrice * p?.quantity} </td>
+                                    <td className="p-[2px] border-r border-gray-300">
+                                        {p.name}  {p?.bosta} | {p.quantity}{" "}
+                                        {p?.unit === "কেজি" ? "kg" : p.unit}
+                                    </td>
+                                    <td className="p-[2px] text-center border-r border-gray-300">
+                                        {p?.salePrice}
+                                    </td>
+                                    <td className="p-[2px] text-center">{p?.salePrice * p?.quantity}</td>
                                 </tr>
                             ))}
 
+
+
+
+                            {Array.from({
+                                length: Math.max(0, MIN_ROWS - (sale.items?.length || 0)),
+                            }).map((_, idx) => (
+                                <tr key={`empty-${idx}`} className="">
+                                    <td className="border-r border-gray-300">&nbsp;</td>
+                                    <td className="border-r border-gray-300"></td>
+                                    <td className="border-r border-gray-300"></td>
+                                    <td></td>
+                                </tr>
+                            ))}
                         </tbody>
                         <tfoot>
                             <tr className="text-[12px] border-t border-gray-700  bg-[#dbeefa] text-[#222222]">
@@ -241,7 +252,7 @@ const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
 
             </div>
 
-        </div>
+        </div >
     );
 };
 

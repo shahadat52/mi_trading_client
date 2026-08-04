@@ -116,7 +116,7 @@ const HRpage = () => {
     return (
         <div className='mb-16 p-1 text-xl font-bold uppercase'>
             <h1 className='my-4 text-center'>H.R Department</h1>
-            <div className="mb-2 flex justify-end">
+            <div className="mb-2 gap-1 flex flex-col md:flex-row justify-end">
                 {showSalaryGenerate === true && (
                     <button
                         onClick={() => handleGeneratePayroll()}

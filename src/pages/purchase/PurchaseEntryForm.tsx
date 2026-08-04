@@ -49,7 +49,7 @@ const PurchaseEntryForm = () => {
 
         const { grandTotal, dueAmount, subTotal, ...payload } = purchaseData;
         if (payload.supplier === '' || payload.product === '' || payload.purchasePrice === 0 || payload.quantity === 0 || payload.bosta === 0) {
-            toast.update(toastId, { render: 'সব গুলো দেওয়া হয় নাই ', type: "warning", isLoading: false, autoClose: 1500, closeOnClick: true });
+            toast.update(toastId, { render: 'সব গুলো ফিল্ড পূরণ হয়নি', type: "warning", isLoading: false, autoClose: 1500, closeOnClick: true });
             return
         }
 

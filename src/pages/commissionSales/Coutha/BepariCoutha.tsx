@@ -10,12 +10,14 @@ import { useGetCommissionSalesSupplierLotWiseQuery } from "../../../redux/featur
 import { useNavigate, useParams } from "react-router";
 import { useGetCouthaByIdQuery } from "../../../redux/features/coutha/couthaApi";
 import memo_mi_logo from "../../../assets/icons/memo_mi_logo.png";
+import BepariCouthaLeftSide from "./BepariCouthaLeftSide";
 
 
 
 
 const BepariCoutha = () => {
     const navigate = useNavigate()
+    const [salesHistoryController, setSalesHistoryController] = useState(false)
     const [isOpen, setIsOpen] = useState(false);
     const [selected, setSelected] = useState<string | null>(null);
     const { id } = useParams()
@@ -31,7 +33,7 @@ const BepariCoutha = () => {
         documentTitle: `Bepari-Coutha-${coutha?.invoice || "memo"}`,
     });
 
-    const LIMIT = 25;
+    const LIMIT = 30;
     const regSales = sales?.slice(0, LIMIT);
     const restSales = sales?.slice(LIMIT);
 
@@ -76,7 +78,7 @@ const BepariCoutha = () => {
                 className="border rounded-lg print:shadow-none w-[550px]  overflow-hidden "
             >
                 {/* --- PRINT HEADER / BRANDING --- */}
-                <div className="   relative border-b-2 border-red-600  p-2">
+                <div className=" border-b-2 border-red-600  p-2">
                     <div className="flex justify-between items-center">
                         <div className="flex items-center gap-4">
                             <img src="/mi_logo.png" alt="Logo" className="h-24 w-24 object-contain" />
@@ -114,7 +116,7 @@ const BepariCoutha = () => {
                 </div>
 
                 {/* --- INVOICE INFO --- */}
-                <div className="px-2 py-3    text-xs font-medium">
+                <div className="px-2 py-3  text-xs font-medium">
                     <div className="flex justify-between items-center">
                         <p className="text-[14px]">ইনভয়েস নং: <span className="font-normal">{coutha?.invoice}</span></p>
                         <p className="text-[14px]">তারিখ: <span className="font-normal">{DateTime(coutha?.createdAt)}</span></p>
@@ -130,7 +132,7 @@ const BepariCoutha = () => {
                 </div>
 
                 {/* --- MAIN LEDGER TABLE --- */}
-                <div className=" relative grid grid-cols-12 h-[600px] ">
+                <div className=" relative grid grid-cols-12 h-[500px] ">
                     <img
                         src={memo_mi_logo}
                         alt="watermark"
@@ -138,29 +140,51 @@ const BepariCoutha = () => {
                     />
 
                     {/* Sales Side (Credit) */}
-                    <div className="col-span-7 border-r  border-gray-300">
+                    <div className="col-span-7 border-r  border-gray-300 overflow-y-auto">
                         <div className="bg-green-700  text-gray-50 text-center py-1 text-xs font-bold uppercase tracking-wider">জমা (Sales)</div>
+                        <div className="m-1 print:hidden">
+                            <input
+                                type="checkbox"
+                                checked={salesHistoryController}
+                                onChange={() => setSalesHistoryController(prev => !prev)}
+                                className="checkbox"
+                            />
+                        </div>
                         <div className="p-2">
-                            <table className="w-full text-[12px] text-left border-collapse">
-                                <thead>
-                                    <tr className="border-b border-gray-200 text-black">
-                                        <th className="py-1">পরিমাণ</th>
-                                        <th className="py-1 text-right">দর</th>
-                                        <th className="py-1 text-right">মোট</th>
-                                        <th className="py-1 print:hidden"></th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-100 text-[12px]">
-                                    {
+                            {salesHistoryController ? (
+                                <BepariCouthaLeftSide />
+                            ) : (
 
-                                        regSales.map((sale: any, idx: number) => (
+                                <table className="w-full text-[12px] text-left border-collapse">
+                                    <thead>
+                                        <tr className="border-b border-gray-200 text-black">
+                                            <th className="py-1">পরিমাণ</th>
+                                            <th className="py-1 text-right">দর</th>
+                                            <th className="py-1 text-right">মোট</th>
+                                            <th className="py-1 print:hidden"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-gray-100 text-[12px]">
+                                        {regSales?.map((sale: any, idx: number) => (
                                             <tr key={idx} className="hover:bg-gray-50">
-                                                <td className="py-[2px]">{sale?.product?.bosta}| {sale?.product?.quantity} kg</td>
-                                                <td className="py-[2px] text-right">{sale?.product?.salePrice}</td>
-                                                <td className="py-[2px] text-right font-bold">{(sale?.product?.quantity * sale?.product?.salePrice).toLocaleString()}</td>
+                                                <td className="py-[2px]">
+                                                    {sale?.product?.bosta} | {sale?.product?.quantity} kg
+                                                </td>
+
+                                                <td className="py-[2px] text-right">
+                                                    {sale?.product?.salePrice}
+                                                </td>
+
+                                                <td className="py-[2px] text-right font-bold">
+                                                    {(sale?.product?.quantity * sale?.product?.salePrice).toLocaleString()}
+                                                </td>
+
                                                 <td className="py-[2px] text-right print:hidden">
                                                     <button
-                                                        onClick={() => { setSelected(sale); setIsOpen(true); }}
+                                                        onClick={() => {
+                                                            setSelected(sale);
+                                                            setIsOpen(true);
+                                                        }}
                                                         className="text-[10px] bg-gray-200 px-1 rounded hover:bg-blue-600 hover:text-white transition-colors"
                                                     >
                                                         EDIT
@@ -169,22 +193,31 @@ const BepariCoutha = () => {
                                             </tr>
                                         ))}
 
-                                    {
-                                        restSales?.length >= 1 && result?.map((sale: any, idx: number) => (
-                                            <tr key={idx} className="hover:bg-gray-50 ">
-                                                <td className="py-[2px]">{sale?.totalBosta}| {sale?.totalQuantity} kg</td>
-                                                <td className="py-[2px] text-right">{sale?.averagePrice}</td>
-                                                <td className="py-[2px] text-right font-bold">{(sale?.totalAmount)}</td>
-                                                <td className="py-[2px] text-right print:hidden">
+                                        {restSales?.length >= 1 &&
+                                            result?.map((sale: any, idx: number) => (
+                                                <tr key={`rest-${idx}`} className="hover:bg-gray-50">
+                                                    <td className="py-[2px]">
+                                                        {sale?.totalBosta} | {sale?.totalQuantity} kg
+                                                    </td>
 
-                                                </td>
-                                            </tr>
-                                        ))}
-                                </tbody>
-                            </table>
+                                                    <td className="py-[2px] text-right">
+                                                        {sale?.averagePrice}
+                                                    </td>
+
+                                                    <td className="py-[2px] text-right font-bold">
+                                                        {sale?.totalAmount}
+                                                    </td>
+
+                                                    <td className="py-[2px] text-right print:hidden"></td>
+                                                </tr>
+                                            ))}
+
+                                    </tbody>
+                                </table>
+                            )}
                         </div>
                         <div className="mt-auto border-t border-gray-300 p-2  flex justify-between  text-sm">
-                            <span className="text-sm" >{totalBosta} | {totalQuantity} কেজি </span>
+                            <span className="text-sm" > মোট: {totalBosta} | {totalQuantity} কেজি </span>
                             <span className="font-bold border-b border-dashed">{totalSales?.toLocaleString()} ৳</span>
                         </div>
                     </div>
@@ -251,6 +284,7 @@ const BepariCoutha = () => {
                     </button>
                 </div>
             </div>
+
 
             <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
                 <PriceUpdateEntry item={selected} onClose={() => setIsOpen(false)} />

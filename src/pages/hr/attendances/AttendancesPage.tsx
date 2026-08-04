@@ -55,7 +55,7 @@ const AttendancesPage = () => {
 
 
     return (
-        <div>
+        <div className="mb-16">
             {/* FILTER */}
             <div className="flex justify-around gap-3 p-2">
                 <section className="w-full max-w-[75%]">
