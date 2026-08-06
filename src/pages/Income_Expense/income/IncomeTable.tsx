@@ -130,7 +130,7 @@ const IncomeTable = () => {
                             তারিখ: <span className="font-normal">{format(d.createdAt, "dd/MM/yyyy, HH:mm a")}</span>
                         </p>
                         <p className="text-sm font-semibold">
-                            বিবরণ: <span className="font-normal"> {d.description}</span>
+                            বিবরণ: <span className="font-normal"> {d.note}</span>
                         </p>
 
                         {/* Add more fields as needed */}

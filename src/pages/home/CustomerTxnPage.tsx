@@ -298,11 +298,11 @@ const CustomerTxnPage = () => {
                                             </td>
 
                                             <td className="px-4 py-2 text-right text-red-600">
-                                                {tx.type === 'debit' ? `৳ ${tx.amount}` : "-"}
+                                                {tx.type === 'debit' ? `৳ ${customRound(tx.amount)}` : "-"}
                                             </td>
 
                                             <td className="px-4 py-2 text-right text-green-600">
-                                                {tx.type === 'credit' ? `৳ ${tx.amount}` : "-"}
+                                                {tx.type === 'credit' ? `৳ ${customRound(tx.amount)}` : "-"}
                                             </td>
 
 

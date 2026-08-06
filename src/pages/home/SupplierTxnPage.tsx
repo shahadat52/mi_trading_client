@@ -298,11 +298,11 @@ const SupplierTxnPage = () => {
                                             </td>
 
                                             <td className="px-4 py-2 text-right text-red-600">
-                                                {tx.type === 'debit' ? `৳ ${tx.amount}` : "-"}
+                                                {tx.type === 'debit' ? `৳ ${customRound(tx.amount)}` : "-"}
                                             </td>
 
                                             <td className="px-4 py-2 text-right text-green-600">
-                                                {tx.type === 'credit' ? `৳ ${tx.amount}` : "-"}
+                                                {tx.type === 'credit' ? `৳ ${customRound(tx.amount)}` : "-"}
                                             </td>
 
                                             <td className="px-4 py-2 text-right ">
@@ -359,8 +359,8 @@ const SupplierTxnPage = () => {
                             মোট
                         </span>
                         <div className='col-span-1 flex justify-between'>
-                            <span className="font-semibold text-red-600">  ৳ {totalDebit}</span>
-                            <span className="font-semibold text-green-600"> ৳ {totalCredit}</span>
+                            <span className="font-semibold text-red-600">  ৳ {customRound(totalDebit)}</span>
+                            <span className="font-semibold text-green-600"> ৳ {customRound(totalCredit)}</span>
                         </div>
                     </div>
                 </div>

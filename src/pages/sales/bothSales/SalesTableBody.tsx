@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../../redux/hook';
 import { setDueShow } from '../../../redux/features/sales/salesSlice';
 import { format } from 'date-fns';
+import { MdDelete } from 'react-icons/md';
+import Loading from '../../../components/Loading';
 
 interface SalesTableBodyProps {
     row: any;
@@ -14,9 +16,12 @@ interface SalesTableBodyProps {
     idx: number;
     openInvoice: (row: any) => void;
     setDelivery: (row: any) => void;
+    loading: boolean
+    setLoading: any
+    handleDeleteInvoice: any
 }
 
-const SalesTableBody: React.FC<SalesTableBodyProps> = ({ row, page, limit, idx, openInvoice, setDelivery }) => {
+const SalesTableBody: React.FC<SalesTableBodyProps> = ({ row, page, limit, idx, openInvoice, setDelivery, loading, setLoading, handleDeleteInvoice }) => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const [selectedInvoice, setSelectedInvoice] = useState(null)
@@ -68,6 +73,14 @@ const SalesTableBody: React.FC<SalesTableBodyProps> = ({ row, page, limit, idx, 
                             setSelectedInvoice((row as any));
                             setIsOpen(true)
                         }} className="text-sm px-2 py-1 border rounded">Edit</button>
+
+                        <button onClick={() =>
+                        (
+                            setLoading(true),
+                            handleDeleteInvoice(row?._id)
+                        )}>
+                            <span className="text-3xl text-red-600"> {loading ? <Loading /> : <MdDelete />}</span>
+                        </button>
 
                     </div>
                 </td>

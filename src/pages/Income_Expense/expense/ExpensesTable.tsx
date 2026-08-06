@@ -131,7 +131,7 @@ const ExpensesTable = () => {
                             Date: <span className="font-normal">{format(d?.createdAt, "dd/MM/yyyy, hh:mm a")}</span> {"--"}
                         </p>
                         <p className="text-sm font-semibold">
-                            Description: <span className="font-normal">{d.note}</span>
+                            Description: <span className="font-normal">{d?.note}</span>
                         </p>
 
                         {/* Add more fields as needed */}

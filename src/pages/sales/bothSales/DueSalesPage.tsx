@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import useDebouncedSearch from '../../../hooks/useDebouncedSearch';
-import { useGetAllDueSalesQuery } from '../../../redux/features/cart/cartApi';
+import { useDeleteSalesInvoiceMutation, useGetAllDueSalesQuery } from '../../../redux/features/cart/cartApi';
 import ErrorBoundary from '../../../components/ErrorBoundary';
 import TableSkeleton from '../../../components/table/TableSkeleton';
 import { salesTableHeads } from './salesTableHeads';
@@ -10,11 +10,12 @@ import SalesCard from './SalesCard';
 import { SalesDeliveryEntry } from './SalesDeliveryEntry';
 import PrintSaleMemoModal from '../memo/PrintSaleMemoModal';
 import { endOfDay, startOfDay } from 'date-fns';
+import { toast } from 'react-toastify';
 
 const DueSalesPage = () => {
     const start = startOfDay(new Date());
     const end = endOfDay(new Date());
-
+    const [loading, setLoading] = useState(false)
     const [page, setPage] = useState<number>(1);
     const [limit, setLimit] = useState<number>(10);
     const [sortBy, setSortBy] = useState<string>('createdAt');
@@ -53,6 +54,32 @@ const DueSalesPage = () => {
 
     if (isError) {
         return <ErrorBoundary />
+    }
+
+    const [deleteInvoice] = useDeleteSalesInvoiceMutation();
+    const handleDeleteInvoice = async (id: string) => {
+        const isConfirm = confirm("ডিলিট করলে অবশ্যই কাষ্টমার লেনদেন আপডেট করবেন?")
+        if (!isConfirm) {
+            setLoading(false)
+            return
+        }
+
+        const toastId = toast.loading("Processing...", { autoClose: 2000 });
+        try {
+            const result = await deleteInvoice(id);
+            if (result?.data?.success) {
+                toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
+                // navigate('/dashboard/brokers')
+            } else {
+                toast.update(toastId, { render: `${(result as any)?.error?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
+                setLoading(false);
+            }
+        } catch (err: any) {
+            toast.update(toastId, { render: err?.error?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
+
+        } finally {
+            /* empty */
+        }
     }
     return (
         <div className="p-4 max-w-auto space-y-4">
@@ -130,6 +157,9 @@ const DueSalesPage = () => {
                                     idx={idx}
                                     openInvoice={openInvoice}
                                     setDelivery={setDelivery}
+                                    loading={loading}
+                                    setLoading={setLoading}
+                                    handleDeleteInvoice={handleDeleteInvoice}
                                 />
                             ))}
                         </tbody>
@@ -152,6 +182,9 @@ const DueSalesPage = () => {
                                     sale={sale}
                                     onInvoice={setSelectedSale}
                                     setDelivery={setDelivery}
+                                    loading={loading}
+                                    setLoading={setLoading}
+                                    handleDeleteInvoice={handleDeleteInvoice}
                                 />
                             ))
                         )
