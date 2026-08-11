@@ -11,8 +11,9 @@ export type TPurchaseFormData = {
     lot: string;
     purchaseDate: string;
     purchasePrice: string | number;
-    quantity: string | number;
     purchaseQty: string | number;
+    quantity: string | number;
+    purchaseBosta: string | number;
     bosta: string | number;
     labour: string | number;
     commission: string | number;

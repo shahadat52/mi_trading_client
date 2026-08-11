@@ -50,6 +50,7 @@ const ProductDetails = () => {
         purchaseDate: formatDateForInput(purchaseData?.purchaseDate),
         purchasePrice: purchaseData?.purchasePrice ?? "",
         quantity: purchaseData?.quantity ?? "",
+        purchaseBosta: purchaseData?.purchaseBosta ?? "",
         purchaseQty: purchaseData?.purchaseQty ?? "",
         bosta: purchaseData?.bosta ?? "",
         labour: purchaseData?.labour ?? "",
@@ -92,7 +93,6 @@ const ProductDetails = () => {
 
     const handleSave = async () => {
         if (!id || !formData) return;
-
         const payload = {
             product: formData.product,
             sku: formData.sku,
@@ -100,7 +100,9 @@ const ProductDetails = () => {
             lot: formData.lot,
             purchaseDate: formData.purchaseDate,
             purchasePrice: Number(formData.purchasePrice || 0),
+            purchaseQty: Number(formData?.purchaseQty || 0),
             quantity: Number(formData.quantity || 0),
+            purchaseBosta: Number(formData.purchaseBosta || 0),
             bosta: Number(formData.bosta || 0),
             labour: Number(formData.labour || 0),
             commission: Number(formData.commission || 0),
@@ -109,7 +111,6 @@ const ProductDetails = () => {
             note: formData.note,
             unit: formData.unit,
         };
-
         try {
             await updatePurchase({ id, data: payload }).unwrap();
             await refetch();
@@ -334,7 +335,7 @@ const ProductDetails = () => {
                                     displayValue={`৳ ${formData.purchasePrice || 0}`}
                                 />
                                 <DetailField
-                                    label="Quantity"
+                                    label="Current Stock"
                                     name="quantity"
                                     value={formData.quantity}
                                     isEditing={isEditing}
@@ -342,9 +343,25 @@ const ProductDetails = () => {
                                     type="number"
                                 />
                                 <DetailField
-                                    label="Bosta"
+                                    label="Purchase Qty"
+                                    name="purchaseQty"
+                                    value={formData.purchaseQty}
+                                    isEditing={isEditing}
+                                    onChange={handleChange}
+                                    type="number"
+                                />
+                                <DetailField
+                                    label="Current Bosta"
                                     name="bosta"
                                     value={formData.bosta}
+                                    isEditing={isEditing}
+                                    onChange={handleChange}
+                                    type="number"
+                                />
+                                <DetailField
+                                    label="Purchase Bosta"
+                                    name="purchaseBosta"
+                                    value={formData.purchaseBosta}
                                     isEditing={isEditing}
                                     onChange={handleChange}
                                     type="number"
