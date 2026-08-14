@@ -62,6 +62,10 @@ const couthaSlice = createSlice({
             state.godi = action.payload;
         },
 
+        setSalesHistory(state, action: PayloadAction<any>) {
+            state.finalSales = action.payload
+        },
+
         // ---------- Final Sales ----------
         addFinalSale(state) {
             state.finalSales.push({
@@ -115,13 +119,12 @@ export const {
     setTohori,
     setHaolat,
     setGodi,
-
+    setSalesHistory,
     addFinalSale,
     updateFinalSale,
     removeFinalSale,
     resetFinalSales,
     setFinalSales,
-
     resetCoutha,
 } = couthaSlice.actions;
 

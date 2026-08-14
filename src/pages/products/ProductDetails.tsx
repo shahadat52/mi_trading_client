@@ -136,10 +136,10 @@ const ProductDetails = () => {
     const costPerUnit = useMemo(() => {
         if (!formData) return "0.00";
 
-        const quantity = Number(formData.quantity || 0);
-        if (quantity <= 0) return "0.00";
+        const purchaseQty = Number(formData.purchaseQty || 0);
+        if (purchaseQty <= 0) return "0.00";
 
-        return (totalCost / quantity).toFixed(2);
+        return (totalCost / purchaseQty).toFixed(2);
     }, [formData, totalCost]);
 
     const handleDeleteProduct = async (id: string) => {

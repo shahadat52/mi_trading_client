@@ -11,6 +11,7 @@ import { useNavigate, useParams } from "react-router";
 import { useGetCouthaByIdQuery } from "../../../redux/features/coutha/couthaApi";
 import memo_mi_logo from "../../../assets/icons/memo_mi_logo.png";
 import BepariCouthaLeftSide from "./BepariCouthaLeftSide";
+import { useAppSelector } from "../../../redux/hook";
 
 
 
@@ -24,7 +25,8 @@ const BepariCoutha = () => {
     const { data: couthaData } = useGetCouthaByIdQuery(id)
     const coutha = couthaData?.data
     const { data } = useGetCommissionSalesSupplierLotWiseQuery({ couthaOf: coutha?.couthaOf });
-
+    const finalSales = useAppSelector((state) => state.coutha.finalSales);
+    const salesHistory = finalSales?.reduce((acc, item) => acc + Number(item.quantity) * Number(item.price), 0) ?? 0;
     const sales = data?.data || [];
     const printRef = useRef<HTMLDivElement>(null);
 
@@ -65,8 +67,13 @@ const BepariCoutha = () => {
         sum + (item.product.quantity * item.product.salePrice), 0
     );
 
-
-
+    const totalExpense = coutha?.brokary +
+        coutha?.kuli +
+        coutha?.transport_rent +
+        coutha?.haolat +
+        coutha?.arot +
+        coutha?.godi +
+        coutha?.tohori
 
     return (
         <div
@@ -152,7 +159,7 @@ const BepariCoutha = () => {
                         </div>
                         <div className="p-2">
                             {salesHistoryController ? (
-                                <BepariCouthaLeftSide />
+                                <BepariCouthaLeftSide coutha={coutha} salesHistoryController={salesHistoryController} />
                             ) : (
 
                                 <table className="w-full text-[12px] text-left border-collapse">
@@ -216,7 +223,7 @@ const BepariCoutha = () => {
                                 </table>
                             )}
                         </div>
-                        <div className="mt-auto border-t border-gray-300 p-2  flex justify-between  text-sm">
+                        <div className="print:hidden mt-auto border-t border-gray-300 p-2  flex justify-between  text-sm">
                             <span className="text-sm" > মোট: {totalBosta} | {totalQuantity} কেজি </span>
                             <span className="font-bold border-b border-dashed">{totalSales?.toLocaleString()} ৳</span>
                         </div>
@@ -245,15 +252,15 @@ const BepariCoutha = () => {
                             <div className=" space-y-1">
                                 <div className="flex justify-between text-gray-900  border-b-2 border-gray-300">
                                     <span className="text-[12px]">মোট খরচ: </span>
-                                    <span> {coutha?.subTotal}</span>
+                                    <span>{totalExpense ? totalExpense : coutha?.subTotal}</span>
                                 </div>
                                 <div className="flex justify-between text-xs font-black text-red-700 pt-1 border-b border-gray-400">
                                     <span className="text-[12px]">অবশিষ্ট জমা: </span>
-                                    <span> {coutha?.joma} </span>
+                                    <span> {salesHistory ? salesHistory - totalExpense : coutha?.joma}</span>
                                 </div>
                                 <div className=" flex justify-between text-black text-[12px]">
                                     <span className="">সর্বমোট: </span>
-                                    <span className="font-bold text-sm border-b border-dashed"> {coutha?.grandTotal} ৳</span>
+                                    <span className="font-bold text-sm border-b border-dashed"> {salesHistory ? salesHistory : coutha?.grandTotal} ৳</span>
                                 </div>
                             </div>
                         </div>

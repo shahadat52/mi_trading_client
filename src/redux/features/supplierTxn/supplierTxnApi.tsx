@@ -23,7 +23,7 @@ const supplierTxnApi = baseApi.injectEndpoints({
                     body: bepariTxnData
                 }
             ),
-            invalidatesTags: ['SupplierTxn', 'Transaction', 'Supplier', 'Receivable']
+            invalidatesTags: ['SupplierTxn', 'Transaction', 'Supplier', 'Receivable', 'Couthas', 'Coutha']
         }),
         getAllSupplierTxn: builder.query({
             query: ({ startDate, endDate }) => {

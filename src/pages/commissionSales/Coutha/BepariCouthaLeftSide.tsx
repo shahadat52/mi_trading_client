@@ -1,36 +1,67 @@
+import { useEffect } from "react";
+import { useParams } from "react-router";
+import { useAddSalesHistoryMutation } from "../../../redux/features/coutha/couthaApi";
 import {
     addFinalSale,
     removeFinalSale,
+    setSalesHistory,
     updateFinalSale,
 } from "../../../redux/features/coutha/couthaSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/hook";
+import { customRound } from "../../../utils/customRound";
+import { toast } from "react-toastify";
 
-const BepariCouthaLeftSide = () => {
+const BepariCouthaLeftSide = ({ coutha, salesHistoryController }: any) => {
+    const { id } = useParams();
     const dispatch = useAppDispatch();
 
-    const finalSales = useAppSelector(
-        (state) => state.coutha.finalSales
-    );
+    const finalSales = useAppSelector((state) => state.coutha.finalSales);
+
+    // শুধু id বদলালে (নতুন পেইজ লোড হলে) coutha.sales থেকে state সেট হবে
+    useEffect(() => {
+        dispatch(setSalesHistory(coutha.sales || []));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [salesHistoryController]);
 
     const handleChange = (
         index: number,
         field: "bosta" | "quantity" | "price",
         value: number
     ) => {
-        dispatch(
-            updateFinalSale({
-                index,
-                field,
-                value,
-            })
-        );
+        dispatch(updateFinalSale({ index, field, value }));
     };
+
+    const [addSalesHistory] = useAddSalesHistoryMutation();
+
+    const saveSalesHistory = async (id: any) => {
+
+
+        const toastId = toast.loading("Processing...", { autoClose: 2000 });
+        try {
+            const result = await addSalesHistory({ data: finalSales, id });
+            if (result?.data?.success) {
+                toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
+
+            } else {
+                toast.update(toastId, { render: `${(result as any)?.error?.data?.message}`, type: "error", isLoading: false, autoClose: 2000 });
+
+            }
+        } catch (err: any) {
+            toast.update(toastId, { render: err?.error?.data?.message || "Something went wrong!", type: "error", isLoading: false, autoClose: 2000 });
+        } finally {
+            // reset()
+        }
+    };
+
+    const totalBosta = finalSales?.reduce((total: number, item: any) => total + Number(item.bosta || 0), 0);
+    const totalQuantity = finalSales?.reduce((total: number, item: any) => total + Number(item.quantity || 0), 0);
+    const salesHistory = finalSales?.reduce((acc, item) => acc + Number(item.quantity) * Number(item.price), 0) ?? 0;
 
     return (
         <div>
             <div className="print:hidden">
-                {finalSales.map((sale, index) => (
-                    <div key={index} className="flex  gap-1 hover:bg-gray-50">
+                {finalSales?.map((sale, index) => (
+                    <div key={index} className="flex gap-1 hover:bg-gray-50">
                         <div>
                             <input
                                 type="number"
@@ -41,7 +72,6 @@ const BepariCouthaLeftSide = () => {
                                 }
                             />
                         </div>
-
                         <div>
                             <input
                                 type="number"
@@ -52,7 +82,6 @@ const BepariCouthaLeftSide = () => {
                                 }
                             />
                         </div>
-
                         <div>
                             <input
                                 type="number"
@@ -63,11 +92,7 @@ const BepariCouthaLeftSide = () => {
                                 }
                             />
                         </div>
-
-                        <div className="text-right">
-                            {sale?.total?.toString()}
-                        </div>
-
+                        <div className="text-right">{customRound(sale?.total)?.toString()}</div>
                         <div className="text-center">
                             <button
                                 type="button"
@@ -80,15 +105,21 @@ const BepariCouthaLeftSide = () => {
                     </div>
                 ))}
 
-                <div>
+                <div className="grid grid-cols-3 gap-1">
                     <button
                         type="button"
-                        className="btn btn-xs btn-primary w-full mt-1"
+                        className="col-span-2 btn btn-xs btn-primary w-full mt-1"
                         onClick={() => dispatch(addFinalSale())}
                     >
                         + Add Row
                     </button>
-
+                    <button
+                        type="button"
+                        className="btn btn-xs btn-primary w-full mt-1"
+                        onClick={() => saveSalesHistory(id)}
+                    >
+                        + Save
+                    </button>
                 </div>
             </div>
 
@@ -107,21 +138,19 @@ const BepariCouthaLeftSide = () => {
                             <td className="py-[2px]">
                                 {sale?.bosta} | {sale?.quantity} kg
                             </td>
-
-                            <td className="py-[2px] text-right">
-                                {sale?.price}
-                            </td>
-
+                            <td className="py-[2px] text-right">{sale?.price}</td>
                             <td className="py-[2px] text-right font-bold">
-                                {(sale?.total).toLocaleString()}
+                                {customRound(sale?.total)?.toLocaleString()}
                             </td>
-
-
                         </tr>
                     ))}
                 </tbody>
             </table>
 
+            <div className="mt-auto border-t pt-2 border-gray-300  flex justify-between  text-sm">
+                <span className="text-sm " > মোট: {totalBosta} | {totalQuantity} কেজি </span>
+                <span className="font-bold border-b border-dashed">{salesHistory?.toLocaleString()} ৳</span>
+            </div>
         </div>
     );
 };

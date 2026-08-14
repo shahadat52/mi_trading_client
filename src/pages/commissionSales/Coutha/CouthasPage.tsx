@@ -98,7 +98,6 @@ const CouthaPage = () => {
         }
     };
 
-
     // 🔄 Loading
     if (isLoading) return <CouthaSkeleton />;
 
@@ -160,11 +159,21 @@ const CouthaPage = () => {
 
                             <ul tabIndex={-1} className="dropdown-content menu bg-base-100 rounded-box w-44 p-2 shadow">
                                 <li
-                                    onClick={() => handleAddTxn(item)}
-                                    className="bg-blue-600 text-white rounded m-1"
+                                    onClick={() => {
+                                        if (item.isTransfared) return;
+                                        handleAddTxn(item);
+                                    }}
+                                    className={`rounded m-1 ${item.isTransfared
+                                        ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+                                        : "bg-blue-600 text-white cursor-pointer"
+                                        }`}
                                 >
                                     <p>
-                                        {txnLoading ? "Processing..." : "হিসেবে যুক্ত করুন"}
+                                        {item.isTransfared
+                                            ? "ইতোমধ্যে যুক্ত হয়েছে"
+                                            : txnLoading
+                                                ? "Processing..."
+                                                : "হিসেবে যুক্ত করুন"}
                                     </p>
                                 </li>
 

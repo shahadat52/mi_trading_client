@@ -81,6 +81,16 @@ const couthaApi = baseApi.injectEndpoints({
             invalidatesTags: ['CustomerTxn', 'Customer', 'Couthas', 'Coutha']
         }),
 
+        addSalesHistory: builder.mutation({
+            query: ({ data, id }) => (
+                {
+                    url: `/settlement/addSales/${id}`,
+                    method: 'PATCH',
+                    body: data
+                }),
+            invalidatesTags: ['CustomerTxn', 'Customer', 'Couthas', 'Coutha']
+        }),
+
         deleteBepariCoutha: builder.mutation({
             query: (id) => (
                 {
@@ -93,4 +103,4 @@ const couthaApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useCreateCouthaMutation, useGetAllCouthasOfSupplierQuery, useGetCouthaByIdQuery, useGetCouthaByProductIdQuery, useGetCouthaByInvoiceQuery, useGetFieldWiseDataQuery, useUpdateBepariCouthaMutation, useDeleteBepariCouthaMutation } = couthaApi;
+export const { useCreateCouthaMutation, useGetAllCouthasOfSupplierQuery, useGetCouthaByIdQuery, useGetCouthaByProductIdQuery, useGetCouthaByInvoiceQuery, useGetFieldWiseDataQuery, useUpdateBepariCouthaMutation, useAddSalesHistoryMutation, useDeleteBepariCouthaMutation } = couthaApi;
