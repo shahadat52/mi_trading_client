@@ -1,5 +1,6 @@
 import React from 'react';
 import { format } from 'date-fns';
+import { customRound } from '../../../utils/customRound';
 
 
 
@@ -17,6 +18,7 @@ type Invoice = {
     arot?: number;
     haolat?: number;
     godi?: number;
+    sales: any;
     tohori?: number;
     subTotal: number,
     discount: number,
@@ -51,9 +53,9 @@ const BepariInvoicePage: React.FC<Props> = ({ invoiceData, loading = false }) =>
         );
     }
 
-    const { invoice, lot, supplier, importDate, import: productDetails, grandTotal, joma, kuli, subTotal, createdBy, arot, godi, tohori, transport_rent }: Invoice = invoiceData;
+    const { invoice, lot, supplier, importDate, import: productDetails, sales, grandTotal, kuli, subTotal, createdBy, arot, godi, tohori, transport_rent }: Invoice = invoiceData;
 
-
+    const total = sales ? invoiceData?.sales?.reduce((acc: any, item: any) => acc + Number(item.quantity) * Number(item.price), 0) : grandTotal
 
     return (
         <div className="max-w-4xl mx-auto p-6 mb-6 bg-white shadow-md rounded-md mt-6">
@@ -107,11 +109,11 @@ const BepariInvoicePage: React.FC<Props> = ({ invoiceData, loading = false }) =>
 
                 <div className="flex text-red-600 justify-between w-[75%]">
                     <span>Joma:</span>
-                    <span>{joma?.toFixed(2)}</span>
+                    <span>{customRound(total - subTotal)}</span>
                 </div>
                 <div className="flex justify-between w-[75%]">
                     <span>Grand Total:</span>
-                    <span>{grandTotal?.toFixed(2)}</span>
+                    <span>{total}</span>
                 </div>
                 <div className="flex justify-between w-[75%]">
                     <span>চৌথাকারী</span>

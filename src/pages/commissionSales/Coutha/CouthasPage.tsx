@@ -38,10 +38,19 @@ const CouthaPage = () => {
         const toastId = toast.loading("Processing...");
 
         try {
+            const totalExpense = item?.brokary +
+                item?.kuli +
+                item?.transport_rent +
+                item?.haolat +
+                item?.arot +
+                item?.godi +
+                item?.tohori
+
+            const grandTotal = item?.sales?.reduce((acc: any, item: any) => acc + Number(item.quantity) * Number(item.price), 0)
             const txnCData = {
                 party: item?.supplier?._id,
                 type: "credit",
-                amount: Number(Number(item?.grandTotal) - Number(item?.subTotal)),
+                amount: Number(Number(grandTotal) - Number(totalExpense)),
                 description: `${item?.invoice}`,
             };
             const transfarData = {
@@ -53,7 +62,6 @@ const CouthaPage = () => {
                 txnCData,
                 transfarData
             }
-
             const res = await addBepariTxn(txnData).unwrap();
 
             toast.update(toastId, {
@@ -116,6 +124,7 @@ const CouthaPage = () => {
         return <EmptyState message="কোনো Coutha পাওয়া যায়নি" />;
     }
 
+
     return (
         <div className='mb-16'>
             <div className='grid grid-cols-1 lg:grid-cols-3'>
@@ -129,7 +138,7 @@ const CouthaPage = () => {
                         <p>Lot: <span className='font-semibold'>{item?.lot}</span></p>
 
                         <div className='flex flex-col items-end'>
-                            <p>{item?.grandTotal} টাকা</p>
+                            <p>{item?.sales?.reduce((acc: any, item: any) => acc + Number(item.quantity) * Number(item.price), 0)} টাকা</p>
                         </div>
 
                         {/* Update */}
