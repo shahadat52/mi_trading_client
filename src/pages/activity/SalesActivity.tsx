@@ -1,6 +1,8 @@
+import { useRef } from 'react';
 import ErrorBoundary from '../../components/ErrorBoundary';
 import TableSkeleton from '../../components/table/TableSkeleton';
 import { useGetProductWiseSalesQuery } from '../../redux/features/cart/cartApi';
+import { useReactToPrint } from 'react-to-print';
 
 const SalesActivity = ({ startDate: dateFrom, endDate: dateTo }: any) => {
     const { data, isLoading, isError } = useGetProductWiseSalesQuery({ dateFrom, dateTo })
@@ -11,6 +13,13 @@ const SalesActivity = ({ startDate: dateFrom, endDate: dateTo }: any) => {
             <TableSkeleton row={8} />
         </p>
     </p>
+
+    const printRef = useRef<HTMLDivElement>(null);
+    const handlePrint = useReactToPrint({
+        contentRef: printRef,
+        documentTitle: "Customer-Transaction-Report",
+    });
+
 
     return (
 
@@ -31,33 +40,49 @@ const SalesActivity = ({ startDate: dateFrom, endDate: dateTo }: any) => {
 
             {/* Data Table */}
             {!isLoading && !isError && sales?.length > 0 && (
-                <div className='overflow-x-auto h-[680px] mb-16'>
-                    <div className="grid grid-cols-5 gap-2">
-                        {
-                            sales?.map((sale: any, idx: number) =>
-                                <div
-                                    key={idx}
-                                    className={`min-h-[150px] border my-2 p-2 rounded-lg text-sm ${sale.salesHistory[0].commission >= 0 ? "bg-green-400" : "bg-white"
-                                        }`}
-                                >
-                                    <div>
-                                        <p>
-                                            {idx + 1}) {sale?.productName} (
-                                            {sale.salesHistory[0].commission >= 0 ? "কমিশন" : "নরমাল"})
-                                        </p>
 
-                                        <div className="text-xs">
-                                            {sale.salesHistory.map((item: any, idx: number) => (
-                                                <div key={idx}>
-                                                    <p className="ml-1">
-                                                        {item?.invoice} ({item.quantity}kg X {item.salePrice}৳)
-                                                    </p>
-                                                </div>
-                                            ))}
+
+                <div className='overflow-x-auto h-[680px] mb-16'>
+                    <div className='flex justify-end'>
+                        <button
+                            onClick={handlePrint}
+                            className="my-1 min-w-40 mb-[-23px] px-2 py-1 rounded bg-blue-600 text-white no-print"
+                        >
+                            Print Report
+                        </button>
+                    </div>
+                    <div
+                        ref={printRef}>
+                        <h1>Sales Reports, From {dateFrom} to {dateTo}</h1>
+                        <div
+                            className="grid grid-cols-5 gap-2">
+
+                            {
+                                sales?.map((sale: any, idx: number) =>
+                                    <div
+                                        key={idx}
+                                        className={`min-h-[150px] border my-2 p-2 rounded-lg text-sm ${sale.salesHistory[0].commission >= 0 ? "bg-green-400" : "bg-white"
+                                            }`}
+                                    >
+                                        <div>
+                                            <p>
+                                                {idx + 1}) {sale?.productName} (
+                                                {sale.salesHistory[0].commission >= 0 ? "কমিশন" : "নরমাল"})
+                                            </p>
+
+                                            <div className="text-xs">
+                                                {sale.salesHistory.map((item: any, idx: number) => (
+                                                    <div key={idx}>
+                                                        <p className="ml-1">
+                                                            {item?.invoice} ({item.quantity}kg X {item.salePrice}৳)
+                                                        </p>
+                                                    </div>
+                                                ))}
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>)
-                        }
+                                    </div>)
+                            }
+                        </div>
                     </div>
                 </div>
             )}

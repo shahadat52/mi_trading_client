@@ -14,7 +14,6 @@ import {
     useGetCommissionProductsBySupplierQuery
 } from "../../../redux/features/commissionProduct/commissionProductApi";
 import ErrorState from "../../../components/loadingErrorEmpty/ErrorState";
-import EmptyState from "../../../components/loadingErrorEmpty/EmptyState";
 import ProductTable from "./ProductTable";
 import ProductCardList from "./ProductCardList";
 
@@ -53,9 +52,7 @@ const SupplierWisePurchasePage = () => {
         );
     }
 
-    if (!commissionProducts.length) {
-        return <EmptyState message="কোনো পণ্য নাই" />;
-    }
+
 
     const handleDeleteInvoice = async (id: string) => {
         if (!confirm("ডিলিট করলে লেনদেন আপডেট করতে হবে—নিশ্চিত?")) return;

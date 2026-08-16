@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist'
 import authReducer from "./features/auth/authSlice";
+import commonReducer from "./features/common/commonSlice";
 import salesReducer from "./features/sales/salesSlice";
 import cartReducer from "./features/cart/cartSlice";
 import purchaseReducer from "./features/purchase/purchaseSlice";
@@ -27,6 +28,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer)
 export const store = configureStore({
     reducer: {
         [baseApi.reducerPath]: baseApi.reducer,
+        common: commonReducer,
         auth: persistedReducer,
         purchase: purchaseReducer,
         product: productReducer,

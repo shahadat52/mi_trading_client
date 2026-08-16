@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import NormalProductPage from './NormalProductPage';
 import CommissionProdPage from './CommissionProdPage';
+import { useAppDispatch, useAppSelector } from '../../redux/hook';
+import { setProductState } from '../../redux/features/common/commonSlice';
 
 type ApprovalType = 'normal' | 'commission';
 const AllProductsPage = () => {
     const [searchTerm, setSearchTerm] = useState('')
-    const [activeTab, setActiveTab] = useState<'normal' | 'commission'>('normal');
+    const productState = useAppSelector((state) => state.common.productState)
+    const dispatch = useAppDispatch()
     return (
         <div className='mb-12'>
             <input
@@ -19,9 +22,9 @@ const AllProductsPage = () => {
                 {["normal", "commission"].map((tab) => (
                     <button
                         key={tab}
-                        onClick={() => setActiveTab(tab as ApprovalType)}
+                        onClick={() => dispatch(setProductState(tab as ApprovalType))}
                         className={`px-1 py-2 text-sm font-medium border-b-2 transition
-              ${activeTab === tab
+              ${productState === tab
                                 ? "border-blue-600 text-blue-600"
                                 : "border-transparent text-gray-500 hover:text-gray-700"
                             }`}
@@ -33,7 +36,7 @@ const AllProductsPage = () => {
 
             <div className='mb-16'>
                 {
-                    activeTab === 'normal' ? <NormalProductPage searchTerm={searchTerm} /> : <CommissionProdPage searchTerm={searchTerm} />
+                    productState === 'normal' ? <NormalProductPage searchTerm={searchTerm} /> : <CommissionProdPage searchTerm={searchTerm} />
                 }
             </div>
         </div>

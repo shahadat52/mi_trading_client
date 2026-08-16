@@ -2,18 +2,18 @@ import { useNavigate } from "react-router";
 import { useGetAllReceivableTxnQuery } from "../../redux/features/partyledger/partyLedgerApi";
 import Loading from "../../components/Loading";
 import { useState } from "react";
-import { CATEGORY_OPTIONS, LIMIT_OPTIONS } from "../../utils/options";
+import { CATEGORY_OPTIONS } from "../../utils/options";
 import { useGetTotalDueFromAllCustomersQuery } from "../../redux/features/customer/customerApi";
 import { customRound } from "../../utils/customRound";
 
 
 
 type Props = {
+    limit: number
     searchTerm: string;
 };
 
-const Customers = ({ searchTerm }: Props) => {
-    const [limit, setLimit] = useState(10)
+const Customers = ({ searchTerm, limit }: Props) => {
     const [category, setCategory] = useState('')
     const { data: totalDue } = useGetTotalDueFromAllCustomersQuery(undefined)
     const { data, isLoading } = useGetAllReceivableTxnQuery({ search: searchTerm, limit: limit, category: category });
@@ -43,19 +43,7 @@ const Customers = ({ searchTerm }: Props) => {
                             ))}
                         </select>
                     </div>
-                    <div className=''>
-                        <select
-                            value={limit}
-                            onChange={(e) => setLimit(Number(e.target.value))}
-                            className="w-full select rounded-xl ml-1"
-                        >
-                            {LIMIT_OPTIONS.map((opt) => (
-                                <option key={opt.value} value={opt.value}>
-                                    {opt.label}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+
                 </div>
             </div>
 

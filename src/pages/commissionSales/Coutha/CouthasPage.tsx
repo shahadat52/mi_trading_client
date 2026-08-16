@@ -46,11 +46,21 @@ const CouthaPage = () => {
                 item?.godi +
                 item?.tohori
 
-            const grandTotal = item?.sales?.reduce((acc: any, item: any) => acc + Number(item.quantity) * Number(item.price), 0)
+            const grandTotal = item?.sales?.reduce((acc: any, item: any) => acc + Number(item.quantity) * Number(item.price), 0);
+            const totalSales = grandTotal > 0 ? grandTotal : item.grandTotal
+            if (totalSales === 0) {
+                toast.update(toastId, {
+                    render: 'চৌথা পরিপূর্ন হয়নি',
+                    type: "error",
+                    isLoading: false,
+                    autoClose: 1000,
+                });
+                return
+            }
             const txnCData = {
                 party: item?.supplier?._id,
                 type: "credit",
-                amount: Number(Number(grandTotal) - Number(totalExpense)),
+                amount: Number(Number(totalSales) - Number(totalExpense)),
                 description: `${item?.invoice}`,
             };
             const transfarData = {
@@ -138,7 +148,7 @@ const CouthaPage = () => {
                         <p>Lot: <span className='font-semibold'>{item?.lot}</span></p>
 
                         <div className='flex flex-col items-end'>
-                            <p>{item?.sales?.reduce((acc: any, item: any) => acc + Number(item.quantity) * Number(item.price), 0)} টাকা</p>
+                            <p>{item?.sales?.reduce((acc: any, item: any) => acc + Number(item.quantity) * Number(item.price), 0) > 0 ? item?.sales?.reduce((acc: any, item: any) => acc + Number(item.quantity) * Number(item.price), 0) : item.grandTotal} টাকা</p>
                         </div>
 
                         {/* Update */}

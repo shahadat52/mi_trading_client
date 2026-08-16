@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router";
 import { useGetAllPayableTxnQuery } from "../../redux/features/partyledger/partyLedgerApi";
 import Loading from "../../components/Loading";
-import { useState } from "react";
 import { useGetTotalPayableToSupplierQuery } from "../../redux/features/supplierTxn/supplierTxnApi";
 import { customRound } from "../../utils/customRound";
 
@@ -9,13 +8,13 @@ import { customRound } from "../../utils/customRound";
 
 type Props = {
     searchTerm: string;
+    limit: number
 };
 
 
 
-const Suppliers = ({ searchTerm }: Props) => {
+const Suppliers = ({ searchTerm, limit }: Props) => {
     const navigate = useNavigate()
-    const [limit, setLimit] = useState(10)
     const { data: payable, isLoading } = useGetAllPayableTxnQuery({ search: searchTerm, type: 'regular', limit })
     const payableData = payable?.data
 
@@ -30,19 +29,7 @@ const Suppliers = ({ searchTerm }: Props) => {
             <div className="mb-1 ">
                 <div className="flex items-center justify-between">
                     <h2 className="text-xl font-bold text-slate-800">↗️দেনা: {customRound(total?.data?.totalPayable).toLocaleString() || 0} ৳</h2>
-                    <div className=''>
-                        <select
-                            value={limit}
-                            onChange={(e) => setLimit(Number(e.target.value))}
-                            className="w-full select rounded-xl ml-1"
-                        >
-                            <option value={10}>Limit</option>
-                            <option value={20}>20</option>
-                            <option value={50}>50</option>
-                            <option value={100}>100</option>
-                            <option value={1000}>all</option>
-                        </select>
-                    </div>
+
                 </div>
             </div>
 

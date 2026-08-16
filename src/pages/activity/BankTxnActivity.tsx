@@ -2,12 +2,19 @@ import { format } from 'date-fns';
 import ErrorBoundary from '../../components/ErrorBoundary';
 import TableSkeleton from '../../components/table/TableSkeleton';
 import { useGetAllBankTxnsQuery } from '../../redux/features/bankTransaction/bankTransactionApi';
+import { useRef } from 'react';
+import { useReactToPrint } from 'react-to-print';
 
 const BankTxnActivity = ({ startDate: dateFrom, endDate: dateTo, limit }: any) => {
     const { data, isLoading, isError } = useGetAllBankTxnsQuery({ dateFrom, dateTo, limit })
-
     const summery = data?.data || [];
     const transactions = data?.data?.transactions || [];
+
+    const printRef = useRef<HTMLDivElement>(null);
+    const handlePrint = useReactToPrint({
+        contentRef: printRef,
+        documentTitle: "Customer-Transaction-Report",
+    });
     return (
         <div>
             <div className=" bg-white rounded-xl shadow overflow-hidden mb-16">
@@ -35,7 +42,17 @@ const BankTxnActivity = ({ startDate: dateFrom, endDate: dateTo, limit }: any) =
                             <h2>Total Balance: {summery?.summary?.currentBalance}</h2>
                         </div>
 
-                        <div className="overflow-x-auto  ">
+                        <div ref={printRef} className="overflow-x-auto ">
+                            <div className='flex justify-end mb-1'>
+                                <button
+                                    onClick={handlePrint}
+                                    className="my-1 min-w-40 mb-[-23px] px-2 py-1 rounded bg-blue-600 text-white no-print"
+                                >
+                                    Print Report
+                                </button>
+                            </div>
+                            <h1 className="mb-1">Bank Txn Reports, From {format(dateFrom, 'dd-MM-yyyy')} To {format(dateTo, 'dd-MM-yyyy')}</h1>
+
                             <table className="w-full text-sm">
 
                                 <thead className="sticky top-0 bg-gray-100 text-gray-700">
@@ -58,18 +75,18 @@ const BankTxnActivity = ({ startDate: dateFrom, endDate: dateTo, limit }: any) =
                                                 key={tx?._id}
                                                 className="border-t hover:bg-gray-50 transition"
                                             >
-                                                <td className="px-4 py-2">
+                                                <td className="px-4 py-1">
 
                                                     {tx?.bankName}
                                                 </td>
-                                                <td className="px-4 py-2">
+                                                <td className="px-4 py-1">
                                                     {format(new Date(tx?.createdAt), 'dd/MM/yyyy')} <br />
                                                     {format(new Date(tx?.createdAt), 'hh:mm a')}
                                                 </td>
 
                                                 <td
 
-                                                    className="px-4 py-2">
+                                                    className="px-4 py-1">
                                                     <p className="font-medium">
                                                         {tx?.note || tx?.referenceType}
                                                     </p>
@@ -78,11 +95,11 @@ const BankTxnActivity = ({ startDate: dateFrom, endDate: dateTo, limit }: any) =
                                                     </span>
                                                 </td>
 
-                                                <td className="px-4 py-2 text-right text-red-600">
+                                                <td className="px-4 py-1 text-right text-red-600">
                                                     {tx?.type === 'debit' ? `৳ ${tx?.amount}` : "-"}
                                                 </td>
 
-                                                <td className="px-4 py-2 text-right text-green-600">
+                                                <td className="px-4 py-1 text-right text-green-600">
                                                     {tx?.type === 'credit' ? `৳ ${tx?.amount}` : "-"}
                                                 </td>
                                             </tr>

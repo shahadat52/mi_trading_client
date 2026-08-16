@@ -2,11 +2,19 @@ import { format } from "date-fns";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import TableSkeleton from "../../components/table/TableSkeleton";
 import { useGetAllTxnQuery } from "../../redux/features/inExTxn/inExTxnApi";
+import { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
 
 const OthersActivity = ({ startDate, endDate }: any) => {
     const { data, isLoading, isError } = useGetAllTxnQuery({ startDate, endDate })
     const summery = data?.data || {};
     const transactions = data?.data?.data || [];
+
+    const printRef = useRef<HTMLDivElement>(null);
+    const handlePrint = useReactToPrint({
+        contentRef: printRef,
+        documentTitle: "Customer-Transaction-Report",
+    });
     return (
         <div>
             <div className=" bg-white rounded-xl shadow overflow-hidden mb-16">
@@ -33,7 +41,17 @@ const OthersActivity = ({ startDate, endDate }: any) => {
                             <h2>Total Debit: {summery?.totalDebit}</h2>
                             <h2>Current Balance: {(summery?.totalCredit) - (summery?.totalDebit)}</h2>
                         </div>
-                        <div className="overflow-x-auto h-[680px] ">
+                        <div ref={printRef} className="overflow-x-auto ">
+                            <div className='flex justify-end mb-1'>
+                                <button
+                                    onClick={handlePrint}
+                                    className="my-1 min-w-40 mb-[-23px] px-2 py-1 rounded bg-blue-600 text-white no-print"
+                                >
+                                    Print Report
+                                </button>
+                            </div>
+                            <h1 className="mb-1">Others Txn Reports, From {format(startDate, 'dd-MM-yyyy')} To {format(endDate, 'dd-MM-yyyy')}</h1>
+
                             <table className="w-full text-sm">
                                 <thead className="sticky top-0 bg-gray-100 text-gray-700">
                                     <tr>
