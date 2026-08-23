@@ -68,7 +68,7 @@ const OthersActivity = ({ startDate, endDate }: any) => {
                                 </thead>
 
                                 <tbody>
-                                    {transactions?.map((tx: any) => {
+                                    {transactions?.map((tx: any, idx: number) => {
 
                                         return (
                                             <tr
@@ -78,7 +78,7 @@ const OthersActivity = ({ startDate, endDate }: any) => {
                                             >
                                                 <td className="px-4 py-2">
 
-                                                    {tx?.category}
+                                                    {idx + 1}) {tx?.category}
                                                 </td>
                                                 <td className="px-4 py-2">
                                                     {format(new Date(tx?.createdAt), 'dd/MM/yyyy')} <br />

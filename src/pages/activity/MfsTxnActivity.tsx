@@ -70,7 +70,7 @@ const MfsTxnActivity = ({ startDate: dateFrom, endDate: dateTo }: any) => {
                                 </thead>
 
                                 <tbody>
-                                    {transactions?.map((tx: any) => {
+                                    {transactions?.map((tx: any, idx: number) => {
 
                                         return (
                                             <tr
@@ -80,7 +80,7 @@ const MfsTxnActivity = ({ startDate: dateFrom, endDate: dateTo }: any) => {
                                             >
                                                 <td className="px-4 py-2">
 
-                                                    {tx?.head}
+                                                    {idx + 1}) {tx?.head}
                                                 </td>
                                                 <td className="px-4 py-2">
                                                     {format(new Date(tx?.createdAt), 'dd/MM/yyyy')} <br />

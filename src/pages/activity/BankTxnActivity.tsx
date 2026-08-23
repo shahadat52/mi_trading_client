@@ -71,7 +71,7 @@ const BankTxnActivity = ({ startDate: dateFrom, endDate: dateTo, limit }: any) =
                                 </thead>
 
                                 <tbody>
-                                    {transactions?.map((tx: any) => {
+                                    {transactions?.map((tx: any, idx: number) => {
 
                                         return (
                                             <tr
@@ -81,7 +81,7 @@ const BankTxnActivity = ({ startDate: dateFrom, endDate: dateTo, limit }: any) =
                                             >
                                                 <td className="px-4 py-1">
 
-                                                    {tx?.bankName}
+                                                    {idx + 1}) {tx?.bankName}
                                                 </td>
                                                 <td className="px-4 py-1">
                                                     {format(new Date(tx?.createdAt), 'dd/MM/yyyy')} <br />
