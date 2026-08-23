@@ -9,6 +9,7 @@ import {
 import { EditModal } from "../commissionSales/modal/EditModal";
 import StockTableBody from "./StockTableBody";
 import { stockTableHeads } from "./stockTableHeads";
+import { customRound } from "../../utils/customRound";
 
 const StockPage = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -52,7 +53,7 @@ const StockPage = () => {
             {/* Stock Summary */}
             <div className="mb-4 rounded-lg bg-white p-3 shadow-sm border">
                 <h1 className="text-base sm:text-lg md:text-xl font-semibold">
-                    Total Stock Value: {totalStock.toLocaleString()}
+                    Total Stock Value: {customRound(totalStock).toLocaleString()}
                 </h1>
             </div>
 

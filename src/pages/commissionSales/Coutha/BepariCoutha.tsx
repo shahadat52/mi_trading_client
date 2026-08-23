@@ -267,6 +267,12 @@ const BepariCoutha = () => {
                     </div>
                 </div>
 
+                <div className="ml-2">
+                    {
+                        coutha?.description === "" ? "" : <p className="text-xs text-orange-600 ">বিঃদ্রঃ {coutha?.description}</p>
+                    }
+                </div>
+
                 {/* --- FOOTER SIGNATURE --- */}
                 <div className="p-8 flex justify-between items-end ">
                     <div className="text-[12px] text-gray-400">Software Generated Invoice</div>

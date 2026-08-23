@@ -43,8 +43,10 @@ const SupplierTxnActivity = ({ startDate, endDate }: any) => {
                                 Print Report
                             </button>
                         </div>
-                        <h1 className="mb-1">Customer Txn Reports, From {format(startDate, 'dd-MM-yyyy')} To {format(endDate, 'dd-MM-yyyy')}</h1>
-
+                        <div className='text-center'>
+                            <h1 className='font-bold text-xl uppercase' >Supplier Txn Reports</h1>
+                            <p >From {format(startDate, 'dd-MM-yyyy')} To {format(endDate, 'dd-MM-yyyy')}</p>
+                        </div>
                         <table className="w-full text-sm">
                             <thead className="sticky top-0 bg-gray-100 text-gray-700">
                                 <tr>
@@ -81,16 +83,16 @@ const SupplierTxnActivity = ({ startDate, endDate }: any) => {
                                                 <p className="font-medium">
                                                     {tx.description || tx.referenceType}
                                                 </p>
-                                                <span className="text-xs text-gray-400">
+                                                <span className="text-xs text-gray-700">
                                                     {tx.referenceType}
                                                 </span>
                                             </td>
 
-                                            <td className="px-4 py-1 text-right text-red-600">
+                                            <td className="px-4 py-1 text-right text-red-700">
                                                 {tx.type === 'debit' ? `৳ ${tx.amount}` : "-"}
                                             </td>
 
-                                            <td className="px-4 py-1 text-right text-green-600">
+                                            <td className="px-4 py-1 text-right text-green-700">
                                                 {tx.type === 'credit' ? `৳ ${tx.amount}` : "-"}
                                             </td>
                                         </tr>

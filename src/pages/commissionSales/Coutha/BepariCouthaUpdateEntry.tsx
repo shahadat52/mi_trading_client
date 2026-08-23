@@ -23,6 +23,7 @@ const BepariCouthaUpdateEntry = ({ onClose, item }: { onClose: () => void, item:
 
     const [updateBepariCoutha] = useUpdateBepariCouthaMutation()
     const onSubmit = async (data: FieldValues) => {
+
         data.totalSales = totalSales
         data.grandTotal = totalSales
         data.arot = coutha.arot,
@@ -33,6 +34,7 @@ const BepariCouthaUpdateEntry = ({ onClose, item }: { onClose: () => void, item:
             data,
             id: item._id,
         };
+
         setLoading(true)
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
         try {

@@ -53,9 +53,12 @@ const SalesActivity = ({ startDate: dateFrom, endDate: dateTo }: any) => {
                     </div>
                     <div
                         ref={printRef}>
-                        <h1>Sales Reports, From {dateFrom} to {dateTo}</h1>
+                        <div className='text-center'>
+                            <h1 className='font-bold text-xl' >Sales Reports</h1>
+                            <p >From {dateFrom} to {dateTo}</p>
+                        </div>
                         <div
-                            className="grid grid-cols-5 gap-2">
+                            className="grid grid-cols-4 gap-2">
 
                             {
                                 sales?.map((sale: any, idx: number) =>
@@ -70,11 +73,11 @@ const SalesActivity = ({ startDate: dateFrom, endDate: dateTo }: any) => {
                                                 {sale.salesHistory[0].commission >= 0 ? "কমিশন" : "নরমাল"})
                                             </p>
 
-                                            <div className="text-xs">
+                                            <div className="text-[11px]">
                                                 {sale.salesHistory.map((item: any, idx: number) => (
                                                     <div key={idx}>
                                                         <p className="ml-1">
-                                                            {item?.invoice} ({item.quantity}kg X {item.salePrice}৳)
+                                                            {idx + 1}) No-{item?.invoice.split('-')[1]} ({item.bosta}|{item.quantity}kg X {item.salePrice}/-)
                                                         </p>
                                                     </div>
                                                 ))}

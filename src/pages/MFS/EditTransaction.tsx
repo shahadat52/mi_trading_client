@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import InputField from "../../components/form/InputFields";
 import SelectField from "../../components/form/SelectField";
@@ -18,7 +18,13 @@ const EditTransaction = ({ selectedTxn, onClose, updateMutation }: Props) => {
     const [loading, setLoading] = useState(false);
     const id = selectedTxn._id
 
-    const { handleSubmit, control, reset } = useForm();
+    const { handleSubmit, control, reset } = useForm({
+        defaultValues: {
+            type: selectedTxn?.type,
+            amount: selectedTxn?.amount,
+            note: selectedTxn?.note,
+        }
+    });
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         setLoading(true);
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
@@ -79,6 +85,15 @@ const EditTransaction = ({ selectedTxn, onClose, updateMutation }: Props) => {
 
     };
 
+    useEffect(() => {
+        if (selectedTxn) {
+            reset({
+                type: selectedTxn?.type,
+                amount: selectedTxn?.amount,
+                note: selectedTxn?.note,
+            });
+        }
+    }, [selectedTxn, reset]);
     return (
         <div className="m-4">
             <form
@@ -89,7 +104,7 @@ const EditTransaction = ({ selectedTxn, onClose, updateMutation }: Props) => {
                     <SelectField
                         name="type"
                         label="no"
-                        placeholder={selectedTxn.type}
+                        placeholder={selectedTxn?.type}
                         options={customerTxnType}
                         control={control}
                         rules={{ required: "লেনদেনের ধরন নাই" }}
@@ -99,7 +114,7 @@ const EditTransaction = ({ selectedTxn, onClose, updateMutation }: Props) => {
                         <InputField
                             name="amount"
                             label=""
-                            placeholder={selectedTxn.amount}
+                            placeholder={selectedTxn?.amount}
                             type="number"
                             control={control}
                         />
@@ -109,7 +124,7 @@ const EditTransaction = ({ selectedTxn, onClose, updateMutation }: Props) => {
                 <InputField
                     name="note"
                     label=""
-                    placeholder={selectedTxn.note}
+                    placeholder={selectedTxn?.note}
                     type="text"
                     control={control}
                 />

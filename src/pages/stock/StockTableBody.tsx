@@ -1,4 +1,4 @@
-import { ceil } from "mathjs";
+import { customRound } from "../../utils/customRound";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const StockTableBody = ({ product, idx, }: { product: any; idx: number; }) => {
@@ -10,8 +10,8 @@ const StockTableBody = ({ product, idx, }: { product: any; idx: number; }) => {
             <td className="text-center  px-1 py-2 border">{product?._id}</td>
             <td className="text-center  px-1 py-2 border">{product?.bag}</td>
             <td className="text-center  px-1 py-2 border">{product?.totalStock} {product?.unit}</td>
-            <td className="text-center px-1 py-2 border">{product?.price}</td>
-            <td className=" px-1 py-2 border text-center">{ceil(product?.totalAmount)}</td>
+            <td className="text-center px-1 py-2 border">{(product?.price).toFixed(3)}</td>
+            <td className=" px-1 py-2 border text-center">{customRound(product?.totalAmount)}</td>
         </tr>
     );
 };

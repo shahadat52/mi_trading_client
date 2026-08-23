@@ -42,8 +42,11 @@ const PurchaseActivity = ({ startDate, endDate }: any) => {
                                 Print Report
                             </button>
                         </div>
-                        <h1 className="mb-1">Purchase Reports, From {format(startDate, 'dd-MM-yyyy')} To {format(endDate, 'dd-MM-yyyy')}</h1>
-                        <table className="w-full text-sm">
+                        <div className='text-center'>
+                            <h1 className='font-bold text-xl' >Purchase Reports</h1>
+                            <p >From {format(startDate, 'dd-MM-yyyy')} To {format(endDate, 'dd-MM-yyyy')}</p>
+                        </div>
+                        <table className="w-full text-xs">
                             <thead className="sticky top-0 bg-gray-800 text-white">
                                 <tr>
                                     <th className="px-4 py-2 text-left">Product</th>
@@ -58,7 +61,7 @@ const PurchaseActivity = ({ startDate, endDate }: any) => {
                             </thead>
 
                             <tbody>
-                                {transactions?.map((tx: any) => {
+                                {transactions?.map((tx: any, idx: number) => {
 
                                     return (
                                         <tr
@@ -67,7 +70,7 @@ const PurchaseActivity = ({ startDate, endDate }: any) => {
                                             className="border-t hover:bg-gray-50 transition"
                                         >
                                             <td className="px-2 border-[1px] py-1">
-                                                {tx?.product}
+                                                {idx + 1})   {tx?.product}
                                             </td>
                                             <td className="px-2 border-[1px] py-1">
                                                 {tx?.invoice}
@@ -86,19 +89,19 @@ const PurchaseActivity = ({ startDate, endDate }: any) => {
                                                 <p className="font-medium">
                                                     {tx?.note || tx?.referenceType}
                                                 </p>
-                                                <span className="text-xs text-gray-400">
+                                                <span className="text-xs ">
                                                     {tx?.referenceType}
                                                 </span>
                                             </td>
 
-                                            <td className="px-2 border-[1px] py-1 text-center text-green-600">
+                                            <td className="px-2 border-[1px] py-1 text-center ">
                                                 {tx?.purchaseBosta} | {tx?.purchaseQty}
                                             </td>
 
-                                            <td className="px-2 border-[1px] py-1 text-center text-green-600">
+                                            <td className="px-2 border-[1px] py-1 text-center ">
                                                 {tx?.purchasePrice}
                                             </td>
-                                            <td className="px-2 border-[1px] py-1 text-center text-green-600">
+                                            <td className="px-2 border-[1px] py-1 text-center ">
                                                 {tx?.labour + tx?.commission + tx?.others}
                                             </td>
                                         </tr>

@@ -47,9 +47,16 @@ const cashboxApi = baseApi.injectEndpoints({
             }),
         }),
 
+        getCurrentBusinessState: builder.query({
+            query: () => ({
+                url: `/cashbox/businessState`,
+                method: "GET",
+            }),
+        }),
+
 
 
     }),
 });
 
-export const { useAddOpeningBalMutation, useGetOpeningBalQuery, useGetCashInQuery, useGetCashOutQuery, useGetClosingBalanceQuery } = cashboxApi
+export const { useAddOpeningBalMutation, useGetOpeningBalQuery, useGetCashInQuery, useGetCashOutQuery, useGetClosingBalanceQuery, useGetCurrentBusinessStateQuery } = cashboxApi

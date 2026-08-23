@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm, type FieldValues } from "react-hook-form";
 import InputField from "../../components/form/InputFields";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useGetSupplierByIdQuery, useUpdateSupplierDataMutation } from "../../redux/features/supplier/supplierApi";
 import SelectField from "../../components/form/SelectField";
@@ -12,6 +12,7 @@ const SupplierDataUpdateEntry = ({ onClose, id }: { onClose: () => void, id: str
     const { control, handleSubmit, reset } = useForm();
     const [updateSupplierData] = useUpdateSupplierDataMutation();
     const { data } = useGetSupplierByIdQuery(id)
+    const supplier = data?.data;
 
     const handleUpdate = async (data: FieldValues) => {
         const payload = {
@@ -42,7 +43,17 @@ const SupplierDataUpdateEntry = ({ onClose, id }: { onClose: () => void, id: str
         }
     }
 
-    const supplier = data?.data;
+    useEffect(() => {
+        if (supplier) {
+            reset({
+                name: supplier.name,
+                phone: supplier.phone,
+                category: supplier.category,
+                address: supplier.address,
+                type: supplier.type,
+            });
+        }
+    }, [supplier, reset]);
     return (
         <div className="m-4">
             <form

@@ -36,22 +36,25 @@ const BrokerTxnActivity = ({ startDate, endDate, limit }: any) => {
 
                 {/* Data Table */}
                 {!isLoading && !isError && transactions?.length > 0 && (
-                    <div>
+                    <div ref={printRef} >
+                        <div className='flex justify-end mb-1'>
+                            <button
+                                onClick={handlePrint}
+                                className="my-1 min-w-40 mb-[-23px] px-2 py-1 rounded bg-blue-600 text-white no-print"
+                            >
+                                Print Report
+                            </button>
+                        </div>
+                        <div className='text-center'>
+                            <h1 className='font-bold text-xl uppercase' >Broker Txn Reports</h1>
+                            <p >From {format(startDate, 'dd-MM-yyyy')} To {format(endDate, 'dd-MM-yyyy')}</p>
+                        </div>
                         <div className='ml-3 mt-2'>
                             <h2>Total Credit: {customRound(brokerTxnsData?.totalCredit)}</h2>
                             <h2>Total Debit: {customRound(brokerTxnsData?.totalDebit)}</h2>
                             <h2>Total Balance: {customRound(brokerTxnsData?.currentBalance)}</h2>
                         </div>
-                        <div ref={printRef} className="overflow-x-auto ">
-                            <div className='flex justify-end mb-1'>
-                                <button
-                                    onClick={handlePrint}
-                                    className="my-1 min-w-40 mb-[-23px] px-2 py-1 rounded bg-blue-600 text-white no-print"
-                                >
-                                    Print Report
-                                </button>
-                            </div>
-                            <h1 className="mb-1">Broker Txn Reports, From {format(startDate, 'dd-MM-yyyy')} To {format(endDate, 'dd-MM-yyyy')}</h1>
+                        <div className="overflow-x-auto ">
 
                             <table className="w-full text-sm">
                                 <thead className="sticky top-0 bg-gray-100 text-gray-700">
@@ -89,16 +92,16 @@ const BrokerTxnActivity = ({ startDate, endDate, limit }: any) => {
                                                     <p className="font-medium">
                                                         {tx.description || tx.referenceType}
                                                     </p>
-                                                    <span className="text-xs text-gray-400">
+                                                    <span className="text-xs text-gray-700">
                                                         {tx.referenceType}
                                                     </span>
                                                 </td>
 
-                                                <td className="px-2 py-1 text-right text-red-600">
+                                                <td className="px-2 py-1 text-right text-red-700">
                                                     {tx.type === 'debit' ? `৳ ${tx.amount}` : "-"}
                                                 </td>
 
-                                                <td className="px-2 py-1 text-right text-green-600">
+                                                <td className="px-2 py-1 text-right text-green-700">
                                                     {tx.type === 'credit' ? `৳ ${tx.amount}` : "-"}
                                                 </td>
                                             </tr>

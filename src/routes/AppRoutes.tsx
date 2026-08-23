@@ -54,6 +54,7 @@ import BankTxnReportPage from "../pages/home/Report/BankTxnReportPage";
 import ActivityPage from "../pages/activity/ActivityPage";
 import ProfitLossPage from "../pages/dashboard/ProfitLoss/ProfitLossPage";
 import BrokerTxnReportPage from "../pages/home/Report/BrokerTxnReportPage";
+import CurrentState from "../pages/dashboard/businessPosition/BusinessPositionPage";
 
 export const router = createBrowserRouter([
     {
@@ -115,7 +116,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "stock",
-                element: <StockPage />,
+                element: <PrivateRoute><StockPage /></PrivateRoute>,
             },
             {
                 path: "both/sales",
@@ -143,15 +144,15 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'coutha/:id',
-                element: <CouthaPage />
+                element: <PrivateRoute><CouthaPage /></PrivateRoute>
             },
             {
                 path: "deliveries",
-                element: <DeliveryPage />,
+                element: <PrivateRoute><DeliveryPage /></PrivateRoute>,
             },
             {
                 path: "upload/:id",
-                element: <DeliveryUpload />,
+                element: <PrivateRoute><DeliveryUpload /></PrivateRoute>,
             },
             {
                 path: "profile",
@@ -160,24 +161,14 @@ export const router = createBrowserRouter([
             },
             {
                 path: "invoice/:id",
-                element: <MemoPreviewPage />,
+                element: <PrivateRoute><MemoPreviewPage /></PrivateRoute>,
             },
             {
                 path: "income_expense",
                 element: <PrivateRoute><IncomeExpensePage /></PrivateRoute>,
             },
-            {
-                path: "reports",
-                element: < DashboardPage />,
-            },
-            {
-                path: 'dashboard',
-                element: <ReportsPage />
-            },
-            {
-                path: "/dashboard/approvals",
-                element: <PrivateRoute><PendingApprovalsPage /></PrivateRoute>,
-            },
+
+
             {
                 path: '/partners',
                 element: <PrivateRoute><PartnersPage /></PrivateRoute>
@@ -211,12 +202,32 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute><TransactionTable /></PrivateRoute>
             },
             {
+                path: "reports",
+                element: <PrivateRoute>< DashboardPage /></PrivateRoute>,
+            },
+            {
+                path: 'dashboard',
+                element: <PrivateRoute><ReportsPage /></PrivateRoute>
+            },
+            {
+                path: "/dashboard/approvals",
+                element: <PrivateRoute><PendingApprovalsPage /></PrivateRoute>,
+            },
+            {
                 path: "dashboard/users",
                 element: <PrivateRoute><UserManagementPage /></PrivateRoute>
             },
             {
+                path: "dashboard/currentState",
+                element: <PrivateRoute>< CurrentState /></PrivateRoute>,
+            },
+            {
                 path: "dashboard/brokers",
                 element: <PrivateRoute><BrokersPage /></PrivateRoute>
+            },
+            {
+                path: "/dashboard/profitLoss",
+                element: <PrivateRoute><ProfitLossPage /></PrivateRoute>
             },
             {
                 path: "/brokerTxn/:id",
@@ -241,11 +252,8 @@ export const router = createBrowserRouter([
             {
                 path: "/kuli_godi_tohori",
                 element: <PrivateRoute><KuliGodiTohoriPage /></PrivateRoute>
-            },
-            {
-                path: "/dashboard/profitLoss",
-                element: <PrivateRoute><ProfitLossPage /></PrivateRoute>
-            },
+            }
+
 
         ],
     },
@@ -271,19 +279,19 @@ export const router = createBrowserRouter([
     },
     {
         path: "register",
-        element: <RegisterPage />,
+        element: <PrivateRoute><RegisterPage /></PrivateRoute>,
     },
     {
         path: "/print/coutha/:id",
-        element: <BepariCoutha />,
+        element: <PrivateRoute><BepariCoutha /></PrivateRoute>,
     },
     {
         path: "/print/duememo/:id",
-        element: <UnpaidMemo />,
+        element: <PrivateRoute> <UnpaidMemo /></PrivateRoute>,
     },
     {
         path: "/purchase/slip/:id",
-        element: <ProductReceivingSlip />,
+        element: <PrivateRoute><ProductReceivingSlip /></PrivateRoute>,
     },
 
     {

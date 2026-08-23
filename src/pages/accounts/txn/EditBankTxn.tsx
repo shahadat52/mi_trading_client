@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, type FieldValues, type SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { useDeleteBankTxnMutation, useUpdateBankTxnMutation } from '../../../redux/features/bankTransaction/bankTransactionApi';
@@ -9,7 +9,13 @@ import { bankTxnType } from '../../../utils/transactionType';
 
 const EditBankTxn = ({ onClose, txn, transactions }: { onClose: () => void, txn: any, transactions: any }) => {
     const [loading, setLoading] = useState(false)
-    const { handleSubmit, control, reset } = useForm();
+    const { handleSubmit, control, reset } = useForm({
+        defaultValues: {
+            type: txn?.type,
+            amount: txn?.amount,
+            note: txn?.note,
+        }
+    });
     const [updateTxn] = useUpdateBankTxnMutation()
     const [deleteTxn] = useDeleteBankTxnMutation()
 
@@ -65,6 +71,16 @@ const EditBankTxn = ({ onClose, txn, transactions }: { onClose: () => void, txn:
         }
 
     };
+
+    useEffect(() => {
+        if (txn) {
+            reset({
+                type: txn.type,
+                amount: txn.amount,
+                note: txn.note,
+            });
+        }
+    }, [txn, reset]);
 
     return (
         <div className="m-4 ">

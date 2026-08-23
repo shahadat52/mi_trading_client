@@ -37,22 +37,25 @@ const MfsTxnActivity = ({ startDate: dateFrom, endDate: dateTo }: any) => {
                 {/* Data Table */}
                 {!isLoading && !isError && transactions?.length > 0 && (
 
-                    <div>
+                    <div ref={printRef} >
+                        <div className='flex justify-end mb-1'>
+                            <button
+                                onClick={handlePrint}
+                                className="my-1 min-w-40 mb-[-23px] px-2 py-1 rounded bg-blue-600 text-white no-print"
+                            >
+                                Print Report
+                            </button>
+                        </div>
+                        <div className='text-center'>
+                            <h1 className='font-bold text-xl uppercase' >MFS Txn Reports</h1>
+                            <p >From {format(dateFrom, 'dd-MM-yyyy')} To {format(dateTo, 'dd-MM-yyyy')}</p>
+                        </div>
                         <div className='ml-3 mt-2'>
                             <h2>Total Credit: {totalData?.totalCredit}</h2>
                             <h2>Total Debit: {totalData?.totalDebit}</h2>
                             <h2>Total Balance: {totalData?.currentBalance}</h2>
                         </div>
-                        <div ref={printRef} className="overflow-x-auto ">
-                            <div className='flex justify-end mb-1'>
-                                <button
-                                    onClick={handlePrint}
-                                    className="my-1 min-w-40 mb-[-23px] px-2 py-1 rounded bg-blue-600 text-white no-print"
-                                >
-                                    Print Report
-                                </button>
-                            </div>
-                            <h1 className="mb-1">MFS Txn Reports, From {format(dateFrom, 'dd-MM-yyyy')} To {format(dateTo, 'dd-MM-yyyy')}</h1>
+                        <div className="overflow-x-auto ">
 
                             <table className="w-full text-sm">
                                 <thead className="sticky top-0 bg-gray-100 text-gray-700">

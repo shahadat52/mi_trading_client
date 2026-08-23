@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm, type FieldValues } from "react-hook-form";
 import InputField from "../../components/form/InputFields";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useGetCustomerByIdQuery, useUpdateCustomerDataMutation } from "../../redux/features/customer/customerApi";
 import SelectField from "../../components/form/SelectField";
@@ -40,6 +40,19 @@ const CustomerDataUpdateEntry = ({ onClose, id }: { onClose: () => void, id: str
             setLoading(false);
         }
     }
+
+
+    useEffect(() => {
+        if (customer) {
+            reset({
+                name: customer.name,
+                phone: customer.phone,
+                category: customer.category,
+                address: customer.address,
+                type: customer.type,
+            });
+        }
+    }, [customer, reset]);
 
     return (
         <div>
