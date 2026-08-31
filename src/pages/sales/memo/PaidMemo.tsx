@@ -149,7 +149,8 @@ const PaidMemo = ({ sale, onClose }: any) => {
                             </div>
 
                             <div>
-                                <p className="text-[12px]">{sale?.createdBy?.name}</p>
+                                <p className="text-[10px] text-center">{sale?.createdBy?.role === 'admin' ? 'admin' : sale?.createdBy?.name}</p>
+                                {/* <p className="text-[12px]">{sale?.createdBy?.name}</p> */}
                                 <p className="text-[12px]  border-t-2">চৌথাকারীর স্বাক্ষর</p>
                             </div>
                         </div>

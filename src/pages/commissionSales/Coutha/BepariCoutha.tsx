@@ -277,7 +277,7 @@ const BepariCoutha = () => {
                 <div className="p-8 flex justify-between items-end ">
                     <div className="text-[12px] text-gray-400">Software Generated Invoice</div>
                     <div>
-                        <p className="text-[12px] text-center">{coutha?.createdBy?.name}</p>
+                        <p className="text-[12px] text-center">{coutha?.createdBy?.name === 'Arif Mohammad Forkan' ? 'admin' : coutha?.createdBy?.name}</p>
                         <p className="text-center border-t border-black w-32 pt-1 text-sm font-bold">চৌথাকারীর স্বাক্ষর</p>
 
                     </div>

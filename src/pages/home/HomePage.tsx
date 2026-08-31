@@ -50,6 +50,9 @@ const HomePage = () => {
 
     return (
         <div className="bg-[#ffffff]">
+
+
+
             <div className="hidden md:flex  w-full bg-white items-center justify-center p-5 rounded-2xl">
                 <div className=" w-full">
 
@@ -57,6 +60,7 @@ const HomePage = () => {
                     <h1 className="text-3xl md:text-4xl font-bold text-gray-900 text-center">
                         M/S M.I TRADING
                     </h1>
+
 
                     <HomePageMenuToggleButton menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
                     {/* Grid */}

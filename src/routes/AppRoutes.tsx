@@ -55,6 +55,8 @@ import ActivityPage from "../pages/activity/ActivityPage";
 import ProfitLossPage from "../pages/dashboard/ProfitLoss/ProfitLossPage";
 import BrokerTxnReportPage from "../pages/home/Report/BrokerTxnReportPage";
 import CurrentState from "../pages/dashboard/businessPosition/BusinessPositionPage";
+import CustomerDueReports from "../pages/home/Report/CustomerDueReports";
+import SuppliersDueReports from "../pages/home/Report/SuppliersDueReports";
 
 export const router = createBrowserRouter([
     {
@@ -256,6 +258,14 @@ export const router = createBrowserRouter([
 
 
         ],
+    },
+    {
+        path: "/reports/customers",
+        element: <PrivateRoute><CustomerDueReports /></PrivateRoute>
+    },
+    {
+        path: "/reports/suppliers",
+        element: <PrivateRoute><SuppliersDueReports /></PrivateRoute>
     },
     {
         path: "report/customer/:id",

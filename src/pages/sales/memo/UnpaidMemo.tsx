@@ -222,7 +222,7 @@ const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
                             </div>
 
                             <div className="col-span-3 text-right">
-                                <p className="text-[10px] text-center">{sale?.createdBy?.name}</p>
+                                <p className="text-[10px] text-center">{sale?.createdBy?.name === 'Arif Mohammad Forkan' ? 'admin' : sale?.createdBy?.name}</p>
                                 <p className="text-[10px] border-t-2 text-center">
                                     চৌথাকারীর স্বাক্ষর
                                 </p>

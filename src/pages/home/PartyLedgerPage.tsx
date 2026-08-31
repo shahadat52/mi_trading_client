@@ -8,6 +8,9 @@ import Beparis from './Beparis';
 import { useAppDispatch, useAppSelector } from '../../redux/hook';
 import { setPartyLimit, setPartyState } from '../../redux/features/common/commonSlice';
 import { LIMIT_OPTIONS } from '../../utils/options';
+import { Download } from 'lucide-react';
+import { BsThreeDotsVertical } from 'react-icons/bs';
+import { useNavigate } from 'react-router';
 
 // Pages
 
@@ -29,6 +32,7 @@ const tabs: { value: PartyType; label: string }[] = [
 ];
 
 const PartyLedgerPage = () => {
+    const navigate = useNavigate()
     const partyState = useAppSelector((state) => state.common.partyState)
     const partyLimit = useAppSelector((state) => state.common.partyLimit)
     const [searchTerm, setSearchTerm] = useState('');
@@ -113,7 +117,33 @@ const PartyLedgerPage = () => {
                             ))}
                         </select>
                     </div>
+                    <div className='flex justify-end p-2'>
+                        <div className="dropdown dropdown-left">
+                            <div tabIndex={0} role="button" className="text-2xl cursor-pointer">
+                                <BsThreeDotsVertical />
+                            </div>
+                            <ul tabIndex={-1} className="dropdown-content menu bg-base-100 rounded-box w-44 p-2 shadow">
+                                <li
+                                    onClick={() => navigate(`/reports/customers`)}
+                                    className="bg-white text-black rounded m-1"
+                                >
+                                    <p className='text-gray-800 text-xl'>
+                                        <Download />  <span className='text-xs'> Customer Due</span>
+                                    </p>
+                                </li>
+                                <li
+                                    onClick={() => navigate(`/reports/suppliers`)}
+                                    className="bg-white text-black rounded m-1"
+                                >
+                                    <p className='text-gray-800 text-xl'>
+                                        <Download /><span className='text-xs'>Suppliers Due</span>
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
+
             </div>
 
             {/* Main Card */}

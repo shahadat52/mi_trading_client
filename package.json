@@ -16,6 +16,8 @@
     "browser-image-compression": "^2.0.2",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.23.22",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.8",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^1.33.0",
     "mathjs": "^15.1.1",

@@ -1,6 +1,25 @@
 
 import { baseApi } from "../../api/baseApi";
 
+
+export type TCustomerDue = {
+    name: string;
+    address: string;
+    phone: string;
+    totalDue: number;
+};
+
+export type TSupplierPayable = {
+    name: string;
+    address: string;
+    phone: string;
+    totalPayable: number;
+};
+
+export type TCustomerSupplierDueResponse = {
+    customers: TCustomerDue[];
+    suppliers: TSupplierPayable[];
+};
 const reportsApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         salesReports: builder.query({
@@ -34,7 +53,26 @@ const reportsApi = baseApi.injectEndpoints({
 
         }),
 
+        getCustomerSupplierDue: builder.query<
+            TCustomerSupplierDueResponse,
+            void
+        >({
+            query: () => ({
+                url: "/reports/due-reports",
+                method: "GET",
+            }),
+
+            transformResponse: (response: {
+                success: boolean;
+                message: string;
+                data: TCustomerSupplierDueResponse;
+            }) => response.data,
+
+        }),
+
+
+
     }),
 });
 
-export const { useSalesReportsQuery, useGetAllSalesQuery, useGetSalesReportQuery } = reportsApi
+export const { useSalesReportsQuery, useGetAllSalesQuery, useGetSalesReportQuery, useGetCustomerSupplierDueQuery, } = reportsApi

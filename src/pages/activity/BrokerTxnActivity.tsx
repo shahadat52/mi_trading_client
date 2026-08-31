@@ -69,7 +69,7 @@ const BrokerTxnActivity = ({ startDate, endDate, limit }: any) => {
                                 </thead>
 
                                 <tbody>
-                                    {transactions?.map((tx: any) => {
+                                    {transactions?.map((tx: any, idx: number) => {
 
                                         return (
                                             <tr
@@ -79,7 +79,7 @@ const BrokerTxnActivity = ({ startDate, endDate, limit }: any) => {
                                             >
                                                 <td className="px-2 py-1">
 
-                                                    {tx?.broker?.name}
+                                                    {idx + 1}) {tx?.broker?.name}
                                                 </td>
                                                 <td className="px-2 py-1">
                                                     {format(new Date(tx.createdAt), 'dd/MM/yyyy')} <br />

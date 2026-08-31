@@ -7,6 +7,12 @@ import { useReactToPrint } from 'react-to-print';
 const SalesActivity = ({ startDate: dateFrom, endDate: dateTo }: any) => {
     const { data, isLoading, isError } = useGetProductWiseSalesQuery({ dateFrom, dateTo })
     const sales = data?.data || []
+    const totalBag = sales?.reduce(
+        (total: any, obj: any) =>
+            total + obj.salesHistory?.reduce((sum: any, item: any) => sum + Number(item.bosta || 0), 0),
+        0
+    );
+
 
     isLoading && <p>
         <p>
@@ -56,6 +62,7 @@ const SalesActivity = ({ startDate: dateFrom, endDate: dateTo }: any) => {
                         <div className='text-center'>
                             <h1 className='font-bold text-xl' >Sales Reports</h1>
                             <p >From {dateFrom} to {dateTo}</p>
+                            <p className='text-xl font-bold' >মোট {totalBag} বস্তা</p>
                         </div>
                         <div
                             className="grid grid-cols-4 gap-2">
