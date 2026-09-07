@@ -5,13 +5,15 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 type TCommon = {
     partyState: string;
     partyLimit: number;
-    productState: string
+    productState: string;
+    drawerController: boolean;
 };
 
 const initialState: TCommon = {
     partyState: 'Customer',
     partyLimit: 10,
-    productState: 'normal'
+    productState: 'normal',
+    drawerController: false
 };
 
 const commonSlice = createSlice({
@@ -28,6 +30,9 @@ const commonSlice = createSlice({
         setProductState(state, action: PayloadAction<string>) {
             state.productState = action.payload;
         },
+        setDrawerController(state, action: PayloadAction<boolean>) {
+            state.drawerController = action.payload;
+        },
 
 
     },
@@ -36,7 +41,8 @@ const commonSlice = createSlice({
 export const {
     setPartyState,
     setPartyLimit,
-    setProductState
+    setProductState,
+    setDrawerController
 } = commonSlice.actions;
 
 export default commonSlice.reducer;

@@ -58,7 +58,7 @@ const StockPage = () => {
             </div>
 
             {/* Responsive Table */}
-            <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white mb-18">
+            <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white mb-12">
                 <table className="w-full min-w-[500px] lg:text-lg md:text-lg sm:text-sm">
                     <thead className="bg-gray-100">
                         <tr>

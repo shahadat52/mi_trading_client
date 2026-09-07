@@ -122,7 +122,7 @@ const ExpensesTable = () => {
                             Category: <span className="font-normal">{d.category}</span>
                         </p>
                         <p className="text-sm font-semibold">
-                            Expense By: <span className="font-normal">{d.createdBy.name}</span>
+                            Expense By: <span className="font-normal">{d?.createdBy?.role === 'admin' ? 'admin' : <>{d.createdBy.name}</>}</span>
                         </p>
                         <p className="text-sm font-semibold">
                             Amount: <span className="font-normal">{d.amount}</span>

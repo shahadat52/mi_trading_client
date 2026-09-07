@@ -50,9 +50,6 @@ const HomePage = () => {
 
     return (
         <div className="bg-[#ffffff]">
-
-
-
             <div className="hidden md:flex  w-full bg-white items-center justify-center p-5 rounded-2xl">
                 <div className=" w-full">
 
@@ -143,7 +140,7 @@ const HomePage = () => {
 
 
 
-            <div className="mb-14 ">
+            <div className="mb-5 ">
                 <PartyLedgerPage />
             </div>
         </div>

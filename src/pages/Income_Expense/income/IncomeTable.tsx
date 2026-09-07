@@ -31,7 +31,6 @@ const IncomeTable = () => {
     }
 
     const incomes = data?.data?.data;
-
     const handleDelete = async (id: string) => {
 
         if (!confirm("ডিলিট হয়ে যাবে!")) return;
@@ -121,7 +120,7 @@ const IncomeTable = () => {
                             আয়ের উৎস: <span className="font-normal">{d.category}</span>
                         </p>
                         <p className="text-sm font-semibold">
-                            আয়কারী: <span className="font-normal">{d?.createdBy?.name}</span>
+                            আয়কারী: <span className="font-normal">{d.createdBy?.role === 'admin' ? 'admin' : <>{d.createdBy.name}</>}</span>
                         </p>
                         <p className="text-sm font-semibold">
                             পরিমাণ: <span className="font-normal">{d.amount}</span>

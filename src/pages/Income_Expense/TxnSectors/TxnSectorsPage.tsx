@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useGetAllSectorsQuery, useGetAllTxnQuery } from "../../../redux/features/inExTxn/inExTxnApi";
 import TableSkeleton from "../../../components/table/TableSkeleton";
 import ErrorBoundary from "../../../components/ErrorBoundary";
 import { format } from "date-fns";
 import { LIMIT_OPTIONS } from "../../../utils/options";
 import AddSectorModal from "./AddSectorModal";
+import { useReactToPrint } from "react-to-print";
 
 const TxnSectorsPage = () => {
     const [sector, setSector] = useState('')
@@ -20,9 +21,21 @@ const TxnSectorsPage = () => {
     const fullData = data?.data;
     const transactions = data?.data?.data
 
+
+    const printRef = useRef<HTMLDivElement>(null);
+    const handlePrint = useReactToPrint({
+        contentRef: printRef,
+        documentTitle: "Customer-Transaction-Report",
+    });
     return (
         <div>
-            <div className="flex justify-end m-2">
+            <div className="flex justify-between m-2">
+                <button
+                    onClick={handlePrint}
+                    className="btn btn-accent no-print"
+                >
+                    Print Report
+                </button>
                 <button onClick={() => setSectorModalController(true)} className="btn">Add sector</button>
             </div>
             <div className=" flex items-center justify-around mt-1">
@@ -90,8 +103,11 @@ const TxnSectorsPage = () => {
 
                     {/* Data Table */}
                     {!isLoading && !isError && transactions?.length > 0 && (
-                        <div className="overflow-x-auto h-[520px] ">
-                            <h2 className="m-3">Balance: {Number(fullData?.totalCredit) - Number(fullData.totalDebit)}</h2>
+                        <div
+                            ref={printRef}
+                            className="overflow-x-auto  ">
+                            <h2 className="hidden print:block text-center text-xl font-bold">Transactions of : {sector}</h2>
+                            <p className="m-3">Balance: {Number(fullData?.totalCredit) - Number(fullData.totalDebit)}</p>
                             <table className="w-full text-xs">
                                 <thead className="sticky top-0 bg-gray-100 text-gray-700">
                                     <tr>
@@ -136,6 +152,7 @@ const TxnSectorsPage = () => {
                                             </tr>
                                         );
                                     })}
+
                                 </tbody>
                             </table>
                         </div>

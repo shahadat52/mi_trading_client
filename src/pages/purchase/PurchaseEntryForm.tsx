@@ -85,7 +85,7 @@ const PurchaseEntryForm = () => {
 
     return (
         <div
-            className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-6 rounded-2xl shadow mb-16"
+            className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-6 rounded-2xl shadow mb-11"
         >
             <SearchableSelectField
                 label="সাপ্লাইয়ার"

@@ -1,19 +1,19 @@
 import { useState } from "react";
-import { MdMenu } from "react-icons/md";
 import { Outlet } from "react-router-dom";
-import MainLayoutSidebar from "./MainLayoutSidebar";
 import MobileNavbar from "../components/MobileNavbar";
+import { useAppDispatch, useAppSelector } from "../redux/hook";
+import { setDrawerController } from "../redux/features/common/commonSlice";
+import { TextAlignJustify, X } from "lucide-react";
 
 const MainLayout = () => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar open state
+    const dispatch = useAppDispatch()
+    const drawerController = useAppSelector((state) => state.common.drawerController)
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
 
     return (
         <div className="flex h-screen bg-primary text-gray-800 dark:bg-gray-900 dark:text-gray-100">
-            {/* Sidebar */}
-            <MainLayoutSidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
-            {/* Overlay for Mobile */}
             {isSidebarOpen && (
                 <div
                     onClick={() => setIsSidebarOpen(false)}
@@ -26,14 +26,15 @@ const MainLayout = () => {
                 {/* Top Navbar */}
                 <header className="flex items-center justify-between bg-blue-900 text-white h-18 px-4 sm:ml-0">
                     <div className="flex items-center gap-3">
+
                         <button
-                            className="sm:hidden p-2 hover:bg-white/10 rounded-md"
-                            onClick={() => setIsSidebarOpen(true)} // 🔥 Open sidebar
+                            onClick={() => dispatch(setDrawerController(!drawerController))}
+                            className='ml-2'
                         >
-                            <MdMenu size={24} />
+                            {drawerController ? <X className='text-red-500' /> : <TextAlignJustify className='text-white' />}
                         </button>
                         <h1 className="text-lg my-3 font-semibold tracking-wide">
-                            M/S.M.I Trading
+                            M/S M.I Trading
                         </h1>
                     </div>
                 </header>

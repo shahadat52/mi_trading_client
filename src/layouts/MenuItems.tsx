@@ -17,16 +17,10 @@ export const getMenuItems = (role?: string) => {
 
     const menuItems = [
         {
-            name: "Business ERP",
-            icon: <MdDashboard size={20} />,
-            subItems: [{ name: "Home", path: "/" }],
-        },
-        {
             name: "Purchase Management",
             icon: <BiSolidPurchaseTag size={20} />,
             subItems: [
-                { name: "Purchase Entry", path: "/purchase/entry" },
-                { name: "Purchase List", path: "/purchase/overview" },
+                { name: "Purchase Entry", path: "/purchase/entry" }
             ],
         },
         {
@@ -123,14 +117,14 @@ export const getMenuItems = (role?: string) => {
                     name: "Dashboard",
                     icon: <MdDashboard size={20} />,
                     subItems: [
-                        { name: "Report", path: "dashboard" },
                         { name: "Current State", path: "dashboard/currentstate" },
+                        { name: "Report", path: "dashboard" },
                         { name: "Profit & Loss", path: "dashboard/profitLoss" },
                         { name: "Pending Approvals", path: "dashboard/approvals" },
                         { name: "User management", path: "dashboard/users" },
                         { name: "User Register", path: "register" }
                     ],
-                },
+                }
             ]
             : []),
     ];

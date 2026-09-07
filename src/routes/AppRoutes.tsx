@@ -13,7 +13,6 @@ import ErrorBoundary from "../components/ErrorBoundary";
 import CommissionPage from "../pages/commissionSales/CommissionPage";
 import DeliveryPage from "../pages/delivery/DeliveryPage";
 import ProfilePage from "../pages/profile/ProfilePage";
-import PurchaseOverviewTable from "../pages/purchase/PurchaseOverviewTable";
 import TransactionTable from "../pages/accounts/TransactionTable";
 import CustomerTxnPage from "../pages/home/CustomerTxnPage";
 import OutstandingTxnPage from "../pages/accounts/OutstandingTxnPage";
@@ -57,6 +56,7 @@ import BrokerTxnReportPage from "../pages/home/Report/BrokerTxnReportPage";
 import CurrentState from "../pages/dashboard/businessPosition/BusinessPositionPage";
 import CustomerDueReports from "../pages/home/Report/CustomerDueReports";
 import SuppliersDueReports from "../pages/home/Report/SuppliersDueReports";
+import DevelopersPage from "../pages/developers/DevelopersPage";
 
 export const router = createBrowserRouter([
     {
@@ -102,10 +102,6 @@ export const router = createBrowserRouter([
             {
                 path: "/cart",
                 element: <PrivateRoute><CartPage /></PrivateRoute>
-            },
-            {
-                path: "purchase/overview",
-                element: <PrivateRoute><PurchaseOverviewTable /></PrivateRoute>,
             },
             {
                 path: "customerTxn/:id",
@@ -254,7 +250,11 @@ export const router = createBrowserRouter([
             {
                 path: "/kuli_godi_tohori",
                 element: <PrivateRoute><KuliGodiTohoriPage /></PrivateRoute>
-            }
+            },
+            {
+                path: "developers",
+                element: <DevelopersPage />,
+            },
 
 
         ],
@@ -308,6 +308,7 @@ export const router = createBrowserRouter([
         path: "login",
         element: <LoginPage />,
     },
+
     {
         path: "*",
         element: <ErrorBoundary />,

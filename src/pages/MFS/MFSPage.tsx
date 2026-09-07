@@ -196,8 +196,8 @@ const MFSPage = () => {
                                                     key={tx._id}
                                                     className="border-t hover:bg-gray-50 transition"
                                                 >
-                                                    <td className="px-4 py-2">
-                                                        {idx + 1}) {format((tx.createdAt), "dd/MM/yy")} <br />
+                                                    <td className="flex gap-0.5 px-4 py-2">
+                                                        <span className='hidden print:block'>{idx + 1}) </span> {format((tx.createdAt), "dd/MM/yy")} <br />
                                                         {format((tx.createdAt), "hh:mm")}
                                                     </td>
 

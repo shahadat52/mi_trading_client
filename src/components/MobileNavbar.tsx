@@ -19,26 +19,26 @@ const MobileNavbar = () => {
     const cart = useAppSelector((state) => state?.cart)
 
     const navItems: NavItem[] = [
-        { to: "/", label: "Home", icon: <FaHome className="h-6 w-6" /> },
-        { to: "/both/sales", label: "Sales", icon: <FaSalesforce className="h-6 w-6" /> },
-        { to: "/products", label: "Products", icon: <FaProductHunt className="h-6 w-6" /> },
+        { to: "/", label: "Home", icon: <FaHome className="h-5 w-5" /> },
+        { to: "/both/sales", label: "Sales", icon: <FaSalesforce className="h-5 w-5" /> },
+        { to: "/products", label: "Products", icon: <FaProductHunt className="h-5 w-5" /> },
     ];
 
     return (
-        <nav className=" fixed bottom-0 left-0 right-0 bg-blue-900 border-t border-gray-200 shadow-md">
-            <ul className="flex justify-around items-center h-16">
+        <nav className="fixed bottom-0 left-0 right-0 bg-blue-900 border-t border-gray-200 shadow-md">
+            <ul className="flex justify-around items-center h-10">
                 {navItems.map((item) => (
                     <li key={item.to}>
                         <NavLink
                             to={item.to}
                             end
                             className={({ isActive }) =>
-                                `flex flex-col items-center text-sm ${isActive ? "text-orange-500 font-bold" : "text-gray-100"
+                                `flex flex-col items-center text-[10px] ${isActive ? "text-orange-500 font-bold" : "text-gray-100"
                                 }`
                             }
                         >
                             {item.icon}
-                            <span className="uppercase mt-1">{item.label}</span>
+                            <span className="uppercase">{item.label}</span>
                         </NavLink>
                     </li>
                 ))}
@@ -59,8 +59,8 @@ const MobileNavbar = () => {
                             </span>
                         )}
 
-                        <FaShoppingCart size={28} className="" />
-                        <span className="text-xs font-medium uppercase">Cart</span>
+                        <FaShoppingCart size={20} className="" />
+                        <span className="text-[10px] font-medium uppercase">Cart</span>
                     </NavLink>
                 </li>
             </ul>
