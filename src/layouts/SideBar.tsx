@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router";
-import { Home } from "lucide-react";
+import { Banknote, Home } from "lucide-react";
 import {
     MdCancel,
     MdExpandLess,
@@ -183,7 +183,7 @@ const SideBar = () => {
                         >
                             <Home
                                 size={19}
-                                className="shrink-0"
+                                className="shrink-0 mr-4"
                             />
 
                             <span
@@ -194,6 +194,46 @@ const SideBar = () => {
                                 `}
                             >
                                 Home
+                            </span>
+                        </NavLink>
+
+                        <NavLink
+                            to="/cheque"
+                            end
+                            onClick={closeMobileDrawer}
+                            title="Home"
+                            className={({ isActive }) =>
+                                `
+                                group
+                                flex
+                                items-center
+                                rounded-md
+                                py-2.5
+                                text-sm
+                                font-medium
+                                transition-all
+                                duration-200
+
+                                ${isActive
+                                    ? "bg-blue-600 text-white shadow-md shadow-blue-900/20"
+                                    : "text-slate-300 hover:bg-white/10 hover:text-white"
+                                }
+                                `
+                            }
+                        >
+                            <Banknote
+                                size={19}
+                                className="shrink-0 mr-4"
+                            />
+
+                            <span
+                                className={`
+                                    whitespace-nowrap
+                                    transition-all
+                                    duration-200
+                                `}
+                            >
+                                Cheque
                             </span>
                         </NavLink>
 

@@ -8,6 +8,10 @@ export const LIMIT_OPTIONS = [
   { label: 'All', value: 1000 },
 ];
 
+export const Bank_OPTIONS = [
+  { value: "NATIONAL", label: "NATIONAL" },
+]
+
 export const CATEGORY_OPTIONS = [
   { value: "", label: "সকল" },
   { value: "khatungonj", label: "খাতুনগঞ্জ" },

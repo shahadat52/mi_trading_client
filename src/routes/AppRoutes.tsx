@@ -57,6 +57,7 @@ import CurrentState from "../pages/dashboard/businessPosition/BusinessPositionPa
 import CustomerDueReports from "../pages/home/Report/CustomerDueReports";
 import SuppliersDueReports from "../pages/home/Report/SuppliersDueReports";
 import DevelopersPage from "../pages/developers/DevelopersPage";
+import IFICChequePrint from "../pages/cheque/IFICChequePrint";
 
 export const router = createBrowserRouter([
     {
@@ -258,6 +259,10 @@ export const router = createBrowserRouter([
 
 
         ],
+    },
+    {
+        path: "/cheque",
+        element: <PrivateRoute><IFICChequePrint /></PrivateRoute>
     },
     {
         path: "/reports/customers",
