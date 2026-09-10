@@ -13,15 +13,15 @@ const PaidMemo = ({ sale, onClose }: any) => {
 
             <div className="fixed inset-0 z-50 flex items-start justify-center overflow-auto  min-h-screen  ">
 
-                <div className=" border max-w-[430px] rounded  overflow-auto print-area bg-white  border-gray-300 shadow-lg ">
+                <div className=" border max-w-[400px] rounded  overflow-auto print-area bg-white  border-gray-300 shadow-lg ">
 
                     {/* Header Section */}
                     <div className="bg-[#f08c1d] p-4 text-center text-black relative">
-                        <div className="absolute top-4  left-2 mt-6 h-20 w-20 flex items-center justify-center font-bold">
-                            <img src="/mi_logo.png" alt="Logo" className='h-20  w-[100px]' />
+                        <div className="absolute top-4 bg-white rounded-full  left-1 mt-4 h-[80px] w-[78px] flex items-center justify-center font-bold">
+                            <img src="/mi_logo.png" alt="Logo" className='h-[66px]  w-[66px]' />
                         </div>
-                        <p className="text-xs italic mb-2">বিসমিল্লাহির রাহমানির রহিম</p>
-                        <h1 className="text-red-800 text-2xl font-bold">মেসার্স এম.আই ট্রেডিং</h1>
+                        <p className="text-xs italic ">বিসমিল্লাহির রাহমানির রহিম</p>
+                        <h1 className="text-red-800 text-2xl font-bold mr-[-10px]">মেসার্স এম.আই ট্রেডিং</h1>
                         <h2 className="text-blue-950  text-2xl font-serif italic">M/S. M.I TRADING</h2>
                         <p className="text-sm">জেনারেল মার্চেন্ট এন্ড কমিশন এজেন্ট</p>
                         <p className="text-xs">হলুদ, মরিচ, ধনিয়া, ডাল, মশলা ও যাবতীয় ভূষা মালের আড়ৎ</p>
@@ -36,13 +36,13 @@ const PaidMemo = ({ sale, onClose }: any) => {
                     <div className="px-4 py-1 text-sm">
                         <div className="grid grid-cols-2 text-start my-1">
                             <div>নং: {sale.invoice}</div>
-                            <div>
-                                তারিখ: {format(sale.date, 'dd/MM/yyyy')} সময়ঃ {format(new Date(sale.createdAt), 'hh:mm a')}
+                            <div className="text-[11px]">
+                                তারিখ: {format(sale.date, 'dd/MM/yyyy')}  সময়ঃ {format(new Date(sale.createdAt), 'hh:mm a')}
                             </div>
                         </div>
                         <div className='grid grid-cols-2 text-start my-1' >
                             <p>নাম: {sale?.customer?.name}</p>
-                            <p>{sale?.broker === '' ? '' : ` ব্রোকার:${sale?.broker}`}</p>
+                            <p>ব্রোকার: {sale?.broker === '' ? '' : `${sale?.broker}`}</p>
                         </div>
                         <div className="grid grid-cols-2 text-start">
                             <div >ঠিকানা:{sale?.customer?.address}।</div>

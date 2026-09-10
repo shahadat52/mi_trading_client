@@ -13,7 +13,6 @@ const SalesActivity = ({ startDate: dateFrom, endDate: dateTo }: any) => {
         0
     );
 
-
     isLoading && <p>
         <p>
             <TableSkeleton row={8} />
@@ -25,7 +24,6 @@ const SalesActivity = ({ startDate: dateFrom, endDate: dateTo }: any) => {
         contentRef: printRef,
         documentTitle: "Customer-Transaction-Report",
     });
-
 
     return (
 
@@ -75,12 +73,18 @@ const SalesActivity = ({ startDate: dateFrom, endDate: dateTo }: any) => {
                                             }`}
                                     >
                                         <div>
+                                            <p className='text-center'>
+                                                বস্তাঃ  {
+                                                    sale?.salesHistory?.reduce((sum: any, item: any) => sum + Number(item.bosta || 0), 0)
+                                                }
+                                            </p>
                                             <p>
-                                                {idx + 1}) {sale?.productName} (
-                                                {sale.salesHistory[0].commission >= 0 ? "কমিশন" : "নরমাল"})
+
+                                                {idx + 1}) {sale?._id}
                                             </p>
 
                                             <div className="text-[11px]">
+
                                                 {sale.salesHistory.map((item: any, idx: number) => (
                                                     <div key={idx}>
                                                         <p className="ml-1">

@@ -27,12 +27,12 @@ const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sal
                 <div className=' shadow shadow-blue-900   '>
                     {/* Header Section */}
                     <div className="grid grid-cols-12 bg-[#182c64] text-center text-white ">
-                        <div className="col-span-2  h-20 w-20 flex my-auto mx-auto bg-white rounded-full items-center justify-center font-bold">
-                            <img src="/mi_logo.png" alt="Logo" className='h-20 w-20' />
+                        <div className="col-span-2 ml-2   h-[75px] w-[72px] flex my-auto mx-auto bg-white rounded-full items-center justify-center font-bold">
+                            <img src="/mi_logo.png" alt="Logo" className='h-[68px] w-[68px]' />
                         </div>
                         <div className='col-span-8'>
                             <p className="text-xs italic my-1">বিসমিল্লাহির রাহমানির রাহিম</p>
-                            <h1 className="text-white text-[24px] ml-[13px] font-bold">মেসার্স এম.আই ট্রেডিং</h1>
+                            <h1 className="text-white text-[24px] ml-[10px] font-bold">মেসার্স এম.আই ট্রেডিং</h1>
                             <h2 className="text-red-500  text-xl font-serif">M/S. M.I TRADING</h2>
                             <p className="text-sm">জেনারেল মার্চেন্ট এন্ড কমিশন এজেন্ট</p>
                             <p className="text-xs  flex items-center justify-center"> <IoLocationSharp /> ২০২ নং খাতুনগঞ্জ, কোতোয়ালী, চট্টগ্রাম। </p>
