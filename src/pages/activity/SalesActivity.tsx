@@ -60,7 +60,7 @@ const SalesActivity = ({ startDate: dateFrom, endDate: dateTo }: any) => {
                         <div className='text-center'>
                             <h1 className='font-bold text-xl' >Sales Reports</h1>
                             <p >From {dateFrom} to {dateTo}</p>
-                            <p className='text-xl font-bold' >মোট {totalBag} বস্তা</p>
+                            <p className='text-xl font-bold' >মোট {totalBag} টালি</p>
                         </div>
                         <div
                             className="grid grid-cols-4 gap-2">
@@ -73,10 +73,10 @@ const SalesActivity = ({ startDate: dateFrom, endDate: dateTo }: any) => {
                                             }`}
                                     >
                                         <div>
-                                            <p className='text-center'>
-                                                বস্তাঃ  {
+                                            <p className='font-bold text-red-600 text-center'>
+                                                {
                                                     sale?.salesHistory?.reduce((sum: any, item: any) => sum + Number(item.bosta || 0), 0)
-                                                }
+                                                }: টালি
                                             </p>
                                             <p>
 

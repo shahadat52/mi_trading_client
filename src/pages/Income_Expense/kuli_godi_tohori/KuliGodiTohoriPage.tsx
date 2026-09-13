@@ -4,6 +4,7 @@ import LabourPage from "./LabourPage";
 import TohoriPage from "./TohoriPage";
 import { endOfDay, format, startOfDay } from "date-fns";
 import BepariCommissionPage from "./BepariCommissionPage";
+import { useReactToPrint } from "react-to-print";
 
 const KuliGodiTohoriPage = () => {
     const [action, setAction] = useState("kuli");
@@ -37,6 +38,12 @@ const KuliGodiTohoriPage = () => {
         }
     }, [action]);
 
+    const printRef = useRef<HTMLDivElement>(null);
+    const handlePrint = useReactToPrint({
+        contentRef: printRef,
+        documentTitle: "Kuli_Godi_Tohori_Commissin Reports",
+    });
+
     return (
         <div>
             <div className="flex justify-evenly gap-10 mx-auto w-full">
@@ -59,6 +66,15 @@ const KuliGodiTohoriPage = () => {
                         className="border rounded px-3 py-2 text-sm"
                     />
                 </div>
+            </div>
+
+            <div className='flex justify-end'>
+                <button
+                    onClick={handlePrint}
+                    className="my-1 min-w-40 mb-[-23px] px-2 py-1 rounded bg-blue-600 text-white no-print"
+                >
+                    Print Report
+                </button>
             </div>
 
             <div className="p-2">
@@ -92,7 +108,11 @@ const KuliGodiTohoriPage = () => {
                 </div>
 
                 {/* Main Content */}
-                <div>
+                <div ref={printRef}>
+                    <div className="hidden print:block text-center text-xl font-bold uppercase mb-2">
+                        {action} Reports
+                    </div>
+
                     {action === "godi" && (
                         <GodiPage
                             action={action}
