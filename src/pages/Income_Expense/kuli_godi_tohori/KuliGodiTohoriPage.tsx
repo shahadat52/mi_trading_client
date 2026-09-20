@@ -112,6 +112,9 @@ const KuliGodiTohoriPage = () => {
                     <div className="hidden print:block text-center text-xl font-bold uppercase mb-2">
                         {action} Reports
                     </div>
+                    <div className="hidden print:block text-center text-sm font-bold uppercase mb-2">
+                        From ({format(startDate, 'dd/MM/yyyy')}) To ({format(toDate, 'dd/MM/yyyy')})
+                    </div>
 
                     {action === "godi" && (
                         <GodiPage
