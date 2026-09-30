@@ -15,9 +15,11 @@ import EditBankTxn from "./EditBankTxn";
 import { toast } from "react-toastify";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { AiOutlineDownload } from "react-icons/ai";
+import { useAppSelector } from "../../../redux/hook";
 
 
 const BankTxnSummary = () => {
+    const user = useAppSelector((state: any) => state?.auth?.auth?.user);
     const navigate = useNavigate()
     const [makeTxn, setMakeTxn] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
@@ -65,13 +67,12 @@ const BankTxnSummary = () => {
         }
 
     }
-
     return (
         <div>
             {/* Filters */}
             <div className=" mb-2">
                 <div className="flex justify-between">
-                    <h1 className="m-2 text-lg font-bold">{id} Bank    (Balance: {transactions[0]?.currentBalance || 0})</h1>
+                    <h1 className="m-2 text-lg font-bold">{id} Bank    (Balance: {user.role === 'admin' ? <>{transactions[0]?.currentBalance}</> : <></>})</h1>
                     <div className="dropdown dropdown-left mr-5 mt-5">
                         <div tabIndex={0} role="button" className="text-2xl cursor-pointer mr-4">
                             <BsThreeDotsVertical />

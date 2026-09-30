@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
 import { useGetAllBankTxnQuery } from "../../../redux/features/bankTransaction/bankTransactionApi";
+import { useAppSelector } from "../../../redux/hook";
 
 type Transaction = {
     _id: string;
@@ -21,6 +22,7 @@ type BankGroup = {
 
 
 const BankTxnsPage = () => {
+    const user = useAppSelector((state: any) => state?.auth?.auth?.user);
     const navigate = useNavigate()
     const { data } = useGetAllBankTxnQuery(undefined);
     const transactions = data?.data;
@@ -36,7 +38,11 @@ const BankTxnsPage = () => {
                             className="border border-gray-700 mb-2 rounded p-2"
                         >
                             <p className="font-bold">{txn.bankName} Bank</p>
-                            <p className="">Balance: {txn.currentBalance}</p>
+                            {user?.role === "admin" && (
+                                <p>
+                                    Balance: {txn.currentBalance || 0}
+                                </p>
+                            )}
                         </div>
                 )
             }        </div>

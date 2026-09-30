@@ -96,16 +96,17 @@ export const getMenuItems = (role?: string) => {
                     { name: "ROCKET", path: "/mfs/rocket" }
                 ],
             },
+            {
+                name: "Business Activity",
+                icon: <LuSquareActivity size={20} />,
+                subItems: [{ name: "All Activity", path: "/activity" }],
+            }
         ] : []),
 
         // ✅ Admin / Super Admin only
         ...(isAdmin
             ? [
-                {
-                    name: "Business Activity",
-                    icon: <LuSquareActivity size={20} />,
-                    subItems: [{ name: "All Activity", path: "/activity" }],
-                },
+
                 {
                     name: "Human Resources",
                     icon: <MdPeople size={20} />,
