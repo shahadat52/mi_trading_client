@@ -44,7 +44,7 @@ const BrokerTxnTable = ({ id }: any) => {
                 {/* Empty State */}
                 {!isLoading && !isError && transactions?.length === 0 && (
                     <div className="py-10 text-center text-gray-500 text-sm">
-                        No transactions found for the account.
+                        No transactions found for the broker.
                     </div>
                 )}
 

@@ -3,12 +3,12 @@ import { baseApi } from "../../api/baseApi";
 
 const brokerApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        createBroker: builder.mutation({
+        createBroker: builder.mutation<any, FormData>({
             query: (brokerData) => (
                 {
                     url: "/broker/create",
                     method: "POST",
-                    body: { brokerData },
+                    body: brokerData,
                 }
             ),
             invalidatesTags: ['Broker', 'Brokers', 'BrokerTxn']

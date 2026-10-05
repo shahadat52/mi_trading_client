@@ -63,7 +63,17 @@ const BrokersPage = () => {
                                     <div className="flex items-center">
                                         <div className="flex gap-1 items-center">
                                             <p className="text-[20px] mr-3 text-blue-600">{idx + 1}</p>
-                                            <p className="text-[30px] mr-3 text-blue-700"><BsPersonCircle /></p>
+                                            <p className="mr-3 h-[40px] w-[40px] overflow-hidden rounded-full">
+                                                {broker?.imageurl ? (
+                                                    <img
+                                                        src={broker?.imageurl}
+                                                        alt={broker?.name || "Broker"}
+                                                        className="h-full w-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <BsPersonCircle className="h-full w-full text-blue-700" />
+                                                )}
+                                            </p>
                                         </div>
                                         <div>
                                             <p className="text-[18px] font-semibold">{broker?.name}</p>

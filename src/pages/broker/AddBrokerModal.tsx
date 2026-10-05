@@ -6,9 +6,12 @@ import { MdCancel } from "react-icons/md";
 import { toast } from "react-toastify";
 import "../../styles/modalAnimations.css"; // 🔥 animation CSS
 import { useCreateBrokerMutation } from "../../redux/features/broker/brokerApi";
+import { compressImage } from "../../utils/compressImage";
+import ImagePicker from "../../components/ImagePicker";
 
 export const AddBrokerModal = ({ setAddBrokerController }: any) => {
     const [loading, setLoading] = useState(false);
+    const [imageFile, setImageFile] = useState<File | null>(null);
     const [closing, setClosing] = useState(false); // 🔥 control closing animation
 
     const { control, handleSubmit, reset } = useForm({
@@ -27,12 +30,27 @@ export const AddBrokerModal = ({ setAddBrokerController }: any) => {
         }, 250); // ⏳ same as animation duration
     };
 
+    const handleComprssImage = async (file: any) => {
+        if (!file) return;
+        const compressedFile = await compressImage(file);
+        setImageFile(compressedFile);
+    }
+
+
     const onSubmit = async (data: any) => {
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
         try {
             setLoading(true);
+            const formData = new FormData();
 
-            const result = await addBroker(data);
+            Object.entries(data).forEach(([key, value]) => {
+                formData.append(key, String(value));
+            });
+
+            if (imageFile) {
+                formData.append("image", imageFile);
+            }
+            const result = await addBroker(formData);
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
                 reset();
@@ -48,6 +66,8 @@ export const AddBrokerModal = ({ setAddBrokerController }: any) => {
             setLoading(false);
         }
     };
+
+
 
     return (
         <div
@@ -88,6 +108,27 @@ export const AddBrokerModal = ({ setAddBrokerController }: any) => {
                             rules={{ required: "মোবাইল নাম্বার নাই" }}
                         />
 
+                    </div>
+                    <div>
+                        <ImagePicker
+                            onFileSelect={(file) => {
+                                handleComprssImage(file);
+                            }}
+                        />
+
+                        {imageFile && (
+                            <p className="text-xs text-green-600 mt-1">
+                                {imageFile.name}
+                            </p>
+                        )}
+
+                        {imageFile && (
+                            <img
+                                src={URL.createObjectURL(imageFile)}
+                                alt="preview"
+                                className="w-10 h-15 object-cover rounded mt-2"
+                            />
+                        )}
                     </div>
 
                     <button

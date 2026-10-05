@@ -19,8 +19,6 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 
 const BrokerTxn = () => {
     const [makeTxn, setMakeTxn] = useState(false)
-    // const [startDate, setStartDate] = useState<string>(format(startOfDay(new Date()), "yyyy-MM-dd"));
-    // const [endDate, setEndDate] = useState<string>(format(endOfDay(new Date()), "yyyy-MM-dd"));
     const [selectedBroker, setSelectedBroker] = useState(null)
     const [isOpen, setIsOpen] = useState(false)
     const navigate = useNavigate()
