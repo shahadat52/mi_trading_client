@@ -58,6 +58,7 @@ import CustomerDueReports from "../pages/home/Report/CustomerDueReports";
 import SuppliersDueReports from "../pages/home/Report/SuppliersDueReports";
 import DevelopersPage from "../pages/developers/DevelopersPage";
 import IFICChequePrint from "../pages/cheque/IFICChequePrint";
+import AdminRoute from "./AdminRoute";
 
 export const router = createBrowserRouter([
     {
@@ -202,7 +203,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "reports",
-                element: <PrivateRoute>< DashboardPage /></PrivateRoute>,
+                element: <AdminRoute>< DashboardPage /></AdminRoute>,
             },
             {
                 path: 'dashboard',
@@ -210,11 +211,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/dashboard/approvals",
-                element: <PrivateRoute><PendingApprovalsPage /></PrivateRoute>,
+                element: <AdminRoute><PendingApprovalsPage /></AdminRoute>,
             },
             {
                 path: "dashboard/users",
-                element: <PrivateRoute><UserManagementPage /></PrivateRoute>
+                element: <AdminRoute><UserManagementPage /></AdminRoute>
             },
             {
                 path: "dashboard/currentState",
