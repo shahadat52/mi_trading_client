@@ -13,8 +13,12 @@ import InputField from '../../components/form/InputFields';
 import { toast } from 'react-toastify';
 import { bankingSource, mfsTxnType } from '../../utils/transactionType';
 import { useReactToPrint } from 'react-to-print';
+import { useAppSelector } from '../../redux/hook';
 
 const MFSPage = () => {
+    const user = useAppSelector(
+        (state) => state.auth.auth.user
+    )
     const [loading, setLoading] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
     const [makeTxn, setMakeTxn] = useState(false)
@@ -150,11 +154,13 @@ const MFSPage = () => {
                         Print Report
                     </button>
                 </div>
-                <div className='m-2'>
-                    <h2 className='text-lg'>Total Credit: {totalCredit}</h2>
-                    <h2 className='text-lg'>Total Debit: {totalDebit}</h2> <hr />
-                    <h2 className='text-lg ml-4'>Balance: {transactions[0]?.runningBalance}</h2>
-                </div>
+                {
+                    user?.role === 'admin' && <div className='m-2'>
+                        <h2 className='text-lg'>Total Credit: {totalCredit}</h2>
+                        <h2 className='text-lg'>Total Debit: {totalDebit}</h2> <hr />
+                        <h2 className='text-lg ml-4'>Balance: {transactions[0]?.runningBalance}</h2>
+                    </div>
+                }
                 <div>
                     {/* Table Section */}
                     <div className="relative  bg-white rounded-xl shadow overflow-hidden mb-40">

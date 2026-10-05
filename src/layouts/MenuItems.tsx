@@ -70,13 +70,7 @@ export const getMenuItems = (role?: string) => {
                 subItems: [{ name: "Cash-box", path: "/cashbox" }],
             },
 
-            {
-                name: "Customer & Supplier",
-                icon: <FaPeopleCarryBox size={20} />,
-                subItems: [
-                    { name: "Open", path: "/partners" }
-                ],
-            },
+
 
             {
                 name: "Banks Module",
@@ -106,7 +100,13 @@ export const getMenuItems = (role?: string) => {
         // ✅ Admin / Super Admin only
         ...(isAdmin
             ? [
-
+                {
+                    name: "Customer & Supplier",
+                    icon: <FaPeopleCarryBox size={20} />,
+                    subItems: [
+                        { name: "Open", path: "/partners" }
+                    ],
+                },
                 {
                     name: "Human Resources",
                     icon: <MdPeople size={20} />,

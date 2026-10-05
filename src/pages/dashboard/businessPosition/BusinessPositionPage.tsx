@@ -179,7 +179,7 @@ const BusinessPositionPage = () => {
                             As of
                         </span>{" "}
                         <span className="font-semibold">
-                            22 Aug 2026
+                            {format(new Date(), "dd-MM-yyyy")}
                         </span>
                     </div>
                 </div>

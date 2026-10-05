@@ -1,7 +1,7 @@
 import { useParams } from "react-router";
 import { useGetAttendanceByIdQuery } from "../../../redux/features/attendance/attendanceApi";
 import { MONTH_OPTIONS } from "../../../utils/options";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import YearInput from "./YearInput";
 import { format, getDaysInMonth } from "date-fns";
 import Loading from "../../../components/Loading";
@@ -9,6 +9,7 @@ import { ceil } from "mathjs";
 import StatusModal from "./StatusModal";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import BasicSalaryUpdateModal from "./BasicSalaryUpdateModal";
+import { useReactToPrint } from "react-to-print";
 
 const AttendancesPage = () => {
     const { id } = useParams();
@@ -53,9 +54,21 @@ const AttendancesPage = () => {
     };
 
 
-
+    const printRef = useRef<HTMLDivElement>(null);
+    const handlePrint = useReactToPrint({
+        contentRef: printRef,
+        documentTitle: "Employee attendance print",
+    });
     return (
         <div className="mb-16">
+            <div className='flex justify-end mb-1'>
+                <button
+                    onClick={handlePrint}
+                    className="my-1 min-w-40 mb-[-23px] px-2 py-1 rounded bg-blue-600 text-white no-print"
+                >
+                    Print Report
+                </button>
+            </div>
             {/* FILTER */}
             <div className="flex justify-around gap-3 p-2">
                 <section className="w-full max-w-[75%]">
@@ -80,7 +93,7 @@ const AttendancesPage = () => {
             </div>
 
             {/* MAIN CARD */}
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-2">
+            <div ref={printRef} className="bg-white rounded-2xl shadow-sm border border-slate-200 p-2">
                 <div className="mb-5">
                     <div className="flex justify-between items-center">
                         <h2 className="text-lg font-semibold text-slate-900">
@@ -90,7 +103,7 @@ const AttendancesPage = () => {
                         {/* 👉 icon click open modal */}
                         <p
                             onClick={openSalaryModal}
-                            className="text-2xl cursor-pointer"
+                            className="print:hidden text-2xl cursor-pointer"
                         >
                             <BsThreeDotsVertical />
                         </p>
