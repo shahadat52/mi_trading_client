@@ -37,7 +37,6 @@ import IncomeExpensePage from "../pages/Income_Expense/IncomeExpensePage";
 import BepariCoutha from "../pages/commissionSales/Coutha/BepariCoutha";
 import HRPage from "../pages/hr/HRpage";
 import AttendancesPage from "../pages/hr/attendances/AttendancesPage";
-import EmployeesPages from "../pages/hr/employees/EmployeesPages";
 import BankTxnsPage from "../pages/accounts/txn/BankTxnsPage";
 import BankTxnSummary from "../pages/accounts/txn/BankTxnSummary";
 import KuliGodiTohoriPage from "../pages/Income_Expense/kuli_godi_tohori/KuliGodiTohoriPage";
@@ -244,10 +243,6 @@ export const router = createBrowserRouter([
             {
                 path: "/attendance/:id",
                 element: <PrivateRoute><AttendancesPage /></PrivateRoute>
-            },
-            {
-                path: "/hr/id",
-                element: <PrivateRoute><EmployeesPages /></PrivateRoute>
             },
             {
                 path: "/kuli_godi_tohori",

@@ -224,28 +224,6 @@ const BrokerTxn = () => {
                     </form>
                 </div>
             }
-            {/* <div>
-                <div>
-                    <p>Start Date</p>
-                    <input
-                        type="date"
-                        value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
-                        className="border rounded px-3 py-2 text-sm no-print"
-                    />
-                </div>
-
-                <div>
-                    <p>End Date</p>
-                    <input
-                        type="date"
-                        value={endDate}
-                        onChange={(e) => setEndDate(e.target.value)}
-                        className="border rounded px-3 py-2 text-sm"
-                    />
-                </div>
-            </div> */}
-            {/* Table Section */}
             < BrokerTxnTable id={id} />
 
 

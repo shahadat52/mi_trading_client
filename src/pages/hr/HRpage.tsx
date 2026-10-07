@@ -7,9 +7,13 @@ import { useNavigate } from 'react-router';
 import { useFireEmployeeMutation, useGenerateMonthlyPayrollMutation, useGetAllEmployeesQuery, useUpdateEmployeeRoleMutation, useUpdateEmployeeStatusMutation } from '../../redux/features/employee/employeeApi';
 import { MdDeleteForever } from 'react-icons/md';
 import EmployeeTable from './EmployeeTable';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import Modal from '../../components/Modal';
+import EditEmployee from './employees/EditEmployee';
 
 const HRpage = () => {
+    const [selectedEmployee, setSelectedEmployee] = useState(null)
+    const [isOpen, setIsOpen] = useState(false)
 
     const now = new Date();
     const showSalaryGenerate = useMemo(() => {
@@ -157,8 +161,10 @@ const HRpage = () => {
                         <tbody>
                             {employees?.map((user: TUser) => (
                                 <EmployeeTable
-                                    {...user}
+                                    user={user}
                                     key={user._id}
+                                    setIsOpen={setIsOpen}
+                                    setSelectedEmployee={setSelectedEmployee}
                                 />
                             ))}
                         </tbody>
@@ -257,7 +263,11 @@ const HRpage = () => {
                     ))
                 )}
             </div >
-
+            {
+                selectedEmployee && <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+                    <EditEmployee onClose={() => setIsOpen(false)} employeeData={selectedEmployee} />
+                </Modal>
+            }
         </div >
     );
 };

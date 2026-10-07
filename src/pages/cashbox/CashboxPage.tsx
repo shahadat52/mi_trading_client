@@ -25,7 +25,7 @@ const CashboxPage = () => {
     const cash = ((openingBalance?.openingBalance || 0) + (cashInHistories?.totalCashIn || 0) - (cashOutHistories?.totalCashOut || 0))
 
     return (
-        <div className="min-h-screen min-w-screen bg-gray-100 p-1">
+        <div className="min-w-screen bg-gray-100 p-1">
             {/* Page Header */}
             <header className="flex justify-between  items-center mb-8 p-5">
                 <h1 className="text-xl font-semibold uppercase text-gray-800">Cashbox <span className="text-xs">({openingBalance?.openingBalance || 0})</span> </h1>
@@ -41,7 +41,7 @@ const CashboxPage = () => {
             </header>
 
             {/* Summary Section */}
-            <section className="grid grid-cols-3 sm:grid-cols-3 gap-6 mb-5">
+            <section className="grid grid-cols-3 sm:grid-cols-3 gap-6">
                 <div className=" bg-white shadow-md rounded-lg p-2 text-center mt-5">
                     <p className="text-sm font-semibold text-gray-600">Cash In</p>
                     <p className="text-sm font-bold text-green-600 mt-2">৳ {user?.role === 'manager' ? 0 : cashInHistories?.totalCashIn}</p>

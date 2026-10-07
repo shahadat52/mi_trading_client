@@ -1,8 +1,8 @@
-import { useGetFieldWiseDataQuery } from "../../../redux/features/coutha/couthaApi";
+import { useGetKuliDataQuery } from "../../../redux/features/coutha/couthaApi";
 import { useGetAllTxnQuery } from "../../../redux/features/inExTxn/inExTxnApi";
 
-const LabourPage = ({ action, startDate, endDate }: any) => {
-    const { data: items } = useGetFieldWiseDataQuery({ field: action, startDate, toDate: endDate });
+const LabourPage = ({ startDate, endDate }: any) => {
+    const { data: items } = useGetKuliDataQuery({ startDate, toDate: endDate });
     const fieldWiseData = items?.data;
     const sales = fieldWiseData?.sales?.reduce((sum: number, item: any) => sum + Number(item.labour || 0), 0)
     const bepariSales = fieldWiseData?.couthas?.reduce((sum: number, item: any) => sum + Number(item.kuli || 0), 0)

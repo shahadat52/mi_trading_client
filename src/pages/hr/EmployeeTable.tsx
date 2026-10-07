@@ -3,11 +3,17 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import { useFireEmployeeMutation, useUpdateEmployeeRoleMutation, useUpdateEmployeeStatusMutation } from "../../redux/features/employee/employeeApi";
 
-import { MdDeleteForever } from "react-icons/md";
+import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { EMPLOYEE_ROLE_OPTIONS } from "../../utils/options";
+import ImagePreviewButton from "../../components/ImagePreviewButton";
 
 export type TUser = { _id: string, name: string, phone: string, email: string, role: string, status: string }
-const EmployeeTable = (user: TUser) => {
+
+const EmployeeTable = ({ user, setIsOpen, setSelectedEmployee }: any) => {
+    const handleEditModalController = (user: any) => {
+        setSelectedEmployee(user)
+        setIsOpen(true)
+    }
     const navigate = useNavigate()
     const [updateRole] = useUpdateEmployeeRoleMutation()
     const handleUpdate = async (role: string) => {
@@ -79,46 +85,59 @@ const EmployeeTable = (user: TUser) => {
 
     };
     return (
-        <tr key={user._id} className={`${user?.status === 'blocked' ? 'text-red-600 border border-red-600' : 'text-gray-800 border border-gray-200'}hover:bg-gray-50 `}>
-            <td onClick={() => navigate(`/attendance/${user._id}`)} className="px-4 py-2 border">{user?.name}</td>
-            <td className="px-4 py-2 border">{user?.phone}</td>
-            <td className="px-4 py-2 border">{user?.role}</td>
-            <td className="px-4 py-2 border">
-                <select
-                    defaultValue={user?.role}
-                    className="select select-natural w-full"
-                    onChange={(e) => handleUpdate(e.target.value)}
-                >
-                    {EMPLOYEE_ROLE_OPTIONS?.map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                            {opt.label}
-                        </option>
-                    ))}
-                </select>
+        <>
+            <tr key={user._id} className={`${user?.status === 'blocked' ? 'text-red-600 border border-red-600' : 'text-gray-800 border border-gray-200'}hover:bg-gray-50 `}>
+                <td className="flex justify-center">
+                    <ImagePreviewButton
+                        imageUrl={user?.imageurl}
+                        buttonText="View Img"
+                    />
+                </td>
+                <td onClick={() => navigate(`/attendance/${user._id}`)} className="px-4 py-2 border">{user?.name}</td>
+                <td className="px-4 py-2 border">{user?.phone}</td>
+                <td className="px-4 py-2 border">{user?.role}</td>
+                <td className="px-4 py-2 border">
+                    <select
+                        defaultValue={user?.role}
+                        className="select select-natural w-full"
+                        onChange={(e) => handleUpdate(e.target.value)}
+                    >
+                        {EMPLOYEE_ROLE_OPTIONS?.map((opt) => (
+                            <option key={opt.value} value={opt.value}>
+                                {opt.label}
+                            </option>
+                        ))}
+                    </select>
 
-            </td>
+                </td>
 
-            <td className="px-4 py-2 border">
-                <select
-                    defaultValue={user?.status}
-                    className="select select-natural w-full"
-                    onChange={(e) => handleStatus(e.target.value)}
-                >
-                    <option disabled>Select Status</option>
-                    <option value="active">Active</option>
-                    <option value="blocked">Blocked</option>
-                </select>
+                <td className="px-4 py-2 border">
+                    <select
+                        defaultValue={user?.status}
+                        className="select select-natural w-full"
+                        onChange={(e) => handleStatus(e.target.value)}
+                    >
+                        <option disabled>Select Status</option>
+                        <option value="active">Active</option>
+                        <option value="blocked">Blocked</option>
+                    </select>
 
-            </td>
-            <td className="px-4 py-2 border">
-                <button onClick={() => handleDelete(user)} type='button' className="text-red-600 text-4xl">
-                    <MdDeleteForever />
-                </button>
+                </td>
+                <td className="flex justify-around items-center px-4 py-2 border">
 
-            </td>
+                    <button onClick={() => handleEditModalController(user)} type='button' className="text-red-600 text-4xl">
+                        <MdEdit size={18} />
+                    </button>
 
-        </tr>
+                    <button onClick={() => handleDelete(user)} type='button' className="text-red-600 text-4xl">
+                        <MdDeleteForever />
+                    </button>
 
+
+                </td>
+
+            </tr>
+        </>
     );
 };
 

@@ -34,7 +34,7 @@ const MainLayout = () => {
     }
 
     return (
-        <div className="flex h-screen bg-primary text-gray-800 dark:bg-gray-900 dark:text-gray-100">
+        <div className="flex   text-gray-800 dark:bg-gray-900 dark:text-gray-100">
 
             {isSidebarOpen && (
                 <div
@@ -69,7 +69,7 @@ const MainLayout = () => {
                     </div>
                 </header>
 
-                <main className="mb-10 flex-1 overflow-y-auto bg-[#e5efd5] transition-colors dark:bg-gray-900">
+                <main className=" flex-1 overflow-y-auto bg-[#e5efd5] transition-colors dark:bg-gray-900">
                     <Outlet />
                     <MobileNavbar />
                 </main>

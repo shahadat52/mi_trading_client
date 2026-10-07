@@ -13,6 +13,15 @@ const employeeApi = baseApi.injectEndpoints({
             ),
             invalidatesTags: ['Employees']
         }),
+
+        getEmployeeById: builder.query({
+            query: (id) => (
+                {
+                    url: `/employee/me/${id}`,
+                    method: 'GET',
+                }),
+            providesTags: ['Employee']
+        }),
         getAllEmployees: builder.query({
             query: () => {
                 return {
@@ -25,12 +34,12 @@ const employeeApi = baseApi.injectEndpoints({
 
 
         /* Update Employee Data */
-        updateEmployeeData: builder.mutation({
-            query: (userData) => (
+        updateEmployeeData: builder.mutation<any, { id: string; formData: FormData }>({
+            query: ({ id, formData }) => (
                 {
-                    url: '/employee/update-employee',
+                    url: `/employee/update/${id}`,
                     method: 'PATCH',
-                    body: userData
+                    body: formData
                 }
             ),
             invalidatesTags: ['Employees']
@@ -84,4 +93,4 @@ const employeeApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useJoinEmployeeMutation, useGetAllEmployeesQuery, useUpdateEmployeeDataMutation, useUpdateEmployeeRoleMutation, useUpdateEmployeeStatusMutation, useFireEmployeeMutation, useGenerateMonthlyPayrollMutation } = employeeApi
+export const { useJoinEmployeeMutation, useGetAllEmployeesQuery, useGetEmployeeByIdQuery, useUpdateEmployeeDataMutation, useUpdateEmployeeRoleMutation, useUpdateEmployeeStatusMutation, useFireEmployeeMutation, useGenerateMonthlyPayrollMutation } = employeeApi

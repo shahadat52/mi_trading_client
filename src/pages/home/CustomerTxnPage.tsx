@@ -238,7 +238,7 @@ const CustomerTxnPage = () => {
             }
 
             {/* Table Section */}
-            <div className="relative  bg-white rounded-xl shadow overflow-hidden mb-16">
+            <div className="relative  bg-white  shadow overflow-hidden mb-10">
                 {/* Loading State */}
                 {isLoading && <TableSkeleton row={8} />}
 
@@ -256,7 +256,7 @@ const CustomerTxnPage = () => {
 
                 {/* Data Table */}
                 {!isLoading && !isError && transactions?.length > 0 && (
-                    <div className="overflow-x-auto h-[680px] ">
+                    <div className="overflow-x-auto">
                         <table className="w-full text-xs">
                             <thead className="sticky top-0 bg-gray-100 text-gray-700">
                                 <tr>
@@ -271,7 +271,6 @@ const CustomerTxnPage = () => {
 
                             <tbody>
                                 {transactions?.map((tx: any) => {
-
                                     return (
                                         <tr
                                             onClick={() => handleSelectedTxn(tx)}
@@ -279,7 +278,8 @@ const CustomerTxnPage = () => {
                                             className="border-t hover:bg-gray-50 transition"
                                         >
                                             <td className="px-4 py-2">
-                                                {format(new Date(tx.date), 'dd/MM/yyyy')} <br />
+                                                {format(new Date(tx.date), 'dd/MM/yyyy')}
+                                                <br />
                                                 {format(new Date(tx.date), 'hh:mm a')}
                                             </td>
 
@@ -288,34 +288,39 @@ const CustomerTxnPage = () => {
                                                     e.stopPropagation();
                                                     handleOpenMemo(tx.description);
                                                 }}
-                                                className="px-4 py-2">
+                                                className="px-4 py-2"
+                                            >
                                                 <p className="font-medium">
                                                     {tx.description || tx.referenceType}
                                                 </p>
+
                                                 <span className="text-xs text-gray-400">
                                                     {tx.referenceType}
                                                 </span>
                                             </td>
 
                                             <td className="px-4 py-2 text-right text-red-600">
-                                                {tx.type === 'debit' ? `৳ ${customRound(tx.amount)}` : "-"}
+                                                {tx.type === 'debit'
+                                                    ? `${customRound(tx.amount)}`
+                                                    : '-'}
                                             </td>
 
                                             <td className="px-4 py-2 text-right text-green-600">
-                                                {tx.type === 'credit' ? `৳ ${customRound(tx.amount)}` : "-"}
+                                                {tx.type === 'credit'
+                                                    ? `${customRound(tx.amount)}`
+                                                    : '-'}
                                             </td>
 
-
-                                            <td className="px-4 py-2 text-right ">
+                                            <td className="px-4 py-2 text-right">
                                                 {customRound(tx?.balance)}
                                             </td>
 
                                             <td className="px-2 py-2">
                                                 <div className="flex items-center justify-center gap-1">
-                                                    {/* WhatsApp Button */}
                                                     <button
                                                         onClick={(e) => {
                                                             e.stopPropagation();
+
                                                             sendSingleTxnWhatsAppMsg(
                                                                 customerData?.phone,
                                                                 tx.type,
@@ -329,11 +334,15 @@ const CustomerTxnPage = () => {
                                                         <FaWhatsappSquare className="text-lg" />
                                                     </button>
 
-                                                    {/* SMS Button */}
                                                     <button
-                                                        onClick={async (e) => {
+                                                        onClick={(e) => {
                                                             e.stopPropagation();
-                                                            setOpenMsgBox({ amount: tx.amount, balance: tx.balance, type: tx.type })
+
+                                                            setOpenMsgBox({
+                                                                amount: tx.amount,
+                                                                balance: tx.balance,
+                                                                type: tx.type
+                                                            });
                                                         }}
                                                         className="group flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-blue-700 transition-all duration-200 hover:bg-blue-600 hover:text-white"
                                                         title="SMS"
@@ -342,30 +351,62 @@ const CustomerTxnPage = () => {
                                                     </button>
                                                 </div>
                                             </td>
-
                                         </tr>
                                     );
                                 })}
                             </tbody>
+
+                            {/* Footer */}
+                            <tfoot>
+                                <tr className="border-t-2 border-gray-300 bg-black">
+                                    <td className="px-4 py-3 font-semibold text-white">
+                                        মোট
+                                    </td>
+
+                                    <td className="px-4 py-3"></td>
+
+                                    <td className="px-4 py-3 text-right font-semibold text-red-600">
+                                        {customRound(totalDebit)}
+                                    </td>
+
+                                    <td className="px-4 py-3 text-right font-semibold text-green-600">
+                                        {customRound(totalCredit)}
+                                    </td>
+
+                                    <td className="px-4 py-3 text-right font-semibold text-gray-700">
+                                        {customRound(
+                                            transactions?.[transactions.length - 1]?.balance || 0
+                                        )}
+                                    </td>
+
+                                    <td className="px-2 py-3"></td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 )}
             </div>
 
             {/* ================= Fixed Total ================= */}
-            <div className="fixed bottom-[60px] left-0 w-full  px-3">
-                <div className="mx-auto  bg-[#e5efd5]   py-4 text-sm px-2">
-                    <div className="grid  grid-cols-3 justify-between">
-                        <span className="col-span-2 text-red-600 font-medium">
+            {/* <div className="fixed my-4 bottom-6 bg-black p-2 left-0 w-full">
+                <div className="mx-auto    text-sm px-2">
+                    <div className="grid  grid-cols-12 justify-between">
+                        <div className="col-span-3 text-red-600 font-medium">
                             মোট
-                        </span>
-                        <div className='col-span-1 flex justify-between'>
-                            <span className="font-semibold text-red-600">  ৳ {totalDebit}</span>
-                            <span className="font-semibold text-green-600"> ৳ {totalCredit}</span>
+                        </div>
+                        <div className="col-span-2 text-red-600 font-medium">
+
+                        </div>
+                        <div className='col-span-4 gap-4 flex justify-between'>
+                            <p className="font-semibold text-red-600">  ৳ {totalDebit}</p>
+                            <p className="font-semibold text-green-600"> ৳ {totalCredit}</p>
+                        </div>
+                        <div className='col-span-3 flex justify-between'>
+
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
 
             <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
                 <EditCustomerTxn onClose={() => setIsOpen(false)} txn={selectedTxn} transactions={transactions} />

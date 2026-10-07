@@ -13,6 +13,16 @@ const brokerApi = baseApi.injectEndpoints({
             ),
             invalidatesTags: ['Broker', 'Brokers', 'BrokerTxn']
         }),
+
+        brokerUpdate: builder.mutation<any, { id: string; formData: FormData }>({
+            query: ({ id, formData }) => ({
+                url: `/broker/update/${id}`,
+                method: "PATCH",
+                body: formData,
+            }),
+            invalidatesTags: ["BrokerTxn", "Brokers", "Broker"],
+        }),
+
         brokerTxnEntry: builder.mutation({
             query: (brokerTxnData) => (
                 {
@@ -117,16 +127,7 @@ const brokerApi = baseApi.injectEndpoints({
             invalidatesTags: ['BrokerTxn', 'Brokers']
         }),
 
-        brokerUpdate: builder.mutation({
-            query: (payload) => (
-                {
-                    url: `/broker/update/${payload.id}`,
-                    method: "PATCH",
-                    body: { name: payload.name, phone: payload.phone }
-                }
-            ),
-            invalidatesTags: ['BrokerTxn', 'Brokers', 'Broker']
-        }),
+
 
         deleteBrokerTxn: builder.mutation({
             query: (id) => (

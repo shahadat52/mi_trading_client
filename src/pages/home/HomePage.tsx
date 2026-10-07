@@ -140,7 +140,7 @@ const HomePage = () => {
 
 
 
-            <div className="mb-5 ">
+            <div className="mb-10">
                 <PartyLedgerPage />
             </div>
         </div>

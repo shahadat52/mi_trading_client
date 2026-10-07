@@ -69,7 +69,23 @@ const couthaApi = baseApi.injectEndpoints({
             providesTags: ["Couthas"],
         }),
 
+        getKuliData: builder.query({
+            query: ({ startDate, toDate }) => {
+                const params = new URLSearchParams();
 
+                if (startDate && toDate) {
+                    params.append("startDate", startDate);
+                    params.append("toDate", toDate);
+                }
+
+                return {
+                    url: `/settlement/field/kuli`,
+                    method: "GET",
+                    params,
+                };
+            },
+            providesTags: ["Couthas"],
+        }),
 
         updateBepariCoutha: builder.mutation({
             query: (updatedData) => (
@@ -103,4 +119,4 @@ const couthaApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useCreateCouthaMutation, useGetAllCouthasOfSupplierQuery, useGetCouthaByIdQuery, useGetCouthaByProductIdQuery, useGetCouthaByInvoiceQuery, useGetFieldWiseDataQuery, useUpdateBepariCouthaMutation, useAddSalesHistoryMutation, useDeleteBepariCouthaMutation } = couthaApi;
+export const { useCreateCouthaMutation, useGetAllCouthasOfSupplierQuery, useGetCouthaByIdQuery, useGetCouthaByProductIdQuery, useGetCouthaByInvoiceQuery, useGetFieldWiseDataQuery, useGetKuliDataQuery, useUpdateBepariCouthaMutation, useAddSalesHistoryMutation, useDeleteBepariCouthaMutation } = couthaApi;

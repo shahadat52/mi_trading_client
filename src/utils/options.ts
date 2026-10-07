@@ -117,12 +117,13 @@ export const STATUS_OPTIONS: {
 
 
 export const employeeTableHeads = [
+  "Picture",
   "Name",
   "phone",
   "Role",
   "Action",
   "Status",
-  "Delete"
+  "Edit/Delete"
 ];
 
 
