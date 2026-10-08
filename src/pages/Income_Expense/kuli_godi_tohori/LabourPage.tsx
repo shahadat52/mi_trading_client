@@ -6,7 +6,8 @@ const LabourPage = ({ startDate, endDate }: any) => {
     const fieldWiseData = items?.data;
     const sales = fieldWiseData?.sales?.reduce((sum: number, item: any) => sum + Number(item.labour || 0), 0)
     const bepariSales = fieldWiseData?.couthas?.reduce((sum: number, item: any) => sum + Number(item.kuli || 0), 0)
-    const { data } = useGetAllTxnQuery({ category: 'kuli', startDate, endDate })
+    const others = fieldWiseData?.others?.reduce((sum: number, item: any) => sum + Number(item.amount || 0), 0)
+    const { data } = useGetAllTxnQuery({ head: 'expense', category: 'kuli', startDate, endDate })
     const transactions = data?.data?.data
     return (
         <div className="grid grid-cols-2 lg:grid-cols-2 gap-4 text-xs mb-15">
@@ -20,7 +21,7 @@ const LabourPage = ({ startDate, endDate }: any) => {
                             <tr className="font-bold">
                                 <td>মোট</td>
                                 <td className="text-right">
-                                    {sales + bepariSales}
+                                    {Number(sales) + Number(bepariSales) + Number(others)}
                                 </td>
                             </tr>
                         </thead>
@@ -33,6 +34,19 @@ const LabourPage = ({ startDate, endDate }: any) => {
                         </thead>
 
                         <tbody>
+                            <tr>
+                                <td colSpan={2} className="font-bold bg-gray-100">
+                                    অন্যান্য
+                                </td>
+                            </tr>
+                            {fieldWiseData?.others?.map((data: any, idx: number) => (
+                                <tr key={data?._id}>
+                                    <td>{(idx + 1)}) {data?.note}</td>
+                                    <td className="text-right">
+                                        {Number(data?.amount).toLocaleString()}
+                                    </td>
+                                </tr>
+                            ))}
                             <tr>
                                 <td colSpan={2} className="font-bold bg-gray-100">
                                     সেলস
@@ -59,21 +73,6 @@ const LabourPage = ({ startDate, endDate }: any) => {
                                     </td>
                                 </tr>
                             ))}
-                            {/* <tr>
-                                <td colSpan={2} className="font-bold bg-gray-100">
-                                    ক্রয়
-                                </td>
-                            </tr>
-                            {fieldWiseData?.purchases?.map((data: any, idx: number) => (
-                                <tr key={data?._id}>
-                                    <td>{(idx + 1)}) {data?.invoice}</td>
-                                    <td className="text-right">
-                                        {Number(data?.labour).toLocaleString()}
-                                    </td>
-                                </tr>
-                            ))}
- */}
-
                         </tbody>
                     </table>
                 </div>

@@ -36,12 +36,12 @@ const authApi = baseApi.injectEndpoints({
             providesTags: ['Customer']
         }),
 
-        updateCustomerData: builder.mutation({
-            query: (updatedData) => (
+        updateCustomerData: builder.mutation<any, { id: string; formData: FormData }>({
+            query: ({ id, formData }) => (
                 {
-                    url: `/customer/${updatedData.id}`,
+                    url: `/customer/${id}`,
                     method: 'PATCH',
-                    body: updatedData.data
+                    body: formData
                 }),
             invalidatesTags: ['CustomerTxn', 'Customer']
         }),

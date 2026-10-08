@@ -47,7 +47,7 @@ const SupplierTxnActivity = ({ startDate, endDate }: any) => {
                             <h1 className='font-bold text-xl uppercase' >Supplier Txn Reports</h1>
                             <p >From {format(startDate, 'dd-MM-yyyy')} To {format(endDate, 'dd-MM-yyyy')}</p>
                         </div>
-                        <table className="w-full text-sm">
+                        <table className="w-full text-xs">
                             <thead className="sticky top-0 bg-gray-100 text-gray-700">
                                 <tr>
                                     <th className="px-4 py-2 text-left">Supplier</th>
@@ -73,8 +73,7 @@ const SupplierTxnActivity = ({ startDate, endDate }: any) => {
                                                 {idx + 1})  {tx?.party?.name}
                                             </td>
                                             <td className="px-4 py-1">
-                                                {format(new Date(tx.date), 'dd/MM/yyyy')} <br />
-                                                {format(new Date(tx.date), 'hh:mm a')}
+                                                {format(new Date(tx.date), 'dd/MM/yyyy')} ({format(new Date(tx.date), 'hh:mm a')})
                                             </td>
 
                                             <td

@@ -40,7 +40,6 @@ const EditBroker = ({ onClose, id }: any) => {
                 onClose?.();
             }
         } catch (error) {
-            console.error(error);
         }
     };
 

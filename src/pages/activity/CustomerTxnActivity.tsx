@@ -47,15 +47,15 @@ const CustomerTxnActivity = ({ startDate, endDate }: any) => {
                             <h1 className='font-bold text-xl uppercase' >Customer Txn Reports</h1>
                             <p >From {format(startDate, 'dd-MM-yyyy')} To {format(endDate, 'dd-MM-yyyy')}</p>
                         </div>
-                        <table className="w-full text-sm">
+                        <table className="w-full text-xs">
                             <thead className="sticky top-0 bg-gray-100 text-gray-700">
                                 <tr>
-                                    <th className="px-4 py-2 text-left">Cusotmer</th>
-                                    <th className="px-4 py-2 text-left">Date</th>
-                                    <th className="px-4 py-2 text-left">Description</th>
-                                    <th className="px-4 py-2 text-right">Debit</th>
-                                    <th className="px-4 py-2 text-right">Credit</th>
-                                    <th className="px-4 py-2 text-right"></th>
+                                    <th className="px-4 py-1 text-left">Cusotmer</th>
+                                    <th className="px-4 py-1 text-left">Date</th>
+                                    <th className="px-4 py-1 text-left">Description</th>
+                                    <th className="px-4 py-1 text-right">Debit</th>
+                                    <th className="px-4 py-1 text-right">Credit</th>
+                                    <th className="px-4 py-1 text-right"></th>
                                 </tr>
                             </thead>
 
@@ -68,18 +68,18 @@ const CustomerTxnActivity = ({ startDate, endDate }: any) => {
                                             key={tx._id}
                                             className="border-t hover:bg-gray-50 transition"
                                         >
-                                            <td className="px-4 py-2">
+                                            <td className="px-4 py-1">
 
                                                 {idx + 1}) {tx?.party?.name}
                                             </td>
-                                            <td className="px-4 py-2">
-                                                {format(new Date(tx.date), 'dd/MM/yyyy')} <br />
-                                                {format(new Date(tx.date), 'hh:mm a')}
+                                            <td className="px-4 py-1">
+                                                {format(new Date(tx.date), 'dd/MM/yyyy')} ({format(new Date(tx.date), 'hh:mm a')})
+
                                             </td>
 
                                             <td
 
-                                                className="px-4 py-2">
+                                                className="px-4 py-1">
                                                 <p className="font-medium">
                                                     {tx.description || tx.referenceType}
                                                 </p>
@@ -88,11 +88,11 @@ const CustomerTxnActivity = ({ startDate, endDate }: any) => {
                                                 </span>
                                             </td>
 
-                                            <td className="px-4 py-2 text-right text-red-700">
+                                            <td className="px-4 py-1 text-right text-red-700">
                                                 {tx.type === 'debit' ? `৳ ${tx.amount}` : "-"}
                                             </td>
 
-                                            <td className="px-4 py-2 text-right text-green-700">
+                                            <td className="px-4 py-1 text-right text-green-700">
                                                 {tx.type === 'credit' ? `৳ ${tx.amount}` : "-"}
                                             </td>
                                         </tr>

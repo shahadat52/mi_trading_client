@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useDeliveryStatusUpdateMutation, useGetDeliveriesQuery } from "../../redux/features/delivery/deliveryApi";
 import type { TDelivery } from "../../interfaces/delivery";
 import DeliveryTableBody from "./DeliveyTableBody";
@@ -12,6 +12,7 @@ import { useAppSelector } from "../../redux/hook";
 import { format } from "date-fns";
 import { useNavigate } from "react-router";
 import { IoMdCloudUpload } from "react-icons/io";
+import { useReactToPrint } from "react-to-print";
 
 const DeliveryPage: React.FC = () => {
     const today = format(new Date(), "yyyy-MM-dd");
@@ -25,6 +26,12 @@ const DeliveryPage: React.FC = () => {
     const { data, isLoading, isError } = useGetDeliveriesQuery({
         startDate,
         endDate,
+    });
+
+    const printRef = useRef<HTMLDivElement>(null);
+    const handlePrint = useReactToPrint({
+        contentRef: printRef,
+        documentTitle: "Delivery-Report",
     });
 
     const openDeliverySlip = (sale: any) => setSelectedDelivery(sale);
@@ -79,10 +86,12 @@ const DeliveryPage: React.FC = () => {
 
     const deliveries = data?.data;
 
+
+
     return (
         <div className="p-4 sm:p-6 mb-14">
             {/* Filters */}
-            <div className="flex flex-col lg:flex-row gap-4 mb-4">
+            <div className="flex flex-col justify-between items-center lg:flex-row gap-4 mb-4">
 
                 <div className="flex flex-col sm:flex-row gap-2 w-full lg:w-auto">
                     <div>
@@ -104,10 +113,22 @@ const DeliveryPage: React.FC = () => {
                         />
                     </div>
                 </div>
+                <div className=' flex justify-end mb-1'>
+                    <button
+                        onClick={handlePrint}
+                        className="my-1 px-2 text-sm py-1 rounded bg-blue-600 text-white no-print"
+                    >
+                        Print Report
+                    </button>
+                </div>
             </div>
 
             {/* Table for desktop */}
-            <div className="hidden md:block overflow-x-auto ">
+            <div ref={printRef} className="hidden print:block md:block overflow-x-auto ">
+                <div className="text-center">
+                    <h1 className='font-bold text-xl uppercase' >Delivery Reports</h1>
+                    <p >From {format(startDate, 'dd-MM-yyyy')} To {format(endDate, 'dd-MM-yyyy')}</p>
+                </div>
                 <table className="min-w-full border border-gray-300 text-sm">
                     <thead className="bg-gray-100">
                         <tr>

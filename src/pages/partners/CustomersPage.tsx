@@ -11,6 +11,7 @@ import { useNavigate } from "react-router";
 import { FiSearch } from "react-icons/fi";
 import { LIMIT_OPTIONS } from "../../utils/options";
 import { useDebounce } from "../../utils/useDebounce";
+import ImagePreviewButton from "../../components/ImagePreviewButton";
 
 const CustomersPage = () => {
     const navigate = useNavigate()
@@ -88,15 +89,25 @@ const CustomersPage = () => {
                             customers?.map((customer: any, idx: number) => (
                                 <div key={customer?._id}>
                                     <div className="border-b-1 flex justify-between items-center p-2 " >
-                                        <div className="font-semiBold ">
-                                            <p className="">{idx + 1}) {" "} {customer?.name}</p>
-                                            <p className="">{customer?.phone}</p>
+                                        <div className="flex items-center">
+
+                                            <div className="font-semiBold ">
+                                                <p className="">{idx + 1}) {" "} {customer?.name}</p>
+                                                <p className="">{customer?.phone}</p>
+                                            </div>
                                         </div>
-                                        <div className="flex gap-4">
+                                        <div className="flex items-center gap-4">
+
                                             <button
                                                 onClick={() => { setId(customer._id); setIsOpen(true) }}
                                                 className="text-green-600 text-2xl font-bold" ><GrUpdate />
                                             </button>
+                                            <div className="">
+                                                <ImagePreviewButton
+                                                    imageUrl={customer?.imageurl}
+                                                    buttonText="View"
+                                                />
+                                            </div>
                                             <div>
                                                 <button onClick={() => handleDelete(customer?._id)} className="text-4xl  text-red-600 ">
                                                     <MdDelete />
