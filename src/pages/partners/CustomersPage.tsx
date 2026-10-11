@@ -12,6 +12,7 @@ import { FiSearch } from "react-icons/fi";
 import { LIMIT_OPTIONS } from "../../utils/options";
 import { useDebounce } from "../../utils/useDebounce";
 import ImagePreviewButton from "../../components/ImagePreviewButton";
+import { BsPersonCircle } from "react-icons/bs";
 
 const CustomersPage = () => {
     const navigate = useNavigate()
@@ -89,7 +90,20 @@ const CustomersPage = () => {
                             customers?.map((customer: any, idx: number) => (
                                 <div key={customer?._id}>
                                     <div className="border-b-1 flex justify-between items-center p-2 " >
+
+
                                         <div className="flex items-center">
+                                            <p className="mr-3 h-[40px] w-[40px] overflow-hidden rounded-full">
+                                                {customer?.imageurl ? (
+                                                    <img
+                                                        src={customer?.imageurl}
+                                                        alt={customer?.name || "customer"}
+                                                        className="h-full w-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <BsPersonCircle className="h-full w-full text-blue-700" />
+                                                )}
+                                            </p>
 
                                             <div className="font-semiBold ">
                                                 <p className="">{idx + 1}) {" "} {customer?.name}</p>

@@ -61,7 +61,7 @@ const AttendancesPage = () => {
     });
     return (
         <div className="mb-16">
-            <div className='flex justify-end mb-1'>
+            <div className='flex justify-end mb-3'>
                 <button
                     onClick={handlePrint}
                     className="my-1 min-w-40 mb-[-23px] px-2 py-1 rounded bg-blue-600 text-white no-print"

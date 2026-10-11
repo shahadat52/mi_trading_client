@@ -10,6 +10,7 @@ import EmployeeTable from './EmployeeTable';
 import { useMemo, useState } from 'react';
 import Modal from '../../components/Modal';
 import EditEmployee from './employees/EditEmployee';
+import { BsPersonCircle } from 'react-icons/bs';
 
 const HRpage = () => {
     const [selectedEmployee, setSelectedEmployee] = useState(null)
@@ -191,11 +192,17 @@ const HRpage = () => {
                             <div className="flex items-center justify-between mb-4">
                                 <div onClick={() => navigate(`/attendance/${user._id}`)} className="flex items-center gap-3">
                                     {/* Avatar */}
-                                    <div className="avatar placeholder">
-                                        <div className="w-12 rounded-full">
-                                            <img src='/man.png' alt={user.name} />
-                                        </div>
-                                    </div>
+                                    <p className="mr-3 h-[45px] w-[45px] overflow-hidden rounded-full">
+                                        {user?.imageurl ? (
+                                            <img
+                                                src={user?.imageurl}
+                                                alt={user?.name || "user"}
+                                                className="h-full w-full object-cover"
+                                            />
+                                        ) : (
+                                            <BsPersonCircle className="h-full w-full text-blue-700" />
+                                        )}
+                                    </p>
 
                                     {/* Name & Meta */}
                                     <div className={`text-base font-semibold ${user?.status === 'blocked' ? 'text-red-600' : 'text-gray-800'}`}>

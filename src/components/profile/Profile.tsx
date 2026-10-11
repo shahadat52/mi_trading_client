@@ -5,12 +5,12 @@ const Profile = ({ person }: { person: any }) => {
     return (
         <div className="mx-auto rounded m-1 max-w-1/2 grid   justify-between items-center gap-2  border  border-white/20  bg-green-50 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.25)] py-3  ">
 
-            <div className='col-span-2  text-start px-2'>
+            <div className='col-span-2 flex flex-col items-center  text-start px-2'>
                 {
                     person?.imageurl && <img
                         src={person?.imageurl}
                         alt={person?.name || "Broker"}
-                        className="h-30 w-30 object-cover"
+                        className="h-30 w-30 rounded-full object-cover"
                     />
                 }
                 <h2 className="text-center text-sm   font-semibold">{person?.name}</h2>

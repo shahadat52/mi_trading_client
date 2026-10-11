@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { useUpdateRoleMutation, useUpdateStatusMutation } from "../../../redux/features/auth/authApi";
 import { useNavigate } from "react-router";
 
-export type TUser = { _id: string, name: string, phone: string, email: string, role: string, status: string }
+export type TUser = { _id: string, name: string, phone: string, email: string, role: string, status: string, imageurl?: string }
 const UserTable = (user: TUser) => {
     const navigate = useNavigate()
     const [updateRole] = useUpdateRoleMutation()

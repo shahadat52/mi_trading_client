@@ -14,20 +14,6 @@ const CashInPage = ({ transactions }: any) => {
                     </tr>
                 </thead>
                 <tbody className="">
-                    {
-                        transactions?.map((txn: any, idx: number) =>
-                            <tr key={idx} className="hover:bg-gray-50 text-xs lg:text-sm  md:text-sm">
-                                <td className="py-3 px-4 border-b">
-                                    {format(new Date(txn?.date), "hh:mm a")}
-                                </td>
-                                <td className="py-3 px-4 border-b">{txn?.source} <span className="text-xs">({txn?.note})</span></td>
-                                <td className="py-3 px-4 border-b text-green-600">Cash In</td>
-                                <td className="py-3 px-4 border-b text-right text-green-600"> {txn?.amount}</td>
-                            </tr>
-                        )
-
-
-                    }
 
                     {
                         transactions?.map((txn: any, idx: number) =>
