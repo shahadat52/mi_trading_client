@@ -58,6 +58,7 @@ import SuppliersDueReports from "../pages/home/Report/SuppliersDueReports";
 import DevelopersPage from "../pages/developers/DevelopersPage";
 import IFICChequePrint from "../pages/cheque/IFICChequePrint";
 import AdminRoute from "./AdminRoute";
+import ChequePaymentsPage from "../pages/chequePayments/ChequePaymentsPage";
 
 export const router = createBrowserRouter([
     {
@@ -128,6 +129,10 @@ export const router = createBrowserRouter([
             {
                 path: "both/sales/:id",
                 element: <PrivateRoute><BothSalesPage /></PrivateRoute>
+            },
+            {
+                path: "chequePayments",
+                element: <PrivateRoute><ChequePaymentsPage /></PrivateRoute>
             },
             {
                 path: "commission-sales",
@@ -248,10 +253,7 @@ export const router = createBrowserRouter([
                 path: "/kuli_godi_tohori",
                 element: <PrivateRoute><KuliGodiTohoriPage /></PrivateRoute>
             },
-            {
-                path: "developers",
-                element: <DevelopersPage />,
-            },
+
 
 
         ],
@@ -313,6 +315,10 @@ export const router = createBrowserRouter([
     {
         path: "*",
         element: <ErrorBoundary />,
+    },
+    {
+        path: "developers",
+        element: <DevelopersPage />,
     },
 ]);
 

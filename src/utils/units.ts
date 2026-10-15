@@ -4,7 +4,7 @@ export const units = [
     { label: "মণ", value: "মণ" },
     { label: "বস্তা", value: "বস্তা" },
     { label: "লিটার", value: "লিটার" },
-    { label: "কাটুন", value: "কাটুন" },
+    { label: "কার্টুন", value: "কার্টুন" },
     { label: "টন", value: "টন" }
 ];
 

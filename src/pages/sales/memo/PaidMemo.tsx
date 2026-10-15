@@ -42,7 +42,7 @@ const PaidMemo = ({ sale, onClose }: any) => {
                         </div>
                         <div className='grid grid-cols-2 text-start my-1' >
                             <p>নাম: {sale?.customer?.name}</p>
-                            <p>ব্রোকার: {sale?.broker === '' ? '' : `${sale?.broker}`}</p>
+                            {sale?.broker && <p>ব্রোকার: {sale?.broker}</p>}
                         </div>
                         <div className="grid grid-cols-2 text-start">
                             <div >ঠিকানা:{sale?.customer?.address}।</div>

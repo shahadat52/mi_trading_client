@@ -149,14 +149,8 @@ const SideBar = () => {
                     </button>
                 </div>
 
-                {/* =================================================
-                    Navigation
-                ================================================== */}
                 <div className="h-[calc(100vh-4rem)] overflow-y-auto px-3 py-4 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
                     <nav className="space-y-1">
-                        {/* =================================================
-                            Home
-                        ================================================== */}
                         <NavLink
                             to="/"
                             end
@@ -236,10 +230,45 @@ const SideBar = () => {
                                 Cheque
                             </span>
                         </NavLink>
+                        <NavLink
+                            to="/chequePayments"
+                            end
+                            onClick={closeMobileDrawer}
+                            title="Cheque Payments"
+                            className={({ isActive }) =>
+                                `
+                                group
+                                flex
+                                items-center
+                                rounded-md
+                                py-2.5
+                                text-sm
+                                font-medium
+                                transition-all
+                                duration-200
 
-                        {/* =================================================
-                            Menu Items
-                        ================================================== */}
+                                ${isActive
+                                    ? "bg-blue-600 text-white shadow-md shadow-blue-900/20"
+                                    : "text-slate-300 hover:bg-white/10 hover:text-white"
+                                }
+                                `
+                            }
+                        >
+                            <Banknote
+                                size={19}
+                                className="shrink-0 mr-4"
+                            />
+
+                            <span
+                                className={`
+                                    whitespace-nowrap
+                                    transition-all
+                                    duration-200
+                                `}
+                            >
+                                Cheque Payments
+                            </span>
+                        </NavLink>
                         {menuItems.map((menu: any) => {
                             const activeParent = isActiveParent(
                                 menu.subItems
@@ -257,9 +286,7 @@ const SideBar = () => {
                                     key={menu.name}
                                     className="relative"
                                 >
-                                    {/* ================================
-                                        Parent Menu
-                                    ================================= */}
+
                                     <button
                                         type="button"
                                         onClick={() => {
@@ -331,9 +358,7 @@ const SideBar = () => {
                                         )}
                                     </button>
 
-                                    {/* ====================================
-                                        Submenu
-                                    ===================================== */}
+
                                     {hasSubItems &&
                                         menuCollapsed &&
                                         <div className="ml-5 mt-1 space-y-1 border-l border-white/10 pl-3">
@@ -374,9 +399,7 @@ const SideBar = () => {
                             );
                         })}
 
-                        {/* =================================================
-                            Developer
-                        ================================================== */}
+
                         <NavLink
                             to="/developers"
                             onClick={closeMobileDrawer}
