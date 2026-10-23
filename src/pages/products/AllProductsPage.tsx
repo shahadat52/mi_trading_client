@@ -13,7 +13,7 @@ const AllProductsPage = () => {
         <div className='mb-12'>
             <input
                 type="text"
-                placeholder="নাম/SKU/সাপ্লাইয়ার দিয়ে খুঁজুন..."
+                placeholder="পন্যের নাম/SKU দিয়ে খুঁজুন..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="mt-2 ml-2  w-[95%] rounded-2xl border border-slate-400 bg-white py-3 pl-2 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"

@@ -10,6 +10,7 @@ import { useGetCustomerDueQuery } from '../../../redux/features/customer/custome
 import { toCurrency } from 'to-words/bn-BD';
 import { format } from 'date-fns';
 import mi_logo from "../../../assets/icons/mi_logo.png";
+import { customRound } from '../../../utils/customRound';
 
 
 const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
@@ -111,7 +112,14 @@ const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
 
                     {/* Table Section */}
                     <table className="w-full   border-collapse border-y border-gray-400">
-
+                        <thead>
+                            <tr className="bg-blue-900 text-white text-xs">
+                                <th className="border-r border-gray-200 p-1 w-12">সংখ্যা</th>
+                                <th className="border-r border-gray-200 p-1">বিবরণ ও পরিমাণ</th>
+                                <th className="border-r border-gray-200 p-1 w-20">দর</th>
+                                <th className="p-1 w-24">মোট</th>
+                            </tr>
+                        </thead>
                         <tbody className="relative">
                             <tr>
                                 <td>
@@ -132,9 +140,9 @@ const UnpaidMemo = ({ sale: saleData, copyLabel, onClose }: any) => {
                                         {p?.unit === "কেজি" ? "kg" : p.unit}
                                     </td>
                                     <td className="p-[2px] text-center border-r border-gray-300">
-                                        {p?.salePrice}
+                                        {customRound(p?.salePrice)}
                                     </td>
-                                    <td className="p-[2px] text-center">{p?.salePrice * p?.quantity}</td>
+                                    <td className="p-[2px] text-center">{customRound(Number(p?.salePrice * p?.quantity))}</td>
                                 </tr>
                             ))}
 

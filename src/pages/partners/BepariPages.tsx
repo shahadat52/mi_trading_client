@@ -11,6 +11,8 @@ import { useNavigate } from "react-router";
 import { FiSearch } from "react-icons/fi";
 import { LIMIT_OPTIONS } from "../../utils/options";
 import { useDebounce } from "../../utils/useDebounce";
+import { BsPersonCircle } from "react-icons/bs";
+import ImagePreviewButton from "../../components/ImagePreviewButton";
 
 const BepariPage = () => {
     const navigate = useNavigate()
@@ -87,14 +89,41 @@ const BepariPage = () => {
                                 <div key={supplier?._id} >
                                     <div className="border-b-1 flex justify-between items-center p-2" >
                                         <div className="font-semiBold ">
-                                            <p className="">{idx + 1}) {" "} {supplier?.name}</p>
-                                            <p className="">{supplier?.phone}</p>
+                                            <div className="flex items-center">
+                                                <div className="flex gap-1 items-center">
+                                                    <p className="text-[20px] mr-3 text-blue-600">{idx + 1}</p>
+                                                    <p className="mr-3 h-[40px] w-[40px] overflow-hidden rounded-full">
+                                                        {supplier?.imageurl ? (
+                                                            <img
+                                                                src={supplier?.imageurl}
+                                                                alt={supplier?.name || "supplier"}
+                                                                className="h-full w-full object-cover"
+                                                            />
+                                                        ) : (
+                                                            <BsPersonCircle className="h-full w-full text-blue-700" />
+                                                        )}
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <p className="text-[18px] font-semibold">{supplier?.name}</p>
+                                                    <p className="">{supplier?.phone}</p>
+
+                                                </div>
+                                            </div>
+
                                         </div>
-                                        <div className="flex gap-4">
+                                        <div className="flex items-center gap-4">
+
                                             <button
                                                 onClick={() => { setId(supplier._id); setIsOpen(true) }}
                                                 className="text-green-600 text-2xl font-bold" ><GrUpdate />
                                             </button>
+                                            <div className="">
+                                                <ImagePreviewButton
+                                                    imageUrl={supplier?.imageurl}
+                                                    buttonText="View"
+                                                />
+                                            </div>
                                             <div>
                                                 <button onClick={() => handleDelete(supplier?._id)} className="text-4xl  text-red-600 ">
                                                     <MdDelete />

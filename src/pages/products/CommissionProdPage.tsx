@@ -13,7 +13,7 @@ const CommissionProdPage = ({ searchTerm }: { searchTerm: string }) => {
     return (
         <div className="p-2">
             <div className="flex justify-between items-center mb-2 ">
-                <p>Normal products</p>
+                <p>Commission products</p>
                 <div className='mr-10'>
                     <select
                         value={limit}

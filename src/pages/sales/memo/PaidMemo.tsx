@@ -4,6 +4,7 @@ import { IoLocationSharp } from "react-icons/io5";
 import { toCurrency } from 'to-words/bn-BD';
 import { format } from "date-fns";
 import mi_logo from "../../../assets/icons/mi_logo.png";
+import { customRound } from "../../../utils/customRound";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const PaidMemo = ({ sale, onClose }: any) => {
@@ -83,9 +84,9 @@ const PaidMemo = ({ sale, onClose }: any) => {
                                         {p?.unit === "কেজি" ? "kg" : p.unit}
                                     </td>
                                     <td className="p-[2px] text-center border-r border-gray-300">
-                                        {p?.salePrice}
+                                        {customRound(p?.salePrice)}
                                     </td>
-                                    <td className="p-[2px] text-center">{p?.salePrice * p?.quantity}</td>
+                                    <td className="p-[2px] text-center">{customRound(Number(p?.salePrice * p?.quantity))}</td>
                                 </tr>
                             ))}
 

@@ -17,6 +17,15 @@ export const getMenuItems = (role?: string) => {
 
     const menuItems = [
         {
+            name: "Cheque",
+            icon: <BiSolidPurchaseTag size={20} />,
+            subItems: [
+                { name: "Cheque Received", path: "/chequeReceived" },
+                { name: "Cheque Payment", path: "/chequePayments" },
+                { name: "Cheque Print", path: "/cheque" },
+            ],
+        },
+        {
             name: "Purchase Management",
             icon: <BiSolidPurchaseTag size={20} />,
             subItems: [

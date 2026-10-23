@@ -5,7 +5,7 @@ export const LIMIT_OPTIONS = [
   { label: '20', value: 20 },
   { label: '50', value: 50 },
   { label: '100', value: 100 },
-  { label: 'All', value: 1000 },
+  { label: 'All', value: 10000 },
 ];
 
 export const Bank_OPTIONS = [

@@ -26,6 +26,10 @@ const AttendancesPage = () => {
         useGetAttendanceByIdQuery({ id, year, month });
 
     const employeeData = data?.data || [];
+    const present = employeeData?.attendances?.filter((day: any) => (day.status === 'present'))?.length;
+    const absent = employeeData?.attendances?.filter((day: any) => (day.status === 'absent'))?.length;
+    const paid_leave = employeeData?.attendances?.filter((day: any) => (day.status === 'paid_leave'))?.length;
+
 
     const days = getDaysInMonth(new Date(year, month - 1));
 
@@ -109,21 +113,30 @@ const AttendancesPage = () => {
                         </p>
                     </div>
 
-                    <p className="text-slate-500 text-sm mt-1 flex flex-col">
-                        <span>
-                            Basic: {employeeData?.basicSalary}
-                        </span>
-                        <span>Payable Salary: {salary}</span>
-                        <span>Total Score: {score}</span>
-                    </p>
+                    <div className="flex gap-8">
+                        <div className="text-slate-500 text-sm mt-1 flex flex-col">
+                            <span>
+                                Basic: {employeeData?.basicSalary}
+                            </span>
+                            <span>Payable Salary: {salary}</span>
+                            <span>Total Score: {score}</span>
+                        </div>
+                        <div className="text-slate-500 text-sm mt-1 flex flex-col border-l pl-8">
+                            <span>
+                                Present: {present}
+                            </span>
+                            <span className="text-red-600">Absent: {absent}</span>
+                            <span>Paid Leave: {paid_leave}</span>
+                        </div>
+                    </div>
                 </div>
 
                 {/* GRID */}
-                <div className="grid grid-cols-7 gap-1 text-center">
+                <div className="grid grid-cols-8 gap-1 text-center">
                     {isLoading ? (
                         <Loading />
                     ) : isError ? (
-                        <div className="py-10 text-center text-sm text-gray-700 col-span-7">
+                        <div className="py-10 text-center text-sm text-gray-700 col-span-8">
                             কোন তথ্য নেই
                         </div>
                     ) : (
@@ -131,7 +144,7 @@ const AttendancesPage = () => {
                             <div
                                 key={date._id}
                                 onClick={() => handleStatus(date)}
-                                className="border border-slate-200 rounded-xl p-3 hover:border-blue-500 hover:bg-blue-50 cursor-pointer transition-all"
+                                className="border border-slate-200 rounded-xl p-2 hover:border-blue-500 hover:bg-blue-50 cursor-pointer transition-all"
                             >
                                 <p className="text-xs text-slate-500">
                                     {date.status === "present"
@@ -163,6 +176,7 @@ const AttendancesPage = () => {
 
                             </div>
                         ))
+
                     )}
                 </div>
             </div>

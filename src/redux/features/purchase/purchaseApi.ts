@@ -70,16 +70,28 @@ const purchaseApi = baseApi.injectEndpoints({
             invalidatesTags: ['Purchases', 'Payable', 'Products']
         }),
 
-        updatePurchase: builder.mutation({
-            query: (payload) => (
+        updatePurchase: builder.mutation<any, { id: string; formData: FormData }>({
+            query: ({ id, formData }) => (
                 {
-                    url: `/purchase/update/${payload.id}`,
+                    url: `/purchase/update/${id}`,
                     method: "PATCH",
-                    body: payload.data
+                    body: formData
 
                 }
             ),
             invalidatesTags: ['Purchases', 'Products', 'RegularPurchase', 'Payable']
+        }),
+
+        updatePurchaseNote: builder.mutation({
+            query: (note) => (
+                {
+                    url: "/purchase/note",
+                    method: "PATCH",
+                    body: { note }
+
+                }
+            ),
+            invalidatesTags: ['PayableCheque']
         }),
 
         getPurchaseReports: builder.query({
@@ -144,4 +156,5 @@ const purchaseApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { usePurchaseEntryMutation, useGetCommissionPurchasesQuery, useGetRegualarPurchaseByIdQuery, useGetAllPurchasesQuery, useGetCommissionPurchaseByIdQuery, useDeletePurchaseMutation, useUpdatePurchaseMutation, useGetPurchaseReportsQuery, useGetProductWiseSalesReportsQuery, useGetPurchaseDataByInvoiceQuery, useAddProfitMutation, useGetTotalProfitNormalProductQuery } = purchaseApi
+export const { usePurchaseEntryMutation, useGetCommissionPurchasesQuery, useGetRegualarPurchaseByIdQuery, useGetAllPurchasesQuery, useGetCommissionPurchaseByIdQuery, useDeletePurchaseMutation, useUpdatePurchaseMutation,
+    useUpdatePurchaseNoteMutation, useGetPurchaseReportsQuery, useGetProductWiseSalesReportsQuery, useGetPurchaseDataByInvoiceQuery, useAddProfitMutation, useGetTotalProfitNormalProductQuery } = purchaseApi

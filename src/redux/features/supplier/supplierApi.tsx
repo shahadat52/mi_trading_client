@@ -56,12 +56,12 @@ const supplierApi = baseApi.injectEndpoints({
                 }),
             providesTags: ['Supplier']
         }),
-        updateSupplierData: builder.mutation({
-            query: (updatedData) => (
+        updateSupplierData: builder.mutation<any, { id: string; formData: FormData }>({
+            query: ({ id, formData }) => (
                 {
-                    url: `/suppliers/${updatedData.id}`,
+                    url: `/suppliers/${id}`,
                     method: 'PATCH',
-                    body: updatedData.data
+                    body: formData
                 }),
             invalidatesTags: ['Supplier']
         }),

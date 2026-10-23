@@ -6,23 +6,40 @@ import { toast } from "react-toastify";
 import { useGetSupplierByIdQuery, useUpdateSupplierDataMutation } from "../../redux/features/supplier/supplierApi";
 import SelectField from "../../components/form/SelectField";
 import { SUPPLIER_TYPE_OPTIONS } from "../../utils/options";
+import ImagePicker from "../../components/ImagePicker";
+import { compressImage } from "../../utils/compressImage";
 
 const SupplierDataUpdateEntry = ({ onClose, id }: { onClose: () => void, id: string }) => {
+    const [imageFile, setImageFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false)
     const { control, handleSubmit, reset } = useForm();
     const [updateSupplierData] = useUpdateSupplierDataMutation();
     const { data } = useGetSupplierByIdQuery(id)
     const supplier = data?.data;
 
+    const handleComprssImage = async (file: any) => {
+        if (!file) return;
+        const compressedFile = await compressImage(file);
+        setImageFile(compressedFile);
+    }
     const handleUpdate = async (data: FieldValues) => {
-        const payload = {
-            data,
-            id
-        };
 
         setLoading(true)
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
         try {
+            const formData = new FormData();
+            formData.append("name", data.name);
+            formData.append("phone", data.phone);
+            formData.append("type", data.type);
+            formData.append("address", data.address);
+
+            if (imageFile) {
+                formData.append("image", imageFile);
+            }
+            const payload = {
+                id,
+                formData
+            };
             const result = await updateSupplierData(payload);
             if (result?.data?.success) {
                 toast.update(toastId, { render: result.data.message, type: "success", isLoading: false, autoClose: 1500, closeOnClick: true });
@@ -48,7 +65,6 @@ const SupplierDataUpdateEntry = ({ onClose, id }: { onClose: () => void, id: str
             reset({
                 name: supplier.name,
                 phone: supplier.phone,
-                category: supplier.category,
                 address: supplier.address,
                 type: supplier.type,
             });
@@ -85,6 +101,27 @@ const SupplierDataUpdateEntry = ({ onClose, id }: { onClose: () => void, id: str
                     rules={{ required: "Supplier type is required" }}
                     options={SUPPLIER_TYPE_OPTIONS}
                 />
+                <div className="mt-1">
+                    <ImagePicker
+                        onFileSelect={(file) => {
+                            handleComprssImage(file);
+                        }}
+                    />
+
+                    {imageFile && (
+                        <p className="text-xs text-green-600 mt-1">
+                            {imageFile.name}
+                        </p>
+                    )}
+
+                    {imageFile && (
+                        <img
+                            src={URL.createObjectURL(imageFile)}
+                            alt="preview"
+                            className="w-10 h-15 object-cover rounded mt-2"
+                        />
+                    )}
+                </div>
 
                 <button
                     type="submit"

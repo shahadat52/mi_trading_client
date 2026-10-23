@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router";
-import { Banknote, Home } from "lucide-react";
+import { Home } from "lucide-react";
 import {
     MdCancel,
     MdExpandLess,
@@ -191,7 +191,7 @@ const SideBar = () => {
                             </span>
                         </NavLink>
 
-                        <NavLink
+                        {/* <NavLink
                             to="/cheque"
                             end
                             onClick={closeMobileDrawer}
@@ -229,8 +229,8 @@ const SideBar = () => {
                             >
                                 Cheque
                             </span>
-                        </NavLink>
-                        <NavLink
+                        </NavLink> */}
+                        {/* <NavLink
                             to="/chequePayments"
                             end
                             onClick={closeMobileDrawer}
@@ -268,7 +268,7 @@ const SideBar = () => {
                             >
                                 Cheque Payments
                             </span>
-                        </NavLink>
+                        </NavLink> */}
                         {menuItems.map((menu: any) => {
                             const activeParent = isActiveParent(
                                 menu.subItems

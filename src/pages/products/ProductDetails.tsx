@@ -9,12 +9,22 @@ import report_icon from "../../assets/icons/report_icon.png"
 import edit_icon from "../../assets/icons/edit_icon.png"
 import { setTotalCost } from "../../redux/features/product/productSlice";
 import ImagePreviewButton from "../../components/ImagePreviewButton";
+import ImagePicker from "../../components/ImagePicker";
+import { compressImage } from "../../utils/compressImage";
 
 const ProductDetails = () => {
+    const [imageFile, setImageFile] = useState<File | null>(null);
     const { id } = useParams<{ id: string }>();
     const [deleteProduct] = useDeletePurchaseMutation(undefined)
     const navigate = useNavigate();
     const dispatch = useAppDispatch()
+
+    const handleComprssImage = async (file: any) => {
+        if (!file) return;
+        const compressedFile = await compressImage(file);
+        setImageFile(compressedFile);
+    }
+
 
     const {
         data,
@@ -31,7 +41,6 @@ const ProductDetails = () => {
     const [formData, setFormData] = useState<TPurchaseFormData | null>(null);
 
     const purchase = data?.data;
-
     const formatDateForInput = (date?: string) => {
         if (!date) return "";
         return new Date(date).toISOString().split("T")[0];
@@ -93,6 +102,7 @@ const ProductDetails = () => {
 
     const handleSave = async () => {
         if (!id || !formData) return;
+
         const payload = {
             product: formData.product,
             sku: formData.sku,
@@ -100,7 +110,7 @@ const ProductDetails = () => {
             lot: formData.lot,
             purchaseDate: formData.purchaseDate,
             purchasePrice: Number(formData.purchasePrice || 0),
-            purchaseQty: Number(formData?.purchaseQty || 0),
+            purchaseQty: Number(formData.purchaseQty || 0),
             quantity: Number(formData.quantity || 0),
             purchaseBosta: Number(formData.purchaseBosta || 0),
             bosta: Number(formData.bosta || 0),
@@ -111,11 +121,31 @@ const ProductDetails = () => {
             note: formData.note,
             unit: formData.unit,
         };
+
         try {
-            await updatePurchase({ id, data: payload }).unwrap();
+            const formData = new FormData();
+
+            // Payload-এর সব ডাটা FormData-তে append
+            Object.entries(payload).forEach(([key, value]) => {
+                if (value !== undefined && value !== null) {
+                    formData.append(key, String(value));
+                }
+            });
+
+            // Image থাকলে append
+            if (imageFile) {
+                formData.append("image", imageFile);
+            }
+
+            await updatePurchase({
+                id,
+                formData,
+            }).unwrap();
+
             await refetch();
             setIsEditing(false);
         } catch (error) {
+            console.error("Purchase update failed:");
         }
     };
 
@@ -482,7 +512,7 @@ const ProductDetails = () => {
                         </div>
 
                         <div className="bg-white border border-gray-200 rounded-2xl p-4 shadow-sm">
-                            <h2 className="text-lg font-bold text-gray-800 mb-5">Notes</h2>
+                            <h2 className="text-lg font-bold text-gray-800 mb-2">Notes</h2>
                             <DetailField
                                 label="Note"
                                 name="note"
@@ -491,6 +521,32 @@ const ProductDetails = () => {
                                 onChange={handleChange}
                                 textarea
                             />
+                        </div>
+
+                        <div>
+                            <p>Purchase By: {purchase?.purchaseBy?.name}</p>
+                        </div>
+
+                        <div>
+                            <ImagePicker
+                                onFileSelect={(file) => {
+                                    handleComprssImage(file);
+                                }}
+                            />
+
+                            {imageFile && (
+                                <p className="text-xs text-green-600 mt-1">
+                                    {imageFile.name}
+                                </p>
+                            )}
+
+                            {imageFile && (
+                                <img
+                                    src={URL.createObjectURL(imageFile)}
+                                    alt="preview"
+                                    className="w-10 h-15 object-cover rounded mt-2"
+                                />
+                            )}
                         </div>
                     </div>
                 </div>

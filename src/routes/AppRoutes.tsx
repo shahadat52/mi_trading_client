@@ -59,6 +59,7 @@ import DevelopersPage from "../pages/developers/DevelopersPage";
 import IFICChequePrint from "../pages/cheque/IFICChequePrint";
 import AdminRoute from "./AdminRoute";
 import ChequePaymentsPage from "../pages/chequePayments/ChequePaymentsPage";
+import ChequeReceivedPage from "../pages/chequePayments/ChequeReceivedPage";
 
 export const router = createBrowserRouter([
     {
@@ -133,6 +134,10 @@ export const router = createBrowserRouter([
             {
                 path: "chequePayments",
                 element: <PrivateRoute><ChequePaymentsPage /></PrivateRoute>
+            },
+            {
+                path: "chequeReceived",
+                element: <PrivateRoute><ChequeReceivedPage /></PrivateRoute>
             },
             {
                 path: "commission-sales",

@@ -77,6 +77,18 @@ const authApi = baseApi.injectEndpoints({
             invalidatesTags: ['Products', 'ProductDetails']
         }),
 
+        updateSalesComments: builder.mutation({
+            query: (comments) => (
+                {
+                    url: "/bothSales/comments/update",
+                    method: "PATCH",
+                    body: { comments }
+
+                }
+            ),
+            invalidatesTags: ['ReceivableCheque']
+        }),
+
         deleteProduct: builder.mutation({
             query: (id) => (
                 {
@@ -90,4 +102,4 @@ const authApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useAddProductMutation, useGetAllProductsQuery, useGetProductsStockQuery, useGetProductDetailsQuery, useGetAllProductNamesQuery, useUpdateProductMutation, useDeleteProductMutation } = authApi
+export const { useAddProductMutation, useGetAllProductsQuery, useGetProductsStockQuery, useGetProductDetailsQuery, useGetAllProductNamesQuery, useUpdateProductMutation, useUpdateSalesCommentsMutation, useDeleteProductMutation } = authApi

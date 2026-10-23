@@ -1,123 +1,254 @@
+import { useState } from "react";
 import { useGetKuliDataQuery } from "../../../redux/features/coutha/couthaApi";
 import { useGetAllTxnQuery } from "../../../redux/features/inExTxn/inExTxnApi";
+import { LIMIT_OPTIONS } from "../../../utils/options";
 
 const LabourPage = ({ startDate, endDate }: any) => {
-    const { data: items } = useGetKuliDataQuery({ startDate, toDate: endDate });
+    const [limit, setLimit] = useState(10000)
+
+
+
+    const { data: items } = useGetKuliDataQuery({
+        startDate,
+        toDate: endDate,
+    });
+
     const fieldWiseData = items?.data;
-    const sales = fieldWiseData?.sales?.reduce((sum: number, item: any) => sum + Number(item.labour || 0), 0)
-    const bepariSales = fieldWiseData?.couthas?.reduce((sum: number, item: any) => sum + Number(item.kuli || 0), 0)
-    const others = fieldWiseData?.others?.reduce((sum: number, item: any) => sum + Number(item.amount || 0), 0)
-    const { data } = useGetAllTxnQuery({ head: 'expense', category: 'kuli', startDate, endDate })
-    const transactions = data?.data?.data
+
+    const sales =
+        fieldWiseData?.sales?.reduce(
+            (sum: number, item: any) =>
+                sum + Number(item?.labour || 0),
+            0
+        ) ?? 0;
+
+    const bepariSales =
+        fieldWiseData?.couthas?.reduce(
+            (sum: number, item: any) =>
+                sum + Number(item?.kuli || 0),
+            0
+        ) ?? 0;
+
+    const others =
+        fieldWiseData?.others?.reduce(
+            (sum: number, item: any) =>
+                sum + Number(item?.amount || 0),
+            0
+        ) ?? 0;
+
+    // কুলি খরচ
+    const { data } = useGetAllTxnQuery({
+        head: "expense",
+        category: "kuli",
+        startDate,
+        endDate,
+    });
+
+    const transactions = data?.data?.data ?? [];
+
+    const totalTxn = transactions?.reduce(
+        (sum: number, txn: any) =>
+            sum + Number(txn?.amount ?? txn?.amout ?? 0),
+        0
+    );
+    // টেলা গাড়ি ভাড়া
+    const { data: thelagari } = useGetAllTxnQuery({
+        category: "টেলা গাড়ি ভাড়া",
+        limit,
+        startDate,
+        endDate,
+    });
+
+    const thelaTxn = thelagari?.data?.data ?? [];
+
+    const totalThela = thelaTxn.reduce(
+        (sum: number, txn: any) =>
+            sum + Number(txn?.amount ?? txn?.amout ?? 0),
+        0
+    );
+
+    // ভ্যান গাড়ি ভাড়া
+    const { data: vangari } = useGetAllTxnQuery({
+        category: "ভ্যান গাড়ি ভাড়া",
+        limit,
+        startDate,
+        endDate,
+    });
+
+    const vanTxn = vangari?.data?.data ?? [];
+
+    const totalVan = vanTxn.reduce(
+        (sum: number, txn: any) =>
+            sum + Number(txn?.amount ?? txn?.amout ?? 0),
+        0
+    );
+
+    // লেবার ঘর ভাড়া
+    const { data: houseRent } = useGetAllTxnQuery({
+        category: "লেবার ঘর ভাড়া",
+        limit,
+        startDate,
+        endDate,
+    });
+
+    const houseRentData = houseRent?.data?.data ?? [];
+
+    const totalHouseRent = houseRentData.reduce(
+        (sum: number, txn: any) =>
+            sum + Number(txn?.amount ?? txn?.amout ?? 0),
+        0
+    );
+
+
     return (
-        <div className="grid grid-cols-2 lg:grid-cols-2 gap-4 text-xs mb-15">
-            {/* সকল পাওনা */}
-            <div>
-                <h3 className="font-semibold mb-2">সকল পাওনা</h3>
+        <div>
+            <select
+                id="limit"
+                value={limit}
+                onChange={(e) => setLimit(Number(e.target.value))}
+                className="select select-bordered select-sm w-24 my-2"
+            >
+                {LIMIT_OPTIONS.map(({ value, label }: any) => (
+                    <option key={value} value={value}>
+                        {label}
+                    </option>
+                ))}
+            </select>
 
-                <div className="overflow-x-auto">
-                    <table className="table table-xs table-zebra w-full border border-gray-300">
-                        <thead>
-                            <tr className="font-bold">
-                                <td>মোট</td>
-                                <td className="text-right">
-                                    {Number(sales) + Number(bepariSales) + Number(others)}
-                                </td>
-                            </tr>
-                        </thead>
+            <div className="grid grid-cols-2 lg:grid-cols-2 gap-4 text-xs mb-15">
+                {/* সকল পাওনা */}
+                <div>
+                    <h3 className="font-semibold mb-2">সকল পাওনা</h3>
 
-                        <thead className="bg-gray-200">
-                            <tr className="text-xs">
-                                <th>ইনভয়েস</th>
-                                <th className="text-right">পরিমান</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <td colSpan={2} className="font-bold bg-gray-100">
-                                    অন্যান্য
-                                </td>
-                            </tr>
-                            {fieldWiseData?.others?.map((data: any, idx: number) => (
-                                <tr key={data?._id}>
-                                    <td>{(idx + 1)}) {data?.note}</td>
+                    <div className="overflow-x-auto">
+                        <table className="table table-xs table-zebra w-full border border-gray-300">
+                            <thead>
+                                <tr className="font-bold">
+                                    <td>মোট</td>
                                     <td className="text-right">
-                                        {Number(data?.amount).toLocaleString()}
+                                        {Number(sales) + Number(bepariSales) + Number(others)}
                                     </td>
                                 </tr>
-                            ))}
-                            <tr>
-                                <td colSpan={2} className="font-bold bg-gray-100">
-                                    সেলস
-                                </td>
-                            </tr>
-                            {fieldWiseData?.sales?.map((data: any, idx: number) => (
-                                <tr key={data?._id}>
-                                    <td>{(idx + 1)}) {data?.invoice}</td>
-                                    <td className="text-right">
-                                        {Number(data?.labour).toLocaleString()}
+                            </thead>
+
+                            <thead className="bg-gray-200">
+                                <tr className="text-xs">
+                                    <th>নাম</th>
+                                    <th>ইনভয়েস</th>
+                                    <th className="text-right">পরিমান</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td colSpan={3} className="font-bold text-center text-[14px] bg-red-600 text-white">
+                                        অন্যান্য
                                     </td>
                                 </tr>
-                            ))}
-                            <tr>
-                                <td colSpan={2} className="font-bold bg-gray-100">
-                                    বেপারী
-                                </td>
-                            </tr>
-                            {fieldWiseData?.couthas?.map((data: any, idx: number) => (
-                                <tr key={data?._id}>
-                                    <td>{(idx + 1)}) {data?.invoice}</td>
-                                    <td className="text-right">
-                                        {Number(data?.kuli).toLocaleString()}
+                                {fieldWiseData?.others?.map((data: any, idx: number) => (
+                                    <tr key={data?._id}>
+                                        <td>{(idx + 1)}) {data?.note}</td>
+                                        <td></td>
+                                        <td className="text-right">
+                                            {Number(data?.amount).toLocaleString()}
+                                        </td>
+                                    </tr>
+                                ))}
+                                <tr>
+                                    <td colSpan={3} className="font-bold text-center text-[14px] bg-red-600 text-white">
+                                        সেলস
                                     </td>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                                {fieldWiseData?.sales?.map((data: any, idx: number) => (
+                                    <tr key={data?._id}>
+                                        <td>{(idx + 1)}) {data?.customer?.name}</td>
+                                        <td> {data?.invoice}</td>
+                                        <td className="text-right">
+                                            {Number(data?.labour).toLocaleString()}
+                                        </td>
+                                    </tr>
+                                ))}
+                                <tr>
+                                    <td colSpan={3} className="font-bold text-center text-[14px] bg-red-600 text-white">
+                                        বেপারী
+                                    </td>
+                                </tr>
+                                {fieldWiseData?.couthas?.map((data: any, idx: number) => (
+                                    <tr key={data?._id}>
+                                        <td>{(idx + 1)}) {data?.supplier?.name}</td>
+                                        <td> {data?.invoice}</td>
+                                        <td className="text-right">
+                                            {Number(data?.kuli).toLocaleString()}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
 
-            {/* সকল পরিশোধ */}
-            <div>
-                <h3 className="font-semibold mb-2">সকল পরিশোধ</h3>
+                {/* সকল পরিশোধ */}
+                <div>
+                    <h3 className="font-semibold mb-2">সকল পরিশোধ</h3>
 
-                <div className="overflow-x-auto">
-                    <table className="table table-xs table-zebra w-full border border-gray-300">
-                        <thead>
-                            <tr className="">
-                                <td>মোট</td>
-                                <td className="text-right">
-                                    {transactions
-                                        ?.reduce(
-                                            (sum: number, item: any) =>
-                                                sum + Number(item.amount || 0),
-                                            0
-                                        )
-                                        .toLocaleString()}
-                                </td>
-                            </tr>
-                        </thead>
-
-                        <thead className="bg-gray-200">
-                            <tr>
-                                <th>ইনভয়েস</th>
-                                <th className="text-right">পরিমান</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {transactions?.map((data: any) => (
-                                <tr key={data._id}>
-                                    <td>{data.note}</td>
+                    <div className="overflow-x-auto">
+                        <table className="table table-xs table-zebra w-full border border-gray-300">
+                            <thead>
+                                <tr className="">
+                                    <td>মোট</td>
                                     <td className="text-right">
-                                        {Number(data.amount).toLocaleString()}
+                                        {Number(totalTxn) + Number(totalHouseRent) + Number(totalVan) + Number(totalThela)}
                                     </td>
                                 </tr>
-                            ))}
-                        </tbody>
+                            </thead>
 
-                    </table>
+                            <thead className="bg-gray-200">
+                                <tr>
+                                    <th>ইনভয়েস</th>
+                                    <th className="text-right">পরিমান</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {houseRentData?.map((data: any) => (
+                                    <tr key={data._id}>
+                                        <td>{data.category}</td>
+                                        <td className="text-right">
+                                            {Number(data.amount).toLocaleString()}
+                                        </td>
+                                    </tr>
+                                ))}
+                                {transactions?.map((data: any) => (
+                                    <tr key={data._id}>
+                                        <td>{data.note}</td>
+                                        <td className="text-right">
+                                            {Number(data.amount).toLocaleString()}
+                                        </td>
+                                    </tr>
+                                ))}
+
+                                {thelaTxn?.map((data: any) => (
+                                    <tr key={data._id}>
+                                        <td>{data.category}</td>
+                                        <td className="text-right">
+                                            {Number(data.amount).toLocaleString()}
+                                        </td>
+                                    </tr>
+                                ))}
+                                {vanTxn?.map((data: any) => (
+                                    <tr key={data._id}>
+                                        <td>{data.category}</td>
+                                        <td className="text-right">
+                                            {Number(data.amount).toLocaleString()}
+                                        </td>
+                                    </tr>
+                                ))}
+
+
+                            </tbody>
+
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

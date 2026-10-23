@@ -66,7 +66,7 @@ const BrokerTxnTable = ({ id }: any) => {
 
                                     return (
                                         <tr
-                                            onClick={() => handleSelectedTxn(tx._id)}
+                                            onClick={() => handleSelectedTxn(tx)}
                                             key={tx._id}
                                             className="border-t hover:bg-gray-50 transition"
                                         >
@@ -118,7 +118,7 @@ const BrokerTxnTable = ({ id }: any) => {
             </div>
 
             <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-                <EditTxnForm onClose={() => setIsOpen(false)} id={selectedTxn} updateMutation={updateTxn} />
+                <EditTxnForm onClose={() => setIsOpen(false)} txn={selectedTxn} updateMutation={updateTxn} />
             </Modal>
         </div>
     );

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import InputField from "../../components/form/InputFields";
 import SelectField from "../../components/form/SelectField";
@@ -8,15 +8,18 @@ import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
 import { useDeleteBrokerTxnMutation } from "../../redux/features/broker/brokerApi";
 
 type Props = {
-    id: string;
+    txn: any;
     onClose: () => void;
     updateMutation: any;
 };
 
-const EditTxnForm = ({ id, onClose, updateMutation }: Props) => {
+const EditTxnForm = ({ txn, onClose, updateMutation }: Props) => {
     const [loading, setLoading] = useState(false);
-
-    const { handleSubmit, control, reset } = useForm();
+    const { handleSubmit, control, reset } = useForm<any>({
+        defaultValues: {
+            description: txn?.description
+        }
+    });
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         setLoading(true);
@@ -24,7 +27,7 @@ const EditTxnForm = ({ id, onClose, updateMutation }: Props) => {
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
 
         try {
-            const result = await updateMutation({ data, id });
+            const result = await updateMutation({ data, txn });
             if (result?.data?.success) {
                 toast.update(toastId, {
                     render: result.data.message,
@@ -82,6 +85,15 @@ const EditTxnForm = ({ id, onClose, updateMutation }: Props) => {
 
     };
 
+
+    useEffect(() => {
+        reset({
+            type: txn?.type,
+            amount: txn?.amount,
+            description: txn?.description,
+        });
+    }, [txn]);
+
     return (
         <div className="m-4">
             <form
@@ -117,7 +129,7 @@ const EditTxnForm = ({ id, onClose, updateMutation }: Props) => {
                     control={control}
                 />
                 <div className="flex justify-between items-center">
-                    <button onClick={() => handleDelete(id)} type='button' className="btn btn-info  mt-2">ডিলিট করুন </button>
+                    <button onClick={() => handleDelete(txn)} type='button' className="btn btn-info  mt-2">ডিলিট করুন </button>
 
                     <button
                         type="submit"
