@@ -147,18 +147,17 @@ const SupplierInvoicePage: React.FC<Props> = ({ invoiceData, loading }) => {
             </div>
 
             {/* Comments */}
-            {note && (
-                <div className="mt-4  bg-gray-50 rounded-md border">
-                    <h2 className="font-semibold mb-2 p-2">Note</h2>
-                    <input
-                        type="text"
-                        defaultValue={updateNote}
-                        onChange={(e) => setUpdateNote(e.target.value)}
-                        placeholder="আপনার মন্তব্য লিখুন..."
-                        className="w-full  rounded-b-md border border-gray-300 bg-white px-4 py-3 text-sm text-gray-800 shadow-sm outline-none transition-all duration-200 placeholder:text-gray-400 hover:border-gray-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-                    />
-                </div>
-            )}
+
+            <div className="mt-4  bg-gray-50 rounded-md border">
+                <h2 className="font-semibold mb-2 p-2">Note</h2>
+                <input
+                    type="text"
+                    defaultValue={updateNote}
+                    onChange={(e) => setUpdateNote(e.target.value)}
+                    placeholder="আপনার মন্তব্য লিখুন..."
+                    className="w-full  rounded-b-md border border-gray-300 bg-white px-4 py-3 text-sm text-gray-800 shadow-sm outline-none transition-all duration-200 placeholder:text-gray-400 hover:border-gray-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                />
+            </div>
             <div className="flex justify-end mt-2">
                 <button
                     className="btn btn-primary"
