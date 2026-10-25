@@ -25,9 +25,9 @@ const EditTxnForm = ({ txn, onClose, updateMutation }: Props) => {
         setLoading(true);
 
         const toastId = toast.loading("Processing...", { autoClose: 2000 });
-
+        const id = txn?._id
         try {
-            const result = await updateMutation({ data, txn });
+            const result = await updateMutation({ data, id });
             if (result?.data?.success) {
                 toast.update(toastId, {
                     render: result.data.message,
@@ -129,7 +129,7 @@ const EditTxnForm = ({ txn, onClose, updateMutation }: Props) => {
                     control={control}
                 />
                 <div className="flex justify-between items-center">
-                    <button onClick={() => handleDelete(txn)} type='button' className="btn btn-info  mt-2">ডিলিট করুন </button>
+                    <button onClick={() => handleDelete(txn?._id)} type='button' className="btn btn-info  mt-2">ডিলিট করুন </button>
 
                     <button
                         type="submit"

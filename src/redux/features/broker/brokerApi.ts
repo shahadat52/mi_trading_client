@@ -107,11 +107,11 @@ const brokerApi = baseApi.injectEndpoints({
         }),
 
         updateBrokerTxn: builder.mutation({
-            query: (payload) => (
+            query: ({ data, id }) => (
                 {
-                    url: `/brokerTxn/${payload.id}`,
+                    url: `/brokerTxn/${id}`,
                     method: "PATCH",
-                    body: payload.data,
+                    body: data,
                 }
             ),
             invalidatesTags: ['BrokerTxn', 'Broker']

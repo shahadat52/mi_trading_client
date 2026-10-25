@@ -13,7 +13,7 @@ const MemoPreviewPage = () => {
     const sales = data?.data;
     const { data: purchaseData, isLoading: purchaseLoading } = useGetPurchaseDataByInvoiceQuery(id)
     const { data: coutha, isLoading: couthaLoading } = useGetCouthaByInvoiceQuery(id)
-    const purchases = purchaseData?.data
+    const purchases = purchaseData?.data;
     const couthaData = coutha?.data
     if (!sales && !purchases && !couthaData) {
         return (
@@ -22,6 +22,8 @@ const MemoPreviewPage = () => {
             </div>
         );
     }
+
+
 
     return (
         <div className="mb-16">

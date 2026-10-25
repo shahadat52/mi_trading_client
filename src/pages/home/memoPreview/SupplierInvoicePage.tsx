@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { DateTime } from '../../../utils/formatDateTime';
 import ImagePreviewButton from '../../../components/ImagePreviewButton';
+import { useUpdatePurchaseNoteByInvoiceMutation } from '../../../redux/features/purchase/purchaseApi';
+import Loading from '../../../components/Loading';
 
 
 
@@ -43,6 +45,7 @@ type Props = {
 };
 
 const SupplierInvoicePage: React.FC<Props> = ({ invoiceData, loading }) => {
+
     if (loading) {
         return (
             <div className="flex justify-center items-center h-screen">
@@ -60,9 +63,21 @@ const SupplierInvoicePage: React.FC<Props> = ({ invoiceData, loading }) => {
     }
 
     const { invoice, purchaseBosta, product, imageurl, commission, lot, note, purchasePrice, purchaseQty, supplier, purchaseDate, unit, othersField, paidAmount, others, labour, } = invoiceData;
+    const [updateNote, setUpdateNote] = useState(note);
 
+    const [updatePurchseNoteByInvoice, { isLoading }] =
+        useUpdatePurchaseNoteByInvoiceMutation();
 
-
+    const handlePurchaseNoteUpdate = async (updateNote: string) => {
+        try {
+            await updatePurchseNoteByInvoice({
+                invoice,
+                updateNote,
+            }).unwrap();
+        } catch (error) {
+            console.error("Purchase note update failed:", error);
+        }
+    };
     return (
         <div className="max-w-4xl  mx-auto p-6 bg-white shadow-md rounded-md mt-6">
             {/* Header */}
@@ -133,11 +148,30 @@ const SupplierInvoicePage: React.FC<Props> = ({ invoiceData, loading }) => {
 
             {/* Comments */}
             {note && (
-                <div className="mt-4 p-4 bg-gray-50 rounded-md border">
-                    <h2 className="font-semibold mb-2">Note</h2>
-                    <p>{note}</p>
+                <div className="mt-4  bg-gray-50 rounded-md border">
+                    <h2 className="font-semibold mb-2 p-2">Note</h2>
+                    <input
+                        type="text"
+                        defaultValue={updateNote}
+                        onChange={(e) => setUpdateNote(e.target.value)}
+                        placeholder="আপনার মন্তব্য লিখুন..."
+                        className="w-full  rounded-b-md border border-gray-300 bg-white px-4 py-3 text-sm text-gray-800 shadow-sm outline-none transition-all duration-200 placeholder:text-gray-400 hover:border-gray-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    />
                 </div>
             )}
+            <div className="flex justify-end mt-2">
+                <button
+                    className="btn btn-primary"
+                    onClick={() => handlePurchaseNoteUpdate(updateNote)}
+                    disabled={isLoading}
+                >
+                    {isLoading ? (
+                        <Loading />
+                    ) : (
+                        "Update"
+                    )}
+                </button>
+            </div>
         </div>
     );
 };

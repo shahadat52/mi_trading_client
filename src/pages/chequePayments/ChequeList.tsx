@@ -116,10 +116,10 @@ const ChequeList: FC<ChequeListProps> = ({ head, cheque, index, }) => {
             <td className="border-b border-gray-100 px-4 py-1">
                 {
                     head === 'receivable' ? <div onClick={() => handleUpdateComments(comments)} className="text-green-600 flex justify-center  font-bold text-xl min-w-0 pointer-coarse: ">
-                        <FaCheckSquare /> S
+                        <FaCheckSquare />
                     </div> :
                         <div onClick={() => handleUpdateNote(comments)} className="text-green-600 flex justify-center  font-bold text-xl min-w-0 pointer-coarse: ">
-                            <FaCheckSquare /> P
+                            <FaCheckSquare />
                         </div>
                 }
             </td>

@@ -13,7 +13,6 @@ const ChequePaymentsPage = () => {
     } = useGetAllPayableChequeQuery(undefined);
 
     const cheques: Cheque[] = data?.data ?? [];
-
     return (
         <section className="w-full space-y-5">
             {/* Page Header */}

@@ -94,6 +94,18 @@ const purchaseApi = baseApi.injectEndpoints({
             invalidatesTags: ['PayableCheque']
         }),
 
+        updatePurchaseNoteByInvoice: builder.mutation({
+            query: ({ invoice, updateNote }) => (
+                {
+                    url: `/purchase/noteUpdate/?invoice=${invoice}`,
+                    method: "PATCH",
+                    body: { updateNote }
+
+                }
+            ),
+            invalidatesTags: ['PayableCheque']
+        }),
+
         getPurchaseReports: builder.query({
             query: (query) => (
                 {
@@ -157,4 +169,4 @@ const purchaseApi = baseApi.injectEndpoints({
 });
 
 export const { usePurchaseEntryMutation, useGetCommissionPurchasesQuery, useGetRegualarPurchaseByIdQuery, useGetAllPurchasesQuery, useGetCommissionPurchaseByIdQuery, useDeletePurchaseMutation, useUpdatePurchaseMutation,
-    useUpdatePurchaseNoteMutation, useGetPurchaseReportsQuery, useGetProductWiseSalesReportsQuery, useGetPurchaseDataByInvoiceQuery, useAddProfitMutation, useGetTotalProfitNormalProductQuery } = purchaseApi
+    useUpdatePurchaseNoteMutation, useUpdatePurchaseNoteByInvoiceMutation, useGetPurchaseReportsQuery, useGetProductWiseSalesReportsQuery, useGetPurchaseDataByInvoiceQuery, useAddProfitMutation, useGetTotalProfitNormalProductQuery } = purchaseApi
