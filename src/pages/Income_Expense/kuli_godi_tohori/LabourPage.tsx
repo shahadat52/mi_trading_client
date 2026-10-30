@@ -53,6 +53,7 @@ const LabourPage = ({ startDate, endDate }: any) => {
     );
     // টেলা গাড়ি ভাড়া
     const { data: thelagari } = useGetAllTxnQuery({
+        head: "income",
         category: "টেলা গাড়ি ভাড়া",
         limit,
         startDate,
@@ -69,6 +70,7 @@ const LabourPage = ({ startDate, endDate }: any) => {
 
     // ভ্যান গাড়ি ভাড়া
     const { data: vangari } = useGetAllTxnQuery({
+        head: "income",
         category: "ভ্যান গাড়ি ভাড়া",
         limit,
         startDate,
@@ -85,6 +87,7 @@ const LabourPage = ({ startDate, endDate }: any) => {
 
     // লেবার ঘর ভাড়া
     const { data: houseRent } = useGetAllTxnQuery({
+        head: "income",
         category: "লেবার ঘর ভাড়া",
         limit,
         startDate,
