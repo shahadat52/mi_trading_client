@@ -93,6 +93,7 @@ const ProductWiseSalesReports = () => {
                             <thead className="bg-gray-100 text-gray-700 uppercase text-xs tracking-wide">
                                 <tr>
                                     <th className="px-2 py-3 border-b">SL</th>
+                                    <th className="px-2 py-3 border-b">Invoice</th>
                                     <th className="px-2 py-3 border-b">Qty</th>
                                     <th className="px-2 py-3 border-b">Bosta</th>
                                     <th className="px-2 py-3 border-b">Price</th>
@@ -106,6 +107,7 @@ const ProductWiseSalesReports = () => {
                                         className="hover:bg-gray-50 transition-colors duration-150"
                                     >
                                         <td className="px-2 py-3 font-medium text-gray-700">{index + 1}</td>
+                                        <td className="px-2 py-3 font-medium text-gray-700">{item?.invoice}</td>
                                         <td className="px-2 py-3 text-gray-700">{item.quantity}</td>
                                         <td className="px-2 py-3 text-gray-700">{item.bosta}</td>
                                         <td className="px-2 py-3 text-gray-700">৳ {item.salePrice.toLocaleString()}</td>

@@ -56,7 +56,7 @@ const ChequeList: FC<ChequeListProps> = ({ head, cheque, index, }) => {
             givenDate.getMonth() === month - 1 &&
             givenDate.getDate() === day;
 
-        isFutureDate = isValidDate && givenDate < today;
+        isFutureDate = isValidDate && givenDate <= today;
     }
     const [updateNote] = useUpdatePurchaseNoteMutation()
     const handleUpdateNote = async (data: any) => {
