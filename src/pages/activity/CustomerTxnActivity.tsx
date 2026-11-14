@@ -51,7 +51,7 @@ const CustomerTxnActivity = ({ startDate, endDate }: any) => {
                             <thead className="sticky top-0 bg-gray-100 text-gray-700">
                                 <tr>
                                     <th className="px-4 py-1 text-left">Cusotmer</th>
-                                    <th className="px-4 py-1 text-left">Date</th>
+                                    <th className="px-1 py-1 text-left">Date</th>
                                     <th className="px-4 py-1 text-left">Description</th>
                                     <th className="px-4 py-1 text-right">Debit</th>
                                     <th className="px-4 py-1 text-right">Credit</th>
@@ -72,7 +72,7 @@ const CustomerTxnActivity = ({ startDate, endDate }: any) => {
 
                                                 {idx + 1}) {tx?.party?.name}
                                             </td>
-                                            <td className="px-4 py-1">
+                                            <td className="px-1 py-1">
                                                 {format(new Date(tx.date), 'dd/MM/yyyy')} ({format(new Date(tx.date), 'hh:mm a')})
 
                                             </td>

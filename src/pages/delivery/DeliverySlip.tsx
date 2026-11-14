@@ -16,6 +16,7 @@ const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sal
         0
     );
 
+
     const minRows = 8;
     const emptyRows = Math.max(minRows - products.length, 0);
 
@@ -101,8 +102,8 @@ const DeliverySlip: React.FC<{ sale: any | null; onClose: () => void }> = ({ sal
                                                 {ite?.name}
                                             </td>
 
-                                            <td className="border  text-center py-1">
-                                                {ite?.bosta} বস্তা
+                                            <td className="border text-[9px]  text-start p-1 ">
+                                                {ite?.bosta} বস্তা ({ite?.quantity} {ite?.unit})
                                             </td>
                                         </tr>
                                     ))

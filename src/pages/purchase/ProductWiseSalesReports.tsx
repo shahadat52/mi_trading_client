@@ -8,6 +8,8 @@ import AddCommissionProductProfit from "./AddCommissionProductProfitModal";
 import { useState } from "react";
 import AddNormalProductProfit from "./AddNormalProductProfitModal";
 import { customRound } from "../../utils/customRound";
+import { useRef } from 'react';
+import { useReactToPrint } from 'react-to-print'
 
 const ProductWiseSalesReports = () => {
     const { id } = useParams();
@@ -20,6 +22,12 @@ const ProductWiseSalesReports = () => {
     const { data, isLoading, error } = useGetProductWiseSalesReportsQuery(id); // Normal product sales history
     const reports = data?.data;
 
+
+    const printRef = useRef<HTMLDivElement>(null);
+    const handlePrint = useReactToPrint({
+        contentRef: printRef,
+        documentTitle: "Bank-Transactions-Report",
+    });
 
     const bepariCouthaData = bepariCoutha?.data;
     const productName = data?.data?.product
@@ -52,7 +60,7 @@ const ProductWiseSalesReports = () => {
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-6 border-b pb-4">
                 <div>
                     <h2 className="uppercase text-xl md:text-2xl font-bold text-gray-800">
-                        Sales Reports
+                        Sales Reportsss
                     </h2>
                     {productName && (
                         <p className="text-sm text-gray-500 mt-1">
@@ -77,6 +85,15 @@ const ProductWiseSalesReports = () => {
                 </div>
             </div>
 
+            <div className='flex justify-end mb-1'>
+                <button
+                    onClick={handlePrint}
+                    className="my-1 min-w-40  px-2 py-1 rounded bg-blue-600 text-white no-print"
+                >
+                    Print Report
+                </button>
+            </div>
+
             {/* Empty State */}
             {error || products <= 0 ? (
                 <div className="text-center py-16 border border-dashed border-gray-300 rounded-xl bg-gray-50">
@@ -88,7 +105,8 @@ const ProductWiseSalesReports = () => {
             ) : (
                 <>
                     {/* Table */}
-                    <div className="overflow-x-auto rounded-xl border border-gray-200">
+                    <div ref={printRef} className="overflow-x-auto rounded-xl border border-gray-200">
+                        <h1 className="p-1 text-center">{productName} এর সেলস রিপোর্টস</h1>
                         <table className="min-w-full text-sm text-left">
                             <thead className="bg-gray-100 text-gray-700 uppercase text-xs tracking-wide">
                                 <tr>

@@ -8,7 +8,6 @@ import { IoMdCloudUpload } from 'react-icons/io';
 import { useNavigate } from 'react-router';
 
 const DeliveryTableBody = ({ d, openDeliverySlip, }: { d: TDelivery; openDeliverySlip: any; }) => {
-
     const navigate = useNavigate()
     const user = useAppSelector((state: any) => state?.auth?.auth?.user);
     const [updateDeliveryStatus] = useDeliveryStatusUpdateMutation();

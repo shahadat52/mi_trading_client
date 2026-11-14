@@ -55,11 +55,11 @@ const OthersActivity = ({ startDate, endDate }: any) => {
                         </div>
                         <div className="overflow-x-auto ">
 
-                            <table className="w-full text-sm">
+                            <table className="w-full text-xs">
                                 <thead className="sticky top-0 bg-gray-100 text-gray-700">
                                     <tr>
                                         <th className="px-4 py-2 text-left">Sector</th>
-                                        <th className="px-4 py-2 text-left">Date</th>
+                                        <th className="px-1 py-2 text-left">Date</th>
                                         <th className="px-4 py-2 text-left">Description</th>
                                         <th className="px-4 py-2 text-right">Debit</th>
                                         <th className="px-4 py-2 text-right">Credit</th>
@@ -80,9 +80,8 @@ const OthersActivity = ({ startDate, endDate }: any) => {
 
                                                     {idx + 1}) {tx?.category}
                                                 </td>
-                                                <td className="px-4 py-2">
-                                                    {format(new Date(tx?.createdAt), 'dd/MM/yyyy')} <br />
-                                                    {format(new Date(tx?.createdAt), 'hh:mm a')}
+                                                <td className="px-1 py-2">
+                                                    {format(new Date(tx.createdAt), 'dd/MM/yyyy')} ({format(new Date(tx.createdAt), 'hh:mm a')})
                                                 </td>
 
                                                 <td

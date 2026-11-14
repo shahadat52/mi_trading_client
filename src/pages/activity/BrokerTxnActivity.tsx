@@ -56,11 +56,11 @@ const BrokerTxnActivity = ({ startDate, endDate, limit }: any) => {
                         </div>
                         <div className="overflow-x-auto ">
 
-                            <table className="w-full text-sm">
+                            <table className="w-full text-xs">
                                 <thead className="sticky top-0 bg-gray-100 text-gray-700">
                                     <tr>
                                         <th className="px-2 py-1 text-left">Broker</th>
-                                        <th className="px-2 py-1 text-left">Date</th>
+                                        <th className="px-1 py-1 text-left">Date</th>
                                         <th className="px-2 py-1 text-left">Description</th>
                                         <th className="px-2 py-1 text-right">Debit</th>
                                         <th className="px-2 py-1 text-right">Credit</th>
@@ -81,9 +81,8 @@ const BrokerTxnActivity = ({ startDate, endDate, limit }: any) => {
 
                                                     {idx + 1}) {tx?.broker?.name}
                                                 </td>
-                                                <td className="px-2 py-1">
-                                                    {format(new Date(tx.createdAt), 'dd/MM/yyyy')} <br />
-                                                    {format(new Date(tx.createdAt), 'hh:mm a')}
+                                                <td className="px-1 py-1">
+                                                    {format(new Date(tx.createdAt), 'dd/MM/yyyy')} ({format(new Date(tx.createdAt), 'hh:mm a')})
                                                 </td>
 
                                                 <td

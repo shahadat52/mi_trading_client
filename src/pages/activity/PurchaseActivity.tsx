@@ -52,7 +52,7 @@ const PurchaseActivity = ({ startDate, endDate }: any) => {
                                     <th className="px-4 py-2 text-left">Product</th>
                                     <th className="px-4 py-2 text-left">Invoice</th>
                                     <th className="px-4 py-2 text-left">Lot</th>
-                                    <th className="px-4 py-2 text-left">Date</th>
+                                    <th className="px-1 py-2 text-left">Date</th>
                                     <th className="px-4 py-2 text-left">Description</th>
                                     <th className="px-4 py-2 text-right">Quantity</th>
                                     <th className="px-4 py-2 text-right">Price</th>
@@ -78,7 +78,7 @@ const PurchaseActivity = ({ startDate, endDate }: any) => {
                                             <td className="px-2 border-[1px] py-1">
                                                 {tx?.lot}
                                             </td>
-                                            <td className="px-2 border-[1px] py-1">
+                                            <td className="px-1 border-[1px] py-1">
                                                 {format(new Date(tx?.createdAt), 'dd/MM/yyyy')} <br />
                                                 {format(new Date(tx?.createdAt), 'hh:mm a')}
                                             </td>

@@ -72,7 +72,6 @@ const CustomerInvoicePage: React.FC<Props> = ({ invoiceData, loading = false }) 
         broker,
         customerCommission,
     } = invoiceData;
-    console.log({ items })
 
     const perProductsCommission = items?.reduce((initialValue, item) => initialValue + item?.commission, 0)
     const totalCommission = (Number(perProductsCommission) || 0) + (Number(customerCommission) || 0)
@@ -98,8 +97,8 @@ const CustomerInvoicePage: React.FC<Props> = ({ invoiceData, loading = false }) 
                         <th className="px-4 py-2 border">#</th>
                         <th className="px-4 py-2 border">Item</th>
                         <th className="px-4 py-2 border">Quantity</th>
-                        <th className="px-4 py-2 border">Price</th>
                         <th className="px-4 py-2 border">Bosta</th>
+                        <th className="px-4 py-2 border">Price</th>
                         <th className="px-4 py-2 border">Unit</th>
                     </tr>
                 </thead>
@@ -116,8 +115,8 @@ const CustomerInvoicePage: React.FC<Props> = ({ invoiceData, loading = false }) 
                                 <td className="px-4 py-2 border text-center">{index + 1}</td>
                                 <td className="px-4 py-2 border">{item?.name}</td>
                                 <td className="px-4 py-2 border text-center">{item?.quantity}</td>
-                                <td className="px-4 py-2 border text-center">{item?.salePrice}</td>
                                 <td className="px-4 py-2 border text-center">{item?.bosta}</td>
+                                <td className="px-4 py-2 border text-center">{item?.salePrice}</td>
                                 <td className="px-4 py-2 border text-center">{item.unit}</td>
                             </tr>
                         ))
