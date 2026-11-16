@@ -96,8 +96,8 @@ const CustomerInvoicePage: React.FC<Props> = ({ invoiceData, loading = false }) 
                     <tr>
                         <th className="px-4 py-2 border">#</th>
                         <th className="px-4 py-2 border">Item</th>
-                        <th className="px-4 py-2 border">Quantity</th>
                         <th className="px-4 py-2 border">Bosta</th>
+                        <th className="px-4 py-2 border">Quantity</th>
                         <th className="px-4 py-2 border">Price</th>
                         <th className="px-4 py-2 border">Unit</th>
                     </tr>
@@ -114,8 +114,8 @@ const CustomerInvoicePage: React.FC<Props> = ({ invoiceData, loading = false }) 
                             <tr key={item.product} className="hover:bg-gray-50 transition">
                                 <td className="px-4 py-2 border text-center">{index + 1}</td>
                                 <td className="px-4 py-2 border">{item?.name}</td>
-                                <td className="px-4 py-2 border text-center">{item?.quantity}</td>
                                 <td className="px-4 py-2 border text-center">{item?.bosta}</td>
+                                <td className="px-4 py-2 border text-center">{item?.quantity}</td>
                                 <td className="px-4 py-2 border text-center">{item?.salePrice}</td>
                                 <td className="px-4 py-2 border text-center">{item.unit}</td>
                             </tr>
