@@ -84,7 +84,7 @@ const PaidMemo = ({ sale, onClose }: any) => {
                                         {p?.unit === "কেজি" ? "kg" : p.unit}
                                     </td>
                                     <td className="p-[2px] text-center border-r border-gray-300">
-                                        {customRound(p?.salePrice)}
+                                        {(p?.salePrice)}
                                     </td>
                                     <td className="p-[2px] text-center">{customRound(Number(p?.salePrice * p?.quantity))}</td>
                                 </tr>
