@@ -36,15 +36,12 @@ const ChequeList: FC<ChequeListProps> = ({ head, cheque, index, }) => {
         .map((item) => item.trim())
         .find((item) => /^\d{2}\/\d{2}\/\d{4}$/.test(item));
 
-    let isFutureDate = false;
+    let isBackDate = false;
 
     if (note) {
         const [day, month, year] = note.split("/").map(Number);
 
-        // dd/mm/yy → Date
-        const fullYear = year;
-
-        const givenDate = new Date(fullYear, month - 1, day);
+        const givenDate = new Date(year, month - 1, day);
         const today = new Date();
 
         // সময় বাদ দিয়ে শুধু তারিখ তুলনা
@@ -52,11 +49,14 @@ const ChequeList: FC<ChequeListProps> = ({ head, cheque, index, }) => {
 
         // অবৈধ তারিখ যাচাই
         const isValidDate =
-            givenDate.getFullYear() === fullYear &&
+            givenDate.getFullYear() === year &&
             givenDate.getMonth() === month - 1 &&
             givenDate.getDate() === day;
 
-        isFutureDate = isValidDate && givenDate <= today;
+        if (isValidDate) {
+            isBackDate = givenDate > today;
+        }
+
     }
     const [updateNote] = useUpdatePurchaseNoteMutation()
     const handleUpdateNote = async (data: any) => {
@@ -79,7 +79,7 @@ const ChequeList: FC<ChequeListProps> = ({ head, cheque, index, }) => {
     }
 
     return (
-        <tr className={`align-top transition-colors hover:bg-blue-50/40 ${isFutureDate ? 'text-red-600' : ''}`}>
+        <tr className={`align-top transition-colors hover:bg-blue-50/40 ${isBackDate ? '' : 'text-red-600'}`}>
             {/* Serial Number */}
             <td className="border-b border-gray-100 px-4 py-1 text-xs ">
                 {index}
